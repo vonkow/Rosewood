@@ -1,7 +1,17 @@
+//////// TO-DO ////////
+// Preload Images while showing user defined load screen
+// Collision detection!!! (and the Ob class...)
+// Make Boards (worlds) a class
+// Sound support?
+// Integrate good parts of old rw, bring back rw.state?
+// Move all DOM utils to pussycat
+
+
 var rw = {}; // The Rosewood Object
 
 
 rw.ents = []; // Game Entities
+rw.maps = []; // Map Entities
 rw.curT = 0; // RunLoop current Timer
 rw.globT = 0; // RunLoop global Timer
 rw.runGame = true; // RunLoop or stop
@@ -60,8 +70,43 @@ rw.run = function() {
 		}
 	}
 	if (rw.runGame==true) {
-		rw.curT = setTimeout('rw.run()', 50);
+		rw.start();
 	}
+	else {
+		rw.stop();
+	}
+	if (rw.curT==100) {
+		rw.hideEnt(rw.ents[0]);
+	}
+}
+
+rw.start = function() {
+	rw.curT = setTimeout('rw.run()', 50);
+}
+
+rw.stop = function() {
+	clearTimeout(rw.curT);
+	rw.globT = rw.globT+rw.curT;
+	rw.curT = 0;
+}
+
+rw.board = function(name, path, extention, xDim, yDim) {
+	this.name = name;
+	this.path =path;
+	this.extention = extention
+	this.width = xDim;
+	this.height = yDim;
+}
+
+rw.renderMap = function(map) {
+	var gameArea = document.getElementById('rw');
+	var mapArea = document.createElement('div');
+	mapArea.id = 'map_'+map.board.name;
+	mapArea.style.backgroundImage = "url('sprites/boards/"+map.board.path+"/"+map.board.path+"."+map.board.extention+"')";
+	mapArea.style.width = map.board.width+'px';
+	mapArea.style.height = map.board.height+'px';
+	mapArea.style.zIndex = -1;
+	gameArea.appendChild(mapArea);
 }
 
 // Game Entity Base Factory
@@ -73,6 +118,7 @@ rw.ent = function(name, sprites, spriteExt, width, height, heading) {
 	this.height = height;
 	this.posX = 0;
 	this.posY = 0;
+	this.posZ = 0;
 	this.heading = heading;
 	this.active = false; //Bool for is piece in play
 }
@@ -95,6 +141,21 @@ rw.displayEnt = function(ent, locX, locY) {
 	document.getElementById('board').appendChild(newEnt);
 }
 
+rw.removeEnt = function(entNum) {
+	rw.ents.splice(entNum, 1)
+}
+
+rw.hideEnt = function(ent) {
+	if (document.getElementById('ent_'+ent.base.name)) {
+		var dying = document.getElementById('ent_'+ent.base.name);
+		dying.parentNode.removeChild(dying);
+		ent.base.active=false;
+	}
+}
+
+
+//////// NON RW FUNCTIONS ////////
+
 
 // Custom Game Entity (calls rw.ent for this.base, requires this.update function)
 var goon = function(name, heading) {
@@ -111,17 +172,23 @@ var goon = function(name, heading) {
 			}
 			if (rw.keys.ua==true) {
 				this.base.posY = this.base.posY-this.maxSpeed;
+				this.base.posZ = this.base.posY;
 			}
 			if (rw.keys.da==true) {
 				this.base.posY = this.base.posY+this.maxSpeed;
+				this.base.posZ = this.base.posY;
 			}
 			entDiv.style.left = this.base.posX+'px';
 			entDiv.style.top = this.base.posY+'px';
+			entDiv.style.zIndex = this.base.posZ
 		}
 	}
 }
 
-
+// Create new map function
+function newMap() {
+	
+}
 
 // Begin Game Function
 function startGame() {
@@ -130,5 +197,5 @@ function startGame() {
 	document.getElementsByTagName('body')[0].appendChild(board);
 	rw.ents[rw.ents.length] = new goon('Goon', 'u');
 	rw.displayEnt(rw.ents[0], 50, 50);
-	rw.run();
+	rw.start();
 }
