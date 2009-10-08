@@ -5,6 +5,7 @@
 // Sound support?
 // Integrate good parts of old rw, bring back rw.state?
 // Move all DOM utils to pussycat
+// keyChangeSprite mostly implemented, implement sigChangeSprite
 
 
 var rw = {}; // The Rosewood Object
@@ -15,6 +16,7 @@ rw.maps = []; // Map Entities
 rw.curT = 0; // RunLoop current Timer
 rw.globT = 0; // RunLoop global Timer
 rw.runGame = true; // RunLoop or stop
+rw.keyChange = false; //Did a keydown/up change between the last loop and now?
 rw.keys = {};
 rw.keys.la = false;
 rw.keys.ua = false;
@@ -37,6 +39,7 @@ rw.keyDown = function(e) {
 			rw.keys.da = true;
 			break;
 	}
+	rw.keyChange = true;
 }
 rw.keyUp = function(e) {
 	var ev = e ? e : window.event;
@@ -54,6 +57,7 @@ rw.keyUp = function(e) {
 			rw.keys.da = false;
 			break;
 	}
+	rw.keyChange = true;
 }
 
 // Keydown/up event listeners
@@ -69,15 +73,24 @@ rw.run = function() {
 			x--;
 		}
 	}
+	if (rw.keyChange==true) {
+		// Loop through ents and change graphics
+		for (var x=0; x<rw.ents.length; x++) {
+			if (rw.ents[x].keyChangeSprite) {
+				rw.ents[x].keyChangeSprite();
+			}
+		}
+		rw.keyChange = false;
+	}
 	if (rw.runGame==true) {
 		rw.start();
 	}
 	else {
 		rw.stop();
 	}
-	if (rw.curT==100) {
-		rw.hideEnt(rw.ents[0]);
-	}
+	//if (rw.curT==100) {
+	//	rw.hideEnt(rw.ents[0]);
+	//}
 }
 
 rw.start = function() {
@@ -120,6 +133,7 @@ rw.ent = function(name, sprites, spriteExt, width, height, heading) {
 	this.posY = 0;
 	this.posZ = 0;
 	this.heading = heading;
+	this.moving = false;
 	this.active = false; //Bool for is piece in play
 }
 
@@ -183,6 +197,36 @@ var goon = function(name, heading) {
 			entDiv.style.zIndex = this.base.posZ
 		}
 	}
+	// Detach some of keyChangeSprite and move to engine core, this much code for each ent is unacceptable!
+	this.keyChangeSprite = function() {
+		if (this.base.active==true) {
+			var entDiv = document.getElementById('ent_'+name);
+			if (rw.keys.la==true) {
+				this.base.heading = 'l';
+				this.base.moving = true;
+				entDiv.style.backgroundImage = "url('sprites/"+this.base.sprites+"/W"+this.base.heading+"."+this.base.spriteExt+"')";
+			}
+			else if (rw.keys.ua==true) {
+				this.base.heading = 'u';
+				this.base.moving = true;
+				entDiv.style.backgroundImage = "url('sprites/"+this.base.sprites+"/W"+this.base.heading+"."+this.base.spriteExt+"')";
+			}
+			else if (rw.keys.ra==true) {
+				this.base.heading = 'r';
+				this.base.moving = true;
+				entDiv.style.backgroundImage = "url('sprites/"+this.base.sprites+"/W"+this.base.heading+"."+this.base.spriteExt+"')";
+			}
+			else if (rw.keys.da==true) {
+				this.base.heading = 'd';
+				this.base.moving = true;
+				entDiv.style.backgroundImage = "url('sprites/"+this.base.sprites+"/W"+this.base.heading+"."+this.base.spriteExt+"')";
+			}
+			else {
+				this.base.moving = false;
+				entDiv.style.backgroundImage = "url('sprites/"+this.base.sprites+"/"+this.base.heading+"."+this.base.spriteExt+"')";
+			}
+		}
+	}
 }
 
 // Create new map function
@@ -195,7 +239,15 @@ function startGame() {
 	var board = document.createElement('div');
 	board.id = 'board';
 	document.getElementsByTagName('body')[0].appendChild(board);
-	rw.ents[rw.ents.length] = new goon('Goon', 'u');
+	rw.ents[rw.ents.length] = new goon('Goon0', 'u');
 	rw.displayEnt(rw.ents[0], 50, 50);
+	rw.ents[rw.ents.length] = new goon('Goon1', 'u');
+	rw.displayEnt(rw.ents[1], 100, 100);
+	rw.ents[rw.ents.length] = new goon('Goon2', 'u');
+	rw.displayEnt(rw.ents[2], 150, 150);
+	rw.ents[rw.ents.length] = new goon('Goon3', 'u');
+	rw.displayEnt(rw.ents[3], 200, 200);
+	rw.ents[rw.ents.length] = new goon('Goon4', 'u');
+	rw.displayEnt(rw.ents[4], 250, 250);
 	rw.start();
 }
