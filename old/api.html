@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<title>Rosewood API and Reference</title>
+	</head>
+	<body>
+		<h1>Rosewood API and Reference</h1>
+		<h2>What Rosewood does for you</h2>
+		<p>At it's core, Rosewood is a simple 2D graphics engine that renders and animates image files using HTML and CSS. The engine also contains functions for mapping keyboard (and soon mouse) inputs to various onscreen actions. Additionally, Rosewood provides a few helper functions for common types of game development and a set of arrays for storing/tracking game elements.</p>
+		<p>The Rosewood Engine is divided into three general gameplay states, the Title Screen, Runtime and the Overlay.</p>
+		<p> When a Rosewood-powered game is started, it will by default display the Title Screen. Game makers can customize this to create various pre-game options such as difficulty or the choice to load a saved game. If a game doesn't require a Title Screen, it can be easily skipped. There are a number of built-in functions for the quick creation of Title Screen elements.</p>
+		<p>The Runtime represents the main body of Rosewood, </p>
+		
+		<h2>What Rosewood doesn't do for you</h2>
+		<h2>The rw Object</h2>
+		<h3>Basics</h3>
+		<p>When a page with Rosewood is loaded the first thing that happens is the creation of the rw Object. Rosewood wraps all of its Core and Utility Functions inside of the rw Object, along with global variables and a number of built-in arrays. The rw Object is broken down into smaller objects and arrays that represent different aspects of the engine, listed below.</p>
+		<h3>rw Sub-Objects</h3>
+		<ul>
+			<li>rw.g: Stores all Core Global Variables, such as rw.g.pX, the current X-coordinate of the player.</li>
+			<li>rw.keys: A list of Boolean vars, used to determine which keyboard keys are currently depressed</li>
+			<li>rw.u: Rosewood's built-in Utility Functions reside here, such as rw.u.reset(), which resets the game.</li>
+			<li>rw.r: Holds the Runtime functions, this is the real meat of Rosewood, functions for creation/destruction and movement of onscreen elements.</li>
+			<li>rw.f: Flag variables for determining what state the game is in. Game makers will need to create custom flags for all but the most simple games.</li>
+			<li>rw.world: An array that holds the various 'areas' of a game. Game makers will need to add the areas they wish to have, using various rw.r functions.</li>
+			
+		</ul>
+	</body>
+</html>
