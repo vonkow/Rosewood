@@ -167,6 +167,29 @@ rw.hideEnt = function(ent) {
 	}
 }
 
+rw.ob = function(shape, x1, y1, x2, y2, level) {
+	this.shape = shape;
+	this.x1 = x1;
+	this.y1 = y1;
+	this.x2 = x2;
+	this.y2 = y2;
+	this.level = level;
+}
+
+rw.obs = [];
+
+rw.checkBounds = function(ent) {
+	var hit = false;
+	var len = obs.length;
+	for (var x=0; x<len; x++) {
+		if ((ent.base.posX+ent.base.width>obs[x].x1)&&(ent.base.posX<obs[x].x2)) {
+			if ((ent.base.posY+ent.base.height>obs[x].y1)&&(ent.base.posY<obs[x].y2) {
+				hit = true;
+			}
+		}
+	}
+}	
+}
 
 //////// NON RW FUNCTIONS ////////
 
