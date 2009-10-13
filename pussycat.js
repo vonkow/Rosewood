@@ -1,3 +1,4 @@
+//faster pussycat, kill kill!
 var pc = {};
 
 pc.m = function(params) {
