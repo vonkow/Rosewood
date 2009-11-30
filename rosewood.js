@@ -23,6 +23,8 @@ rw.keys.ua = false;
 rw.keys.ra = false;
 rw.keys.da = false;
 
+// Key Down and Up triggers
+// NEEDS FLESHING OUT
 rw.keyDown = function(e) {
 	var ev = e ? e : window.event;
 	switch(ev.keyCode) {
@@ -66,6 +68,7 @@ document.onkeyup=rw.keyUp;
 
 // RunLoop Function
 rw.run = function() {
+	// Update all sprites and remove those that are "dead"
 	for(var x=0; x<rw.ents.length; x++) {
 		var currentSprite = rw.ents[x].update();
 		if (currentSprite==false) {
@@ -73,6 +76,7 @@ rw.run = function() {
 			x--;
 		}
 	}
+	// Update Sprites if keyChange is true, this may need to be changed, a second ents forloop is too much.
 	if (rw.keyChange==true) {
 		// Loop through ents and change graphics
 		for (var x=0; x<rw.ents.length; x++) {
@@ -82,6 +86,7 @@ rw.run = function() {
 		}
 		rw.keyChange = false;
 	}
+	//If game has not ended or been paused, continue
 	if (rw.runGame==true) {
 		rw.start();
 	}
@@ -183,13 +188,12 @@ rw.checkBounds = function(ent) {
 	var len = obs.length;
 	for (var x=0; x<len; x++) {
 		if ((ent.base.posX+ent.base.width>obs[x].x1)&&(ent.base.posX<obs[x].x2)) {
-			if ((ent.base.posY+ent.base.height>obs[x].y1)&&(ent.base.posY<obs[x].y2) {
+			if ((ent.base.posY+ent.base.height>obs[x].y1)&&(ent.base.posY<obs[x].y2)) {
 				hit = true;
 			}
 		}
 	}
 }	
-}
 
 //////// NON RW FUNCTIONS ////////
 

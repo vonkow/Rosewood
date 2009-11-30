@@ -5,7 +5,9 @@ pc.m = function(params) {
 	if (params.id) {
 		ele.id = params.id;
 	}
-	//document.getElementsByTagName('body')[0].appendChild(ele);
+	if (params.p) {
+		document.getElementById(params.p).appendChild(ele);
+	}
 	return ele
 }
 
