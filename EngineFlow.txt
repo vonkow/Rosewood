@@ -1,0 +1,13 @@
+The Rosewood Engine Documentation
+
+Namespace:
+	Rosewood adds one var to the global namespace, the "rw" object
+	All Library Functions are contained inside of the rw object
+
+rw.keys & rw.keyDown & rw.keyUp:
+	The rw.keys object holds a set of boolean values that signal wether a particular key is down or up.
+	rw.keyDown & rw.keyUp are functions attached to document.onkeydown and onkeyup that switch the rw.keys value if a key is depressed or released.
+
+rw built-in objects & arrays:
+	rw.ent:
+		The ent object class 
