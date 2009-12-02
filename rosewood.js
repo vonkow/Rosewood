@@ -82,6 +82,9 @@ rw.run = function() {
 				killSprite(rw.ents[x]);
 				x--;
 			}
+			else {
+				rw.checkBounds(rw.ents[x]);
+			}
 
 		}
 		rw.keyChange = false;
@@ -92,6 +95,9 @@ rw.run = function() {
 			if (currentSprite==false) {
 				killSprite(rw.ents[x]);
 				x--;
+			}
+			else {
+				rw.checkBounds(rw.ents[x]);
 			}
 		}
 	}
@@ -194,13 +200,29 @@ rw.bar = function(shape, x1, y1, x2, y2, level) {
 
 rw.checkBounds = function(ent) {
 	var hit = false;
-	var len = obs.length;
+	var len = rw.bars.length;
 	for (var x=0; x<len; x++) {
-		if ((ent.base.posX+ent.base.width>obs[x].x1)&&(ent.base.posX<obs[x].x2)) {
-			if ((ent.base.posY+ent.base.height>obs[x].y1)&&(ent.base.posY<obs[x].y2)) {
+		if ((ent.base.posX+ent.base.width>rw.bars[x].x1)&&(ent.base.posX<rw.bars[x].x2)) {
+			if ((ent.base.posY+ent.base.height>rw.bars[x].y1)&&(ent.base.posY<rw.bars[x].y2)) {
 				hit = true;
 			}
 		}
+	}
+	if (hit==true) {
+		switch (ent.base.heading) {
+			case 'u':
+				ent.base.posY = ent.base.posY + ent.maxSpeed;
+				break;
+			case 'd':
+				ent.base.posY = ent.base.posY - ent.maxSpeed;
+				break;
+			case 'l':
+				ent.base.posX = ent.base.posX + ent.maxSpeed;
+				break;
+			case 'r':
+				ent.base.posX = ent.base.posX - ent.maxSpeed;
+				break;
+		}	
 	}
 }	
 
@@ -234,6 +256,7 @@ var goon = function(name, heading) {
 		}
 	}
 	// Detach some of keyChangeSprite and move to engine core, this much code for each ent is unacceptable!
+	// Fix logic of displaying non-moving sprites
 	this.keyChangeSprite = function() {
 		if (this.base.active==true) {
 			var entDiv = document.getElementById('ent_'+name);
@@ -285,5 +308,6 @@ function startGame() {
 	rw.displayEnt(rw.ents[3], 200, 200);
 	rw.ents[rw.ents.length] = new goon('Goon4', 'u');
 	rw.displayEnt(rw.ents[4], 250, 250);
+	rw.bars[rw.bars.length] = new rw.bar('r', 300, 300, 350, 350, 1)
 	rw.start();
 }
