@@ -12,6 +12,7 @@ var rw = {}; // The Rosewood Object
 
 
 rw.ents = []; // Game Entities
+rw.bars = []; // Barrier Entitles
 rw.maps = []; // Map Entities
 rw.curT = 0; // RunLoop current Timer
 rw.globT = 0; // RunLoop global Timer
@@ -69,22 +70,30 @@ document.onkeyup=rw.keyUp;
 // RunLoop Function
 rw.run = function() {
 	// Update all sprites and remove those that are "dead"
-	for(var x=0; x<rw.ents.length; x++) {
-		var currentSprite = rw.ents[x].update();
-		if (currentSprite==false) {
-			killSprite(rw.ents[x]);
-			x--;
-		}
-	}
-	// Update Sprites if keyChange is true, this may need to be changed, a second ents forloop is too much.
+
 	if (rw.keyChange==true) {
 		// Loop through ents and change graphics
 		for (var x=0; x<rw.ents.length; x++) {
 			if (rw.ents[x].keyChangeSprite) {
 				rw.ents[x].keyChangeSprite();
 			}
+			var currentSprite = rw.ents[x].update();
+			if (currentSprite==false) {
+				killSprite(rw.ents[x]);
+				x--;
+			}
+
 		}
 		rw.keyChange = false;
+	}
+	else {
+		for(var x=0; x<rw.ents.length; x++) {
+			var currentSprite = rw.ents[x].update();
+			if (currentSprite==false) {
+				killSprite(rw.ents[x]);
+				x--;
+			}
+		}
 	}
 	//If game has not ended or been paused, continue
 	if (rw.runGame==true) {
@@ -172,7 +181,8 @@ rw.hideEnt = function(ent) {
 	}
 }
 
-rw.ob = function(shape, x1, y1, x2, y2, level) {
+// Barrier Generator
+rw.bar = function(shape, x1, y1, x2, y2, level) {
 	this.shape = shape;
 	this.x1 = x1;
 	this.y1 = y1;
@@ -181,7 +191,6 @@ rw.ob = function(shape, x1, y1, x2, y2, level) {
 	this.level = level;
 }
 
-rw.obs = [];
 
 rw.checkBounds = function(ent) {
 	var hit = false;
