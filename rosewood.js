@@ -125,7 +125,7 @@ rw.stop = function() {
 
 rw.board = function(name, path, extention, xDim, yDim) {
 	this.name = name;
-	this.path =path;
+	this.path = path;
 	this.extention = extention
 	this.width = xDim;
 	this.height = yDim;
@@ -209,6 +209,7 @@ rw.checkBounds = function(ent) {
 		}
 	}
 	if (hit==true) {
+		// CHANGE THIS, NO SWITCH HERE
 		switch (ent.base.heading) {
 			case 'u':
 				ent.base.posY = ent.base.posY + ent.maxSpeed;
@@ -300,14 +301,14 @@ function startGame() {
 	document.getElementsByTagName('body')[0].appendChild(board);
 	rw.ents[rw.ents.length] = new goon('Goon0', 'u');
 	rw.displayEnt(rw.ents[0], 50, 50);
-	rw.ents[rw.ents.length] = new goon('Goon1', 'u');
-	rw.displayEnt(rw.ents[1], 100, 100);
-	rw.ents[rw.ents.length] = new goon('Goon2', 'u');
-	rw.displayEnt(rw.ents[2], 150, 150);
-	rw.ents[rw.ents.length] = new goon('Goon3', 'u');
-	rw.displayEnt(rw.ents[3], 200, 200);
-	rw.ents[rw.ents.length] = new goon('Goon4', 'u');
-	rw.displayEnt(rw.ents[4], 250, 250);
+//	rw.ents[rw.ents.length] = new goon('Goon1', 'u');
+//	rw.displayEnt(rw.ents[1], 100, 100);
+//	rw.ents[rw.ents.length] = new goon('Goon2', 'u');
+//	rw.displayEnt(rw.ents[2], 150, 150);
+//	rw.ents[rw.ents.length] = new goon('Goon3', 'u');
+//	rw.displayEnt(rw.ents[3], 200, 200);
+//	rw.ents[rw.ents.length] = new goon('Goon4', 'u');
+//	rw.displayEnt(rw.ents[4], 250, 250);
 	rw.bars[rw.bars.length] = new rw.bar('r', 300, 300, 350, 350, 1)
 	rw.start();
 }
