@@ -97,7 +97,7 @@ rw.run = function() {
 				x--;
 			}
 			else {
-				rw.checkBounds(rw.ents[x]);
+				//rw.checkBounds(rw.ents[x]);
 			}
 		}
 	}
@@ -152,6 +152,9 @@ rw.ent = function(name, sprites, spriteExt, width, height, heading) {
 	this.posX = 0;
 	this.posY = 0;
 	this.posZ = 0;
+	this.velX = 0;
+	this.velY = 0;
+	this.velZ = 0;
 	this.heading = heading;
 	this.moving = false;
 	this.active = false; //Bool for is piece in play
@@ -198,30 +201,37 @@ rw.bar = function(shape, x1, y1, x2, y2, level) {
 }
 
 
-rw.checkBounds = function(ent) {
-	var hit = false;
+rw.checkBounds = function(ent, direction) {
+	var hit = true;
 	var len = rw.bars.length;
 	for (var x=0; x<len; x++) {
-		if ((ent.base.posX+ent.base.width>rw.bars[x].x1)&&(ent.base.posX<rw.bars[x].x2)) {
-			if ((ent.base.posY+ent.base.height>rw.bars[x].y1)&&(ent.base.posY<rw.bars[x].y2)) {
-				hit = true;
-			}
+		if (ent.base.posX+ent.base.width+ent.base.velX<rw.bars[x].x1) {
+			hit = false;
+		}
+		if (ent.base.posX+ent.base.velX>rw.bars[x].x2) {
+			hit = false;
+		}
+		if (ent.base.posY+ent.base.height+ent.base.velY<rw.bars[x].y1) {
+			hit = false;
+		}
+		if (ent.base.posY+ent.base.velY>rw.bars[x].y2) {
+			hit = false;
 		}
 	}
 	if (hit==true) {
-		// CHANGE THIS, NO SWITCH HERE
-		switch (ent.base.heading) {
+		//See if we can make a flag for each movestate, that can be triggered by keydowns or other signals
+		switch (direction) {
 			case 'u':
-				ent.base.posY = ent.base.posY + ent.maxSpeed;
+				ent.base.velY = 0;
 				break;
 			case 'd':
-				ent.base.posY = ent.base.posY - ent.maxSpeed;
+				ent.base.velY = 0;
 				break;
 			case 'l':
-				ent.base.posX = ent.base.posX + ent.maxSpeed;
+				ent.base.velX = 0;
 				break;
 			case 'r':
-				ent.base.posX = ent.base.posX - ent.maxSpeed;
+				ent.base.velX = 0;
 				break;
 		}	
 	}
@@ -237,20 +247,28 @@ var goon = function(name, heading) {
 	this.update = function() {
 		if (this.base.active==true) {
 			var entDiv = document.getElementById('ent_'+name);
+			this.base.velX = 0;
+			this.base.velY = 0;
 			if (rw.keys.la==true) {
-				this.base.posX = this.base.posX-this.maxSpeed;
+				this.base.velX += -this.maxSpeed;
+				rw.checkBounds(this, 'l');
 			}
 			if (rw.keys.ra==true) {
-				this.base.posX = this.base.posX+this.maxSpeed;
+				this.base.velX += this.maxSpeed;
+				rw.checkBounds(this, 'r');
 			}
 			if (rw.keys.ua==true) {
-				this.base.posY = this.base.posY-this.maxSpeed;
-				this.base.posZ = this.base.posY;
+				this.base.velY += -this.maxSpeed;
+				rw.checkBounds(this, 'u');
 			}
 			if (rw.keys.da==true) {
-				this.base.posY = this.base.posY+this.maxSpeed;
-				this.base.posZ = this.base.posY;
+				this.base.velY += this.maxSpeed;
+				rw.checkBounds(this, 'd');
 			}
+			this.base.posX = this.base.posX+this.base.velX;
+			this.base.posY = this.base.posY+this.base.velY;
+			//For Now
+			this.base.posZ = this.base.posY;
 			entDiv.style.left = this.base.posX+'px';
 			entDiv.style.top = this.base.posY+'px';
 			entDiv.style.zIndex = this.base.posZ
