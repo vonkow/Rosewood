@@ -6,7 +6,7 @@
 // Integrate good parts of old rw, bring back rw.state?
 // Move all DOM utils to pussycat
 // keyChangeSprite mostly implemented, implement sigChangeSprite
-
+// Change rw.checkBounds(ent, direction) to ent.base.checkBounds(self, direction)
 
 var rw = {}; // The Rosewood Object
 
