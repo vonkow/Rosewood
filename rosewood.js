@@ -174,19 +174,19 @@ rw.ent = function(name, sprites, spriteExt, width, height, heading) {
 		this.active = true;
 		document.getElementById('board').appendChild(newEnt);
 	}
+	this.hide = function() {
+		if (document.getElementById('ent_'+this.name)) {
+			var dying = document.getElementById('ent_'+this.name);
+			dying.parentNode.removeChild(dying);
+			this.active=false;
+		}
+	}
 }
 
 rw.removeEnt = function(entNum) {
 	rw.ents.splice(entNum, 1)
 }
 
-rw.hideEnt = function(ent) {
-	if (document.getElementById('ent_'+ent.base.name)) {
-		var dying = document.getElementById('ent_'+ent.base.name);
-		dying.parentNode.removeChild(dying);
-		ent.base.active=false;
-	}
-}
 
 // Barrier Generator
 rw.bar = function(shape, x1, y1, x2, y2, level) {
