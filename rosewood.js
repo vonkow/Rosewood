@@ -1,12 +1,13 @@
 //////// TO-DO ////////
 // Preload Images while showing user defined load screen
-// Collision detection!!! (and the Ob class...)
-// Make Boards (worlds) a class
 // Sound support?
 // Integrate good parts of old rw, bring back rw.state?
 // Move all DOM utils to pussycat
 // keyChangeSprite mostly implemented, implement sigChangeSprite
 // Change rw.checkBounds(ent, direction) to ent.base.checkBounds(self, direction)
+// Fix rw.checkBounds() so that ents stop EXACTLY at the border of a bar.
+// Finish implementing maps and add function for scrolling
+// Create standardized functions for swapping a sprit image onKeyChange
 
 var rw = {}; // The Rosewood Object
 
@@ -217,6 +218,7 @@ rw.checkBounds = function(ent, direction) {
 	}
 	if (hit==true) {
 		//See if we can make a flag for each movestate, that can be triggered by keydowns or other signals
+		// This method only works at slow speeds: an ent with velX of 50 and a distance of 49 to a bar will be stopped 49 away
 		switch (direction) {
 			case 'u':
 				ent.base.velY = 0;
