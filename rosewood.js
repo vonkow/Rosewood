@@ -158,24 +158,21 @@ rw.ent = function(name, sprites, spriteExt, width, height, heading) {
 	this.heading = heading;
 	this.moving = false;
 	this.active = false; //Bool for is piece in play
-}
-
-// Display Entity Function, sets ent.base.active to true
-rw.displayEnt = function(ent, locX, locY) {
-	var newEnt = document.createElement('div');
-	newEnt.id = 'ent_'+ent.base.name;
-	newEnt.style.width = ent.base.width;
-	newEnt.style.height = ent.base.height;
-	newEnt.style.backgroundImage = "url('sprites/"+ent.base.sprites+"/"+ent.base.heading+"."+ent.base.spriteExt+"')";
-	newEnt.style.backgroundRepeat = 'no-repeat';
-	newEnt.style.backgroundPosition = 'center';
-	newEnt.style.position = 'absolute';
-	newEnt.style.left = locX+'px';
-	newEnt.style.top = locY+'px';
-	ent.base.posX = locX;
-	ent.base.posY = locY;
-	ent.base.active = true;
-	document.getElementById('board').appendChild(newEnt);
+	// Display Entity Function, sets ent.base.active to true
+	this.display = function () {
+		var newEnt = document.createElement('div');
+		newEnt.id = 'ent_'+this.name;
+		newEnt.style.width = this.width;
+		newEnt.style.height = this.height;
+		newEnt.style.backgroundImage = "url('sprites/"+this.sprites+"/"+this.heading+"."+this.spriteExt+"')";
+		newEnt.style.backgroundRepeat = 'no-repeat';
+		newEnt.style.backgroundPosition = 'center';
+		newEnt.style.position = 'absolute';
+		newEnt.style.left = this.posX+'px';
+		newEnt.style.top = this.posY+'px';
+		this.active = true;
+		document.getElementById('board').appendChild(newEnt);
+	}
 }
 
 rw.removeEnt = function(entNum) {
@@ -318,7 +315,10 @@ function startGame() {
 	board.id = 'board';
 	document.getElementsByTagName('body')[0].appendChild(board);
 	rw.ents[rw.ents.length] = new goon('Goon0', 'u');
-	rw.displayEnt(rw.ents[0], 50, 50);
+	//rw.displayEnt(rw.ents[0], 50, 50);
+	rw.ents[0].base.posX = 50;
+	rw.ents[0].base.posY = 50;
+	rw.ents[0].base.display();
 //	rw.ents[rw.ents.length] = new goon('Goon1', 'u');
 //	rw.displayEnt(rw.ents[1], 100, 100);
 //	rw.ents[rw.ents.length] = new goon('Goon2', 'u');
