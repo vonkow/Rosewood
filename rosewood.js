@@ -181,6 +181,12 @@ rw.ent = function(name, sprites, spriteExt, width, height, heading) {
 			this.active=false;
 		}
 	}
+	this.changeSprite = function(spriteName) {
+		var entDiv = document.getElementById('ent_'+this.name);
+		if (entDiv) {
+			entDiv.style.backgroundImage = "url('sprites/"+this.sprites+"/"+spriteName+"."+this.spriteExt+"')";
+		}
+	}
 }
 
 rw.removeEnt = function(entNum) {
@@ -273,6 +279,9 @@ var goon = function(name, heading) {
 			entDiv.style.zIndex = this.base.posZ
 		}
 	}
+	// THis will be the funct that calls the new this.base.changeSprite();
+	// heading and moving will possible be split into seperate functions
+	// This even brings up the fact that heading and moving may not be part of this.base
 	// Detach some of keyChangeSprite and move to engine core, this much code for each ent is unacceptable!
 	// Fix logic of displaying non-moving sprites
 	this.keyChangeSprite = function() {
@@ -281,7 +290,8 @@ var goon = function(name, heading) {
 			if (rw.keys.la==true) {
 				this.base.heading = 'l';
 				this.base.moving = true;
-				entDiv.style.backgroundImage = "url('sprites/"+this.base.sprites+"/W"+this.base.heading+"."+this.base.spriteExt+"')";
+				this.base.changeSprite('Wl');
+			//	entDiv.style.backgroundImage = "url('sprites/"+this.base.sprites+"/W"+this.base.heading+"."+this.base.spriteExt+"')";
 			}
 			else if (rw.keys.ua==true) {
 				this.base.heading = 'u';
