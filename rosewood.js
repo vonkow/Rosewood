@@ -24,6 +24,17 @@ rw.keys.la = false;
 rw.keys.ua = false;
 rw.keys.ra = false;
 rw.keys.da = false;
+rw.mouse = {};
+rw.mouse.x = 0;
+rw.mouse.y = 0;
+
+rw.mousePos = function(e) {
+	rw.mouse.x = (e) ? e.pageX : window.event.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); // Do you know how much I HATE IE??!
+	rw.mouse.y = (e) ? e.pageY : window.event.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight); // Do you know how much I HATE IE??!
+}
+
+document.onmousemove = rw.mousePos;
+
 
 // Key Down and Up triggers
 // NEEDS FLESHING OUT
