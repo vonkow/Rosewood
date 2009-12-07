@@ -28,12 +28,19 @@ rw.mouse = {};
 rw.mouse.x = 0;
 rw.mouse.y = 0;
 
+rw.init = function() {
+	// Mousemove object, maybe eval during runloop and not onmousemve
+	document.onmousemove = rw.mousePos;
+	// Keydown/up event listeners
+	document.onkeydown=rw.keyDown;
+	document.onkeyup=rw.keyUp;
+}
+
 rw.mousePos = function(e) {
 	rw.mouse.x = (e) ? e.pageX : window.event.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); // Do you know how much I HATE IE??!
 	rw.mouse.y = (e) ? e.pageY : window.event.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight); // Do you know how much I HATE IE??!
 }
 
-document.onmousemove = rw.mousePos;
 
 
 // Key Down and Up triggers
@@ -333,6 +340,7 @@ function newMap() {
 
 // Begin Game Function
 function startGame() {
+	rw.init();
 	var board = document.createElement('div');
 	board.id = 'board';
 	document.getElementsByTagName('body')[0].appendChild(board);
