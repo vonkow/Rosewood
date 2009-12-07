@@ -291,26 +291,25 @@ var goon = function(name, heading) {
 				this.base.heading = 'l';
 				this.base.moving = true;
 				this.base.changeSprite('Wl');
-			//	entDiv.style.backgroundImage = "url('sprites/"+this.base.sprites+"/W"+this.base.heading+"."+this.base.spriteExt+"')";
 			}
 			else if (rw.keys.ua==true) {
 				this.base.heading = 'u';
 				this.base.moving = true;
-				entDiv.style.backgroundImage = "url('sprites/"+this.base.sprites+"/W"+this.base.heading+"."+this.base.spriteExt+"')";
+				this.base.changeSprite('Wu');
 			}
 			else if (rw.keys.ra==true) {
 				this.base.heading = 'r';
 				this.base.moving = true;
-				entDiv.style.backgroundImage = "url('sprites/"+this.base.sprites+"/W"+this.base.heading+"."+this.base.spriteExt+"')";
+				this.base.changeSprite('Wr');
 			}
 			else if (rw.keys.da==true) {
 				this.base.heading = 'd';
 				this.base.moving = true;
-				entDiv.style.backgroundImage = "url('sprites/"+this.base.sprites+"/W"+this.base.heading+"."+this.base.spriteExt+"')";
+				this.base.changeSprite('Wd');
 			}
 			else {
 				this.base.moving = false;
-				entDiv.style.backgroundImage = "url('sprites/"+this.base.sprites+"/"+this.base.heading+"."+this.base.spriteExt+"')";
+				this.base.changeSprite(this.base.heading);
 			}
 		}
 	}
