@@ -37,8 +37,8 @@ rw.init = function() {
 }
 
 rw.mousePos = function(e) {
-	rw.mouse.x = (e) ? e.pageX : window.event.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); // Do you know how much I HATE IE??!
-	rw.mouse.y = (e) ? e.pageY : window.event.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight); // Do you know how much I HATE IE??!
+	rw.mouse.x = (e) ? e.pageX : window.event.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); // THIS IS WHY WE CAN'T HAVE PRETTY THINGS IE!!!
+	rw.mouse.y = (e) ? e.pageY : window.event.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight); // THIS IS WHY WE CAN'T HAVE PRETTY THINGS IE!!!
 }
 
 
@@ -343,7 +343,11 @@ function startGame() {
 	rw.init();
 	var board = document.createElement('div');
 	board.id = 'board';
+	board.style.width='600px';
+	board.style.height='300px';
 	document.getElementsByTagName('body')[0].appendChild(board);
+	// Move cursor hiding logic to rw.init()
+	document.getElementsByTagName('body')[0].style.cursor="url(sprites/blank.cur), wait";
 	rw.ents[rw.ents.length] = new goon('Goon0', 'u');
 	//rw.displayEnt(rw.ents[0], 50, 50);
 	rw.ents[0].base.posX = 50;
