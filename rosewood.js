@@ -37,8 +37,9 @@ rw.init = function() {
 }
 
 rw.mousePos = function(e) {
-	rw.mouse.x = (e) ? e.pageX : window.event.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); // THIS IS WHY WE CAN'T HAVE PRETTY THINGS IE!!!
-	rw.mouse.y = (e) ? e.pageY : window.event.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight); // THIS IS WHY WE CAN'T HAVE PRETTY THINGS IE!!!
+	// THIS IS WHY WE CAN'T HAVE PRETTY THINGS IE!!!
+	rw.mouse.x = (e) ? e.pageX : window.event.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); 
+	rw.mouse.y = (e) ? e.pageY : window.event.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight); 
 }
 
 
