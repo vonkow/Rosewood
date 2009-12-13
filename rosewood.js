@@ -9,24 +9,35 @@
 // Finish implementing maps and add function for scrolling
 // Create standardized functions for swapping a sprit image onKeyChange
 
-var rw = {}; // The Rosewood Object
+// The Rosewood Object
+var rw = {}; 
 
-
-rw.ents = []; // Game Entities
-rw.bars = []; // Barrier Entitles
+// Game Entities
+rw.ents = []; 
+// Barrier Entitles
+rw.bars = []; 
 rw.maps = []; // Map Entities
+
 rw.curT = 0; // RunLoop current Timer
+
 rw.globT = 0; // RunLoop global Timer
+
 rw.runGame = true; // RunLoop or stop
+
 rw.keyChange = false; //Did a keydown/up change between the last loop and now?
-rw.keys = {};
-rw.keys.la = false;
-rw.keys.ua = false;
-rw.keys.ra = false;
-rw.keys.da = false;
-rw.mouse = {};
-rw.mouse.x = 0;
-rw.mouse.y = 0;
+
+rw.keys = {
+	this.la: false;
+	this.ua: false;
+	this.ra: false;
+	this.da: false;
+
+};
+
+rw.mouse = {
+	this.x: 0;
+	this.y: 0;
+};
 
 rw.init = function() {
 	// Mousemove object, maybe eval during runloop and not onmousemve
@@ -354,14 +365,6 @@ function startGame() {
 	rw.ents[0].base.posX = 50;
 	rw.ents[0].base.posY = 50;
 	rw.ents[0].base.display();
-//	rw.ents[rw.ents.length] = new goon('Goon1', 'u');
-//	rw.displayEnt(rw.ents[1], 100, 100);
-//	rw.ents[rw.ents.length] = new goon('Goon2', 'u');
-//	rw.displayEnt(rw.ents[2], 150, 150);
-//	rw.ents[rw.ents.length] = new goon('Goon3', 'u');
-//	rw.displayEnt(rw.ents[3], 200, 200);
-//	rw.ents[rw.ents.length] = new goon('Goon4', 'u');
-//	rw.displayEnt(rw.ents[4], 250, 250);
 	rw.bars[rw.bars.length] = new rw.bar('r', 300, 300, 350, 350, 1)
 	rw.start();
 }
