@@ -27,16 +27,16 @@ rw.runGame = true; // RunLoop or stop
 rw.keyChange = false; //Did a keydown/up change between the last loop and now?
 
 rw.keys = {
-	this.la: false;
-	this.ua: false;
-	this.ra: false;
-	this.da: false;
+	la: false,
+	ua: false,
+	ra: false,
+	da: false
 
 };
 
 rw.mouse = {
-	this.x: 0;
-	this.y: 0;
+	x: 0,
+	y: 0
 };
 
 rw.init = function() {
@@ -105,29 +105,28 @@ rw.run = function() {
 	if (rw.keyChange==true) {
 		// Loop through ents and change graphics
 		for (var x=0; x<rw.ents.length; x++) {
-			if (rw.ents[x].keyChangeSprite) {
-				rw.ents[x].keyChangeSprite();
-			}
-			var currentSprite = rw.ents[x].update();
-			if (currentSprite==false) {
-				killSprite(rw.ents[x]);
-				x--;
-			}
-			else {
-				rw.checkBounds(rw.ents[x]);
+			if (rw.ents[x].base.active==true) {
+				if (rw.ents[x].keyChangeSprite) {
+					rw.ents[x].keyChangeSprite();
+				}
+				var currentSprite = rw.ents[x].update();
+				if (currentSprite==false) {
+					killSprite(rw.ents[x]);
+					x--;
+				} else {
+					rw.checkBounds(rw.ents[x]);
+				}
 			}
 
 		}
 		rw.keyChange = false;
-	}
-	else {
+	} else {
 		for(var x=0; x<rw.ents.length; x++) {
 			var currentSprite = rw.ents[x].update();
 			if (currentSprite==false) {
 				killSprite(rw.ents[x]);
 				x--;
-			}
-			else {
+			} else {
 				//rw.checkBounds(rw.ents[x]);
 			}
 		}
@@ -135,8 +134,7 @@ rw.run = function() {
 	//If game has not ended or been paused, continue
 	if (rw.runGame==true) {
 		rw.start();
-	}
-	else {
+	} else {
 		rw.stop();
 	}
 	//if (rw.curT==100) {
@@ -314,33 +312,31 @@ var goon = function(name, heading) {
 	// This even brings up the fact that heading and moving may not be part of this.base
 	// Detach some of keyChangeSprite and move to engine core, this much code for each ent is unacceptable!
 	// Fix logic of displaying non-moving sprites
+
+//!!!!!!!!!!!!! Move most of keyCHangeSprite to ent.base with an rw.keys loop: 
+//		where args are sent to ent and keys.
+
 	this.keyChangeSprite = function() {
-		if (this.base.active==true) {
-			var entDiv = document.getElementById('ent_'+name);
-			if (rw.keys.la==true) {
-				this.base.heading = 'l';
-				this.base.moving = true;
-				this.base.changeSprite('Wl');
-			}
-			else if (rw.keys.ua==true) {
-				this.base.heading = 'u';
-				this.base.moving = true;
-				this.base.changeSprite('Wu');
-			}
-			else if (rw.keys.ra==true) {
-				this.base.heading = 'r';
-				this.base.moving = true;
-				this.base.changeSprite('Wr');
-			}
-			else if (rw.keys.da==true) {
-				this.base.heading = 'd';
-				this.base.moving = true;
-				this.base.changeSprite('Wd');
-			}
-			else {
-				this.base.moving = false;
-				this.base.changeSprite(this.base.heading);
-			}
+		var entDiv = document.getElementById('ent_'+name);
+		if (rw.keys.la==true) {
+			this.base.heading = 'l';
+			this.base.moving = true;
+			this.base.changeSprite('Wl');
+		} else if (rw.keys.ua==true) {
+			this.base.heading = 'u';
+			this.base.moving = true;
+			this.base.changeSprite('Wu');
+		} else if (rw.keys.ra==true) {
+			this.base.heading = 'r';
+			this.base.moving = true;
+			this.base.changeSprite('Wr');
+		} else if (rw.keys.da==true) {
+			this.base.heading = 'd';
+			this.base.moving = true;
+			this.base.changeSprite('Wd');
+		} else {
+			this.base.moving = false;
+			this.base.changeSprite(this.base.heading);
 		}
 	}
 }
@@ -361,7 +357,6 @@ function startGame() {
 	// Move cursor hiding logic to rw.init()
 	document.getElementsByTagName('body')[0].style.cursor="url(sprites/blank.cur), wait";
 	rw.ents[rw.ents.length] = new goon('Goon0', 'u');
-	//rw.displayEnt(rw.ents[0], 50, 50);
 	rw.ents[0].base.posX = 50;
 	rw.ents[0].base.posY = 50;
 	rw.ents[0].base.display();
