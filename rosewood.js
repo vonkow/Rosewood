@@ -122,12 +122,14 @@ rw.run = function() {
 		rw.keyChange = false;
 	} else {
 		for(var x=0; x<rw.ents.length; x++) {
-			var currentSprite = rw.ents[x].update();
-			if (currentSprite==false) {
-				killSprite(rw.ents[x]);
-				x--;
-			} else {
-				//rw.checkBounds(rw.ents[x]);
+			if (rw.ents[x].base.active==true) {
+				var currentSprite = rw.ents[x].update();
+				if (currentSprite==false) {
+					killSprite(rw.ents[x]);
+					x--;
+				} else {
+					//rw.checkBounds(rw.ents[x]);
+				}
 			}
 		}
 	}
