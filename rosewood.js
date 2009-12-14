@@ -144,8 +144,9 @@ rw.run = function() {
 	//}
 }
 
+rw.speed = 25;
 rw.start = function() {
-	rw.curT = setTimeout('rw.run()', 50);
+	rw.curT = setTimeout('rw.run()', this.speed);
 }
 
 rw.stop = function() {
