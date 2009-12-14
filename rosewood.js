@@ -281,34 +281,32 @@ var goon = function(name, heading) {
 	this.base = new rw.ent(name, 'goon', 'gif', 38, 46, heading);
 	this.maxSpeed = 2;
 	this.update = function() {
-		if (this.base.active==true) {
-			var entDiv = document.getElementById('ent_'+name);
-			this.base.velX = 0;
-			this.base.velY = 0;
-			if (rw.keys.la==true) {
-				this.base.velX += -this.maxSpeed;
-				rw.checkBounds(this, 'l');
-			}
-			if (rw.keys.ra==true) {
-				this.base.velX += this.maxSpeed;
-				rw.checkBounds(this, 'r');
-			}
-			if (rw.keys.ua==true) {
-				this.base.velY += -this.maxSpeed;
-				rw.checkBounds(this, 'u');
-			}
-			if (rw.keys.da==true) {
-				this.base.velY += this.maxSpeed;
-				rw.checkBounds(this, 'd');
-			}
-			this.base.posX = this.base.posX+this.base.velX;
-			this.base.posY = this.base.posY+this.base.velY;
-			//For Now
-			this.base.posZ = this.base.posY;
-			entDiv.style.left = this.base.posX+'px';
-			entDiv.style.top = this.base.posY+'px';
-			entDiv.style.zIndex = this.base.posZ
+		var entDiv = document.getElementById('ent_'+name);
+		this.base.velX = 0;
+		this.base.velY = 0;
+		if (rw.keys.la==true) {
+			this.base.velX += -this.maxSpeed;
+			rw.checkBounds(this, 'l');
 		}
+		if (rw.keys.ra==true) {
+			this.base.velX += this.maxSpeed;
+			rw.checkBounds(this, 'r');
+		}
+		if (rw.keys.ua==true) {
+			this.base.velY += -this.maxSpeed;
+			rw.checkBounds(this, 'u');
+		}
+		if (rw.keys.da==true) {
+			this.base.velY += this.maxSpeed;
+			rw.checkBounds(this, 'd');
+		}
+		this.base.posX = this.base.posX+this.base.velX;
+		this.base.posY = this.base.posY+this.base.velY;
+		//For Now
+		this.base.posZ = this.base.posY;
+		entDiv.style.left = this.base.posX+'px';
+		entDiv.style.top = this.base.posY+'px';
+		entDiv.style.zIndex = this.base.posZ
 	}
 	// THis will be the funct that calls the new this.base.changeSprite();
 	// heading and moving will possible be split into seperate functions
@@ -363,6 +361,17 @@ function startGame() {
 	rw.ents[0].base.posX = 50;
 	rw.ents[0].base.posY = 50;
 	rw.ents[0].base.display();
+	rw.ents[rw.ents.length] = new goon('Goon1', 'u');
+	rw.ents[1].base.posX = 51;
+	rw.ents[1].base.posY = 51;
+	rw.ents[1].base.display();
+	for(var x=0;x<38;x++) {
+		var num = rw.ents.length;
+		rw.ents[num] = new goon ('Goon'+num, 'u');
+		rw.ents[num].base.posX = 50+num;
+		rw.ents[num].base.posY = 50+num;
+		rw.ents[num].base.display();
+	}
 	rw.bars[rw.bars.length] = new rw.bar('r', 300, 300, 350, 350, 1)
 	rw.start();
 }
