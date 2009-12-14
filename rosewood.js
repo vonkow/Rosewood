@@ -128,7 +128,7 @@ rw.run = function() {
 					killSprite(rw.ents[x]);
 					x--;
 				} else {
-					//rw.checkBounds(rw.ents[x]);
+					rw.checkBounds(rw.ents[x]);
 				}
 			}
 		}
