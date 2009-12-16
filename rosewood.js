@@ -262,8 +262,6 @@ rw.checkBounds = function(ent, direction) {
 }	
 
 //////// NON RW FUNCTIONS ////////
-
-
 // Custom Game Entity (calls rw.ent for this.base, requires this.update function)
 var goon = function(name, heading) {
 	this.base = new rw.ent(name, 'goon', 'gif', 38, 46, heading);
