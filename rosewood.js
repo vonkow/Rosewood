@@ -27,11 +27,11 @@ rw.runGame = true; // RunLoop or stop
 rw.keyChange = false; //Did a keydown/up change between the last loop and now?
 
 rw.keys = {
+	sp: false,
 	la: false,
 	ua: false,
 	ra: false,
 	da: false
-
 };
 
 rw.mouse = {
@@ -60,6 +60,9 @@ rw.mousePos = function(e) {
 rw.keyDown = function(e) {
 	var ev = e ? e : window.event;
 	switch(ev.keyCode) {
+		case 32:
+			rw.keys.sp = true;
+			break;
 		case 37:
 			rw.keys.la = true;
 			break;
@@ -78,6 +81,9 @@ rw.keyDown = function(e) {
 rw.keyUp = function(e) {
 	var ev = e ? e : window.event;
 	switch(ev.keyCode) {
+		case 32:
+			rw.keys.sp = false;
+			break;
 		case 37:
 			rw.keys.la = false;
 			break;
@@ -107,7 +113,7 @@ rw.run = function() {
 				}
 				var currentSprite = rw.ents[x].update();
 				if (currentSprite==false) {
-					killSprite(rw.ents[x]);
+					rw.removeEnt(x);
 					x--;
 				} else {
 					rw.checkBounds(rw.ents[x]);
@@ -121,7 +127,7 @@ rw.run = function() {
 			if (rw.ents[x].base.active==true) {
 				var currentSprite = rw.ents[x].update();
 				if (currentSprite==false) {
-					killSprite(rw.ents[x]);
+					rw.removeEnt(x);
 					x--;
 				} else {
 					rw.checkBounds(rw.ents[x]);
@@ -129,15 +135,13 @@ rw.run = function() {
 			}
 		}
 	}
+	rw.colCheck();
 	//If game has not ended or been paused, continue
 	if (rw.runGame==true) {
 		rw.start();
 	} else {
 		rw.stop();
 	}
-	//if (rw.curT==100) {
-	//	rw.hideEnt(rw.ents[0]);
-	//}
 }
 
 rw.speed = 25;
@@ -220,6 +224,42 @@ rw.removeEnt = function(entNum) {
 	rw.ents.splice(entNum, 1)
 }
 
+//THIS IS THE NEW COLLISION DETECTION FUNCTION!!!
+rw.colCheck = function() {
+	var len = rw.ents.length;
+	var cols = [];
+	// For each ent
+	for (var x=0;x<len;x++) {
+		// For each ent above this ent, check collisions
+		for (var y=x+1;y<len;y++) {
+			var hit = true;
+			// Left Check
+			if (rw.ents[x].base.posX+rw.ents[x].base.width<=rw.ents[y].base.posX) {
+				hit = false;
+			}
+			// Right Check
+			if (rw.ents[x].base.posX>=rw.ents[y].base.posX+rw.ents[y].base.width) {
+				hit = false;
+			}
+			// Top Check
+			if (rw.ents[x].base.posY+rw.ents[x].base.height<=rw.ents[y].base.posY) {
+				hit = false;
+			}
+			// Bottom Check
+			if (rw.ents[x].base.posY>=rw.ents[y].base.posY+rw.ents[y].base.height) {
+				hit = false;
+			}
+			// If collision, add to list.
+			if (hit==true) {
+				cols[cols.length]=[x,y];
+			}
+		}
+	}
+	//if (cols.length>0) {
+	//	console.log(cols);
+	//}
+}
+
 
 // Barrier Generator
 rw.bar = function(shape, x1, y1, x2, y2, level) {
@@ -232,6 +272,8 @@ rw.bar = function(shape, x1, y1, x2, y2, level) {
 }
 
 
+// REMOVE BARS ENTIRELY, REPLACE WITH FLAG ON ENTS FOR BAR-NESS, ALSO FLAG AS TO WHAT COLLISIONS DO.
+// THIS FUCTION DOESN'T WORK WITH 2 OR MORE BARS, AS NOT TOUCHING ONE WILL RESULT IN HIT RETURNING FALSE
 rw.checkBounds = function(ent, direction) {
 	var hit = true;
 	var len = rw.bars.length;

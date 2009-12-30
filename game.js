@@ -1,11 +1,79 @@
+var blast = function(name, heading, tail) {
+	this.base = new rw.ent(name, 'goon', 'gif', 38, 46, heading);
+	this.countdown = 10;
+	this.update = function() {
+		this.countdown -= 1;
+		if (this.countdown<=0) {
+			this.base.hide();
+			return false;
+		}
+	}
+}
+var bomb = function(name, heading) {
+	this.base = new rw.ent(name, 'goon', 'gif', 38, 46, heading);
+	this.countdown = 100;
+	this.blastSize = 2;
+	this.update = function() {
+		this.countdown -= 1;
+		if (this.countdown<=0) {
+			// Do Explody stuff!
+			var tPos = [this.base.posX, this.base.posY];
+			var lPos = [this.base.posX, this.base.posY];
+			var bPos = [this.base.posX, this.base.posY];
+			var rPos = [this.base.posX, this.base.posY];
+			var tempLen = rw.ents.length;
+			rw.ents[tempLen] = new blast('blast'+tempLen, 'd');
+			rw.ents[tempLen].base.posX = tPos[0];
+			rw.ents[tempLen].base.posY = tPos[1];
+			rw.ents[tempLen].base.display();
+			for (var x=0;x<this.blastSize;x++) {
+				tPos[1] -= this.base.height;
+				lPos[0] += this.base.width;
+				bPos[1] += this.base.height;
+				rPos[0] -= this.base.width;
+				var tempLen = rw.ents.length;
+				rw.ents[tempLen] = new blast('blast'+tempLen, 'u');
+				rw.ents[tempLen].base.posX = tPos[0];
+				rw.ents[tempLen].base.posY = tPos[1];
+				rw.ents[tempLen].base.display();
+				var tempLen = rw.ents.length;
+				rw.ents[tempLen] = new blast('blast'+tempLen, 'l');
+				rw.ents[tempLen].base.posX = lPos[0];
+				rw.ents[tempLen].base.posY = lPos[1];
+				rw.ents[tempLen].base.display();
+				var tempLen = rw.ents.length;
+				rw.ents[tempLen] = new blast('blast'+tempLen, 'd');
+				rw.ents[tempLen].base.posX = bPos[0];
+				rw.ents[tempLen].base.posY = bPos[1];
+				rw.ents[tempLen].base.display();
+				var tempLen = rw.ents.length;
+				rw.ents[tempLen] = new blast('blast'+tempLen, 'r');
+				rw.ents[tempLen].base.posX = rPos[0];
+				rw.ents[tempLen].base.posY = rPos[1];
+				rw.ents[tempLen].base.display();
+
+			}
+
+			this.base.hide();
+			return false;
+		}
+	}
+}
 // Custom Game Entity (calls rw.ent for this.base, requires this.update function)
-var goon = function(name, heading) {
+var bman = function(name, heading) {
 	this.base = new rw.ent(name, 'goon', 'gif', 38, 46, heading);
 	this.maxSpeed = 2;
 	this.update = function() {
 		var entDiv = document.getElementById('ent_'+name);
 		this.base.velX = 0;
 		this.base.velY = 0;
+		if (rw.keys.sp==true) {
+			var tempLen = rw.ents.length;
+			rw.ents[tempLen] = new bomb('bomb'+tempLen, 'u');
+			rw.ents[tempLen].base.posX = this.base.posX;
+			rw.ents[tempLen].base.posY = this.base.posY;
+			rw.ents[tempLen].base.display();
+		}
 		if (rw.keys.la==true) {
 			this.base.velX += -this.maxSpeed;
 			rw.checkBounds(this, 'l');
@@ -79,21 +147,10 @@ function startGame() {
 	document.getElementsByTagName('body')[0].appendChild(board);
 	// Move cursor hiding logic to rw.init()
 	document.getElementsByTagName('body')[0].style.cursor="url(sprites/blank.cur), wait";
-	rw.ents[rw.ents.length] = new goon('Goon0', 'u');
+	rw.ents[rw.ents.length] = new bman('Goon0', 'u');
 	rw.ents[0].base.posX = 50;
 	rw.ents[0].base.posY = 50;
 	rw.ents[0].base.display();
-	rw.ents[rw.ents.length] = new goon('Goon1', 'u');
-	rw.ents[1].base.posX = 51;
-	rw.ents[1].base.posY = 51;
-	rw.ents[1].base.display();
-	for(var x=0;x<38;x++) {
-		var num = rw.ents.length;
-		rw.ents[num] = new goon ('Goon'+num, 'u');
-		rw.ents[num].base.posX = 50+num;
-		rw.ents[num].base.posY = 50+num;
-		rw.ents[num].base.display();
-	}
 	rw.bars[rw.bars.length] = new rw.bar('r', 300, 300, 350, 350, 1)
 	rw.start();
 }
