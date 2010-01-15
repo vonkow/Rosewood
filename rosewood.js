@@ -251,6 +251,7 @@ rw.colCheck = function() {
 			}
 			// If collision, add to list.
 			if (hit==true) {
+				// Maybe change this to call a collision resolution function for each ent?
 				cols[cols.length]=[x,y];
 			}
 		}
