@@ -258,6 +258,7 @@ rw.colCheck = function() {
 		}
 	}
 	if (cols.length>0) {
+		var toBeRemoved = [];
 		for (var x=0; x<cols.length; x++) {
 			hit0 = true;
 			hit1 = true;
@@ -268,18 +269,21 @@ rw.colCheck = function() {
 				hit1 = rw.ents[cols[x][1]].iGotHit(rw.ents[cols[x][0]].base.typeClass);
 			}
 			if (hit0==false) {
-				rw.ents[cols[x][0]].base.hide();
-				rw.removeEnt(cols[x][0]);
+				toBeRemoved[toBeRemoved.length] = cols[x][0];
 			}
 			if (hit1==false) {
-				rw.ents[cols[x][1]].base.hide();
-				rw.removeEnt(cols[x][1]);
+				toBeRemoved[toBeRemoved.length] = cols[x][1];
 			}
 		}
+		if (toBeRemoved.length>0) {
+			for (var x=0;x<toBeRemoved.length;x++) {
+				rw.ents[toBeRemoved[x]].base.hide();
+				rw.removeEnt(toBeRemoved[x]);
+			}
+		}
+		// NEED TO NOT REMOVE ENTS UNTIL FULL COLS LOOP IS FINISHED
+		// LESS WE FUCK-UP A LATER COLLISION BY REMOVING AN ENT FROM IT.
 	}
-	//if (cols.length>0) {
-	//	console.log(cols);
-	//}
 }
 
 
