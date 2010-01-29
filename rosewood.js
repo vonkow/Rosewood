@@ -175,8 +175,9 @@ rw.renderMap = function(map) {
 }
 
 // Game Entity Base Factory
-rw.ent = function(name, sprites, spriteExt, width, height, heading) {
+rw.ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
 	this.name = name;
+	this.typeClass = typeClass;
 	this.sprites = sprites;
 	this.spriteExt = spriteExt
 	this.width = width;
@@ -253,6 +254,26 @@ rw.colCheck = function() {
 			if (hit==true) {
 				// Maybe change this to call a collision resolution function for each ent?
 				cols[cols.length]=[x,y];
+			}
+		}
+	}
+	if (cols.length>0) {
+		for (var x=0; x<cols.length; x++) {
+			hit0 = true;
+			hit1 = true;
+			if (rw.ents[cols[x][0]].iGotHit) {
+				hit0 = rw.ents[cols[x][0]].iGotHit(rw.ents[cols[x][1]].base.typeClass);
+			}
+			if (rw.ents[cols[x][1]].iGotHit) {
+				hit1 = rw.ents[cols[x][1]].iGotHit(rw.ents[cols[x][0]].base.typeClass);
+			}
+			if (hit0==false) {
+				rw.ents[cols[x][0]].base.hide();
+				rw.removeEnt(cols[x][0]);
+			}
+			if (hit1==false) {
+				rw.ents[cols[x][1]].base.hide();
+				rw.removeEnt(cols[x][1]);
 			}
 		}
 	}

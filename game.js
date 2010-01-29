@@ -1,5 +1,5 @@
-var blast = function(name, heading, tail) {
-	this.base = new rw.ent(name, 'goon', 'gif', 38, 46, heading);
+var blast = function(name, typeClass, heading, tail) {
+	this.base = new rw.ent(name, typeClass, 'goon', 'gif', 38, 46, heading);
 	this.countdown = 10;
 	this.update = function() {
 		this.countdown -= 1;
@@ -9,8 +9,8 @@ var blast = function(name, heading, tail) {
 		}
 	}
 }
-var bomb = function(name, heading) {
-	this.base = new rw.ent(name, 'goon', 'gif', 38, 46, heading);
+var bomb = function(name, typeClass, heading) {
+	this.base = new rw.ent(name, typeClass, 'goon', 'gif', 38, 46, heading);
 	this.countdown = 100;
 	this.blastSize = 2;
 	this.update = function() {
@@ -22,7 +22,7 @@ var bomb = function(name, heading) {
 			var bPos = [this.base.posX, this.base.posY];
 			var rPos = [this.base.posX, this.base.posY];
 			var tempLen = rw.ents.length;
-			rw.ents[tempLen] = new blast('blast'+tempLen, 'd');
+			rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'd');
 			rw.ents[tempLen].base.posX = tPos[0];
 			rw.ents[tempLen].base.posY = tPos[1];
 			rw.ents[tempLen].base.display();
@@ -32,22 +32,22 @@ var bomb = function(name, heading) {
 				bPos[1] += this.base.height;
 				rPos[0] -= this.base.width;
 				var tempLen = rw.ents.length;
-				rw.ents[tempLen] = new blast('blast'+tempLen, 'u');
+				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'u');
 				rw.ents[tempLen].base.posX = tPos[0];
 				rw.ents[tempLen].base.posY = tPos[1];
 				rw.ents[tempLen].base.display();
 				var tempLen = rw.ents.length;
-				rw.ents[tempLen] = new blast('blast'+tempLen, 'l');
+				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'l');
 				rw.ents[tempLen].base.posX = lPos[0];
 				rw.ents[tempLen].base.posY = lPos[1];
 				rw.ents[tempLen].base.display();
 				var tempLen = rw.ents.length;
-				rw.ents[tempLen] = new blast('blast'+tempLen, 'd');
+				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'd');
 				rw.ents[tempLen].base.posX = bPos[0];
 				rw.ents[tempLen].base.posY = bPos[1];
 				rw.ents[tempLen].base.display();
 				var tempLen = rw.ents.length;
-				rw.ents[tempLen] = new blast('blast'+tempLen, 'r');
+				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'r');
 				rw.ents[tempLen].base.posX = rPos[0];
 				rw.ents[tempLen].base.posY = rPos[1];
 				rw.ents[tempLen].base.display();
@@ -60,8 +60,8 @@ var bomb = function(name, heading) {
 	}
 }
 // Custom Game Entity (calls rw.ent for this.base, requires this.update function)
-var bman = function(name, heading) {
-	this.base = new rw.ent(name, 'goon', 'gif', 38, 46, heading);
+var bman = function(name, typeClass, heading) {
+	this.base = new rw.ent(name, typeClass, 'goon', 'gif', 38, 46, heading);
 	this.maxSpeed = 2;
 	this.update = function() {
 		var entDiv = document.getElementById('ent_'+name);
@@ -69,7 +69,7 @@ var bman = function(name, heading) {
 		this.base.velY = 0;
 		if (rw.keys.sp==true) {
 			var tempLen = rw.ents.length;
-			rw.ents[tempLen] = new bomb('bomb'+tempLen, 'u');
+			rw.ents[tempLen] = new bomb('bomb'+tempLen, 'bomb', 'u');
 			rw.ents[tempLen].base.posX = this.base.posX;
 			rw.ents[tempLen].base.posY = this.base.posY;
 			rw.ents[tempLen].base.display();
@@ -130,6 +130,13 @@ var bman = function(name, heading) {
 			this.base.changeSprite(this.base.heading);
 		}
 	}
+	
+	//NEW COLLISION TEST FUNCTION
+	this.iGotHit = function(by) {
+		if (by=='blast'){
+			this.base.hide();
+		}
+	}
 }
 
 // Create new map function
@@ -147,7 +154,7 @@ function startGame() {
 	document.getElementsByTagName('body')[0].appendChild(board);
 	// Move cursor hiding logic to rw.init()
 	document.getElementsByTagName('body')[0].style.cursor="url(sprites/blank.cur), wait";
-	rw.ents[rw.ents.length] = new bman('Goon0', 'u');
+	rw.ents[rw.ents.length] = new bman('Goon0', 'bman', 'u');
 	rw.ents[0].base.posX = 50;
 	rw.ents[0].base.posY = 50;
 	rw.ents[0].base.display();
