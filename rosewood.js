@@ -276,6 +276,8 @@ rw.colCheck = function() {
 			}
 		}
 		if (toBeRemoved.length>0) {
+			toBeRemoved.sort(function(a,b){return a - b});
+			toBeRemoved.reverse();
 			for (var x=0;x<toBeRemoved.length;x++) {
 				rw.ents[toBeRemoved[x]].base.hide();
 				rw.removeEnt(toBeRemoved[x]);
