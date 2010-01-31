@@ -64,21 +64,49 @@ var bomb = function(name, typeClass, heading) {
 			return false;
 		}
 	}
+	this.iGotHit = function(by) {
+		if (by=='blast') {
+			this.countdown = 1;
+		}
+	}
 }
 // Custom Game Entity (calls rw.ent for this.base, requires this.update function)
 var bman = function(name, typeClass, heading) {
-	this.base = new rw.ent(name, typeClass, 'goon', 'gif', 38, 46, heading);
+	this.base = new rw.ent(name, typeClass, 'bman', 'gif', 40, 64, heading);
 	this.maxSpeed = 2;
+	this.bombCooldown = 25;
+	this.bombMax = 3;
+	this.bombs = [];
+
 	this.update = function() {
 		var entDiv = document.getElementById('ent_'+name);
 		this.base.velX = 0;
 		this.base.velY = 0;
+		if (this.bombCooldown < 25) {
+			this.bombCooldown += 1;
+		}
+		if (this.bombs.length > 0) {
+			for (var x=0; x<this.bombs.length; x++) {
+				if (this.bombs[x] > 0) {
+					this.bombs[x] -= 1;
+				} else {
+					this.bombs.splice(x, 1);
+				}
+			}
+		}
+				
 		if (rw.keys.sp==true) {
-			var tempLen = rw.ents.length;
-			rw.ents[tempLen] = new bomb('bomb'+tempLen, 'bomb', 'u');
-			rw.ents[tempLen].base.posX = this.base.posX;
-			rw.ents[tempLen].base.posY = this.base.posY;
-			rw.ents[tempLen].base.display();
+			if (this.bombCooldown == 25) {
+				if (this.bombs.length < this.bombMax) {
+					this.bombCooldown = 0;
+					this.bombs[this.bombs.length] = 100;
+					var tempLen = rw.ents.length;
+					rw.ents[tempLen] = new bomb('bomb'+tempLen, 'bomb', 'u');
+					rw.ents[tempLen].base.posX = this.base.posX;
+					rw.ents[tempLen].base.posY = this.base.posY;
+					rw.ents[tempLen].base.display();
+				}
+			}
 		}
 		if (rw.keys.la==true) {
 			this.base.velX += -this.maxSpeed;
@@ -137,6 +165,7 @@ var bman = function(name, typeClass, heading) {
 	this.iGotHit = function(by) {
 		if (by=='blast') {
 			this.base.hide();
+			return false;
 		}
 		if (by=='lWall') {
 			if (this.base.velX > 0) {
