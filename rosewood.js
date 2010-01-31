@@ -11,20 +11,18 @@
 
 // The Rosewood Object
 var rw = {}; 
-
 // Game Entities
 rw.ents = []; 
-// Barrier Entitles
-rw.bars = []; 
-rw.maps = []; // Map Entities
-
-rw.curT = 0; // RunLoop current Timer
-
-rw.globT = 0; // RunLoop global Timer
-
-rw.runGame = true; // RunLoop or stop
-
-rw.keyChange = false; //Did a keydown/up change between the last loop and now?
+// Map Entities
+rw.maps = []; 
+// RunLoop current Timer
+rw.curT = 0; 
+// RunLoop global Timer
+rw.globT = 0; 
+// RunLoop or stop
+rw.runGame = true; 
+//Did a keydown/up change between the last loop and now?
+rw.keyChange = false; 
 
 rw.keys = {
 	sp: false,
@@ -116,7 +114,7 @@ rw.run = function() {
 					rw.removeEnt(x);
 					x--;
 				} else {
-					rw.checkBounds(rw.ents[x]);
+					//Nothing for now
 				}
 			}
 
@@ -130,7 +128,7 @@ rw.run = function() {
 					rw.removeEnt(x);
 					x--;
 				} else {
-					rw.checkBounds(rw.ents[x]);
+					//Nothing for now
 				}
 			}
 		}
@@ -283,58 +281,5 @@ rw.colCheck = function() {
 				rw.removeEnt(toBeRemoved[x]);
 			}
 		}
-		// NEED TO NOT REMOVE ENTS UNTIL FULL COLS LOOP IS FINISHED
-		// LESS WE FUCK-UP A LATER COLLISION BY REMOVING AN ENT FROM IT.
 	}
 }
-
-
-// Barrier Generator
-rw.bar = function(shape, x1, y1, x2, y2, level) {
-	this.shape = shape;
-	this.x1 = x1;
-	this.y1 = y1;
-	this.x2 = x2;
-	this.y2 = y2;
-	this.level = level;
-}
-
-
-// REMOVE BARS ENTIRELY, REPLACE WITH FLAG ON ENTS FOR BAR-NESS, ALSO FLAG AS TO WHAT COLLISIONS DO.
-// THIS FUCTION DOESN'T WORK WITH 2 OR MORE BARS, AS NOT TOUCHING ONE WILL RESULT IN HIT RETURNING FALSE
-rw.checkBounds = function(ent, direction) {
-	var hit = true;
-	var len = rw.bars.length;
-	for (var x=0; x<len; x++) {
-		if (ent.base.posX+ent.base.width+ent.base.velX<rw.bars[x].x1) {
-			hit = false;
-		}
-		if (ent.base.posX+ent.base.velX>rw.bars[x].x2) {
-			hit = false;
-		}
-		if (ent.base.posY+ent.base.height+ent.base.velY<rw.bars[x].y1) {
-			hit = false;
-		}
-		if (ent.base.posY+ent.base.velY>rw.bars[x].y2) {
-			hit = false;
-		}
-	}
-	if (hit==true) {
-		//See if we can make a flag for each movestate, that can be triggered by keydowns or other signals
-		// This method only works at slow speeds: an ent with velX of 50 and a distance of 49 to a bar will be stopped 49 away
-		switch (direction) {
-			case 'u':
-				ent.base.velY = 0;
-				break;
-			case 'd':
-				ent.base.velY = 0;
-				break;
-			case 'l':
-				ent.base.velX = 0;
-				break;
-			case 'r':
-				ent.base.velX = 0;
-				break;
-		}	
-	}
-}	

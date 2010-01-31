@@ -1,3 +1,9 @@
+var Wall = function(name, wallType, xDim, yDim) {
+	this.base = new rw.ent(name, wallType, ' ', ' ', xDim, yDim, 'l');
+	this.update = function() {};
+
+}
+
 var blast = function(name, typeClass, heading, tail) {
 	this.base = new rw.ent(name, typeClass, 'goon', 'gif', 38, 46, heading);
 	this.countdown = 10;
@@ -76,19 +82,15 @@ var bman = function(name, typeClass, heading) {
 		}
 		if (rw.keys.la==true) {
 			this.base.velX += -this.maxSpeed;
-			rw.checkBounds(this, 'l');
 		}
 		if (rw.keys.ra==true) {
 			this.base.velX += this.maxSpeed;
-			rw.checkBounds(this, 'r');
 		}
 		if (rw.keys.ua==true) {
 			this.base.velY += -this.maxSpeed;
-			rw.checkBounds(this, 'u');
 		}
 		if (rw.keys.da==true) {
 			this.base.velY += this.maxSpeed;
-			rw.checkBounds(this, 'd');
 		}
 		this.base.posX = this.base.posX+this.base.velX;
 		this.base.posY = this.base.posY+this.base.velY;
@@ -133,8 +135,18 @@ var bman = function(name, typeClass, heading) {
 	
 	//NEW COLLISION TEST FUNCTION
 	this.iGotHit = function(by) {
-		if (by=='blast'){
+		if (by=='blast') {
 			this.base.hide();
+		}
+		if (by=='lWall') {
+			if (this.base.velX > 0) {
+				this.base.posX += -this.base.velX;
+			}
+		}
+		if (by=='tWall') {
+			if (this.base.velY > 0) {
+				this.base.posY += -this.base.velY;
+			}
 		}
 	}
 }
@@ -158,6 +170,13 @@ function startGame() {
 	rw.ents[0].base.posX = 50;
 	rw.ents[0].base.posY = 50;
 	rw.ents[0].base.display();
-	rw.bars[rw.bars.length] = new rw.bar('r', 300, 300, 350, 350, 1)
+	rw.ents[rw.ents.length] = new Wall('lWall1', 'lWall', 1, 500);
+	rw.ents[1].base.posX = 100;
+	rw.ents[1].base.posY = 100;
+	rw.ents[1].base.display();
+	rw.ents[rw.ents.length] = new Wall('tWall1', 'tWall', 499, 1);
+	rw.ents[2].base.posX = 101;
+	rw.ents[2].base.posY = 100;
+	rw.ents[2].base.display();
 	rw.start();
 }
