@@ -15,6 +15,8 @@ var rw = {};
 rw.ents = []; 
 // Map Entities
 rw.maps = []; 
+// Rule Entities
+rw.rules = [];
 // RunLoop current Timer
 rw.curT = 0; 
 // RunLoop global Timer
@@ -134,6 +136,14 @@ rw.run = function() {
 		}
 	}
 	rw.colCheck();
+	// Run Through all rules;
+	if (rw.rules.length > 0) {
+		for (var x=0; x<rw.rules.length; x++) {
+			if (rw.rules[x].base.active==true) {
+				rw.rules[x].rule();
+			}
+		}
+	}
 	//If game has not ended or been paused, continue
 	if (rw.runGame==true) {
 		rw.start();
@@ -151,6 +161,10 @@ rw.stop = function() {
 	clearTimeout(rw.curT);
 	rw.globT = rw.globT+rw.curT;
 	rw.curT = 0;
+}
+
+rw.rule = function(active) {
+	this.active = active;
 }
 
 rw.board = function(name, path, extention, xDim, yDim) {

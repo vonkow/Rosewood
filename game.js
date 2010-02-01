@@ -5,8 +5,11 @@ var Wall = function(name, wallType, xDim, yDim) {
 }
 
 var blast = function(name, typeClass, heading, tail) {
-	this.base = new rw.ent(name, typeClass, 'goon', 'gif', 38, 46, heading);
-	this.countdown = 10;
+	if (tail==true) {
+		heading = heading+'T';
+	}
+	this.base = new rw.ent(name, typeClass, 'blast', 'gif', 40, 32, heading);
+	this.countdown = 25;
 	this.update = function() {
 		this.countdown -= 1;
 		if (this.countdown<=0) {
@@ -15,11 +18,24 @@ var blast = function(name, typeClass, heading, tail) {
 		}
 	}
 }
-var bomb = function(name, typeClass, heading) {
-	this.base = new rw.ent(name, typeClass, 'goon', 'gif', 38, 46, heading);
-	this.countdown = 100;
+var bomb = function(name, typeClass) {
+	this.base = new rw.ent(name, typeClass, 'bomb', 'gif', 40, 32, '1');
+	this.countdown = 150;
 	this.blastSize = 2;
 	this.update = function() {
+		if (this.countdown == 150) {
+			this.base.changeSprite('2');
+		} else if (this.countdown == 125) {
+			this.base.changeSprite('1');
+		} else if (this.countdown == 100) {
+			this.base.changeSprite('2');
+		} else if (this.countdown == 75) {
+			this.base.changeSprite('3');
+		} else if (this.countdown == 50) {
+			this.base.changeSprite('2');
+		} else if (this.countdown == 25) {
+			this.base.changeSprite('3');
+		}
 		this.countdown -= 1;
 		if (this.countdown<=0) {
 			// Do Explody stuff!
@@ -28,7 +44,7 @@ var bomb = function(name, typeClass, heading) {
 			var bPos = [this.base.posX, this.base.posY];
 			var rPos = [this.base.posX, this.base.posY];
 			var tempLen = rw.ents.length;
-			rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'd');
+			rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'c');
 			rw.ents[tempLen].base.posX = tPos[0];
 			rw.ents[tempLen].base.posY = tPos[1];
 			rw.ents[tempLen].base.display();
@@ -38,22 +54,26 @@ var bomb = function(name, typeClass, heading) {
 				bPos[1] += this.base.height;
 				rPos[0] -= this.base.width;
 				var tempLen = rw.ents.length;
-				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'u');
+				var tail = false;
+				if (x+1==this.blastSize) {
+					tail = true;
+				}
+				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'u', tail);
 				rw.ents[tempLen].base.posX = tPos[0];
 				rw.ents[tempLen].base.posY = tPos[1];
 				rw.ents[tempLen].base.display();
 				var tempLen = rw.ents.length;
-				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'l');
+				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'l', tail);
 				rw.ents[tempLen].base.posX = lPos[0];
 				rw.ents[tempLen].base.posY = lPos[1];
 				rw.ents[tempLen].base.display();
 				var tempLen = rw.ents.length;
-				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'd');
+				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'd', tail);
 				rw.ents[tempLen].base.posX = bPos[0];
 				rw.ents[tempLen].base.posY = bPos[1];
 				rw.ents[tempLen].base.display();
 				var tempLen = rw.ents.length;
-				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'r');
+				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'r', tail);
 				rw.ents[tempLen].base.posX = rPos[0];
 				rw.ents[tempLen].base.posY = rPos[1];
 				rw.ents[tempLen].base.display();
@@ -73,7 +93,7 @@ var bomb = function(name, typeClass, heading) {
 // Custom Game Entity (calls rw.ent for this.base, requires this.update function)
 var bman = function(name, typeClass, heading) {
 	this.base = new rw.ent(name, typeClass, 'bman', 'gif', 40, 64, heading);
-	this.maxSpeed = 2;
+	this.maxSpeed = .75;
 	this.bombCooldown = 25;
 	this.bombMax = 3;
 	this.bombs = [];
@@ -101,9 +121,9 @@ var bman = function(name, typeClass, heading) {
 					this.bombCooldown = 0;
 					this.bombs[this.bombs.length] = 100;
 					var tempLen = rw.ents.length;
-					rw.ents[tempLen] = new bomb('bomb'+tempLen, 'bomb', 'u');
+					rw.ents[tempLen] = new bomb('bomb'+tempLen, 'bomb');
 					rw.ents[tempLen].base.posX = this.base.posX;
-					rw.ents[tempLen].base.posY = this.base.posY;
+					rw.ents[tempLen].base.posY = this.base.posY+32;
 					rw.ents[tempLen].base.display();
 				}
 			}
@@ -164,6 +184,7 @@ var bman = function(name, typeClass, heading) {
 	//NEW COLLISION TEST FUNCTION
 	this.iGotHit = function(by) {
 		if (by=='blast') {
+			rw.rules[0].dead = true;
 			this.base.hide();
 			return false;
 		}
@@ -185,6 +206,17 @@ function newMap() {
 	
 }
 
+function newRule(active) {
+	this.base = new rw.rule(true);
+	this.dead = false;
+	this.rule = function() {
+		if (this.dead==true) {
+			rw.runGame = false;
+		}
+	}
+}
+
+
 // Begin Game Function
 function startGame() {
 	rw.init();
@@ -195,6 +227,7 @@ function startGame() {
 	document.getElementsByTagName('body')[0].appendChild(board);
 	// Move cursor hiding logic to rw.init()
 	document.getElementsByTagName('body')[0].style.cursor="url(sprites/blank.cur), wait";
+	rw.rules[rw.rules.length] = new newRule(true);
 	rw.ents[rw.ents.length] = new bman('Goon0', 'bman', 'u');
 	rw.ents[0].base.posX = 50;
 	rw.ents[0].base.posY = 50;
