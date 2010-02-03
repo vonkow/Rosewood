@@ -79,15 +79,15 @@ var bomb = function(name, typeClass) {
 // Custom Game Entity (calls rw.ent for this.base, requires this.update function)
 var bman = function(name, typeClass, heading) {
 	this.base = new rw.ent(name, typeClass, 'bman', 'gif', 40, 64, heading);
-	this.maxSpeed = 1.5;
-	this.bombCooldown = 25;
-	this.bombMax = 3;
+	this.maxSpeed = 5;
+	this.bombCooldown = 5;
+	this.bombMax = 15;
 	this.bombs = [];
 
 	this.update = function() {
 		this.base.velX = 0;
 		this.base.velY = 0;
-		if (this.bombCooldown < 25) {
+		if (this.bombCooldown < 5) {
 			this.bombCooldown += 1;
 		}
 		if (this.bombs.length > 0) {
@@ -101,10 +101,10 @@ var bman = function(name, typeClass, heading) {
 		}
 				
 		if (rw.keys.sp==true) {
-			if (this.bombCooldown == 25) {
+			if (this.bombCooldown == 5) {
 				if (this.bombs.length < this.bombMax) {
 					this.bombCooldown = 0;
-					this.bombs[this.bombs.length] = 100;
+					this.bombs[this.bombs.length] = 150;
 					var tempLen = rw.ents.length;
 					rw.newEnt(new bomb('bomb'+tempLen, 'bomb'), true, this.base.posX, this.base.posY+32);
 				}
@@ -201,10 +201,12 @@ function startGame() {
 	rw.init(600, 600);
 	rw.rules['rule1'] = new newRule(true);
 	rw.newEnt(new bman('Goon0', 'bman', 'u'), true, 50, 50);
+	/* Uncomment for stress test 
 	rw.newEnt(new bman('Goon1', 'bman', 'u'), true, 51, 51);
 	rw.newEnt(new bman('Goon2', 'bman', 'u'), true, 52, 52);
 	rw.newEnt(new bman('Goon3', 'bman', 'u'), true, 53, 53);
 	rw.newEnt(new bman('Goon4', 'bman', 'u'), true, 54, 54);
+	End stress test */
 	rw.newEnt(new  Wall('lWall1', 'lWall', 1, 500), true, 100, 100);
 	rw.newEnt(new  Wall('tWall1', 'tWall', 499, 1), true, 101, 100);
 	rw.start();
