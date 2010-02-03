@@ -151,6 +151,15 @@ rw.run = function() {
 			rw.rules[x].rule();
 		}
 	}
+	// Run Through all ents and update position
+	for (var x=0; x<rw.ents.length; x++) {
+		if (rw.ents[x].base.active==true) {
+			var entDiv = document.getElementById('ent_'+rw.ents[x].base.name);
+			entDiv.style.left = rw.ents[x].base.posX+'px';
+			entDiv.style.top = rw.ents[x].base.posY+'px';
+			entDiv.style.zIndex = rw.ents[x].base.posZ;
+		}
+	}
 	//If game has not ended or been paused, continue
 	if (rw.runGame==true) {
 		rw.start();
@@ -160,6 +169,14 @@ rw.run = function() {
 }
 
 rw.speed = 50;
+<<<<<<< HEAD
+=======
+
+rw.setFPS = function(fps) {
+	rw.speed = 1000/parseInt(fps);
+}
+
+>>>>>>> doubleloop
 rw.start = function() {
 	rw.curT = setTimeout('rw.run()', this.speed);
 }

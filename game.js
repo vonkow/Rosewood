@@ -79,13 +79,12 @@ var bomb = function(name, typeClass) {
 // Custom Game Entity (calls rw.ent for this.base, requires this.update function)
 var bman = function(name, typeClass, heading) {
 	this.base = new rw.ent(name, typeClass, 'bman', 'gif', 40, 64, heading);
-	this.maxSpeed = .75;
+	this.maxSpeed = 1.5;
 	this.bombCooldown = 25;
 	this.bombMax = 3;
 	this.bombs = [];
 
 	this.update = function() {
-		var entDiv = document.getElementById('ent_'+name);
 		this.base.velX = 0;
 		this.base.velY = 0;
 		if (this.bombCooldown < 25) {
@@ -127,9 +126,6 @@ var bman = function(name, typeClass, heading) {
 		this.base.posY = this.base.posY+this.base.velY;
 		//For Now
 		this.base.posZ = this.base.posY;
-		entDiv.style.left = this.base.posX+'px';
-		entDiv.style.top = this.base.posY+'px';
-		entDiv.style.zIndex = this.base.posZ
 	}
 	// THis will be the funct that calls the new this.base.changeSprite();
 	// heading and moving will possible be split into seperate functions
