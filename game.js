@@ -58,28 +58,14 @@ var bomb = function(name, typeClass) {
 				if (x+1==this.blastSize) {
 					tail = true;
 				}
-				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'u', tail);
-				rw.ents[tempLen].base.posX = tPos[0];
-				rw.ents[tempLen].base.posY = tPos[1];
-				rw.ents[tempLen].base.display();
-				var tempLen = rw.ents.length;
-				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'l', tail);
-				rw.ents[tempLen].base.posX = lPos[0];
-				rw.ents[tempLen].base.posY = lPos[1];
-				rw.ents[tempLen].base.display();
-				var tempLen = rw.ents.length;
-				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'd', tail);
-				rw.ents[tempLen].base.posX = bPos[0];
-				rw.ents[tempLen].base.posY = bPos[1];
-				rw.ents[tempLen].base.display();
-				var tempLen = rw.ents.length;
-				rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'r', tail);
-				rw.ents[tempLen].base.posX = rPos[0];
-				rw.ents[tempLen].base.posY = rPos[1];
-				rw.ents[tempLen].base.display();
-
+				rw.newEnt(new blast('blast'+tempLen, 'blast', 'u', tail), true, tPos[0], tPos[1]);
+				tempLen = rw.ents.length;
+				rw.newEnt(new blast('blast'+tempLen, 'blast', 'l', tail), true, lPos[0], lPos[1]);
+				tempLen = rw.ents.length;
+				rw.newEnt(new blast('blast'+tempLen, 'blast', 'd', tail), true, bPos[0], bPos[1]);
+				tempLen = rw.ents.length;
+				rw.newEnt(new blast('blast'+tempLen, 'blast', 'r', tail), true, rPos[0], rPos[1]);
 			}
-
 			this.base.hide();
 			return false;
 		}
@@ -121,10 +107,7 @@ var bman = function(name, typeClass, heading) {
 					this.bombCooldown = 0;
 					this.bombs[this.bombs.length] = 100;
 					var tempLen = rw.ents.length;
-					rw.ents[tempLen] = new bomb('bomb'+tempLen, 'bomb');
-					rw.ents[tempLen].base.posX = this.base.posX;
-					rw.ents[tempLen].base.posY = this.base.posY+32;
-					rw.ents[tempLen].base.display();
+					rw.newEnt(new bomb('bomb'+tempLen, 'bomb'), true, this.base.posX, this.base.posY+32);
 				}
 			}
 		}
@@ -184,7 +167,7 @@ var bman = function(name, typeClass, heading) {
 	//NEW COLLISION TEST FUNCTION
 	this.iGotHit = function(by) {
 		if (by=='blast') {
-			rw.rules[0].dead = true;
+			rw.rules['rule1'].dead = true;
 			this.base.hide();
 			return false;
 		}
@@ -219,26 +202,10 @@ function newRule(active) {
 
 // Begin Game Function
 function startGame() {
-	rw.init();
-	var board = document.createElement('div');
-	board.id = 'board';
-	board.style.width='600px';
-	board.style.height='300px';
-	document.getElementsByTagName('body')[0].appendChild(board);
-	// Move cursor hiding logic to rw.init()
-	document.getElementsByTagName('body')[0].style.cursor="url(sprites/blank.cur), wait";
-	rw.rules[rw.rules.length] = new newRule(true);
-	rw.ents[rw.ents.length] = new bman('Goon0', 'bman', 'u');
-	rw.ents[0].base.posX = 50;
-	rw.ents[0].base.posY = 50;
-	rw.ents[0].base.display();
-	rw.ents[rw.ents.length] = new Wall('lWall1', 'lWall', 1, 500);
-	rw.ents[1].base.posX = 100;
-	rw.ents[1].base.posY = 100;
-	rw.ents[1].base.display();
-	rw.ents[rw.ents.length] = new Wall('tWall1', 'tWall', 499, 1);
-	rw.ents[2].base.posX = 101;
-	rw.ents[2].base.posY = 100;
-	rw.ents[2].base.display();
+	rw.init(600, 600);
+	rw.rules['rule1'] = new newRule(true);
+	rw.newEnt(new bman('Goon0', 'bman', 'u'), true, 50, 50);
+	rw.newEnt(new  Wall('lWall1', 'lWall', 1, 500), true, 100, 100);
+	rw.newEnt(new  Wall('tWall1', 'tWall', 499, 1), true, 101, 100);
 	rw.start();
 }

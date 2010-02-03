@@ -16,7 +16,7 @@ rw.ents = [];
 // Map Entities
 rw.maps = []; 
 // Rule Entities
-rw.rules = [];
+rw.rules = {};
 // RunLoop current Timer
 rw.curT = 0; 
 // RunLoop global Timer
@@ -39,12 +39,20 @@ rw.mouse = {
 	y: 0
 };
 
-rw.init = function() {
+rw.init = function(dimX, dimY) {
+	var board = document.createElement('div');
+	board.id = 'board';
+	board.style.width = dimX+'px';
+	board.style.height = dimY+'px';
+	board.style.border = '1px solid black';
+	document.getElementsByTagName('body')[0].appendChild(board);
 	// Mousemove object, maybe eval during runloop and not onmousemve
 	document.onmousemove = rw.mousePos;
 	// Keydown/up event listeners
 	document.onkeydown=rw.keyDown;
 	document.onkeyup=rw.keyUp;
+	// This hides the mouse, set as option
+	document.getElementsByTagName('body')[0].style.cursor="url(sprites/blank.cur), wait";
 }
 
 rw.mousePos = function(e) {
@@ -137,11 +145,9 @@ rw.run = function() {
 	}
 	rw.colCheck();
 	// Run Through all rules;
-	if (rw.rules.length > 0) {
-		for (var x=0; x<rw.rules.length; x++) {
-			if (rw.rules[x].base.active==true) {
-				rw.rules[x].rule();
-			}
+	for (var x in rw.rules) {
+		if (rw.rules[x].base.active==true) {
+			rw.rules[x].rule();
 		}
 	}
 	//If game has not ended or been paused, continue
@@ -230,6 +236,16 @@ rw.ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
 		if (entDiv) {
 			entDiv.style.backgroundImage = "url('sprites/"+this.sprites+"/"+spriteName+"."+this.spriteExt+"')";
 		}
+	}
+}
+
+rw.newEnt = function(ent, display, posX, posY) {
+	var curLength = rw.ents.length;
+	rw.ents[curLength] = ent;
+	if (display==true) {
+		rw.ents[curLength].base.posX = posX;
+		rw.ents[curLength].base.posY = posY;
+		rw.ents[curLength].base.display();
 	}
 }
 
