@@ -85,7 +85,6 @@ var bman = function(name, typeClass, heading) {
 	this.bombs = [];
 
 	this.update = function() {
-		var entDiv = document.getElementById('ent_'+name);
 		this.base.velX = 0;
 		this.base.velY = 0;
 		if (this.bombCooldown < 25) {
@@ -127,9 +126,6 @@ var bman = function(name, typeClass, heading) {
 		this.base.posY = this.base.posY+this.base.velY;
 		//For Now
 		this.base.posZ = this.base.posY;
-		entDiv.style.left = this.base.posX+'px';
-		entDiv.style.top = this.base.posY+'px';
-		entDiv.style.zIndex = this.base.posZ
 	}
 	// THis will be the funct that calls the new this.base.changeSprite();
 	// heading and moving will possible be split into seperate functions
@@ -205,6 +201,15 @@ function startGame() {
 	rw.init(600, 600);
 	rw.rules['rule1'] = new newRule(true);
 	rw.newEnt(new bman('Goon0', 'bman', 'u'), true, 50, 50);
+	rw.newEnt(new bman('Goon1', 'bman', 'u'), true, 51, 51);
+	rw.newEnt(new bman('Goon2', 'bman', 'u'), true, 52, 52);
+	rw.newEnt(new bman('Goon3', 'bman', 'u'), true, 53, 53);
+	rw.newEnt(new bman('Goon4', 'bman', 'u'), true, 54, 54);
+	rw.newEnt(new bman('Goon5', 'bman', 'u'), true, 55, 55);
+	rw.newEnt(new bman('Goon6', 'bman', 'u'), true, 56, 56);
+	rw.newEnt(new bman('Goon7', 'bman', 'u'), true, 57, 57);
+	rw.newEnt(new bman('Goon8', 'bman', 'u'), true, 58, 58);
+	rw.newEnt(new bman('Goon9', 'bman', 'u'), true, 59, 59);
 	rw.newEnt(new  Wall('lWall1', 'lWall', 1, 500), true, 100, 100);
 	rw.newEnt(new  Wall('tWall1', 'tWall', 499, 1), true, 101, 100);
 	rw.start();
