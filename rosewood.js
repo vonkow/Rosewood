@@ -167,7 +167,12 @@ rw.run = function() {
 	}
 }
 
-rw.speed = 25;
+rw.speed = 50;
+
+rw.setFPS = function(fps) {
+	rw.speed = 1000/parseInt(fps);
+}
+
 rw.start = function() {
 	rw.curT = setTimeout('rw.run()', this.speed);
 }

@@ -79,7 +79,7 @@ var bomb = function(name, typeClass) {
 // Custom Game Entity (calls rw.ent for this.base, requires this.update function)
 var bman = function(name, typeClass, heading) {
 	this.base = new rw.ent(name, typeClass, 'bman', 'gif', 40, 64, heading);
-	this.maxSpeed = .75;
+	this.maxSpeed = 1.5;
 	this.bombCooldown = 25;
 	this.bombMax = 3;
 	this.bombs = [];
@@ -205,11 +205,6 @@ function startGame() {
 	rw.newEnt(new bman('Goon2', 'bman', 'u'), true, 52, 52);
 	rw.newEnt(new bman('Goon3', 'bman', 'u'), true, 53, 53);
 	rw.newEnt(new bman('Goon4', 'bman', 'u'), true, 54, 54);
-	rw.newEnt(new bman('Goon5', 'bman', 'u'), true, 55, 55);
-	rw.newEnt(new bman('Goon6', 'bman', 'u'), true, 56, 56);
-	rw.newEnt(new bman('Goon7', 'bman', 'u'), true, 57, 57);
-	rw.newEnt(new bman('Goon8', 'bman', 'u'), true, 58, 58);
-	rw.newEnt(new bman('Goon9', 'bman', 'u'), true, 59, 59);
 	rw.newEnt(new  Wall('lWall1', 'lWall', 1, 500), true, 100, 100);
 	rw.newEnt(new  Wall('tWall1', 'tWall', 499, 1), true, 101, 100);
 	rw.start();
