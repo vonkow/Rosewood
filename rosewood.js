@@ -173,6 +173,16 @@ rw.rule = function(active) {
 	this.active = active;
 }
 
+rw.removeRule = function(rule) {
+	if (rw.rules[rule]) {
+		delete rw.rules[rule];
+		return true;
+	} else {
+		return false;
+	}
+}
+	
+
 rw.board = function(name, path, extention, xDim, yDim) {
 	this.name = name;
 	this.path = path;
