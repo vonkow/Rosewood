@@ -205,6 +205,10 @@ function startGame() {
 	rw.init(600, 600);
 	rw.rules['rule1'] = new newRule(true);
 	rw.newEnt(new bman('Goon0', 'bman', 'u'), true, 50, 50);
+	rw.newEnt(new bman('Goon1', 'bman', 'u'), true, 51, 51);
+	rw.newEnt(new bman('Goon2', 'bman', 'u'), true, 52, 52);
+	rw.newEnt(new bman('Goon3', 'bman', 'u'), true, 53, 53);
+	rw.newEnt(new bman('Goon4', 'bman', 'u'), true, 54, 54);
 	rw.newEnt(new  Wall('lWall1', 'lWall', 1, 500), true, 100, 100);
 	rw.newEnt(new  Wall('tWall1', 'tWall', 499, 1), true, 101, 100);
 	rw.start();
