@@ -169,14 +169,11 @@ rw.run = function() {
 }
 
 rw.speed = 50;
-<<<<<<< HEAD
-=======
 
 rw.setFPS = function(fps) {
 	rw.speed = 1000/parseInt(fps);
 }
 
->>>>>>> doubleloop
 rw.start = function() {
 	rw.curT = setTimeout('rw.run()', this.speed);
 }
