@@ -1,0 +1,67 @@
+<html>
+	<head>
+		<title>Rosewood Documentation</title>
+	</head>
+	<body>
+		<h1>Rosewood Documentation</h1>
+		<h2>Introduction to the Rosewood Engine</h2>
+		<p>Add basic overview of the engine</p>
+		<h2>The Board</h2>
+		<h3>Basics</h3>
+		<p>
+			When Rosewood is initialized, it creates an html div with the id 'board'.
+			The board serves as the DOM parentNode for all backgrounds, sprites and 
+			invisible barriers within the game.
+		</p>
+		<h2>Entities</h2>
+		<h3>Entity Basics</h3>
+		<p>
+			Entities (hereforth know as 'ents') form the core of the Rosewood engine.
+			Every non-background object that is append to the game board is initialized
+			as an ent. All sprites, Characters, Enemies, Items and any invisble barriers
+			or specific areas within the board are created using the rw.newEnt function
+			and tracked within the rw.ents array.
+		</p>
+		<p>
+			A large portion of game design using Rosewood is creating custom ent
+			definitions for the objects witin the game. however there are a number of 
+			properties and functions that all ents share.
+		</p>
+		<h4>ent.base and rw.ent</h4>
+		<p>
+			Every ent is created with a custom object constructor function written for 
+			the specific game, but every ent constructor must create certain properties.
+			Ents must possess the property 'base' that contains an rw.ent object to
+			be considered valid by the engine.
+			In addition, if an ent is to much of anything it must have an update() 
+			function and potentially an iGotHit() function for collision detection.
+		</p>
+		<h3>rw.ents Array</h3>
+		<p>
+			Rosewood stores every game entity (or 'ent') within the rw.ents array.
+			When a new ent is created using the rw.newEnt() function it is appended
+			to the end of the array.
+			This means, that as ents are created and removed the array index of a 
+			given ent may change, making it difficult to refer to a specific ent 
+			using its location within the array.
+			However, this shortcoming is easily mitigated by crafting an ent's 
+			properties and functions in a way that does not rely on an absolute 
+			index within the rw.ents array.
+			In addition, the <strong>rules</strong> object provides methods of directly 
+			interfacing with specific ents. See the Rules section for more details.
+		</p>
+
+
+		<!-- TUTORIAL SECTION BEGINS HERE -->
+		<h1>Tutorial</h1>
+		<h2>Getting Started</h2>
+		<h3>Set Up</h3>
+		<p>
+			To start creating a game with Rosewood we first need to grab a copy of 
+			the engine and set up a project directory.
+			Create a folder for the game and place a copy of rosewood.js to it.
+			Then, using your favorite text-editor, create a file called 'mygame.js'
+			and another called 'game.html'.
+		</p>	
+	</body>
+</html>

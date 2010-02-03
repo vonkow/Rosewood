@@ -143,6 +143,7 @@ rw.run = function() {
 			}
 		}
 	}
+	// Check collisions
 	rw.colCheck();
 	// Run Through all rules;
 	for (var x in rw.rules) {
