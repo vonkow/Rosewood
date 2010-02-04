@@ -199,6 +199,7 @@ function newRule(active) {
 // Begin Game Function
 function startGame() {
 	rw.init(600, 600);
+	rw.tilesOn(20, 20);
 	rw.rules['rule1'] = new newRule(true);
 	rw.newEnt(new bman('Goon0', 'bman', 'u'), true, 50, 50);
 	/* Uncomment for stress test 

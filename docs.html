@@ -175,5 +175,110 @@
 			Then, using your favorite text-editor, create a file called 'mygame.js'
 			and another called 'game.html'.
 		</p>	
+		<h1>Full Reference</h1>
+		rw
+			rw.ents
+
+			rw.maps
+
+			rw.rules
+
+			rw.curT
+
+			rw.globT
+
+			rw.runGame
+
+			rw.tiles
+
+			rw.tileX
+
+			rw.tileY
+
+			rw.tilesOn(xDim, yDim)
+
+			rw.tilesOff()
+
+			rw.keyChange
+
+			rw.keys
+				rw.keys.sp
+				rw.keys.la
+				rw.keys.ra
+				rw.keys.ua
+			
+			rw.mouse
+				rw.mouse.x
+				rw.mouse.y
+
+			rw.init(dimX, dimY)
+
+			rw.mousePos()
+
+			rw.keyDown()
+
+			rw.keyUp()
+
+			rw.run()
+
+			rw.speed
+
+			rw.setFPS(fps)
+
+			rw.start()
+
+			rw.stop()
+
+			rw.rule(active)
+				this.active
+
+			rw.removeRule(rule)
+
+			rw.board(name, path, extention, xDim, yDim)
+				this.name
+				this.path
+				this.extention
+				this.width
+				this.height
+
+			rw.renderMap(map)
+
+			rw.ent(name, typeClass, sprites, spriteExt, width, height, heading)
+				this.name
+				this.typeClass
+				this.sprites
+				this.spriteExt
+				this.width
+				this.height
+				this.posX
+				this.posY
+				this.posZ
+				this.velX
+				this.velY
+				this.velZ
+				this.tileX
+				this.tileY
+				this.heading
+				this.moving
+				this.active
+				this.display()
+				this.hide()
+				this.changeSprite(spriteName)
+				this.tilePos()
+
+			rw.newEnt(ent, display, posX, posY)
+
+			rw.removeEnt(entNum)
+
+			rw.colCheck()
+		
+		Custom Ent Constructor minimum
+
+		var ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
+			this.base = new rw.ent(name, typeClass, sprites, spriteExt, width, height, heading);
+			this.update = function() {};
+			this.keyChangeSprite = function() {};
+			this.iGotHit = function() {};
+		}
 	</body>
 </html>

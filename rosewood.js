@@ -23,6 +23,21 @@ rw.curT = 0;
 rw.globT = 0; 
 // RunLoop or stop
 rw.runGame = true; 
+// Tile settings
+rw.tiles = false;
+rw.tileX = 0;
+rw.tileY = 0;
+rw.tilesOn = function(xDim, yDim) {
+	rw.tiles = true;
+	rw.tileX = xDim;
+	rw.tileY = yDim;
+}
+rw.tilesOff = function() {
+	rw.tiles = false;
+	rw.tileX = 0;
+	rw.tileY = 0;
+}
+
 //Did a keydown/up change between the last loop and now?
 rw.keyChange = false; 
 
@@ -111,34 +126,70 @@ rw.keyUp = function(e) {
 // RunLoop Function
 rw.run = function() {
 	// Update all sprites and remove those that are "dead"
-
-	if (rw.keyChange==true) {
-		// Loop through ents and change graphics
-		for (var x=0; x<rw.ents.length; x++) {
-			if (rw.ents[x].base.active==true) {
-				if (rw.ents[x].keyChangeSprite) {
-					rw.ents[x].keyChangeSprite();
+	// FIX THIS SO IT'S LESS REPETITIVE CODE
+	if (rw.tiles==true) {
+		if (rw.keyChange==true) {
+			// Loop through ents and change graphics
+			for (var x=0; x<rw.ents.length; x++) {
+				if (rw.ents[x].base.active==true) {
+					rw.ents[x].base.tilePos();
+					if (rw.ents[x].keyChangeSprite) {
+						rw.ents[x].keyChangeSprite();
+					}
+					var currentSprite = rw.ents[x].update();
+					if (currentSprite==false) {
+						rw.removeEnt(x);
+						x--;
+					} else {
+						//Nothing for now
+					}
 				}
-				var currentSprite = rw.ents[x].update();
-				if (currentSprite==false) {
-					rw.removeEnt(x);
-					x--;
-				} else {
-					//Nothing for now
+
+			}
+			rw.keyChange = false;
+		} else {
+			for(var x=0; x<rw.ents.length; x++) {
+				if (rw.ents[x].base.active==true) {
+					rw.ents[x].base.tilePos();
+					var currentSprite = rw.ents[x].update();
+					if (currentSprite==false) {
+						rw.removeEnt(x);
+						x--;
+					} else {
+						//Nothing for now
+					}
 				}
 			}
-
 		}
-		rw.keyChange = false;
 	} else {
-		for(var x=0; x<rw.ents.length; x++) {
-			if (rw.ents[x].base.active==true) {
-				var currentSprite = rw.ents[x].update();
-				if (currentSprite==false) {
-					rw.removeEnt(x);
-					x--;
-				} else {
-					//Nothing for now
+		if (rw.keyChange==true) {
+			// Loop through ents and change graphics
+			for (var x=0; x<rw.ents.length; x++) {
+				if (rw.ents[x].base.active==true) {
+					if (rw.ents[x].keyChangeSprite) {
+						rw.ents[x].keyChangeSprite();
+					}
+					var currentSprite = rw.ents[x].update();
+					if (currentSprite==false) {
+						rw.removeEnt(x);
+						x--;
+					} else {
+						//Nothing for now
+					}
+				}
+
+			}
+			rw.keyChange = false;
+		} else {
+			for(var x=0; x<rw.ents.length; x++) {
+				if (rw.ents[x].base.active==true) {
+					var currentSprite = rw.ents[x].update();
+					if (currentSprite==false) {
+						rw.removeEnt(x);
+						x--;
+					} else {
+						//Nothing for now
+					}
 				}
 			}
 		}
@@ -231,6 +282,8 @@ rw.ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
 	this.velX = 0;
 	this.velY = 0;
 	this.velZ = 0;
+	this.tileX = 0;
+	this.tileY = 0;
 	this.heading = heading;
 	this.moving = false;
 	this.active = false; //Bool for is piece in play
@@ -261,6 +314,10 @@ rw.ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
 		if (entDiv) {
 			entDiv.style.backgroundImage = "url('sprites/"+this.sprites+"/"+spriteName+"."+this.spriteExt+"')";
 		}
+	}
+	this.tilePos = function() {
+		this.tileX = Math.floor(this.posX/rw.tileX);
+		this.tileY = Math.floor(this.posY/rw.tileY);
 	}
 }
 
