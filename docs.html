@@ -23,18 +23,130 @@
 			and tracked within the rw.ents array.
 		</p>
 		<p>
-			A large portion of game design using Rosewood is creating custom ent
+			A large portion of game design with Rosewood is creating custom ent
 			definitions for the objects witin the game. however there are a number of 
 			properties and functions that all ents share.
 		</p>
 		<h4>ent.base and rw.ent</h4>
 		<p>
-			Every ent is created with a custom object constructor function written for 
-			the specific game, but every ent constructor must create certain properties.
-			Ents must possess the property 'base' that contains an rw.ent object to
-			be considered valid by the engine.
-			In addition, if an ent is to much of anything it must have an update() 
-			function and potentially an iGotHit() function for collision detection.
+			Every ent is created with a custom constructor function written for the 
+			specific game, but every ent constructor must have certain properties.
+			In order to be considered valid by the engine an ent must possess a property 
+			named 'base' that references an rw.ent object. In other words, an ent
+			named 'ent' would have a property 'ent.base' that would refer to an
+			rw.ent object.
+			The rw.ent object, by way of ent.base contains much of the information that
+			all ents share. Properties within rw.ent are read by the engine to determine
+			the dimensions and location of each entity as well as what sprites to
+			represent them with onscreen.
+			At a minimum, an ent MUST have an rw.ent object assigned to its 'base' property.
+		</p>
+		<h5>rw.ent properties</h5>
+		<p>
+			The rw.ent object contains the properties used by the engine for positioning and
+			displaying entities onscreen. They are stored within an ent's 'base' property.
+			The ent.base properties inherited from rw.ent are as follows:
+		</p>
+		<ul>
+			<li>
+				<strong>ent.base.name</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.typeClass</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.sprites</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.spritesSct</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.width</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.height</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.posX, posY and posZ</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.velX, velY and velZ</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.heading</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.moving</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.active</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.display()</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.hide()</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.changeSprite(spriteName)</strong>
+				<p>
+					
+				</p>
+			</li>
+		</ul>
+		<h4>ent.update() and ent.iGotHit()</h4>
+		<p>
+			While not necessary for validation, ents must have an 'update()' function
+			if they are to be moved onscreen after initial placement.
+			The engin runs at a specified rate of frames per second; in each frame,
+			the update() function of every ent is called and if the ent moves, it is 
+			re-positioned onscreen.
+			In addition to the update() function, ents can also have a function called
+			'iGotHit()' which contains instructions for how an entity should react if it
+			collides with another entity. When two ents collide their 'ent.base.typeClass'
+			value is passed to the other ent's iGotHit() funtion like so: 
+				ent.iGotHit(otherEnt.base.typeClass)
+			This allows the game designer to specify different behavior for an ent running
+			into a wall as opposed to say, the ent being hit by a bullet.
 		</p>
 		<h3>rw.ents Array</h3>
 		<p>
