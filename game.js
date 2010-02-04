@@ -177,6 +177,16 @@ var bman = function(name, typeClass, heading) {
 				this.base.posY += -this.base.velY;
 			}
 		}
+		if (by=='rWall') {
+			if (this.base.velX < 0) {
+				this.base.posX += -this.base.velX;
+			}
+		}
+		if (by=='dWall') {
+			if (this.base.velY < 0) {
+				this.base.posY += -this.base.velY;
+			}
+		}
 	}
 }
 
@@ -195,12 +205,46 @@ function newRule(active) {
 	}
 }
 
+function mapRule() {
+	this.base = new rw.rule(true);
+	this.currentOffset = 0;
+	this.forward = true;
+	this.rule = function() {
+		if (this.forward==true) {
+			if (this.currentOffset>-600) {
+				this.currentOffset--;
+				rw.maps[0].base.offset(-1, 0);
+			} else {
+				this.forward = false;
+			}
+		} else {
+			if (this.currentOffset<0) {
+				this.currentOffset++;
+				rw.maps[0].base.offset(1, 0);
+			} else {
+				this.forward = true;
+			}
+		}
+	}
+}
+
+function newMap(name, ext) {
+	this.base = new rw.board(name, name, ext, 1200, 600);
+}
 
 // Begin Game Function
 function startGame() {
 	rw.init(600, 600);
 	rw.tilesOn(20, 20);
+
+	// MAP TEST
+	rw.maps[0] = new newMap('map2', 'jpg');
+	rw.renderMap(rw.maps[0]);
+	// END MAP TEST
+
 	rw.rules['rule1'] = new newRule(true);
+	rw.rules['rule2'] = new mapRule(true);
+
 	rw.newEnt(new bman('Goon0', 'bman', 'u'), true, 50, 50);
 	/* Uncomment for stress test 
 	rw.newEnt(new bman('Goon1', 'bman', 'u'), true, 51, 51);
@@ -208,7 +252,9 @@ function startGame() {
 	rw.newEnt(new bman('Goon3', 'bman', 'u'), true, 53, 53);
 	rw.newEnt(new bman('Goon4', 'bman', 'u'), true, 54, 54);
 	End stress test */
-	rw.newEnt(new  Wall('lWall1', 'lWall', 1, 500), true, 100, 100);
-	rw.newEnt(new  Wall('tWall1', 'tWall', 499, 1), true, 101, 100);
+	rw.newEnt(new  Wall('tWall1', 'tWall', 99, 1), true, 251, 250);
+	rw.newEnt(new  Wall('rWall1', 'rWall', 1, 99), true, 350, 251);
+	rw.newEnt(new  Wall('lWall1', 'lWall', 1, 99), true, 250, 250);
+	rw.newEnt(new  Wall('dWall1', 'dWall', 99, 1), true, 250, 350);
 	rw.start();
 }

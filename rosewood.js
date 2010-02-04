@@ -59,6 +59,7 @@ rw.init = function(dimX, dimY) {
 	board.id = 'board';
 	board.style.width = dimX+'px';
 	board.style.height = dimY+'px';
+	board.style.overflow = 'hidden';
 	board.style.border = '1px solid black';
 	document.getElementsByTagName('body')[0].appendChild(board);
 	// Mousemove object, maybe eval during runloop and not onmousemve
@@ -255,17 +256,32 @@ rw.board = function(name, path, extention, xDim, yDim) {
 	this.extention = extention
 	this.width = xDim;
 	this.height = yDim;
+	this.offX = 0;
+	this.offY = 0;
+	this.offset = function(oX, oY) {
+		if (document.getElementById('map_'+this.name)) {
+			var mapDiv = document.getElementById('map_'+this.name);
+			this.offX += oX;
+			this.offY += oY;
+			mapDiv.style.marginLeft = this.offX+'px';
+			mapDiv.style.marginTop = this.offY+'px';
+		}
+	}
+
 }
 
 rw.renderMap = function(map) {
-	var gameArea = document.getElementById('rw');
 	var mapArea = document.createElement('div');
-	mapArea.id = 'map_'+map.board.name;
-	mapArea.style.backgroundImage = "url('sprites/boards/"+map.board.path+"/"+map.board.path+"."+map.board.extention+"')";
-	mapArea.style.width = map.board.width+'px';
-	mapArea.style.height = map.board.height+'px';
+	mapArea.id = 'map_'+map.base.name;
+	mapArea.style.backgroundImage = "url('sprites/maps/"+map.base.path+"/"+map.base.path+"."+map.base.extention+"')";
+	mapArea.style.width = map.base.width+'px';
+	mapArea.style.height = map.base.height+'px';
+	mapArea.style.overflow = 'hidden';
 	mapArea.style.zIndex = -1;
-	gameArea.appendChild(mapArea);
+	mapArea.style.marginLeft = map.base.offX+'px';
+	mapArea.style.marginTop = map.base.offY+'px';
+	var board = document.getElementById('board');
+	board.appendChild(mapArea);
 }
 
 // Game Entity Base Factory
