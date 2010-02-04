@@ -1,4 +1,0 @@
-Sprites
-Globals
-Board
-Keys
