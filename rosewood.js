@@ -14,7 +14,7 @@ var rw = {};
 // Game Entities
 rw.ents = []; 
 // Map Entities
-rw.maps = []; 
+rw.maps = {}; 
 // Rule Entities
 rw.rules = {};
 // RunLoop current Timer

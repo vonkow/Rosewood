@@ -234,14 +234,17 @@
 
 			rw.removeRule(rule)
 
-			rw.board(name, path, extention, xDim, yDim)
+			rw.map(name, path, extention, xDim, yDim)
 				this.name
 				this.path
 				this.extention
 				this.width
 				this.height
+				this.render()
+				this.show()
+				this.hide()
+				this.remove()
 
-			rw.renderMap(map)
 
 			rw.ent(name, typeClass, sprites, spriteExt, width, height, heading)
 				this.name

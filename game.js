@@ -209,14 +209,14 @@ function mapRule() {
 		if (this.forward==true) {
 			if (this.currentOffset>-600) {
 				this.currentOffset--;
-				rw.maps[0].base.offset(-1, 0);
+				rw.maps['map2'].base.offset(-1, 0);
 			} else {
 				this.forward = false;
 			}
 		} else {
 			if (this.currentOffset<0) {
 				this.currentOffset++;
-				rw.maps[0].base.offset(1, 0);
+				rw.maps['map2'].base.offset(1, 0);
 			} else {
 				this.forward = true;
 			}
@@ -234,8 +234,8 @@ function startGame() {
 	rw.tilesOn(20, 20);
 
 	// MAP TEST
-	rw.maps[0] = new newMap('map2', 'jpg');
-	rw.maps[0].base.render();
+	rw.maps['map2'] = new newMap('map2', 'jpg');
+	rw.maps['map2'].base.render();
 	// END MAP TEST
 
 	rw.rules['rule1'] = new newRule(true);
