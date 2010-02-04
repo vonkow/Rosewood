@@ -6,18 +6,17 @@
 
 // The Rosewood Object
 var rw = {}; 
-// Game Entities
-rw.ents = []; 
-// Map Entities
-rw.maps = {}; 
-// Rule Entities
-rw.rules = {};
+// RunLoop or stop
+rw.runGame = true; 
 // RunLoop current Timer
 rw.curT = 0; 
 // RunLoop global Timer
 rw.globT = 0; 
-// RunLoop or stop
-rw.runGame = true; 
+// Game speed settings
+rw.speed = 50;
+rw.setFPS = function(fps) {
+	rw.speed = 1000/parseInt(fps);
+}
 // Tile settings
 rw.tiles = false;
 rw.tileX = 0;
@@ -93,6 +92,153 @@ rw.mousePos = function(e) {
 	rw.mouse.x = (e) ? e.pageX : window.event.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); 
 	rw.mouse.y = (e) ? e.pageY : window.event.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight); 
 }
+// Game Entities
+rw.ents = []; 
+rw.ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
+	this.name = name;
+	this.typeClass = typeClass;
+	this.sprites = sprites;
+	this.spriteExt = spriteExt
+	this.width = width;
+	this.height = height;
+	this.posX = 0;
+	this.posY = 0;
+	this.posZ = 0;
+	this.velX = 0;
+	this.velY = 0;
+	this.velZ = 0;
+	this.tileX = 0;
+	this.tileY = 0;
+	this.heading = heading;
+	this.moving = false;
+	this.active = false; //Bool for is piece in play
+	// Display Entity Function, sets ent.base.active to true
+	this.display = function () {
+		var newEnt = document.createElement('div');
+		newEnt.id = 'ent_'+this.name;
+		newEnt.style.width = this.width;
+		newEnt.style.height = this.height;
+		newEnt.style.backgroundImage = "url('sprites/"+this.sprites+"/"+this.heading+"."+this.spriteExt+"')";
+		newEnt.style.backgroundRepeat = 'no-repeat';
+		newEnt.style.backgroundPosition = 'center';
+		newEnt.style.position = 'absolute';
+		newEnt.style.left = this.posX+'px';
+		newEnt.style.top = this.posY+'px';
+		this.active = true;
+		document.getElementById('board').appendChild(newEnt);
+	}
+	this.hide = function() {
+		if (document.getElementById('ent_'+this.name)) {
+			var dying = document.getElementById('ent_'+this.name);
+			dying.parentNode.removeChild(dying);
+			this.active=false;
+		}
+	}
+	this.changeSprite = function(spriteName) {
+		var entDiv = document.getElementById('ent_'+this.name);
+		if (entDiv) {
+			entDiv.style.backgroundImage = "url('sprites/"+this.sprites+"/"+spriteName+"."+this.spriteExt+"')";
+		}
+	}
+	this.tilePos = function() {
+		this.tileX = Math.floor(this.posX/rw.tileX);
+		this.tileY = Math.floor(this.posY/rw.tileY);
+	}
+}
+
+rw.newEnt = function(ent, display, posX, posY) {
+	var curLength = rw.ents.length;
+	rw.ents[curLength] = ent;
+	if (display==true) {
+		rw.ents[curLength].base.posX = posX;
+		rw.ents[curLength].base.posY = posY;
+		rw.ents[curLength].base.display();
+	}
+}
+
+rw.removeEnt = function(entNum) {
+	rw.ents.splice(entNum, 1)
+}
+// Map Entities
+rw.maps = {}; 
+rw.map = function(name, path, extention, xDim, yDim) {
+	this.name = name;
+	this.path = path;
+	this.extention = extention
+	this.width = xDim;
+	this.height = yDim;
+	this.offX = 0;
+	this.offY = 0;
+	this.offset = function(oX, oY) {
+		if (document.getElementById('map_'+this.name)) {
+			var mapDiv = document.getElementById('map_'+this.name);
+			this.offX += oX;
+			this.offY += oY;
+			mapDiv.style.marginLeft = this.offX+'px';
+			mapDiv.style.marginTop = this.offY+'px';
+		}
+	}
+	this.show = function() {
+		if (document.getElementById('map_'+this.name)) {
+			var mapDiv = document.getElementById('map_'+this.name);
+			mapDiv.style.zIndex = '-1';
+			mapDiv.style.display = 'block';
+		} else {
+			this.render();
+		}
+	}
+	this.hide = function() {
+		if (document.getElementById('map_'+this.name)) {
+			var mapDiv = document.getElementById('map_'+this.name);
+			mapDiv.style.display = 'none';
+		}
+	}
+	this.render = function() {
+		if (document.getElementById('map_'+this.name)) {
+			this.show();
+		} else {
+			var mapArea = document.createElement('div');
+			mapArea.id = 'map_'+this.name;
+			mapArea.style.backgroundImage = "url('sprites/maps/"+this.path+"/"+this.path+"."+this.extention+"')";
+			mapArea.style.width = this.width+'px';
+			mapArea.style.height = this.height+'px';
+			mapArea.style.overflow = 'hidden';
+			mapArea.style.zIndex = -1;
+			mapArea.style.marginLeft = this.offX+'px';
+			mapArea.style.marginTop = this.offY+'px';
+			var board = document.getElementById('board');
+			board.appendChild(mapArea);
+		}
+	}
+	this.remove = function() {
+		if (document.getElementById('map_'+this.name)) {
+			var mapArea = document.getElementById('map_'+this.name);
+			mapArea.parentNode.removeChild(mapArea);
+		}
+	}
+
+}
+rw.removeMap = function(map) {
+	if (rw.maps[map]) {
+		delete rw.maps[map];
+		return true;
+	} else {
+		return false;
+	}
+}
+// Rule Entities
+rw.rules = {};
+rw.rule = function(active) {
+	this.active = active;
+}
+rw.removeRule = function(rule) {
+	if (rw.rules[rule]) {
+		delete rw.rules[rule];
+		return true;
+	} else {
+		return false;
+	}
+}
 // Initilization Function
 rw.init = function(dimX, dimY) {
 	var board = document.createElement('div');
@@ -110,7 +256,16 @@ rw.init = function(dimX, dimY) {
 	// This hides the mouse, set as option
 	document.getElementById('board').style.cursor="url(sprites/blank.cur), wait";
 }
-
+// Start FUnction
+rw.start = function() {
+	rw.curT = setTimeout('rw.run()', this.speed);
+}
+// Stop Function
+rw.stop = function() {
+	clearTimeout(rw.curT);
+	rw.globT = rw.globT+rw.curT;
+	rw.curT = 0;
+}
 // RunLoop Function
 rw.run = function() {
 	// Update all sprites and remove those that are "dead"
@@ -181,194 +336,6 @@ rw.run = function() {
 		}
 	}
 	// Check collisions
-	rw.colCheck();
-	// Run Through all rules;
-	for (var x in rw.rules) {
-		if (rw.rules[x].base.active==true) {
-			rw.rules[x].rule();
-		}
-	}
-	// Run Through all ents and update position
-	for (var x=0; x<rw.ents.length; x++) {
-		if (rw.ents[x].base.active==true) {
-			var entDiv = document.getElementById('ent_'+rw.ents[x].base.name);
-			entDiv.style.left = rw.ents[x].base.posX+'px';
-			entDiv.style.top = rw.ents[x].base.posY+'px';
-			entDiv.style.zIndex = rw.ents[x].base.posZ;
-		}
-	}
-	//If game has not ended or been paused, continue
-	if (rw.runGame==true) {
-		rw.start();
-	} else {
-		rw.stop();
-	}
-}
-// Game speed settings
-rw.speed = 50;
-rw.setFPS = function(fps) {
-	rw.speed = 1000/parseInt(fps);
-}
-
-rw.start = function() {
-	rw.curT = setTimeout('rw.run()', this.speed);
-}
-
-rw.stop = function() {
-	clearTimeout(rw.curT);
-	rw.globT = rw.globT+rw.curT;
-	rw.curT = 0;
-}
-
-rw.rule = function(active) {
-	this.active = active;
-}
-
-rw.removeRule = function(rule) {
-	if (rw.rules[rule]) {
-		delete rw.rules[rule];
-		return true;
-	} else {
-		return false;
-	}
-}
-
-rw.map = function(name, path, extention, xDim, yDim) {
-	this.name = name;
-	this.path = path;
-	this.extention = extention
-	this.width = xDim;
-	this.height = yDim;
-	this.offX = 0;
-	this.offY = 0;
-	this.offset = function(oX, oY) {
-		if (document.getElementById('map_'+this.name)) {
-			var mapDiv = document.getElementById('map_'+this.name);
-			this.offX += oX;
-			this.offY += oY;
-			mapDiv.style.marginLeft = this.offX+'px';
-			mapDiv.style.marginTop = this.offY+'px';
-		}
-	}
-	this.show = function() {
-		if (document.getElementById('map_'+this.name)) {
-			var mapDiv = document.getElementById('map_'+this.name);
-			mapDiv.style.zIndex = '-1';
-			mapDiv.style.display = 'block';
-		} else {
-			this.render();
-		}
-	}
-	this.hide = function() {
-		if (document.getElementById('map_'+this.name)) {
-			var mapDiv = document.getElementById('map_'+this.name);
-			mapDiv.style.display = 'none';
-		}
-	}
-	this.render = function() {
-		if (document.getElementById('map_'+this.name)) {
-			this.show();
-		} else {
-			var mapArea = document.createElement('div');
-			mapArea.id = 'map_'+this.name;
-			mapArea.style.backgroundImage = "url('sprites/maps/"+this.path+"/"+this.path+"."+this.extention+"')";
-			mapArea.style.width = this.width+'px';
-			mapArea.style.height = this.height+'px';
-			mapArea.style.overflow = 'hidden';
-			mapArea.style.zIndex = -1;
-			mapArea.style.marginLeft = this.offX+'px';
-			mapArea.style.marginTop = this.offY+'px';
-			var board = document.getElementById('board');
-			board.appendChild(mapArea);
-		}
-	}
-	this.remove = function() {
-		if (document.getElementById('map_'+this.name)) {
-			var mapArea = document.getElementById('map_'+this.name);
-			mapArea.parentNode.removeChild(mapArea);
-		}
-	}
-
-}
-
-rw.removeMap = function(map) {
-	if (rw.maps[map]) {
-		delete rw.maps[map];
-		return true;
-	} else {
-		return false;
-	}
-}
-
-// Game Entity Base Constructor
-rw.ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
-	this.name = name;
-	this.typeClass = typeClass;
-	this.sprites = sprites;
-	this.spriteExt = spriteExt
-	this.width = width;
-	this.height = height;
-	this.posX = 0;
-	this.posY = 0;
-	this.posZ = 0;
-	this.velX = 0;
-	this.velY = 0;
-	this.velZ = 0;
-	this.tileX = 0;
-	this.tileY = 0;
-	this.heading = heading;
-	this.moving = false;
-	this.active = false; //Bool for is piece in play
-	// Display Entity Function, sets ent.base.active to true
-	this.display = function () {
-		var newEnt = document.createElement('div');
-		newEnt.id = 'ent_'+this.name;
-		newEnt.style.width = this.width;
-		newEnt.style.height = this.height;
-		newEnt.style.backgroundImage = "url('sprites/"+this.sprites+"/"+this.heading+"."+this.spriteExt+"')";
-		newEnt.style.backgroundRepeat = 'no-repeat';
-		newEnt.style.backgroundPosition = 'center';
-		newEnt.style.position = 'absolute';
-		newEnt.style.left = this.posX+'px';
-		newEnt.style.top = this.posY+'px';
-		this.active = true;
-		document.getElementById('board').appendChild(newEnt);
-	}
-	this.hide = function() {
-		if (document.getElementById('ent_'+this.name)) {
-			var dying = document.getElementById('ent_'+this.name);
-			dying.parentNode.removeChild(dying);
-			this.active=false;
-		}
-	}
-	this.changeSprite = function(spriteName) {
-		var entDiv = document.getElementById('ent_'+this.name);
-		if (entDiv) {
-			entDiv.style.backgroundImage = "url('sprites/"+this.sprites+"/"+spriteName+"."+this.spriteExt+"')";
-		}
-	}
-	this.tilePos = function() {
-		this.tileX = Math.floor(this.posX/rw.tileX);
-		this.tileY = Math.floor(this.posY/rw.tileY);
-	}
-}
-
-rw.newEnt = function(ent, display, posX, posY) {
-	var curLength = rw.ents.length;
-	rw.ents[curLength] = ent;
-	if (display==true) {
-		rw.ents[curLength].base.posX = posX;
-		rw.ents[curLength].base.posY = posY;
-		rw.ents[curLength].base.display();
-	}
-}
-
-rw.removeEnt = function(entNum) {
-	rw.ents.splice(entNum, 1)
-}
-
-//THIS IS THE NEW COLLISION DETECTION FUNCTION!!!
-rw.colCheck = function() {
 	var len = rw.ents.length;
 	var cols = [];
 	// For each ent
@@ -425,5 +392,27 @@ rw.colCheck = function() {
 				rw.removeEnt(toBeRemoved[x]);
 			}
 		}
+	}
+
+	// Run Through all rules;
+	for (var x in rw.rules) {
+		if (rw.rules[x].base.active==true) {
+			rw.rules[x].rule();
+		}
+	}
+	// Run Through all ents and update position
+	for (var x=0; x<rw.ents.length; x++) {
+		if (rw.ents[x].base.active==true) {
+			var entDiv = document.getElementById('ent_'+rw.ents[x].base.name);
+			entDiv.style.left = rw.ents[x].base.posX+'px';
+			entDiv.style.top = rw.ents[x].base.posY+'px';
+			entDiv.style.zIndex = rw.ents[x].base.posZ;
+		}
+	}
+	//If game has not ended or been paused, continue
+	if (rw.runGame==true) {
+		rw.start();
+	} else {
+		rw.stop();
 	}
 }
