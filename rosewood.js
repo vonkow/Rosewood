@@ -108,7 +108,7 @@ rw.init = function(dimX, dimY) {
 	document.onkeydown=rw.keyDown;
 	document.onkeyup=rw.keyUp;
 	// This hides the mouse, set as option
-	document.getElementsByTagName('body')[0].style.cursor="url(sprites/blank.cur), wait";
+	document.getElementById('board').style.cursor="url(sprites/blank.cur), wait";
 }
 
 // RunLoop Function
