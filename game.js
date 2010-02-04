@@ -83,7 +83,6 @@ var bman = function(name, typeClass, heading) {
 	this.bombCooldown = 5;
 	this.bombMax = 15;
 	this.bombs = [];
-
 	this.update = function() {
 		this.base.velX = 0;
 		this.base.velY = 0;
@@ -99,7 +98,6 @@ var bman = function(name, typeClass, heading) {
 				}
 			}
 		}
-				
 		if (rw.keys.sp==true) {
 			if (this.bombCooldown == 5) {
 				if (this.bombs.length < this.bombMax) {
@@ -132,10 +130,8 @@ var bman = function(name, typeClass, heading) {
 	// This even brings up the fact that heading and moving may not be part of this.base
 	// Detach some of keyChangeSprite and move to engine core, this much code for each ent is unacceptable!
 	// Fix logic of displaying non-moving sprites
-
 //!!!!!!!!!!!!! Move most of keyCHangeSprite to ent.base with an rw.keys loop: 
 //		where args are sent to ent and keys.
-
 	this.keyChangeSprite = function() {
 		var entDiv = document.getElementById('ent_'+name);
 		if (rw.keys.la==true) {
@@ -159,7 +155,6 @@ var bman = function(name, typeClass, heading) {
 			this.base.changeSprite(this.base.heading);
 		}
 	}
-	
 	//NEW COLLISION TEST FUNCTION
 	this.iGotHit = function(by) {
 		if (by=='blast') {
@@ -189,7 +184,6 @@ var bman = function(name, typeClass, heading) {
 		}
 	}
 }
-
 
 function newRule(active) {
 	this.base = new rw.rule(true);
@@ -232,12 +226,8 @@ function newMap(name, ext) {
 function startGame() {
 	rw.init(600, 600);
 	rw.tilesOn(20, 20);
-
-	// MAP TEST
 	rw.maps['map2'] = new newMap('map2', 'jpg');
 	rw.maps['map2'].base.render();
-	// END MAP TEST
-
 	rw.rules['rule1'] = new newRule(true);
 	rw.rules['rule2'] = new mapRule(true);
 

@@ -1,13 +1,8 @@
 //////// TO-DO ////////
 // Preload Images while showing user defined load screen
-// Sound support?
+// Sound support
 // Integrate good parts of old rw, bring back rw.state?
-// Move all DOM utils to pussycat
-// keyChangeSprite mostly implemented, implement sigChangeSprite
-// Change rw.checkBounds(ent, direction) to ent.base.checkBounds(self, direction)
-// Fix rw.checkBounds() so that ents stop EXACTLY at the border of a bar.
-// Finish implementing maps and add function for scrolling
-// Create standardized functions for swapping a sprit image onKeyChange
+// finish implementing keyChangeSprite for less ent sprite code
 
 // The Rosewood Object
 var rw = {}; 
@@ -37,10 +32,8 @@ rw.tilesOff = function() {
 	rw.tileX = 0;
 	rw.tileY = 0;
 }
-
-//Did a keydown/up change between the last loop and now?
+//KeyDown/Up settings
 rw.keyChange = false; 
-
 rw.keys = {
 	sp: false,
 	la: false,
@@ -48,39 +41,6 @@ rw.keys = {
 	ra: false,
 	da: false
 };
-
-rw.mouse = {
-	x: 0,
-	y: 0
-};
-
-rw.init = function(dimX, dimY) {
-	var board = document.createElement('div');
-	board.id = 'board';
-	board.style.width = dimX+'px';
-	board.style.height = dimY+'px';
-	board.style.overflow = 'hidden';
-	board.style.border = '1px solid black';
-	document.getElementsByTagName('body')[0].appendChild(board);
-	// Mousemove object, maybe eval during runloop and not onmousemve
-	document.onmousemove = rw.mousePos;
-	// Keydown/up event listeners
-	document.onkeydown=rw.keyDown;
-	document.onkeyup=rw.keyUp;
-	// This hides the mouse, set as option
-	document.getElementsByTagName('body')[0].style.cursor="url(sprites/blank.cur), wait";
-}
-
-rw.mousePos = function(e) {
-	// THIS IS WHY WE CAN'T HAVE PRETTY THINGS IE!!!
-	rw.mouse.x = (e) ? e.pageX : window.event.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); 
-	rw.mouse.y = (e) ? e.pageY : window.event.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight); 
-}
-
-
-
-// Key Down and Up triggers
-// NEEDS FLESHING OUT
 rw.keyDown = function(e) {
 	var ev = e ? e : window.event;
 	switch(ev.keyCode) {
@@ -123,6 +83,33 @@ rw.keyUp = function(e) {
 	}
 	rw.keyChange = true;
 }
+// Mouse Position settings
+rw.mouse = {
+	x: 0,
+	y: 0
+};
+rw.mousePos = function(e) {
+	// THIS IS WHY WE CAN'T HAVE PRETTY THINGS IE!!!
+	rw.mouse.x = (e) ? e.pageX : window.event.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); 
+	rw.mouse.y = (e) ? e.pageY : window.event.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight); 
+}
+// Initilization Function
+rw.init = function(dimX, dimY) {
+	var board = document.createElement('div');
+	board.id = 'board';
+	board.style.width = dimX+'px';
+	board.style.height = dimY+'px';
+	board.style.overflow = 'hidden';
+	board.style.border = '1px solid black';
+	document.getElementsByTagName('body')[0].appendChild(board);
+	// Mousemove object, maybe eval during runloop and not onmousemve
+	document.onmousemove = rw.mousePos;
+	// Keydown/up event listeners
+	document.onkeydown=rw.keyDown;
+	document.onkeyup=rw.keyUp;
+	// This hides the mouse, set as option
+	document.getElementsByTagName('body')[0].style.cursor="url(sprites/blank.cur), wait";
+}
 
 // RunLoop Function
 rw.run = function() {
@@ -145,7 +132,6 @@ rw.run = function() {
 						//Nothing for now
 					}
 				}
-
 			}
 			rw.keyChange = false;
 		} else {
@@ -178,7 +164,6 @@ rw.run = function() {
 						//Nothing for now
 					}
 				}
-
 			}
 			rw.keyChange = false;
 		} else {
@@ -219,9 +204,8 @@ rw.run = function() {
 		rw.stop();
 	}
 }
-
+// Game speed settings
 rw.speed = 50;
-
 rw.setFPS = function(fps) {
 	rw.speed = 1000/parseInt(fps);
 }
@@ -248,7 +232,6 @@ rw.removeRule = function(rule) {
 		return false;
 	}
 }
-	
 
 rw.map = function(name, path, extention, xDim, yDim) {
 	this.name = name;
@@ -308,7 +291,16 @@ rw.map = function(name, path, extention, xDim, yDim) {
 
 }
 
-// Game Entity Base Factory
+rw.removeMap = function(map) {
+	if (rw.maps[map]) {
+		delete rw.maps[map];
+		return true;
+	} else {
+		return false;
+	}
+}
+
+// Game Entity Base Constructor
 rw.ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
 	this.name = name;
 	this.typeClass = typeClass;
