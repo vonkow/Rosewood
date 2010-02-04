@@ -190,10 +190,6 @@ var bman = function(name, typeClass, heading) {
 	}
 }
 
-// Create new map function
-function newMap() {
-	
-}
 
 function newRule(active) {
 	this.base = new rw.rule(true);
@@ -229,7 +225,7 @@ function mapRule() {
 }
 
 function newMap(name, ext) {
-	this.base = new rw.board(name, name, ext, 1200, 600);
+	this.base = new rw.map(name, name, ext, 1200, 600);
 }
 
 // Begin Game Function
@@ -239,7 +235,7 @@ function startGame() {
 
 	// MAP TEST
 	rw.maps[0] = new newMap('map2', 'jpg');
-	rw.renderMap(rw.maps[0]);
+	rw.maps[0].base.render();
 	// END MAP TEST
 
 	rw.rules['rule1'] = new newRule(true);

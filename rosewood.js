@@ -250,7 +250,7 @@ rw.removeRule = function(rule) {
 }
 	
 
-rw.board = function(name, path, extention, xDim, yDim) {
+rw.map = function(name, path, extention, xDim, yDim) {
 	this.name = name;
 	this.path = path;
 	this.extention = extention
@@ -267,21 +267,45 @@ rw.board = function(name, path, extention, xDim, yDim) {
 			mapDiv.style.marginTop = this.offY+'px';
 		}
 	}
+	this.show = function() {
+		if (document.getElementById('map_'+this.name)) {
+			var mapDiv = document.getElementById('map_'+this.name);
+			mapDiv.style.zIndex = '-1';
+			mapDiv.style.display = 'block';
+		} else {
+			this.render();
+		}
+	}
+	this.hide = function() {
+		if (document.getElementById('map_'+this.name)) {
+			var mapDiv = document.getElementById('map_'+this.name);
+			mapDiv.style.display = 'none';
+		}
+	}
+	this.render = function() {
+		if (document.getElementById('map_'+this.name)) {
+			this.show();
+		} else {
+			var mapArea = document.createElement('div');
+			mapArea.id = 'map_'+this.name;
+			mapArea.style.backgroundImage = "url('sprites/maps/"+this.path+"/"+this.path+"."+this.extention+"')";
+			mapArea.style.width = this.width+'px';
+			mapArea.style.height = this.height+'px';
+			mapArea.style.overflow = 'hidden';
+			mapArea.style.zIndex = -1;
+			mapArea.style.marginLeft = this.offX+'px';
+			mapArea.style.marginTop = this.offY+'px';
+			var board = document.getElementById('board');
+			board.appendChild(mapArea);
+		}
+	}
+	this.remove = function() {
+		if (document.getElementById('map_'+this.name)) {
+			var mapArea = document.getElementById('map_'+this.name);
+			mapArea.parentNode.removeChild(mapArea);
+		}
+	}
 
-}
-
-rw.renderMap = function(map) {
-	var mapArea = document.createElement('div');
-	mapArea.id = 'map_'+map.base.name;
-	mapArea.style.backgroundImage = "url('sprites/maps/"+map.base.path+"/"+map.base.path+"."+map.base.extention+"')";
-	mapArea.style.width = map.base.width+'px';
-	mapArea.style.height = map.base.height+'px';
-	mapArea.style.overflow = 'hidden';
-	mapArea.style.zIndex = -1;
-	mapArea.style.marginLeft = map.base.offX+'px';
-	mapArea.style.marginTop = map.base.offY+'px';
-	var board = document.getElementById('board');
-	board.appendChild(mapArea);
 }
 
 // Game Entity Base Factory
