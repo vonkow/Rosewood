@@ -58,13 +58,13 @@ var bomb = function(name, typeClass) {
 				if (x+1==this.blastSize) {
 					tail = true;
 				}
-				rw.newEnt(new blast('blast'+tempLen, 'blast', 'u', tail), true, tPos[0], tPos[1]);
+				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'u', tail), true, tPos[0], tPos[1]);
 				tempLen = rw.ents.length;
-				rw.newEnt(new blast('blast'+tempLen, 'blast', 'l', tail), true, lPos[0], lPos[1]);
+				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'l', tail), true, lPos[0], lPos[1]);
 				tempLen = rw.ents.length;
-				rw.newEnt(new blast('blast'+tempLen, 'blast', 'd', tail), true, bPos[0], bPos[1]);
+				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'd', tail), true, bPos[0], bPos[1]);
 				tempLen = rw.ents.length;
-				rw.newEnt(new blast('blast'+tempLen, 'blast', 'r', tail), true, rPos[0], rPos[1]);
+				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'r', tail), true, rPos[0], rPos[1]);
 			}
 			this.base.hide();
 			return false;

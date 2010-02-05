@@ -12,15 +12,20 @@
 			When Rosewood is initialized, it creates an html div with the id 'board'.
 			The board serves as the DOM parentNode for all backgrounds, sprites and 
 			invisible barriers within the game.
+			To create the board and initialize the game, the function rw.init(dimX, dimY)
+			must be called. 
+			The arguments dimX and dimY set the dimensions of the board.
+			Calling rw.init() does not start the main game loop and it must be called
+			before the creation of any entities or backgrounds.
 		</p>
 		<h2>Entities</h2>
 		<h3>Entity Basics</h3>
 		<p>
 			Entities (hereforth know as 'ents') form the core of the Rosewood engine.
-			Every non-background object that is append to the game board is initialized
+			Every non-background object that is appended to the game board is initialized
 			as an ent. All sprites, Characters, Enemies, Items and any invisble barriers
-			or specific areas within the board are created using the rw.newEnt function
-			and tracked within the rw.ents array.
+			or specific areas within the board are created using the rw.newEnt() function
+			and are tracked within the rw.ents array.
 		</p>
 		<p>
 			A large portion of game design with Rosewood is creating custom ent
@@ -177,17 +182,15 @@
 		</p>	
 		<h1>Full Reference</h1>
 		rw
-			rw.ents
-
-			rw.maps
-
-			rw.rules
+			rw.runGame
 
 			rw.curT
 
 			rw.globT
 
-			rw.runGame
+			rw.speed
+
+			rw.setFPS(fps)
 
 			rw.tiles
 
@@ -207,45 +210,17 @@
 				rw.keys.ra
 				rw.keys.ua
 			
-			rw.mouse
-				rw.mouse.x
-				rw.mouse.y
-
-			rw.init(dimX, dimY)
-
-			rw.mousePos()
-
 			rw.keyDown()
 
 			rw.keyUp()
 
-			rw.run()
+			rw.mouse
+				rw.mouse.x
+				rw.mouse.y
 
-			rw.speed
+			rw.mousePos()
 
-			rw.setFPS(fps)
-
-			rw.start()
-
-			rw.stop()
-
-			rw.rule(active)
-				this.active
-
-			rw.removeRule(rule)
-
-			rw.map(name, path, extention, xDim, yDim)
-				this.name
-				this.path
-				this.extention
-				this.width
-				this.height
-				this.render()
-				this.show()
-				this.hide()
-				this.remove()
-			
-			rw.removeMap(map)
+			rw.ents
 
 			rw.ent(name, typeClass, sprites, spriteExt, width, height, heading)
 				this.name
@@ -273,6 +248,36 @@
 			rw.newEnt(ent, display, posX, posY)
 
 			rw.removeEnt(entNum)
+
+			rw.maps
+
+			rw.map(name, path, extention, xDim, yDim)
+				this.name
+				this.path
+				this.extention
+				this.width
+				this.height
+				this.render()
+				this.show()
+				this.hide()
+				this.remove()
+			
+			rw.removeMap(map)
+
+			rw.rules
+
+			rw.rule(active)
+				this.active
+
+			rw.removeRule(rule)
+
+			rw.init(dimX, dimY)
+
+			rw.start()
+
+			rw.stop()
+
+			rw.run()
 
 		Custom Ent Constructor minimum
 
