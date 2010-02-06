@@ -148,12 +148,13 @@ rw.ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
 	}
 }
 
-rw.newEnt = function(ent, display, posX, posY) {
+rw.newEnt = function(ent, display, posX, posY, posZ) {
 	var curLength = rw.ents.length;
 	rw.ents[curLength] = ent;
 	if (display==true) {
 		rw.ents[curLength].base.posX = posX;
 		rw.ents[curLength].base.posY = posY;
+		rw.ents[curLength].base.posZ = posZ;
 		rw.ents[curLength].base.display();
 	}
 	return this;
@@ -407,9 +408,18 @@ rw.run = function() {
 		if (toBeRemoved.length>0) {
 			toBeRemoved.sort(function(a,b){return a - b});
 			toBeRemoved.reverse();
-			for (var x=0;x<toBeRemoved.length;x++) {
-				rw.ents[toBeRemoved[x]].base.hide();
-				rw.removeEnt(toBeRemoved[x]);
+			var killThese = [];
+			o:for(var x=0; x<toBeRemoved.length; x++) {
+	  			for(var y=0; y<killThese.length; y++) {
+					if (killThese[y]==toBeRemoved[x]) {
+						continue o;
+					}
+				}
+				killThese[killThese.length] = toBeRemoved[x];
+			}
+			for (var x=0;x<killThese.length;x++) {
+				rw.ents[killThese[x]].base.hide();
+				rw.removeEnt(killThese[x]);
 			}
 		}
 	}
@@ -423,6 +433,9 @@ rw.run = function() {
 	// Run Through all ents and update position
 	for (var x=0; x<rw.ents.length; x++) {
 		if (rw.ents[x].base.active==true) {
+			rw.ents[x].base.posX += rw.ents[x].base.velX;
+			rw.ents[x].base.posY += rw.ents[x].base.velY;
+			rw.ents[x].base.posZ += rw.ents[x].base.velZ;
 			var entDiv = document.getElementById('ent_'+rw.ents[x].base.name);
 			entDiv.style.left = rw.ents[x].base.posX+'px';
 			entDiv.style.top = rw.ents[x].base.posY+'px';

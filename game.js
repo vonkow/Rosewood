@@ -83,13 +83,11 @@ var badguy = function(name) {
 	this.speed = 5;
 	this.ticker = 0;
 	this.update = function() {
-		this.base.posZ = this.base.posY+32;
 		if (this.base.heading == 'r') {
 			if (this.ticker < 39) {
 				this.ticker++;
 				this.base.velX = this.speed;
 				this.base.moving = true;
-				this.base.posX += this.base.velX;
 			} else {
 				this.base.velX = 0;
 				this.base.heading = 'l';
@@ -100,7 +98,6 @@ var badguy = function(name) {
 				this.ticker--;
 				this.base.velX = -this.speed;
 				this.base.moving = true;
-				this.base.posX += this.base.velX;
 			} else {
 				this.base.velX = 0;
 				this.base.heading = 'r';
@@ -159,10 +156,7 @@ var bman = function(name, typeClass, heading) {
 		if (rw.keys.da==true) {
 			this.base.velY += this.maxSpeed;
 		}
-		this.base.posX = this.base.posX+this.base.velX;
-		this.base.posY = this.base.posY+this.base.velY;
-		//For Now
-		this.base.posZ = this.base.posY+32;
+		this.base.velZ = this.base.velY;
 	}
 	// THis will be the funct that calls the new this.base.changeSprite();
 	// heading and moving will possible be split into seperate functions
@@ -262,15 +256,15 @@ function startGame() {
 	rw.init(600, 600).tilesOn(20, 20);
 	rw.newMap('map1', 'map2', 'jpg', 1200, 600, true);
 	rw.newRule('rule1', new endGameRule(true)).newRule('rule2', new mapRule());
-	rw.newEnt(new badguy('baddie_1'), true, 200, 100);
-	rw.newEnt(new badguy('baddie_2'), true, 150, 200);
-	rw.newEnt(new badguy('baddie_3'), true, 100, 400);
-	rw.newEnt(new badguy('baddie_4'), true, 50, 500);
-	rw.newEnt(new bman('Goon0', 'bman', 'u'), true, 50, 50);
-	rw.newEnt(new  Wall('tWall1', 'tWall', 99, 1), true, 251, 250);
-	rw.newEnt(new  Wall('rWall1', 'rWall', 1, 99), true, 350, 251);
-	rw.newEnt(new  Wall('lWall1', 'lWall', 1, 99), true, 250, 250);
-	rw.newEnt(new  Wall('dWall1', 'dWall', 99, 1), true, 250, 350).start();
+	rw.newEnt(new badguy('baddie_1'), true, 200, 100, 132);
+	rw.newEnt(new badguy('baddie_2'), true, 150, 200, 232);
+	rw.newEnt(new badguy('baddie_3'), true, 100, 400, 432);
+	rw.newEnt(new badguy('baddie_4'), true, 50, 500, 432);
+	rw.newEnt(new bman('Goon0', 'bman', 'u'), true, 50, 50, 82);
+	rw.newEnt(new  Wall('tWall1', 'tWall', 99, 1), true, 251, 250, 0);
+	rw.newEnt(new  Wall('rWall1', 'rWall', 1, 99), true, 350, 251, 0);
+	rw.newEnt(new  Wall('lWall1', 'lWall', 1, 99), true, 250, 250, 0);
+	rw.newEnt(new  Wall('dWall1', 'dWall', 99, 1), true, 250, 350, 0).start();
 	/* Uncomment and put before start() for stress test 
 	rw.newEnt(new bman('Goon1', 'bman', 'u'), true, 51, 51);
 	rw.newEnt(new bman('Goon2', 'bman', 'u'), true, 52, 52);
