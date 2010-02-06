@@ -15,6 +15,10 @@ rw.globT = 0;
 // Golbal gameboard dimensions
 rw.Xdim = 0;
 rw.Ydim = 0;
+// Inline function call function
+rw.call = function() {
+	return this;
+}
 // Game speed settings
 rw.speed = 50;
 rw.setFPS = function(fps) {

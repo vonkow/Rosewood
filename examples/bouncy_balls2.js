@@ -47,6 +47,23 @@ var ball = function(name, dirX, dirY) {
 				this.dirY = 'u';
 				this.base.velY = rw.Ydim-(this.base.posY+this.base.height);
 				break;
+			case 'ball':
+				if (this.hit==false) {
+					if (this.dirX=='r') {
+						this.dirX = 'l';
+					} else {
+						this.dirX = 'r';
+					}
+					if (this.dirY=='u') {
+						this.dirY = 'd';
+					} else {
+						this.dirY = 'u';
+					}
+					this.base.velX = -this.base.velX;
+					this.base.velY = -this.base.velY;
+					this.hit = true;
+				}
+				break;
 		}
 	}
 }
@@ -64,6 +81,6 @@ function startGame() {
 	.newEnt(new  Wall('rWall', 'rWall', 1, 599), true, 600, 0, 0)
 	.newEnt(new  Wall('lWall', 'lWall', 1, 599), true, 0, 1, 0)
 	.newEnt(new  Wall('bWall', 'bWall', 599, 1), true, 1, 600, 0)
-	.call(alert('Bouncy Ball Test'))
+	.call(alert('Bouncy Ball Test 2'))
 	.start();
 }
