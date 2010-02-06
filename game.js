@@ -185,7 +185,7 @@ var bman = function(name, typeClass, heading) {
 	}
 }
 
-function newRule(active) {
+function endGameRule(active) {
 	this.base = new rw.rule(true);
 	this.dead = false;
 	this.rule = function() {
@@ -203,14 +203,14 @@ function mapRule() {
 		if (this.forward==true) {
 			if (this.currentOffset>-600) {
 				this.currentOffset--;
-				rw.maps['map2'].base.offset(-1, 0);
+				rw.maps['map1'].offset(-1, 0);
 			} else {
 				this.forward = false;
 			}
 		} else {
 			if (this.currentOffset<0) {
 				this.currentOffset++;
-				rw.maps['map2'].base.offset(1, 0);
+				rw.maps['map1'].offset(1, 0);
 			} else {
 				this.forward = true;
 			}
@@ -218,29 +218,20 @@ function mapRule() {
 	}
 }
 
-function newMap(name, ext) {
-	this.base = new rw.map(name, name, ext, 1200, 600);
-}
-
 // Begin Game Function
 function startGame() {
-	rw.init(600, 600);
-	rw.tilesOn(20, 20);
-	rw.maps['map2'] = new newMap('map2', 'jpg');
-	rw.maps['map2'].base.render();
-	rw.rules['rule1'] = new newRule(true);
-	rw.rules['rule2'] = new mapRule(true);
-
+	rw.init(600, 600).tilesOn(20, 20);
+	rw.newMap('map1', 'map2', 'jpg', 1200, 600, true);
+	rw.newRule('rule1', new endGameRule(true)).newRule('rule2', new mapRule());
 	rw.newEnt(new bman('Goon0', 'bman', 'u'), true, 50, 50);
-	/* Uncomment for stress test 
+	rw.newEnt(new  Wall('tWall1', 'tWall', 99, 1), true, 251, 250);
+	rw.newEnt(new  Wall('rWall1', 'rWall', 1, 99), true, 350, 251);
+	rw.newEnt(new  Wall('lWall1', 'lWall', 1, 99), true, 250, 250);
+	rw.newEnt(new  Wall('dWall1', 'dWall', 99, 1), true, 250, 350).start();
+	/* Uncomment and put before start() for stress test 
 	rw.newEnt(new bman('Goon1', 'bman', 'u'), true, 51, 51);
 	rw.newEnt(new bman('Goon2', 'bman', 'u'), true, 52, 52);
 	rw.newEnt(new bman('Goon3', 'bman', 'u'), true, 53, 53);
 	rw.newEnt(new bman('Goon4', 'bman', 'u'), true, 54, 54);
 	End stress test */
-	rw.newEnt(new  Wall('tWall1', 'tWall', 99, 1), true, 251, 250);
-	rw.newEnt(new  Wall('rWall1', 'rWall', 1, 99), true, 350, 251);
-	rw.newEnt(new  Wall('lWall1', 'lWall', 1, 99), true, 250, 250);
-	rw.newEnt(new  Wall('dWall1', 'dWall', 99, 1), true, 250, 350);
-	rw.start();
 }

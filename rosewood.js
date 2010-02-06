@@ -25,11 +25,13 @@ rw.tilesOn = function(xDim, yDim) {
 	rw.tiles = true;
 	rw.tileX = xDim;
 	rw.tileY = yDim;
+	return this;
 }
 rw.tilesOff = function() {
 	rw.tiles = false;
 	rw.tileX = 0;
 	rw.tileY = 0;
+	return this;
 }
 //KeyDown/Up settings
 rw.keyChange = false; 
@@ -154,10 +156,12 @@ rw.newEnt = function(ent, display, posX, posY) {
 		rw.ents[curLength].base.posY = posY;
 		rw.ents[curLength].base.display();
 	}
+	return this;
 }
 
 rw.removeEnt = function(entNum) {
-	rw.ents.splice(entNum, 1)
+	rw.ents.splice(entNum, 1);
+	return this;
 }
 // Map Entities
 rw.maps = {}; 
@@ -218,6 +222,13 @@ rw.map = function(name, path, extention, xDim, yDim) {
 	}
 
 }
+rw.newMap = function(name, map, ext, dimX, dimY, render) {
+	rw.maps[name] = new rw.map(map, map, ext, dimX, dimY);
+	if (render==true) {
+		rw.maps[name].render();
+	}
+	return this;
+}
 rw.removeMap = function(map) {
 	if (rw.maps[map]) {
 		delete rw.maps[map];
@@ -225,11 +236,16 @@ rw.removeMap = function(map) {
 	} else {
 		return false;
 	}
+	return this;
 }
 // Rule Entities
 rw.rules = {};
 rw.rule = function(active) {
 	this.active = active;
+}
+rw.newRule = function(name, rule) {
+	rw.rules[name] = rule;
+	return this;
 }
 rw.removeRule = function(rule) {
 	if (rw.rules[rule]) {
@@ -238,6 +254,7 @@ rw.removeRule = function(rule) {
 	} else {
 		return false;
 	}
+	return this;
 }
 // Initilization Function
 rw.init = function(dimX, dimY) {
@@ -255,16 +272,19 @@ rw.init = function(dimX, dimY) {
 	document.onkeyup=rw.keyUp;
 	// This hides the mouse, set as option
 	document.getElementById('board').style.cursor="url(sprites/blank.cur), wait";
+	return this;
 }
 // Start FUnction
 rw.start = function() {
 	rw.curT = setTimeout('rw.run()', this.speed);
+	return this;
 }
 // Stop Function
 rw.stop = function() {
 	clearTimeout(rw.curT);
 	rw.globT = rw.globT+rw.curT;
 	rw.curT = 0;
+	return this;
 }
 // RunLoop Function
 rw.run = function() {
