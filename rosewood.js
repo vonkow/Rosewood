@@ -12,6 +12,9 @@ rw.runGame = true;
 rw.curT = 0; 
 // RunLoop global Timer
 rw.globT = 0; 
+// Golbal gameboard dimensions
+rw.Xdim = 0;
+rw.Ydim = 0;
 // Game speed settings
 rw.speed = 50;
 rw.setFPS = function(fps) {
@@ -261,6 +264,8 @@ rw.removeRule = function(rule) {
 rw.init = function(dimX, dimY) {
 	var board = document.createElement('div');
 	board.id = 'board';
+	this.Xdim = dimX;
+	this.Ydim = dimY;
 	board.style.width = dimX+'px';
 	board.style.height = dimY+'px';
 	board.style.overflow = 'hidden';

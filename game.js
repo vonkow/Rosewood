@@ -1,7 +1,6 @@
 var Wall = function(name, wallType, xDim, yDim) {
 	this.base = new rw.ent(name, wallType, ' ', ' ', xDim, yDim, 'l');
 	this.update = function() {};
-
 }
 
 var blast = function(name, typeClass, heading, tail) {
@@ -188,7 +187,6 @@ var bman = function(name, typeClass, heading) {
 			this.base.changeSprite(this.base.heading);
 		}
 	}
-	//NEW COLLISION TEST FUNCTION
 	this.iGotHit = function(by) {
 		if ((by=='blast')||(by=='baddie')) {
 			rw.rules['rule1'].dead = true;
@@ -253,18 +251,20 @@ function mapRule() {
 
 // Begin Game Function
 function startGame() {
-	rw.init(600, 600).tilesOn(20, 20);
-	rw.newMap('map1', 'map2', 'jpg', 1200, 600, true);
-	rw.newRule('rule1', new endGameRule(true)).newRule('rule2', new mapRule());
-	rw.newEnt(new badguy('baddie_1'), true, 200, 100, 132);
-	rw.newEnt(new badguy('baddie_2'), true, 150, 200, 232);
-	rw.newEnt(new badguy('baddie_3'), true, 100, 400, 432);
-	rw.newEnt(new badguy('baddie_4'), true, 50, 500, 432);
-	rw.newEnt(new bman('Goon0', 'bman', 'u'), true, 50, 50, 82);
-	rw.newEnt(new  Wall('tWall1', 'tWall', 99, 1), true, 251, 250, 0);
-	rw.newEnt(new  Wall('rWall1', 'rWall', 1, 99), true, 350, 251, 0);
-	rw.newEnt(new  Wall('lWall1', 'lWall', 1, 99), true, 250, 250, 0);
-	rw.newEnt(new  Wall('dWall1', 'dWall', 99, 1), true, 250, 350, 0).start();
+	rw.init(600, 600).tilesOn(20, 20)
+	.newMap('map1', 'map2', 'jpg', 1200, 600, true)
+	.newRule('rule1', new endGameRule(true))
+	.newRule('rule2', new mapRule())
+	.newEnt(new badguy('baddie_1'), true, 200, 100, 132)
+	.newEnt(new badguy('baddie_2'), true, 150, 200, 232)
+	.newEnt(new badguy('baddie_3'), true, 100, 400, 432)
+	.newEnt(new badguy('baddie_4'), true, 50, 500, 532)
+	.newEnt(new bman('Goon0', 'bman', 'u'), true, 50, 50, 82)
+	.newEnt(new  Wall('tWall1', 'tWall', 99, 1), true, 251, 250, 0)
+	.newEnt(new  Wall('rWall1', 'rWall', 1, 99), true, 350, 251, 0)
+	.newEnt(new  Wall('lWall1', 'lWall', 1, 99), true, 250, 250, 0)
+	.newEnt(new  Wall('dWall1', 'dWall', 99, 1), true, 250, 350, 0)
+	.start();
 	/* Uncomment and put before start() for stress test 
 	rw.newEnt(new bman('Goon1', 'bman', 'u'), true, 51, 51);
 	rw.newEnt(new bman('Goon2', 'bman', 'u'), true, 52, 52);
