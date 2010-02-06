@@ -8,8 +8,10 @@ var ball = function(name, dirX, dirY) {
 	this.dirX = dirX;
 	this.dirY = dirY;
 	this.speed = 5;
+	this.hit = false;
 	this.update = function() {
 		this.base.moving = true;
+		this.hit = false;
 		switch (this.dirX) {
 			case 'r':
 				this.base.velX = this.speed;
@@ -44,6 +46,23 @@ var ball = function(name, dirX, dirY) {
 			case 'bWall':
 				this.dirY = 'u';
 				this.base.velY = rw.Ydim-(this.base.posY+this.base.height);
+				break;
+			case 'ball':
+				if (this.hit==false) {
+					if (this.dirX=='r') {
+						this.dirX = 'l';
+					} else {
+						this.dirX = 'r';
+					}
+					if (this.dirY=='u') {
+						this.dirY = 'd';
+					} else {
+						this.dirY = 'u';
+					}
+					this.base.velX = -this.base.velX;
+					this.base.velY = -this.base.velY;
+					this.hit = true;
+				}
 				break;
 		}
 	}
