@@ -11,6 +11,7 @@ var blast = function(name, typeClass, heading, tail) {
 	this.base = new rw.ent(name, typeClass, 'blast', 'gif', 40, 32, heading);
 	this.countdown = 25;
 	this.update = function() {
+		this.base.posZ = this.base.posY;
 		this.countdown -= 1;
 		if (this.countdown<=0) {
 			this.base.hide();
@@ -24,6 +25,7 @@ var bomb = function(name, typeClass) {
 	this.blastSize = 2;
 	this.update = function() {
 		if (this.countdown == 150) {
+			this.base.posZ = this.base.posY;
 			this.base.changeSprite('2');
 		} else if (this.countdown == 125) {
 			this.base.changeSprite('1');
@@ -76,6 +78,43 @@ var bomb = function(name, typeClass) {
 		}
 	}
 }
+var badguy = function(name) {
+	this.base = new rw.ent(name, 'baddie', 'bman', 'gif', 40, 64, 'l');
+	this.speed = 5;
+	this.ticker = 0;
+	this.update = function() {
+		this.base.posZ = this.base.posY+32;
+		if (this.base.heading == 'r') {
+			if (this.ticker < 39) {
+				this.ticker++;
+				this.base.velX = this.speed;
+				this.base.moving = true;
+				this.base.posX += this.base.velX;
+			} else {
+				this.base.velX = 0;
+				this.base.heading = 'l';
+				this.base.changeSprite('Wl');
+			}
+		} else {
+			if (this.ticker > 0) {
+				this.ticker--;
+				this.base.velX = -this.speed;
+				this.base.moving = true;
+				this.base.posX += this.base.velX;
+			} else {
+				this.base.velX = 0;
+				this.base.heading = 'r';
+				this.base.changeSprite('Wr');
+			}
+		}
+	}
+	this.iGotHit = function(by) {
+		if (by=='blast') {
+			this.base.hide();
+			return false;
+		}
+	}
+}
 // Custom Game Entity (calls rw.ent for this.base, requires this.update function)
 var bman = function(name, typeClass, heading) {
 	this.base = new rw.ent(name, typeClass, 'bman', 'gif', 40, 64, heading);
@@ -123,7 +162,7 @@ var bman = function(name, typeClass, heading) {
 		this.base.posX = this.base.posX+this.base.velX;
 		this.base.posY = this.base.posY+this.base.velY;
 		//For Now
-		this.base.posZ = this.base.posY;
+		this.base.posZ = this.base.posY+32;
 	}
 	// THis will be the funct that calls the new this.base.changeSprite();
 	// heading and moving will possible be split into seperate functions
@@ -157,7 +196,7 @@ var bman = function(name, typeClass, heading) {
 	}
 	//NEW COLLISION TEST FUNCTION
 	this.iGotHit = function(by) {
-		if (by=='blast') {
+		if ((by=='blast')||(by=='baddie')) {
 			rw.rules['rule1'].dead = true;
 			this.base.hide();
 			return false;
@@ -223,6 +262,10 @@ function startGame() {
 	rw.init(600, 600).tilesOn(20, 20);
 	rw.newMap('map1', 'map2', 'jpg', 1200, 600, true);
 	rw.newRule('rule1', new endGameRule(true)).newRule('rule2', new mapRule());
+	rw.newEnt(new badguy('baddie_1'), true, 200, 100);
+	rw.newEnt(new badguy('baddie_2'), true, 150, 200);
+	rw.newEnt(new badguy('baddie_3'), true, 100, 400);
+	rw.newEnt(new badguy('baddie_4'), true, 50, 500);
 	rw.newEnt(new bman('Goon0', 'bman', 'u'), true, 50, 50);
 	rw.newEnt(new  Wall('tWall1', 'tWall', 99, 1), true, 251, 250);
 	rw.newEnt(new  Wall('rWall1', 'rWall', 1, 99), true, 350, 251);
