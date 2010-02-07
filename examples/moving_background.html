@@ -7,6 +7,10 @@
 		<script type="text/javascript">
 			startGame();
 		</script>
+		<input type="button" value="start" onclick="rw.runGame=true;rw.start();">
+		&nbsp;
+		<input type="button" value="stop" onclick="rw.runGame=false;">
+		<br>
 		Change FPS
 		<input name="fps" id="fps" type="text" value="20" onchange="rw.setFPS(document.getElementById('fps').value);">
 	</body>
