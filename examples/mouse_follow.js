@@ -1,35 +1,35 @@
 
 var ball = function(name) {
 	this.base = new rw.ent(name, 'ball', 'ball', 'png', 40, 40, 'ball');
-	this.update = function() {
+	this.update = function(x1, x2, y1, y2) {
 		this.base.velX = 0;
 		this.base.velY = 0;
-		if (this.base.posX2()<rw.Xdim) {
-			if (this.base.posX1()+5 < rw.mouse.x) {
+		if (x2<rw.Xdim) {
+			if (x1+5 < rw.mouse.x) {
 				this.base.velX = 5;
-			} else if (this.base.posX1() < rw.mouse.x) {
-				this.base.velX = rw.mouse.x-this.base.posX1();
+			} else if (x1 < rw.mouse.x) {
+				this.base.velX = rw.mouse.x-x1;
 			}
 		}
-		if (this.base.posX1()>0) {
-			if (this.base.posX1()-5 > rw.mouse.x) {
+		if (x1>0) {
+			if (x1-5 > rw.mouse.x) {
 				this.base.velX = -5;
-			} else if (this.base.posX1() > rw.mouse.x) {
-				this.base.velX = -(this.base.posX1()-rw.mouse.x);
+			} else if (x1 > rw.mouse.x) {
+				this.base.velX = -(x1-rw.mouse.x);
 			}
 		}
-		if (this.base.posY2()<rw.Ydim) {
-			if (this.base.posY1()+5 < rw.mouse.y) {
+		if (y2<rw.Ydim) {
+			if (y1+5 < rw.mouse.y) {
 				this.base.velY = 5;
-			} else if (this.base.posY1() < rw.mouse.y) {
-				this.base.velY = rw.mouse.y-this.base.posY1();
+			} else if (y1 < rw.mouse.y) {
+				this.base.velY = rw.mouse.y-y1;
 			}
 		}
-		if (this.base.posY1()>0) {
-			if (this.base.posY1()-5 > rw.mouse.y) {
+		if (y1>0) {
+			if (y1-5 > rw.mouse.y) {
 				this.base.velY = -5;
-			} else if (this.base.posY1() > rw.mouse.y) {
-				this.base.velY = -(this.base.posY1()-rw.mouse.y);
+			} else if (y1 > rw.mouse.y) {
+				this.base.velY = -(y1-rw.mouse.y);
 			}
 		}
 	};

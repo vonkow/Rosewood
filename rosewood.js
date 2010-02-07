@@ -314,14 +314,13 @@ rw.run = function() {
 	// FIX THIS SO IT'S LESS REPETITIVE CODE
 	if (rw.tiles==true) {
 		if (rw.keyChange==true) {
-			// Loop through ents and change graphics
 			for (var x=0; x<rw.ents.length; x++) {
 				if (rw.ents[x].base.active==true) {
 					rw.ents[x].base.tilePos();
 					if (rw.ents[x].keyChangeSprite) {
 						rw.ents[x].keyChangeSprite();
 					}
-					var currentSprite = rw.ents[x].update();
+					var currentSprite = rw.ents[x].update(rw.ents[x].base.posX1(), rw.ents[x].base.posX2(), rw.ents[x].base.posY1(), rw.ents[x].base.posY2());
 					if (currentSprite==false) {
 						rw.removeEnt(x);
 						x--;
@@ -335,7 +334,7 @@ rw.run = function() {
 			for(var x=0; x<rw.ents.length; x++) {
 				if (rw.ents[x].base.active==true) {
 					rw.ents[x].base.tilePos();
-					var currentSprite = rw.ents[x].update();
+					var currentSprite = rw.ents[x].update(rw.ents[x].base.posX1(), rw.ents[x].base.posX2(), rw.ents[x].base.posY1(), rw.ents[x].base.posY2());
 					if (currentSprite==false) {
 						rw.removeEnt(x);
 						x--;
@@ -347,13 +346,12 @@ rw.run = function() {
 		}
 	} else {
 		if (rw.keyChange==true) {
-			// Loop through ents and change graphics
 			for (var x=0; x<rw.ents.length; x++) {
 				if (rw.ents[x].base.active==true) {
 					if (rw.ents[x].keyChangeSprite) {
 						rw.ents[x].keyChangeSprite();
 					}
-					var currentSprite = rw.ents[x].update();
+					var currentSprite = rw.ents[x].update(rw.ents[x].base.posX1(), rw.ents[x].base.posX2(), rw.ents[x].base.posY1(), rw.ents[x].base.posY2());
 					if (currentSprite==false) {
 						rw.removeEnt(x);
 						x--;
@@ -366,7 +364,7 @@ rw.run = function() {
 		} else {
 			for(var x=0; x<rw.ents.length; x++) {
 				if (rw.ents[x].base.active==true) {
-					var currentSprite = rw.ents[x].update();
+					var currentSprite = rw.ents[x].update(rw.ents[x].base.posX1(), rw.ents[x].base.posX2(), rw.ents[x].base.posY1(), rw.ents[x].base.posY2());
 					if (currentSprite==false) {
 						rw.removeEnt(x);
 						x--;
