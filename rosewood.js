@@ -166,7 +166,6 @@ rw.ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
 		this.tileY = Math.floor(this.posY/rw.tileY);
 	}
 }
-
 rw.newEnt = function(ent, display, posX, posY, posZ) {
 	var curLength = rw.ents.length;
 	rw.ents[curLength] = ent;
@@ -178,7 +177,6 @@ rw.newEnt = function(ent, display, posX, posY, posZ) {
 	}
 	return this;
 }
-
 rw.removeEnt = function(entNum) {
 	rw.ents.splice(entNum, 1);
 	return this;
@@ -298,6 +296,7 @@ rw.init = function(dimX, dimY) {
 }
 // Start FUnction
 rw.start = function() {
+	rw.runGame = true;
 	rw.curT = setTimeout('rw.run()', this.speed);
 	return this;
 }
@@ -306,6 +305,7 @@ rw.stop = function() {
 	clearTimeout(rw.curT);
 	rw.globT = rw.globT+rw.curT;
 	rw.curT = 0;
+	rw.runGame = false;
 	return this;
 }
 // RunLoop Function
