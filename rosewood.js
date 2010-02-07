@@ -113,6 +113,18 @@ rw.ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
 	this.posX = 0;
 	this.posY = 0;
 	this.posZ = 0;
+	this.posX1 = function() {
+		return this.posX;
+	}
+	this.posY1 = function() {
+		return this.posY;
+	}
+	this.posX2 = function() {
+		return this.posX+this.width;
+	}
+	this.posY2 = function() {
+		return this.posY+this.height;
+	}
 	this.velX = 0;
 	this.velY = 0;
 	this.velZ = 0;
