@@ -292,12 +292,13 @@ rw.removeRule = function(rule) {
 	return this;
 }
 // Image pre-loader
+rw.preImg = new Image();
 rw.using = function(path, ext, imgArray) {
 	var len = imgArray.length;
-	var tempImg = document.createElement('div');
 	for (var x=0; x<len;x++) {
-		tempImg.style.backgroundImage = 'url(sprites/'+path+'/'+imgArray[x]+'.'+ext+')';
+		rw.preImg.src = 'sprites/'+path+'/'+imgArray[x]+'.'+ext;
 	}
+	rw.preImg.src = '';
 	return this;
 }
 // Initilization Function
