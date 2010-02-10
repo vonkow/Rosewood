@@ -477,7 +477,6 @@ rw.run = function() {
 				killThese[killThese.length] = toBeRemoved[x];
 			}
 			for (var x=0;x<killThese.length;x++) {
-				rw.ents[killThese[x]].base.hide();
 				rw.removeEnt(killThese[x]);
 			}
 		}
