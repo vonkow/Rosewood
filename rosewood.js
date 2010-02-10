@@ -291,6 +291,15 @@ rw.removeRule = function(rule) {
 	}
 	return this;
 }
+// Image pre-loader
+rw.using = function(path, ext, imgArray) {
+	var len = imgArray.length;
+	var tempImg = document.createElement('div');
+	for (var x=0; x<len;x++) {
+		tempImg.style.backgroundImage = 'url(sprites/'+path+'/'+imgArray[x]+'.'+ext+')';
+	}
+	return this;
+}
 // Initilization Function
 rw.init = function(dimX, dimY) {
 	var board = document.createElement('div');

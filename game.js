@@ -251,7 +251,11 @@ function mapRule() {
 
 // Begin Game Function
 function startGame() {
-	rw.init(600, 600).tilesOn(20, 20)
+	rw.using('bman','gif', ['u','d','l','r','Wu','Wd','Wl','Wr'])
+	.using('blast','gif',['c','u','d','l','r','uT','dT','lT','rT'])
+	.using('bomb','gif',['1','2','3'])
+	.using('maps/map2','jpg',['map2'])
+	.init(600, 600).tilesOn(20, 20)
 	.newMap('map1', 'map2', 'jpg', 1200, 600, true)
 	.newRule('rule1', new endGameRule(true))
 	.newRule('rule2', new mapRule())
