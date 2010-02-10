@@ -249,6 +249,11 @@ function mapRule() {
 	}
 }
 
+// Ajax Function
+var addGuy = function(resp) {
+	rw.newEnt(new badguy(resp.name), resp.display, resp.posX, resp.posY, resp.posZ);
+}
+
 // Begin Game Function
 function startGame() {
 	rw.using('bman','gif', ['u','d','l','r','Wu','Wd','Wl','Wr'])
@@ -268,7 +273,8 @@ function startGame() {
 	.newEnt(new  Wall('rWall1', 'rWall', 1, 99), true, 350, 251, 0)
 	.newEnt(new  Wall('lWall1', 'lWall', 1, 99), true, 250, 250, 0)
 	.newEnt(new  Wall('dWall1', 'dWall', 99, 1), true, 250, 350, 0)
-	.start();
+	.start()
+	.ajax('ajaxtest.json', 'addGuy');
 	/* Uncomment and put before start() for stress test 
 	rw.newEnt(new bman('Goon1', 'bman', 'u'), true, 51, 51);
 	rw.newEnt(new bman('Goon2', 'bman', 'u'), true, 52, 52);

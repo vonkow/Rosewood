@@ -291,6 +291,19 @@ rw.removeRule = function(rule) {
 	}
 	return this;
 }
+// Ajax function, durr
+rw.ajax = function(targ, func) {
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET",targ,true);
+	xhr.overrideMimeType("application/json");
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState==4) {
+			var resp = eval('('+xhr.responseText+')');
+			eval(func+'(resp)');
+		}
+	}
+	xhr.send(null);
+}
 // Image pre-loader
 rw.preImg = new Image();
 rw.using = function(path, ext, imgArray) {
