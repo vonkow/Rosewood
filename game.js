@@ -269,6 +269,7 @@ function startGame() {
 	.newEnt(new  Wall('lWall1', 'lWall', 1, 99), true, 250, 250, 0)
 	.newEnt(new  Wall('dWall1', 'dWall', 99, 1), true, 250, 350, 0)
 	.start();
+	//ajax();
 	/* Uncomment and put before start() for stress test 
 	rw.newEnt(new bman('Goon1', 'bman', 'u'), true, 51, 51);
 	rw.newEnt(new bman('Goon2', 'bman', 'u'), true, 52, 52);
