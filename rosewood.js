@@ -1,6 +1,4 @@
 //////// TO-DO ////////
-// Preload Images while showing user defined load screen
-// Sound support
 // Integrate good parts of old rw, bring back rw.state?
 // finish implementing keyChangeSprite for less ent sprite code
 
@@ -94,12 +92,31 @@ rw.keyUp = function(e) {
 // Mouse Position settings
 rw.mouse = {
 	x: 0,
-	y: 0
+	y: 0,
+	down : false
 };
 rw.mousePos = function(e) {
-	// THIS IS WHY WE CAN'T HAVE PRETTY THINGS IE!!!
-	rw.mouse.x = (e) ? e.pageX : window.event.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); 
-	rw.mouse.y = (e) ? e.pageY : window.event.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight); 
+	if (!e) {
+		// THIS IS WHY WE CAN'T HAVE PRETTY THINGS IE!!!
+		var e = window.event;
+		rw.mouse.x = e.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+		rw.mouse.y = e.clientY+(document.documentElement.scrollLeft ? document.documentElement.scrollDown : document.body.scrollDown);
+	} else {
+		rw.mouse.x = e.pageX;
+		rw.mouse.y = e.pageY;
+	}
+	// OLD METHOD, LEAVE TIL TESTED ON IE
+	//rw.mouse.x = (e) ? e.pageX : window.event.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); 
+	//rw.mouse.y = (e) ? e.pageY : window.event.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight); 
+}
+rw.mouseDown = function(e) {
+	if (!e) var e = window.event;
+	rw.mouse.down = true;
+}
+rw.mouseUp = function(e) {
+	if (!e) var e = window.event;
+	rw.mouse.down = false;
+
 }
 // Game Entities
 rw.ents = []; 
@@ -285,9 +302,9 @@ rw.init = function(dimX, dimY) {
 	board.style.overflow = 'hidden';
 	board.style.border = '1px solid black';
 	document.getElementsByTagName('body')[0].appendChild(board);
-	// Mousemove object, maybe eval during runloop and not onmousemve
 	document.onmousemove = rw.mousePos;
-	// Keydown/up event listeners
+	document.onmousedown = rw.mouseDown;
+	document.onmouseup = rw.mouseUp;
 	document.onkeydown=rw.keyDown;
 	document.onkeyup=rw.keyUp;
 	// This hides the mouse, set as option
