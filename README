@@ -1,0 +1,18 @@
+The Rosewood Gaming Engine
+For all your browser-based gaming needs, without the flash.
+
+Open rwtest.html or one of the examples in a browser to see a little of what it can do.
+
+All the game logic for rwtest.html is in game.js, check it out.
+
+Read docs.html for info (well, not much at the moment, sometimes it's hard to believe that I'm the child of a Technical Writer)
+
+The engine is in the aptly titled rosewood.js file, if you feel like tinkering.
+
+The biggest goal of Rosewood, aside from becoming the best 2d javascript gaming engine out there, is eventual support for multiplayer features, using node.js or something of the like.
+
+Feel free to drop me a line if you want to contribute or whatnot.
+
+Enjoy!
+
+-Caz
