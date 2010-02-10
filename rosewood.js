@@ -469,7 +469,6 @@ rw.run = function() {
 			}
 		}
 	}
-
 	// Run Through all rules;
 	for (var x in rw.rules) {
 		if (rw.rules[x].base.active==true) {
