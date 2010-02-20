@@ -14,7 +14,7 @@ rw.globT = 0;
 rw.Xdim = 0;
 rw.Ydim = 0;
 // Inline function call function
-rw.call = function() {
+rw.func = function() {
 	return this;
 }
 // Game speed settings
@@ -100,7 +100,7 @@ rw.mousePos = function(e) {
 		// THIS IS WHY WE CAN'T HAVE PRETTY THINGS IE!!!
 		var e = window.event;
 		rw.mouse.x = e.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-		rw.mouse.y = e.clientY+(document.documentElement.scrollLeft ? document.documentElement.scrollDown : document.body.scrollDown);
+		rw.mouse.y = e.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight);
 	} else {
 		rw.mouse.x = e.pageX;
 		rw.mouse.y = e.pageY;

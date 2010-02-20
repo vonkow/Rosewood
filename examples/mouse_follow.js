@@ -38,6 +38,6 @@ var ball = function(name) {
 function startGame() {
 	rw.init(600, 600)
 	.newEnt(new ball('ball_1'), true, 280, 280, 50)
-	.call(alert('Mouse Follow Test'))
+	.func(alert('Mouse Follow Test'))
 	.start();
 }

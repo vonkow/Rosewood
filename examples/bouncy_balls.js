@@ -64,6 +64,6 @@ function startGame() {
 	.newEnt(new  Wall('rWall', 'rWall', 1, 599), true, 600, 0, 0)
 	.newEnt(new  Wall('lWall', 'lWall', 1, 599), true, 0, 1, 0)
 	.newEnt(new  Wall('bWall', 'bWall', 599, 1), true, 1, 600, 0)
-	.call(alert('Bouncy Ball Test'))
+	.func(alert('Bouncy Ball Test'))
 	.start();
 }
