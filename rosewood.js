@@ -1,11 +1,13 @@
 //////// TO-DO ////////
 // Integrate good parts of old rw, bring back rw.state?
-// finish implementing keyChangeSprite for less ent sprite code
+// finish implementing keyChangeSprite for less ent sprite code, also, rename to keyChange
+// Function for setting/unsetting used keys
+// Add Inactive function for ents
 
 // The Rosewood Object
 var rw = {}; 
 // RunLoop or stop
-rw.runGame = true; 
+rw.runGame = false; 
 // RunLoop current Timer
 rw.curT = 0; 
 // RunLoop global Timer
@@ -39,6 +41,7 @@ rw.tilesOff = function() {
 	return this;
 }
 //KeyDown/Up settings
+// Obviously not done
 rw.keyChange = false; 
 rw.keys = {
 	sp: false,
@@ -314,10 +317,13 @@ rw.using = function(path, ext, imgArray) {
 	rw.preImg.src = '';
 	return this;
 }
+// Changes Cursor
 rw.changeCursor = function(cursor) {
 	document.getElementById('board').style.cursor="url(sprites/"+cursor+"), wait";
 	return this;
 }
+// Wipe Functions
+// Removes all children of the board
 rw.wipeBoard = function() {
 	var board = document.getElementById('board');
 	var total = board.childNodes.length;
@@ -358,7 +364,6 @@ rw.init = function(dimX, dimY) {
 	document.onmouseup = rw.mouseUp;
 	document.onkeydown=rw.keyDown;
 	document.onkeyup=rw.keyUp;
-	// This hides the mouse, set as option
 	return this;
 }
 // Start FUnction

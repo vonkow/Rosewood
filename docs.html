@@ -193,7 +193,7 @@
 				rw.Ydim
 			</li>
 			<li>
-				rw.call(function)
+				rw.func(function)
 			</li>
 			<li>
 				rw.curT
@@ -261,7 +261,7 @@
 				rw.ents
 			</li>
 			<li>
-				rw.ent(name, typeClass, sprites, spriteExt, width, height, heading)
+				rw.ent(name, typeClass, sprites, spriteExt, width, height)
 				<ul>
 					<li>this.name</li>
 					<li>this.typeClass</li>
@@ -281,17 +281,15 @@
 					<li>this.velZ</li>
 					<li>this.tileX</li>
 					<li>this.tileY</li>
-					<li>this.heading</li>
-					<li>this.moving</li>
 					<li>this.active</li>
-					<li>this.display()</li>
+					<li>this.display(graphic)</li>
 					<li>this.hide()</li>
 					<li>this.changeSprite(spriteName)</li>
 					<li>this.tilePos()</li>
 				</ul>
 			</li>
 			<li>
-				rw.newEnt(ent, display, posX, posY)
+				rw.newEnt(ent, display, posX, posY posZ)
 			</li>
 			<li>
 				rw.removeEnt(entNum)
@@ -346,6 +344,24 @@
 			<li>
 				rw.using(path, ext, imgArray)
 			</li>
+				rw.changeCursor(cursor)
+			<li>
+			</li>
+				rw.wipeBoard()
+			<li>
+			</li>
+			<li>
+				rw.wipeEnts()
+			</li>
+			<li>
+				rw.wipeMaps()
+			</li>
+			<li>
+				rw.wipeRules()
+			</li>
+			<li>
+				rw.wipeAll()
+			</li>
 			<li>
 				rw.init(dimX, dimY)
 			</li>
@@ -363,7 +379,7 @@
 		Custom Ent Constructor minimum
 		<br>
 		&nbsp;&nbsp;&nbsp;var ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {<br>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.base = new rw.ent(name, typeClass, sprites, spriteExt, width, height, heading);<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.base = new rw.ent(name, typeClass, sprites, spriteExt, width, height);<br>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.update = function(x1, x2, y1, y2) {};<br>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.keyChangeSprite = function() {}; //Optional<br>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.iGotHit = function() {}; //Optional<br>
