@@ -48,24 +48,24 @@ var bomb = function(name, typeClass) {
 			rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'c');
 			rw.ents[tempLen].base.posX = tPos[0];
 			rw.ents[tempLen].base.posY = tPos[1];
-			rw.ents[tempLen].base.display();
+			rw.ents[tempLen].base.display('c');
 			for (var x=0;x<this.blastSize;x++) {
 				tPos[1] -= this.base.height;
 				lPos[0] += this.base.width;
 				bPos[1] += this.base.height;
 				rPos[0] -= this.base.width;
 				var tempLen = rw.ents.length;
-				var tail = false;
+				var tail = '';
 				if (x+1==this.blastSize) {
-					tail = true;
+					tail = 'T';
 				}
-				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'u', tail), true, tPos[0], tPos[1]);
+				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'u', tail), 'u'+tail, tPos[0], tPos[1]);
 				tempLen = rw.ents.length;
-				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'l', tail), true, lPos[0], lPos[1]);
+				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'l', tail), 'l'+tail, lPos[0], lPos[1]);
 				tempLen = rw.ents.length;
-				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'd', tail), true, bPos[0], bPos[1]);
+				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'd', tail), 'd'+tail, bPos[0], bPos[1]);
 				tempLen = rw.ents.length;
-				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'r', tail), true, rPos[0], rPos[1]);
+				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'r', tail), 'r'+tail, rPos[0], rPos[1]);
 			}
 			this.base.hide();
 			return false;
@@ -139,7 +139,7 @@ var bman = function(name, typeClass, heading) {
 					this.bombCooldown = 0;
 					this.bombs[this.bombs.length] = 150;
 					var tempLen = rw.ents.length;
-					rw.newEnt(new bomb('bomb'+tempLen, 'bomb'), true, this.base.posX, this.base.posY+32);
+					rw.newEnt(new bomb('bomb'+tempLen, 'bomb'), '1', this.base.posX, this.base.posY+32);
 				}
 			}
 		}
@@ -264,15 +264,15 @@ function startGame() {
 	.newMap('map1', 'map2', 'jpg', 1200, 600, true)
 	.newRule('rule1', new endGameRule(true))
 	.newRule('rule2', new mapRule())
-	.newEnt(new badguy('baddie_1'), true, 200, 100, 132)
-	.newEnt(new badguy('baddie_2'), true, 150, 200, 232)
-	.newEnt(new badguy('baddie_3'), true, 100, 400, 432)
-	.newEnt(new badguy('baddie_4'), true, 50, 500, 532)
-	.newEnt(new bman('Goon0', 'bman', 'u'), true, 50, 50, 82)
-	.newEnt(new  Wall('tWall1', 'tWall', 99, 1), true, 251, 250, 0)
-	.newEnt(new  Wall('rWall1', 'rWall', 1, 99), true, 350, 251, 0)
-	.newEnt(new  Wall('lWall1', 'lWall', 1, 99), true, 250, 250, 0)
-	.newEnt(new  Wall('dWall1', 'dWall', 99, 1), true, 250, 350, 0)
+	.newEnt(new badguy('baddie_1'), 'Wr', 200, 100, 132)
+	.newEnt(new badguy('baddie_2'), 'Wr', 150, 200, 232)
+	.newEnt(new badguy('baddie_3'), 'Wr', 100, 400, 432)
+	.newEnt(new badguy('baddie_4'), 'Wr', 50, 500, 532)
+	.newEnt(new bman('Goon0', 'bman', 'u'), 'u', 50, 50, 82)
+	.newEnt(new  Wall('tWall1', 'tWall', 99, 1), 'blank', 251, 250, 0)
+	.newEnt(new  Wall('rWall1', 'rWall', 1, 99), 'blank', 350, 251, 0)
+	.newEnt(new  Wall('lWall1', 'lWall', 1, 99), 'blank', 250, 250, 0)
+	.newEnt(new  Wall('dWall1', 'dWall', 99, 1), 'blank', 250, 350, 0)
 	.start()
 	.ajax('ajaxtest.json', 'addGuy');
 	/* Uncomment and put before start() for stress test 

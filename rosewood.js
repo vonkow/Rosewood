@@ -151,12 +151,14 @@ rw.ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
 	this.moving = false;
 	this.active = false; //Bool for is piece in play
 	// Display Entity Function, sets ent.base.active to true
-	this.display = function () {
+	this.display = function (graphic) {
 		var newEnt = document.createElement('div');
 		newEnt.id = 'ent_'+this.name;
 		newEnt.style.width = this.width;
 		newEnt.style.height = this.height;
-		newEnt.style.backgroundImage = "url('sprites/"+this.sprites+"/"+this.heading+"."+this.spriteExt+"')";
+		if (graphic!='blank') {
+			newEnt.style.backgroundImage = "url('sprites/"+this.sprites+"/"+graphic+"."+this.spriteExt+"')";
+		}
 		newEnt.style.backgroundRepeat = 'no-repeat';
 		newEnt.style.backgroundPosition = 'center';
 		newEnt.style.position = 'absolute';
@@ -186,11 +188,11 @@ rw.ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
 rw.newEnt = function(ent, display, posX, posY, posZ) {
 	var curLength = rw.ents.length;
 	rw.ents[curLength] = ent;
-	if (display==true) {
+	if (display!=false) {
 		rw.ents[curLength].base.posX = posX;
 		rw.ents[curLength].base.posY = posY;
 		rw.ents[curLength].base.posZ = posZ;
-		rw.ents[curLength].base.display();
+		rw.ents[curLength].base.display(display);
 	}
 	return this;
 }
