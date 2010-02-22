@@ -260,7 +260,7 @@ function startGame() {
 	.using('blast','gif',['c','u','d','l','r','uT','dT','lT','rT'])
 	.using('bomb','gif',['1','2','3'])
 	.using('maps/map2','jpg',['map2'])
-	.init(600, 600, 'blank.cur').tilesOn(20, 20)
+	.init(600, 600).changeCursor('blank.cur').tilesOn(20, 20)
 	.newMap('map1', 'map2', 'jpg', 1200, 600, true)
 	.newRule('rule1', new endGameRule(true))
 	.newRule('rule2', new mapRule())

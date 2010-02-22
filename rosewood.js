@@ -314,11 +314,12 @@ rw.using = function(path, ext, imgArray) {
 	rw.preImg.src = '';
 	return this;
 }
-rw.cursorChange = function(cursor) {
+rw.changeCursor = function(cursor) {
 	document.getElementById('board').style.cursor="url(sprites/"+cursor+"), wait";
+	return this;
 }
 // Initilization Function
-rw.init = function(dimX, dimY, cursor) {
+rw.init = function(dimX, dimY) {
 	var board = document.createElement('div');
 	board.id = 'board';
 	this.Xdim = dimX;
@@ -333,9 +334,6 @@ rw.init = function(dimX, dimY, cursor) {
 	document.onmouseup = rw.mouseUp;
 	document.onkeydown=rw.keyDown;
 	document.onkeyup=rw.keyUp;
-	if (cursor!=false) {
-		rw.cursorChange(cursor);
-	}
 	// This hides the mouse, set as option
 	return this;
 }
