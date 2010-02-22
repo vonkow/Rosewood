@@ -1,13 +1,10 @@
 var Wall = function(name, wallType, xDim, yDim) {
-	this.base = new rw.ent(name, wallType, ' ', ' ', xDim, yDim, 'l');
+	this.base = new rw.ent(name, wallType, ' ', ' ', xDim, yDim);
 	this.update = function() {};
 }
 
-var blast = function(name, typeClass, heading, tail) {
-	if (tail==true) {
-		heading = heading+'T';
-	}
-	this.base = new rw.ent(name, typeClass, 'blast', 'gif', 40, 32, heading);
+var blast = function(name, typeClass) {
+	this.base = new rw.ent(name, typeClass, 'blast', 'gif', 40, 32);
 	this.countdown = 25;
 	this.update = function() {
 		this.base.posZ = this.base.posY;
@@ -19,7 +16,7 @@ var blast = function(name, typeClass, heading, tail) {
 	}
 }
 var bomb = function(name, typeClass) {
-	this.base = new rw.ent(name, typeClass, 'bomb', 'gif', 40, 32, '1');
+	this.base = new rw.ent(name, typeClass, 'bomb', 'gif', 40, 32);
 	this.countdown = 150;
 	this.blastSize = 2;
 	this.update = function() {
@@ -45,7 +42,7 @@ var bomb = function(name, typeClass) {
 			var bPos = [this.base.posX, this.base.posY];
 			var rPos = [this.base.posX, this.base.posY];
 			var tempLen = rw.ents.length;
-			rw.ents[tempLen] = new blast('blast'+tempLen, 'blast', 'c');
+			rw.ents[tempLen] = new blast('blast'+tempLen, 'blast');
 			rw.ents[tempLen].base.posX = tPos[0];
 			rw.ents[tempLen].base.posY = tPos[1];
 			rw.ents[tempLen].base.display('c');
@@ -59,13 +56,13 @@ var bomb = function(name, typeClass) {
 				if (x+1==this.blastSize) {
 					tail = 'T';
 				}
-				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'u', tail), 'u'+tail, tPos[0], tPos[1]);
+				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast'), 'u'+tail, tPos[0], tPos[1]);
 				tempLen = rw.ents.length;
-				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'l', tail), 'l'+tail, lPos[0], lPos[1]);
+				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast'), 'l'+tail, lPos[0], lPos[1]);
 				tempLen = rw.ents.length;
-				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'd', tail), 'd'+tail, bPos[0], bPos[1]);
+				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast'), 'd'+tail, bPos[0], bPos[1]);
 				tempLen = rw.ents.length;
-				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast', 'r', tail), 'r'+tail, rPos[0], rPos[1]);
+				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast'), 'r'+tail, rPos[0], rPos[1]);
 			}
 			this.base.hide();
 			return false;
@@ -78,28 +75,27 @@ var bomb = function(name, typeClass) {
 	}
 }
 var badguy = function(name) {
-	this.base = new rw.ent(name, 'baddie', 'bman', 'gif', 40, 64, 'l');
+	this.base = new rw.ent(name, 'baddie', 'bman', 'gif', 40, 64);
 	this.speed = 5;
 	this.ticker = 0;
+	this.heading = 'l'
 	this.update = function() {
-		if (this.base.heading == 'r') {
+		if (this.heading == 'r') {
 			if (this.ticker < 39) {
 				this.ticker++;
 				this.base.velX = this.speed;
-				this.base.moving = true;
 			} else {
 				this.base.velX = 0;
-				this.base.heading = 'l';
+				this.heading = 'l';
 				this.base.changeSprite('Wl');
 			}
 		} else {
 			if (this.ticker > 0) {
 				this.ticker--;
 				this.base.velX = -this.speed;
-				this.base.moving = true;
 			} else {
 				this.base.velX = 0;
-				this.base.heading = 'r';
+				this.heading = 'r';
 				this.base.changeSprite('Wr');
 			}
 		}
@@ -113,11 +109,12 @@ var badguy = function(name) {
 }
 // Custom Game Entity (calls rw.ent for this.base, requires this.update function)
 var bman = function(name, typeClass, heading) {
-	this.base = new rw.ent(name, typeClass, 'bman', 'gif', 40, 64, heading);
+	this.base = new rw.ent(name, typeClass, 'bman', 'gif', 40, 64);
 	this.maxSpeed = 5;
 	this.bombCooldown = 5;
 	this.bombMax = 15;
 	this.bombs = [];
+	this.heading = 'u';
 	this.update = function() {
 		this.base.velX = 0;
 		this.base.velY = 0;
@@ -167,24 +164,19 @@ var bman = function(name, typeClass, heading) {
 	this.keyChangeSprite = function() {
 		var entDiv = document.getElementById('ent_'+name);
 		if (rw.keys.la==true) {
-			this.base.heading = 'l';
-			this.base.moving = true;
+			this.heading = 'l';
 			this.base.changeSprite('Wl');
 		} else if (rw.keys.ua==true) {
-			this.base.heading = 'u';
-			this.base.moving = true;
+			this.heading = 'u';
 			this.base.changeSprite('Wu');
 		} else if (rw.keys.ra==true) {
-			this.base.heading = 'r';
-			this.base.moving = true;
+			this.heading = 'r';
 			this.base.changeSprite('Wr');
 		} else if (rw.keys.da==true) {
-			this.base.heading = 'd';
-			this.base.moving = true;
+			this.heading = 'd';
 			this.base.changeSprite('Wd');
 		} else {
-			this.base.moving = false;
-			this.base.changeSprite(this.base.heading);
+			this.base.changeSprite(this.heading);
 		}
 	}
 	this.iGotHit = function(by) {
@@ -268,7 +260,7 @@ function startGame() {
 	.newEnt(new badguy('baddie_2'), 'Wr', 150, 200, 232)
 	.newEnt(new badguy('baddie_3'), 'Wr', 100, 400, 432)
 	.newEnt(new badguy('baddie_4'), 'Wr', 50, 500, 532)
-	.newEnt(new bman('Goon0', 'bman', 'u'), 'u', 50, 50, 82)
+	.newEnt(new bman('Goon0', 'bman'), 'u', 50, 50, 82)
 	.newEnt(new  Wall('tWall1', 'tWall', 99, 1), 'blank', 251, 250, 0)
 	.newEnt(new  Wall('rWall1', 'rWall', 1, 99), 'blank', 350, 251, 0)
 	.newEnt(new  Wall('lWall1', 'lWall', 1, 99), 'blank', 250, 250, 0)

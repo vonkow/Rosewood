@@ -120,7 +120,7 @@ rw.mouseUp = function(e) {
 }
 // Game Entities
 rw.ents = []; 
-rw.ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
+rw.ent = function(name, typeClass, sprites, spriteExt, width, height) {
 	this.name = name;
 	this.typeClass = typeClass;
 	this.sprites = sprites;
@@ -147,8 +147,6 @@ rw.ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {
 	this.velZ = 0;
 	this.tileX = 0;
 	this.tileY = 0;
-	this.heading = heading;
-	this.moving = false;
 	this.active = false; //Bool for is piece in play
 	// Display Entity Function, sets ent.base.active to true
 	this.display = function (graphic) {

@@ -1,16 +1,15 @@
 var Wall = function(name, wallType, xDim, yDim) {
-	this.base = new rw.ent(name, wallType, ' ', ' ', xDim, yDim, 'l');
+	this.base = new rw.ent(name, wallType, ' ', ' ', xDim, yDim);
 	this.update = function() {};
 }
 
 var ball = function(name, dirX, dirY) {
-	this.base = new rw.ent(name, 'ball', 'ball', 'png', 40, 40, 'ball');
+	this.base = new rw.ent(name, 'ball', 'ball', 'png', 40, 40);
 	this.dirX = dirX;
 	this.dirY = dirY;
 	this.speed = 5;
 	this.hit = false;
 	this.update = function() {
-		this.base.moving = true;
 		this.hit = false;
 		switch (this.dirX) {
 			case 'r':
@@ -69,18 +68,18 @@ var ball = function(name, dirX, dirY) {
 }
 function startGame() {
 	rw.init(600, 600)
-	.newEnt(new ball('ball_1', 'r', 'd'), true, 362, 426, 50)
-	.newEnt(new ball('ball_2', 'l', 'd'), true, 347, 32, 50)
-	.newEnt(new ball('ball_3', 'r', 'u'), true, 209, 433, 50)
-	.newEnt(new ball('ball_4', 'l', 'u'), true, 65, 145, 50)
-	.newEnt(new ball('ball_5', 'r', 'd'), true, 413, 221, 50)
-	.newEnt(new ball('ball_6', 'l', 'd'), true, 165, 370, 50)
-	.newEnt(new ball('ball_7', 'r', 'u'), true, 250, 245, 50)
-	.newEnt(new ball('ball_8', 'l', 'u'), true, 453, 399, 50)
-	.newEnt(new  Wall('tWall', 'tWall', 599, 1), true, 0, 0, 0)
-	.newEnt(new  Wall('rWall', 'rWall', 1, 599), true, 600, 0, 0)
-	.newEnt(new  Wall('lWall', 'lWall', 1, 599), true, 0, 1, 0)
-	.newEnt(new  Wall('bWall', 'bWall', 599, 1), true, 1, 600, 0)
+	.newEnt(new ball('ball_1', 'r', 'd'), 'ball', 362, 426, 50)
+	.newEnt(new ball('ball_2', 'l', 'd'), 'ball', 347, 32, 50)
+	.newEnt(new ball('ball_3', 'r', 'u'), 'ball', 209, 433, 50)
+	.newEnt(new ball('ball_4', 'l', 'u'), 'ball', 65, 145, 50)
+	.newEnt(new ball('ball_5', 'r', 'd'), 'ball', 413, 221, 50)
+	.newEnt(new ball('ball_6', 'l', 'd'), 'ball', 165, 370, 50)
+	.newEnt(new ball('ball_7', 'r', 'u'), 'ball', 250, 245, 50)
+	.newEnt(new ball('ball_8', 'l', 'u'), 'ball', 453, 399, 50)
+	.newEnt(new  Wall('tWall', 'tWall', 599, 1), 'blank', 0, 0, 0)
+	.newEnt(new  Wall('rWall', 'rWall', 1, 599), 'blank', 600, 0, 0)
+	.newEnt(new  Wall('lWall', 'lWall', 1, 599), 'blank', 0, 1, 0)
+	.newEnt(new  Wall('bWall', 'bWall', 599, 1), 'blank', 1, 600, 0)
 	.func(alert('Bouncy Ball Test 2'))
 	.start();
 }
