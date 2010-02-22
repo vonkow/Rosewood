@@ -214,6 +214,7 @@ function endGameRule(active) {
 	this.rule = function() {
 		if (this.dead==true) {
 			rw.runGame = false;
+			rw.wipeAll();
 		}
 	}
 }

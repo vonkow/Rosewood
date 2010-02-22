@@ -318,6 +318,30 @@ rw.changeCursor = function(cursor) {
 	document.getElementById('board').style.cursor="url(sprites/"+cursor+"), wait";
 	return this;
 }
+rw.wipeBoard = function() {
+	var board = document.getElementById('board');
+	var total = board.childNodes.length;
+	for (var x=0; x<total; x++) {
+		board.removeChild(board.childNodes[0]);
+	}
+	return this;
+}
+rw.wipeEnts = function() {
+	rw.ents = [];
+	return this;
+}
+rw.wipeMaps = function() {
+	rw.maps = {};
+	return this;
+}
+rw.wipeRules = function() {
+	rw.rules = {};
+	return this;
+}
+rw.wipeAll = function() {
+	rw.wipeBoard().wipeEnts().wipeMaps().wipeRules();
+	return this;
+}
 // Initilization Function
 rw.init = function(dimX, dimY) {
 	var board = document.createElement('div');
