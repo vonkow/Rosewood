@@ -44,11 +44,104 @@ rw.tilesOff = function() {
 // Obviously not done
 rw.keyChange = false; 
 rw.keys = {
-	sp: false,
-	la: false,
-	ua: false,
-	ra: false,
-	da: false
+	bsp : false, //8 backspace
+	tab: false, //9 tab
+	ent: false, //13 enter
+	shf: false, //16 shift
+	ctr: false, //17 ctrl
+	alt: false, //18 alt
+	pau: false, //19 pause / break
+	cap: false, //20 caps lock
+	esc: false, //27 escape
+	sp: false,  //32 space bar
+	pgu: false, //33 page up
+	pgd: false, //34 page down
+	end: false, //35 end
+	hom: false, //36 home
+	la: false,  //37 left arrow
+	ua: false,  //38 up arrow
+	ra: false,  //39 right arrow
+	da: false,  //40 down arrow
+	ins: false, //45 isert
+	del: false, //46 delete
+	d0: false,  //48 0
+	d1: false,  //49 1
+	d2: false,  //50 2
+	d3: false,  //51 3
+	d4: false,  //52 4
+	d5: false,  //53 5
+	d6: false,  //54 6
+	d7: false,  //55 7
+	d8: false,  //56 8
+	d9: false,  //57 9
+	sem: false, //59 semicolon
+	eql: false, //61 equals
+	a: false,   //65 a
+	b: false,   //66 b
+	c: false,   //67 c
+	d: false,   //68 d
+	e: false,   //69 e
+	f: false,   //70 f
+	g: false,   //71 g
+	h: false,   //72 h
+	i: false,   //73 i
+	j: false,   //74 j
+	k: false,   //75 k
+	l: false,   //76 l
+	m: false,   //77 m
+	n: false,   //78 n
+	o: false,   //79 o
+	p: false,   //80 p
+	q: false,   //81 q
+	r: false,   //82 r
+	s: false,   //83 s
+	t: false,   //84 t
+	u: false,   //85 u
+	v: false,   //86 v
+	w: false,   //67 w
+	x: false,   //88 x
+	y: false,   //89 y
+	z: false,   //90 z
+	lwn: false, //91 left windows
+	rwn: false, //92 right windows
+	sel: false, //93 select
+	n0: false,  //96 num 0
+	n1: false,  //97 num 1
+	n2: false,  //98 num 2
+	n3: false,  //99 num 3
+	n4: false,  //100 num 4
+	n5: false,  //101 num 5
+	n6: false,  //102 num 6
+	n7: false,  //103 num 7
+	n8: false,  //104 num 8
+	n9: false,  //105 num 9
+	mul: false, //106 num multiply
+	add: false, //107 num add
+	sub: false, //109 num subtract (also normal subtract)
+	dec: false, //110 num decimal point
+	div: false, //111 num divide
+	f1: false,  //112 f1
+	f2: false,  //113 f2
+	f3: false,  //114 f3
+	f4: false,  //115 f4
+	f5: false,  //116 f5
+	f6: false,  //117 f6
+	f7: false,  //118 f7
+	f8: false,  //119 f8
+	f9: false,  //120 f9
+	f10: false, //121 f10
+	f11: false, //122 f11
+	f12: false, //123 f12
+	num: false, //144 numlock
+	scr: false, //145 scroll lock
+	com: false, //188 comma
+	per: false, //190 period
+	fsl: false, //191 forward slash
+	acc: false, //192 accent
+	obr: false, //219 open bracket
+	bsl: false, //220 backslash
+	cbr: false, //221 close bracket
+	qot: false  //222 quote
 };
 rw.keyDown = function(e) {
 	var ev = e ? e : window.event;
