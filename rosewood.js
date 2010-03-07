@@ -676,6 +676,7 @@ rw.ajax = function(targ, func) {
 		}
 	}
 	xhr.send(null);
+	return this;
 }
 // Image pre-loader
 rw.preImg = new Image();
