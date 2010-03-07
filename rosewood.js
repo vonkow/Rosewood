@@ -143,46 +143,312 @@ rw.keys = {
 	cbr: false, //221 close bracket
 	qot: false  //222 quote
 };
-rw.keyDown = function(e) {
-	var ev = e ? e : window.event;
-	switch(ev.keyCode) {
+rw.keySwitch = function(code, bit) {
+	switch(code) {
+		case 8:
+			rw.keys.bsp = bit; //8 backspace
+			break;
+		case 9:
+			rw.keys.tab= bit; //9 tab
+			break;
+		case 13:
+			rw.keys.ent= bit; //13 enter
+			break;
+		case 16:
+			rw.keys.shf= bit; //16 shift
+			break;
+		case 17:
+			rw.keys.ctr= bit; //17 ctrl
+			break;
+		case 18:
+			rw.keys.alt= bit; //18 alt
+			break;
+		case 19:
+			rw.keys.pau= bit; //19 pause / break
+			break;
+		case 20:
+			rw.keys.cap= bit; //20 caps lock
+			break;
+		case 27:
+			rw.keys.esc= bit; //27 escape
+			break;
 		case 32:
-			rw.keys.sp = true;
+			rw.keys.sp= bit;  //32 space bar
+			break;
+		case 33:
+			rw.keys.pgu= bit; //33 page up
+			break;
+		case 34:
+			rw.keys.pgd= bit; //34 page down
+			break;
+		case 35:
+			rw.keys.end= bit; //35 end
+			break;
+		case 36:
+			rw.keys.hom= bit; //36 home
 			break;
 		case 37:
-			rw.keys.la = true;
+			rw.keys.la= bit;  //37 left arrow
 			break;
 		case 38:
-			rw.keys.ua = true;
+			rw.keys.ua= bit;  //38 up arrow
 			break;
 		case 39:
-			rw.keys.ra = true;
+			rw.keys.ra= bit;  //39 right arrow
 			break;
 		case 40:
-			rw.keys.da = true;
+			rw.keys.da= bit;  //40 down arrow
+			break;
+		case 45:
+			rw.keys.ins= bit; //45 isert
+			break;
+		case 46:
+			rw.keys.del= bit; //46 delete
+			break;
+		case 48:
+			rw.keys.d0= bit;  //48 0
+			break;
+		case 49:
+			rw.keys.d1= bit;  //49 1
+			break;
+		case 50:
+			rw.keys.d2= bit;  //50 2
+			break;
+		case 51:
+			rw.keys.d3= bit;  //51 3
+			break;
+		case 52:
+			rw.keys.d4= bit;  //52 4
+			break;
+		case 53:
+			rw.keys.d5= bit;  //53 5
+			break;
+		case 54:
+			rw.keys.d6= bit;  //54 6
+			break;
+		case 55:
+			rw.keys.d7= bit;  //55 7
+			break;
+		case 56:
+			rw.keys.d8= bit;  //56 8
+			break;
+		case 57:
+			rw.keys.d9= bit;  //57 9
+			break;
+		case 59:
+			rw.keys.sem= bit; //59 semicolon
+			break;
+		case 61:
+			rw.keys.eql= bit; //61 equals
+			break;
+		case 65:
+			rw.keys.a= bit;   //65 a
+			break;
+		case 66:
+			rw.keys.b= bit;   //66 b
+			break;
+		case 67:
+			rw.keys.c= bit;   //67 c
+			break;
+		case 68:
+			rw.keys.d= bit;   //68 d
+			break;
+		case 69:
+			rw.keys.e= bit;   //69 e
+			break;
+		case 70:
+			rw.keys.f= bit;   //70 f
+			break;
+		case 71:
+			rw.keys.g= bit;   //71 g
+			break;
+		case 72:
+			rw.keys.h= bit;   //72 h
+			break;
+		case 73:
+			rw.keys.i= bit;   //73 i
+			break;
+		case 74:
+			rw.keys.j= bit;   //74 j
+			break;
+		case 75:
+			rw.keys.k= bit;   //75 k
+			break;
+		case 76:
+			rw.keys.l= bit;   //76 l
+			break;
+		case 77:
+			rw.keys.m= bit;   //77 m
+			break;
+		case 78:
+			rw.keys.n= bit;   //78 n
+			break;
+		case 79:
+			rw.keys.o= bit;   //79 o
+			break;
+		case 80:
+			rw.keys.p= bit;   //80 p
+			break;
+		case 81:
+			rw.keys.q= bit;   //81 q
+			break;
+		case 82:
+			rw.keys.r= bit;   //82 r
+			break;
+		case 83:
+			rw.keys.s= bit;   //83 s
+			break;
+		case 84:
+			rw.keys.t= bit;   //84 t
+			break;
+		case 85:
+			rw.keys.u= bit;   //85 u
+			break;
+		case 86:
+			rw.keys.v= bit;   //86 v
+			break;
+		case 87:
+			rw.keys.w= bit;   //67 w
+			break;
+		case 88:
+			rw.keys.x= bit;   //88 x
+			break;
+		case 89:
+			rw.keys.y= bit;   //89 y
+			break;
+		case 90:
+			rw.keys.z= bit;   //90 z
+			break;
+		case 91:
+			rw.keys.lwn= bit; //91 left windows
+			break;
+		case 92:
+			rw.keys.rwn= bit; //92 right windows
+			break;
+		case 93:
+			rw.keys.sel= bit; //93 select
+			break;
+		case 96:
+			rw.keys.n0= bit;  //96 num 0
+			break;
+		case 97:
+			rw.keys.n1= bit;  //97 num 1
+			break;
+		case 98:
+			rw.keys.n2= bit;  //98 num 2
+			break;
+		case 99:
+			rw.keys.n3= bit;  //99 num 3
+			break;
+		case 100:
+			rw.keys.n4= bit;  //100 num 4
+			break;
+		case 102:
+			rw.keys.n5= bit;  //101 num 5
+			break;
+		case 102:
+			rw.keys.n6= bit;  //102 num 6
+			break;
+		case 103:
+			rw.keys.n7= bit;  //103 num 7
+			break;
+		case 104:
+			rw.keys.n8= bit;  //104 num 8
+			break;
+		case 105:
+			rw.keys.n9= bit;  //105 num 9
+			break;
+		case 106:
+			rw.keys.mul= bit; //106 num multiply
+			break;
+		case 107:
+			rw.keys.add= bit; //107 num add
+			break;
+		case 109:
+			rw.keys.sub= bit; //109 num subtract (also normal subtract)
+			break;
+		case 110:
+			rw.keys.dec= bit; //110 num decimal point
+			break;
+		case 111:
+			rw.keys.div= bit; //111 num divide
+			break;
+		case 112:
+			rw.keys.f1= bit;  //112 f1
+			break;
+		case 113:
+			rw.keys.f2= bit;  //113 f2
+			break;
+		case 114:
+			rw.keys.f3= bit;  //114 f3
+			break;
+		case 115:
+			rw.keys.f4= bit;  //115 f4
+			break;
+		case 116:
+			rw.keys.f5= bit;  //116 f5
+			break;
+		case 117:
+			rw.keys.f6= bit;  //117 f6
+			break;
+		case 118:
+			rw.keys.f7= bit;  //118 f7
+			break;
+		case 119:
+			rw.keys.f8= bit;  //119 f8
+			break;
+		case 120:
+			rw.keys.f9= bit;  //120 f9
+			break;
+		case 121:
+			rw.keys.f10= bit; //121 f10
+			break;
+		case 122:
+			rw.keys.f11= bit; //122 f11
+			break;
+		case 123:
+			rw.keys.f12= bit; //123 f12
+			break;
+		case 144:
+			rw.keys.num= bit; //144 numlock
+			break;
+		case 145:
+			rw.keys.scr= bit; //145 scroll lock
+			break;
+		case 188:
+			rw.keys.com= bit; //188 comma
+			break;
+		case 190:
+			rw.keys.per= bit; //190 period
+			break;
+		case 191:
+			rw.keys.fsl= bit; //191 forward slash
+			break;
+		case 192:
+			rw.keys.acc= bit; //192 accent
+			break;
+		case 219:
+			rw.keys.obr= bit; //219 open bracket
+			break;
+		case 220:
+			rw.keys.bsl= bit; //220 backslash
+			break;
+		case 221:
+			rw.keys.cbr= bit; //221 close bracket
+			break;
+		case 222:
+			rw.keys.qot= bit; //222 quote
 			break;
 	}
+}
+rw.keyDown = function(e) {
+	var ev = e ? e : window.event;
+	rw.keySwitch(ev.keyCode, true);
 	rw.keyChange = true;
 }
 rw.keyUp = function(e) {
 	var ev = e ? e : window.event;
-	switch(ev.keyCode) {
-		case 32:
-			rw.keys.sp = false;
-			break;
-		case 37:
-			rw.keys.la = false;
-			break;
-		case 38:
-			rw.keys.ua = false;
-			break;
-		case 39:
-			rw.keys.ra = false;
-			break;
-		case 40:
-			rw.keys.da = false;
-			break;
-	}
+	rw.keySwitch(ev.keyCode, false);
 	rw.keyChange = true;
 }
 // Mouse Position settings
