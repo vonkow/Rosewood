@@ -201,9 +201,6 @@ rw.mousePos = function(e) {
 		rw.mouse.x = e.pageX;
 		rw.mouse.y = e.pageY;
 	}
-	// OLD METHOD, LEAVE TIL TESTED ON IE
-	//rw.mouse.x = (e) ? e.pageX : window.event.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft); 
-	//rw.mouse.y = (e) ? e.pageY : window.event.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight); 
 }
 rw.mouseDown = function(e) {
 	if (!e) var e = window.event;
@@ -272,6 +269,12 @@ rw.ent = function(name, typeClass, sprites, spriteExt, width, height) {
 		var entDiv = document.getElementById('ent_'+this.name);
 		if (entDiv) {
 			entDiv.style.backgroundImage = "url('sprites/"+this.sprites+"/"+spriteName+"."+this.spriteExt+"')";
+		}
+	}
+	this.rotate = function(deg) {
+		var entDiv = document.getElementById('ent_'+this.name);
+		if (entDiv) {
+			entDiv.style[rw.browser.trans_name] = 'rotate('+deg+'deg)';
 		}
 	}
 	this.tilePos = function() {
@@ -423,6 +426,28 @@ rw.changeCursor = function(cursor) {
 	document.getElementById('board').style.cursor="url(sprites/"+cursor+"), wait";
 	return this;
 }
+// Browser-specific values, runs at init
+rw.browser = {
+	check: function() {
+		var trans = function() {
+			var body = document.getElementsByTagName('body')[0];
+			var properties = ['transform', 'WebkitTransform', 'MozTransform'];
+			var p;
+			while (p = properties.shift()){
+				if (typeof body.style[p]!='undefined') {
+					return p;
+				}
+			}
+			return false;
+		}
+		if (trans()) {
+			this.trans_name = trans();
+		} else {
+			this.trans_name = 'none';
+		}
+	},
+	trans_name: 'none',
+}
 // Wipe Functions
 // Removes all children of the board
 rw.wipeBoard = function() {
@@ -451,6 +476,7 @@ rw.wipeAll = function() {
 }
 // Initilization Function
 rw.init = function(dimX, dimY) {
+	rw.browser.check();
 	var board = document.createElement('div');
 	board.id = 'board';
 	this.Xdim = dimX;

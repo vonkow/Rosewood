@@ -19,6 +19,7 @@ var bomb = function(name, typeClass) {
 	this.base = new rw.ent(name, typeClass, 'bomb', 'gif', 40, 32);
 	this.countdown = 150;
 	this.blastSize = 2;
+	//this.spin = 0;
 	this.update = function() {
 		if (this.countdown == 150) {
 			this.base.posZ = this.base.posY;
@@ -34,6 +35,7 @@ var bomb = function(name, typeClass) {
 		} else if (this.countdown == 25) {
 			this.base.changeSprite('3');
 		}
+		//this.base.rotate(this.spin++);
 		this.countdown -= 1;
 		if (this.countdown<=0) {
 			// Do Explody stuff!
