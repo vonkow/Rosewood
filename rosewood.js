@@ -294,6 +294,14 @@ rw.removeEnt = function(entNum) {
 	rw.ents.splice(entNum, 1);
 	return this;
 }
+// Object and Ent Library, helper functions
+rw.lib = {
+	ent : function(name, type, xDim, yDim) {
+		this.base = new rw.ent(name, type, ' ', ' ', xDim, yDim);
+		this.update = function(){};
+		this.iGotHit = function(){};
+	}
+}
 // Map Entities
 rw.maps = {}; 
 rw.map = function(name, path, extention, xDim, yDim) {
