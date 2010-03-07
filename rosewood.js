@@ -41,7 +41,6 @@ rw.tilesOff = function() {
 	return this;
 }
 //KeyDown/Up settings
-// Obviously not done
 rw.keyChange = false; 
 rw.keys = {
 	bsp : false, //8 backspace
