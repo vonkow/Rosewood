@@ -33,8 +33,8 @@ var ship = function(name) {
 		if (this.coolDown<=0) {
 			if (rw.keys.sp==true) {
 				var num = this.lasCount++;
-				var posX = this.base.posX+20;
-				var posY = this.base.posY+20;
+				var posX = this.base.posX+15;
+				var posY = this.base.posY+15;
 				rw.newEnt(new laser('laser_'+num,this.heading),'laser',posX,posY,posY);
 				this.coolDown=5;
 			}
