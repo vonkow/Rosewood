@@ -845,48 +845,133 @@ rw.run = function() {
 	var cols = [];
 	// For each ent
 	for (var x=0;x<len;x++) {
-		// For each ent above this ent, check collisions
-		for (var y=x+1;y<len;y++) {
-			var hit = true;
-			// Left Check
-			if (rw.ents[x].base.posX+rw.ents[x].base.width<=rw.ents[y].base.posX) {
-				hit = false;
+		if (rw.ents[x].hitMap) {
+			for (var z=0;z<rw.ents[x].hitMap.length;z++) {
+				for (var y=x+1;y<len;y++) {
+					if (rw.ents[y].hitMap) {
+						for (var w=0;w<rw.ents[y].hitMap.length;w++) {
+							var hit = true;
+							// Left Check
+							if (rw.ents[x].base.posX+rw.ents[x].hitMap[z][2]<=rw.ents[y].base.posX+rw.ents[y].hitMap[w][0]) {
+								hit = false;
+							}
+							// Right Check
+							if (rw.ents[x].base.posX+rw.ents[x].hitMap[z][0]>=rw.ents[y].base.posX+rw.ents[y].hitMap[w][2]) {
+								hit = false;
+							}
+							// Top Check
+							if (rw.ents[x].base.posY+rw.ents[x].hitMap[z][3]<=rw.ents[y].base.posY+rw.ents[y].hitMap[w][1]) {
+								hit = false;
+							}
+							// Bottom Check
+							if (rw.ents[x].base.posY+rw.ents[x].hitMap[z][1]>=rw.ents[y].base.posY+rw.ents[y].hitMap[w][3]) {
+								hit = false;
+							}
+							// If collision, add to list.
+							if (hit==true) {
+								// Maybe change this to call a collision resolution function for each ent?
+								cols[cols.length]=[[x,rw.ents[x].hitMap[z][4]],[y,rw.ents[y].hitMap[w][4]]];
+							}
+						}
+					} else {
+						var hit = true;
+						// Left Check
+						if (rw.ents[x].base.posX+rw.ents[x].hitMap[z][2]<=rw.ents[y].base.posX) {
+							hit = false;
+						}
+						// Right Check
+						if (rw.ents[x].base.posX+rw.ents[x].hitMap[z][0]>=rw.ents[y].base.posX+rw.ents[y].base.width) {
+							hit = false;
+						}
+						// Top Check
+						if (rw.ents[x].base.posY+rw.ents[x].hitMap[z][3]<=rw.ents[y].base.posY) {
+							hit = false;
+						}
+						// Bottom Check
+						if (rw.ents[x].base.posY+rw.ents[x].hitMap[z][1]>=rw.ents[y].base.posY+rw.ents[y].base.height) {
+							hit = false;
+						}
+						// If collision, add to list.
+						if (hit==true) {
+							// Maybe change this to call a collision resolution function for each ent?
+							cols[cols.length]=[[x,rw.ents[x].hitMap[z][4]],[y,rw.ents[y].base.typeClass]];
+						}
+					}
+				}
 			}
-			// Right Check
-			if (rw.ents[x].base.posX>=rw.ents[y].base.posX+rw.ents[y].base.width) {
-				hit = false;
-			}
-			// Top Check
-			if (rw.ents[x].base.posY+rw.ents[x].base.height<=rw.ents[y].base.posY) {
-				hit = false;
-			}
-			// Bottom Check
-			if (rw.ents[x].base.posY>=rw.ents[y].base.posY+rw.ents[y].base.height) {
-				hit = false;
-			}
-			// If collision, add to list.
-			if (hit==true) {
-				// Maybe change this to call a collision resolution function for each ent?
-				cols[cols.length]=[x,y];
+
+		} else {
+			// For each ent above this ent, check collisions
+			for (var y=x+1;y<len;y++) {
+				if (rw.ents[y].hitMap) {
+					for (var w=0;w<rw.ents[y].hitMap.length;w++) {
+						var hit = true;
+						// Left Check
+						if (rw.ents[x].base.posX+rw.ents[x].base.width<=rw.ents[y].base.posX+rw.ents[y].hitMap[w][0]) {
+							hit = false;
+						}
+						// Right Check
+						if (rw.ents[x].base.posX>=rw.ents[y].base.posX+rw.ents[y].hitMap[w][2]) {
+							hit = false;
+						}
+						// Top Check
+						if (rw.ents[x].base.posY+rw.ents[x].base.height<=rw.ents[y].base.posY+rw.ents[y].hitMap[w][1]) {
+							hit = false;
+						}
+						// Bottom Check
+						if (rw.ents[x].base.posY>=rw.ents[y].base.posY+rw.ents[y].hitMap[w][3]) {
+							hit = false;
+						}
+						// If collision, add to list.
+						if (hit==true) {
+							// Maybe change this to call a collision resolution function for each ent?
+							cols[cols.length]=[[x,rw.ents[x].base.typeClass],[y,rw.ents[y].hitMap[w][4]]];
+						}
+
+					}
+				} else {
+					var hit = true;
+					// Left Check
+					if (rw.ents[x].base.posX+rw.ents[x].base.width<=rw.ents[y].base.posX) {
+						hit = false;
+					}
+					// Right Check
+					if (rw.ents[x].base.posX>=rw.ents[y].base.posX+rw.ents[y].base.width) {
+						hit = false;
+					}
+					// Top Check
+					if (rw.ents[x].base.posY+rw.ents[x].base.height<=rw.ents[y].base.posY) {
+						hit = false;
+					}
+					// Bottom Check
+					if (rw.ents[x].base.posY>=rw.ents[y].base.posY+rw.ents[y].base.height) {
+						hit = false;
+					}
+					// If collision, add to list.
+					if (hit==true) {
+						// Maybe change this to call a collision resolution function for each ent?
+						cols[cols.length]=[[x,rw.ents[x].base.typeClass],[y,rw.ents[y].base.typeClass]];
+					}
+				}
 			}
 		}
 	}
 	if (cols.length>0) {
 		var toBeRemoved = [];
 		for (var x=0; x<cols.length; x++) {
-			hit0 = true;
-			hit1 = true;
-			if (rw.ents[cols[x][0]].iGotHit) {
-				hit0 = rw.ents[cols[x][0]].iGotHit(rw.ents[cols[x][1]].base.typeClass);
+			var hit0 = true;
+			var hit1 = true;
+			if (rw.ents[cols[x][0][0]].iGotHit) {
+				hit0 = rw.ents[cols[x][0][0]].iGotHit(cols[x][1][1]);
 			}
-			if (rw.ents[cols[x][1]].iGotHit) {
-				hit1 = rw.ents[cols[x][1]].iGotHit(rw.ents[cols[x][0]].base.typeClass);
+			if (rw.ents[cols[x][1][0]].iGotHit) {
+				hit1 = rw.ents[cols[x][1][0]].iGotHit(cols[x][0][1]);
 			}
 			if (hit0==false) {
-				toBeRemoved[toBeRemoved.length] = cols[x][0];
+				toBeRemoved[toBeRemoved.length] = cols[x][0][0];
 			}
 			if (hit1==false) {
-				toBeRemoved[toBeRemoved.length] = cols[x][1];
+				toBeRemoved[toBeRemoved.length] = cols[x][1][0];
 			}
 		}
 		if (toBeRemoved.length>0) {
