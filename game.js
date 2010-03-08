@@ -132,7 +132,7 @@ var bman = function(name, typeClass, heading) {
 				}
 			}
 		}
-		if (rw.keys.sp==true) {
+		if (rw.keyCheck('sp')) {
 			if (this.bombCooldown == 5) {
 				if (this.bombs.length < this.bombMax) {
 					this.bombCooldown = 0;
@@ -142,16 +142,16 @@ var bman = function(name, typeClass, heading) {
 				}
 			}
 		}
-		if (rw.keys.la==true) {
+		if (rw.keyCheck('la')) {
 			this.base.velX += -this.maxSpeed;
 		}
-		if (rw.keys.ra==true) {
+		if (rw.keyCheck('ra')) {
 			this.base.velX += this.maxSpeed;
 		}
-		if (rw.keys.ua==true) {
+		if (rw.keyCheck('ua')) {
 			this.base.velY += -this.maxSpeed;
 		}
-		if (rw.keys.da==true) {
+		if (rw.keyCheck('da')) {
 			this.base.velY += this.maxSpeed;
 		}
 		this.base.velZ = this.base.velY;
@@ -165,16 +165,16 @@ var bman = function(name, typeClass, heading) {
 //		where args are sent to ent and keys.
 	this.keyChangeSprite = function() {
 		var entDiv = document.getElementById('ent_'+name);
-		if (rw.keys.la==true) {
+		if (rw.keyCheck('la')) {
 			this.heading = 'l';
 			this.base.changeSprite('Wl');
-		} else if (rw.keys.ua==true) {
+		} else if (rw.keyCheck('ua')) {
 			this.heading = 'u';
 			this.base.changeSprite('Wu');
-		} else if (rw.keys.ra==true) {
+		} else if (rw.keyCheck('ra')) {
 			this.heading = 'r';
 			this.base.changeSprite('Wr');
-		} else if (rw.keys.da==true) {
+		} else if (rw.keyCheck('da')) {
 			this.heading = 'd';
 			this.base.changeSprite('Wd');
 		} else {

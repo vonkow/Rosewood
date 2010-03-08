@@ -450,6 +450,13 @@ rw.keyUp = function(e) {
 	rw.keySwitch(ev.keyCode, false);
 	rw.keyChange = true;
 }
+rw.keyCheck = function(key) {
+	if (rw.keys[key]) {
+		return true;
+	} else {
+		return false;
+	}
+}
 // Mouse Position settings
 rw.mouse = {
 	x: 0,
