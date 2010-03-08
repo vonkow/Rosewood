@@ -7,6 +7,7 @@ var ship = function(name) {
 	this.coolDown = 0;
 	this.velX = 0;
 	this.velY = 0;
+	this.hitMap = [[10,10,30,30,'ship']];
 	this.update = function() {
 		if (rw.keys.la==true) {
 			this.heading-=10;
