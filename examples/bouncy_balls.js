@@ -3,6 +3,7 @@ var ball = function(name, dirX, dirY) {
 	this.dirX = dirX;
 	this.dirY = dirY;
 	this.speed = 5;
+	this.hitMap=[[0,0,40,40,'ball']];
 	this.update = function() {
 		switch (this.dirX) {
 			case 'r':
