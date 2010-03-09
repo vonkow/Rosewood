@@ -301,6 +301,7 @@ rw.ajax = function(targ, func) {
 	xhr.send(null);
 	return this;
 }
+//BROKEN!!!!!!!!!!!!!
 // Image pre-loader
 rw.preImg = new Image();
 rw.using = function(path, ext, imgArray) {
@@ -387,7 +388,7 @@ rw.init = function(dimX, dimY) {
 rw.start = function() {
 	if (rw.runGame==false) {
 		rw.runGame = true;
-		rw.turn();
+		rw.curT = setTimeout('rw.run()', this.speed);
 	}
 	return this;
 }
@@ -398,9 +399,6 @@ rw.stop = function() {
 	rw.curT = 0;
 	rw.runGame = false;
 	return this;
-}
-rw.turn = function() {
-	rw.curT = setTimeout('rw.run()', this.speed);
 }
 // RunLoop Function
 rw.run = function() {
@@ -562,7 +560,7 @@ rw.run = function() {
 	}
 	//If game has not ended or been paused, continue
 	if (rw.runGame==true) {
-		rw.turn();
+		rw.curT = setTimeout('rw.run()', this.speed);
 	} else {
 		rw.stop();
 	}
