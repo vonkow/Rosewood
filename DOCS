@@ -1,0 +1,190 @@
+rw = {
+	runGame
+		;
+	curT
+		;
+	globT
+		;
+	Xdim
+		;
+	Ydim
+		;
+	speed
+		;
+	setFPS(fps)
+		;
+	tiles
+		;
+	tileX
+		;
+	tileY
+		;
+	tilesOn(xDim, yDim)
+		;
+	tilesOff()
+		;
+	keyChange
+		;
+	keys
+		;
+	keySwitch(code, bit)
+		;
+	keyDown(e)
+		;
+	keyUp(e)
+		;
+	keyCheck(key)
+		;
+	mouse = {
+		;
+		x
+			;
+		y
+			;
+		down
+			;
+	}
+	mousePos(e)
+		;
+	mouseDown(e)
+		;
+	mouseUp(e)
+		;
+	ents
+		;
+	ent(name, typeClass, sprites, spriteExt, width, height)
+
+		name
+			;
+		typeClass
+			;
+		sprites
+			;
+		spriteExt
+			;
+		width
+			;
+		height
+			;
+		posX
+			;
+		posY
+			;
+		posZ
+			;
+		posX1()
+			;
+		posY1()
+			;
+		posX2()
+			;
+		posY2()
+			;
+		velX
+			;
+		velY
+			;
+		velZ
+			;
+		tileX
+			;
+		tileY
+			;
+		active
+			;
+		display(graphic)
+			;
+		hide()
+			;
+		changeSprite(spriteName)
+			;
+		rotate(deg)
+			;
+		tilePos()
+			;
+		;
+	newEnt(ent, display, posX, posY, posZ)
+		;
+	removeEnt(entNum)
+		;
+	lib = {
+		ent(name, type, xDim, yDim)
+			;
+		;
+	}
+	maps
+		;
+	map(name, path, extention, xDim, yDim)
+		
+		name
+			;
+		path
+			;
+		extention
+			;
+		width
+			;
+		height
+			;
+		offX
+			;
+		offY
+			;
+		offset(oX, oY)
+			;
+		show()
+			;
+		hide()
+			;
+		render()
+			;
+		remove()
+			;
+		;
+	newMap(name, map, ext, dimX, dimY, render)
+		;
+	removeMap(map)
+		;
+	rules
+		;
+	rule(active)
+		;
+	newRule(name, rule)
+		;
+	removeRule(rule)
+		;
+	ajax(targ, func)
+		;
+	func()
+		;
+	preImg
+		;
+	using(path, ext, imgArray)
+		;
+	changeCursor(cursor)
+		;
+	browser = {
+		;
+		check()
+			;
+		trans_name
+			;
+		;
+	}
+	wipeBoard()
+		;
+	wipeEnts()
+		;
+	wipeMaps()
+		;
+	wipeAll()
+		;
+	init(dimX, dimY)
+		;
+	start()
+		;
+	stop()
+		;
+	run()
+		;
+}
