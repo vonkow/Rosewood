@@ -4,6 +4,7 @@ var ball = function(name, dirX, dirY) {
 	this.dirY = dirY;
 	this.speed = 5;
 	this.hit = false;
+	this.hitMap=[[0,0,40,40,'ball']];
 	this.update = function() {
 		this.hit = false;
 		switch (this.dirX) {

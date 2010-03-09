@@ -573,6 +573,7 @@ rw.removeEnt = function(entNum) {
 rw.lib = {
 	ent : function(name, type, xDim, yDim) {
 		this.base = new rw.ent(name, type, ' ', ' ', xDim, yDim);
+		this.hitMap = [[0,0,xDim,yDim,type]];
 		this.update = function(){};
 		this.iGotHit = function(){};
 	}
@@ -768,8 +769,10 @@ rw.init = function(dimX, dimY) {
 }
 // Start FUnction
 rw.start = function() {
-	rw.runGame = true;
-	rw.curT = setTimeout('rw.run()', this.speed);
+	if (rw.runGame==false) {
+		rw.runGame = true;
+		rw.turn();
+	}
 	return this;
 }
 // Stop Function
@@ -779,6 +782,9 @@ rw.stop = function() {
 	rw.curT = 0;
 	rw.runGame = false;
 	return this;
+}
+rw.turn = function() {
+	rw.curT = setTimeout('rw.run()', this.speed);
 }
 // RunLoop Function
 rw.run = function() {
@@ -880,84 +886,6 @@ rw.run = function() {
 								cols[cols.length]=[[x,rw.ents[x].hitMap[z][4]],[y,rw.ents[y].hitMap[w][4]]];
 							}
 						}
-					} else {
-						var hit = true;
-						// Left Check
-						if (rw.ents[x].base.posX+rw.ents[x].hitMap[z][2]<=rw.ents[y].base.posX) {
-							hit = false;
-						}
-						// Right Check
-						if (rw.ents[x].base.posX+rw.ents[x].hitMap[z][0]>=rw.ents[y].base.posX+rw.ents[y].base.width) {
-							hit = false;
-						}
-						// Top Check
-						if (rw.ents[x].base.posY+rw.ents[x].hitMap[z][3]<=rw.ents[y].base.posY) {
-							hit = false;
-						}
-						// Bottom Check
-						if (rw.ents[x].base.posY+rw.ents[x].hitMap[z][1]>=rw.ents[y].base.posY+rw.ents[y].base.height) {
-							hit = false;
-						}
-						// If collision, add to list.
-						if (hit==true) {
-							// Maybe change this to call a collision resolution function for each ent?
-							cols[cols.length]=[[x,rw.ents[x].hitMap[z][4]],[y,rw.ents[y].base.typeClass]];
-						}
-					}
-				}
-			}
-
-		} else {
-			// For each ent above this ent, check collisions
-			for (var y=x+1;y<len;y++) {
-				if (rw.ents[y].hitMap) {
-					for (var w=0;w<rw.ents[y].hitMap.length;w++) {
-						var hit = true;
-						// Left Check
-						if (rw.ents[x].base.posX+rw.ents[x].base.width<=rw.ents[y].base.posX+rw.ents[y].hitMap[w][0]) {
-							hit = false;
-						}
-						// Right Check
-						if (rw.ents[x].base.posX>=rw.ents[y].base.posX+rw.ents[y].hitMap[w][2]) {
-							hit = false;
-						}
-						// Top Check
-						if (rw.ents[x].base.posY+rw.ents[x].base.height<=rw.ents[y].base.posY+rw.ents[y].hitMap[w][1]) {
-							hit = false;
-						}
-						// Bottom Check
-						if (rw.ents[x].base.posY>=rw.ents[y].base.posY+rw.ents[y].hitMap[w][3]) {
-							hit = false;
-						}
-						// If collision, add to list.
-						if (hit==true) {
-							// Maybe change this to call a collision resolution function for each ent?
-							cols[cols.length]=[[x,rw.ents[x].base.typeClass],[y,rw.ents[y].hitMap[w][4]]];
-						}
-
-					}
-				} else {
-					var hit = true;
-					// Left Check
-					if (rw.ents[x].base.posX+rw.ents[x].base.width<=rw.ents[y].base.posX) {
-						hit = false;
-					}
-					// Right Check
-					if (rw.ents[x].base.posX>=rw.ents[y].base.posX+rw.ents[y].base.width) {
-						hit = false;
-					}
-					// Top Check
-					if (rw.ents[x].base.posY+rw.ents[x].base.height<=rw.ents[y].base.posY) {
-						hit = false;
-					}
-					// Bottom Check
-					if (rw.ents[x].base.posY>=rw.ents[y].base.posY+rw.ents[y].base.height) {
-						hit = false;
-					}
-					// If collision, add to list.
-					if (hit==true) {
-						// Maybe change this to call a collision resolution function for each ent?
-						cols[cols.length]=[[x,rw.ents[x].base.typeClass],[y,rw.ents[y].base.typeClass]];
 					}
 				}
 			}
@@ -1018,7 +946,7 @@ rw.run = function() {
 	}
 	//If game has not ended or been paused, continue
 	if (rw.runGame==true) {
-		rw.start();
+		rw.turn();
 	} else {
 		rw.stop();
 	}
