@@ -14,10 +14,6 @@ rw.globT = 0;
 // Golbal gameboard dimensions
 rw.Xdim = 0;
 rw.Ydim = 0;
-// Inline function call function
-rw.func = function() {
-	return this;
-}
 // Game speed settings
 rw.speed = 50;
 rw.setFPS = function(fps) {
@@ -300,6 +296,10 @@ rw.ajax = function(targ, func) {
 	xhr.send(null);
 	return this;
 }
+// Inline function call function
+rw.func = function() {
+	return this;
+}
 //Maybe Fixed now?
 // Image pre-loader
 rw.preImg = [];
@@ -507,19 +507,15 @@ rw.run = function() {
 	if (cols.length>0) {
 		var toBeRemoved = [];
 		for (var x=0; x<cols.length; x++) {
-			var hit0 = true;
-			var hit1 = true;
 			if (rw.ents[cols[x][0][0]].iGotHit) {
-				hit0 = rw.ents[cols[x][0][0]].iGotHit(cols[x][1][1]);
+				if (rw.ents[cols[x][0][0]].iGotHit(cols[x][1][1])==false) {
+					toBeRemoved[toBeRemoved.length] = cols[x][0][0];
+				}
 			}
 			if (rw.ents[cols[x][1][0]].iGotHit) {
-				hit1 = rw.ents[cols[x][1][0]].iGotHit(cols[x][0][1]);
-			}
-			if (hit0==false) {
-				toBeRemoved[toBeRemoved.length] = cols[x][0][0];
-			}
-			if (hit1==false) {
-				toBeRemoved[toBeRemoved.length] = cols[x][1][0];
+				if(rw.ents[cols[x][1][0]].iGotHit(cols[x][0][1])==false) {
+					toBeRemoved[toBeRemoved.length] = cols[x][1][0];
+				}
 			}
 		}
 		if (toBeRemoved.length>0) {
