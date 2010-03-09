@@ -1,7 +1,6 @@
 //////// TO-DO ////////
 // Integrate good parts of old rw, bring back rw.state?
 // finish implementing keyChangeSprite for less ent sprite code, also, rename to keyChange
-// Function for setting/unsetting used keys
 // Add Inactive function for ents
 
 // The Rosewood Object
@@ -301,15 +300,15 @@ rw.ajax = function(targ, func) {
 	xhr.send(null);
 	return this;
 }
-//BROKEN!!!!!!!!!!!!!
+//Maybe Fixed now?
 // Image pre-loader
-rw.preImg = new Image();
+rw.preImg = [];
 rw.using = function(path, ext, imgArray) {
 	var len = imgArray.length;
 	for (var x=0; x<len;x++) {
-		rw.preImg.src = 'sprites/'+path+'/'+imgArray[x]+'.'+ext;
+		rw.preImg[rw.preImg.length] = new Image();
+		rw.preImg[rw.preImg.length-1].src = 'sprites/'+path+'/'+imgArray[x]+'.'+ext;
 	}
-	rw.preImg.src = '';
 	return this;
 }
 // Changes Cursor
