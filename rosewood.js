@@ -9,9 +9,12 @@ var rw = new function(){
 	// RunLoop or stop
 	var runGame = false; 
 	// RunLoop current Timer
-	me.curT = 0; 
+	var curT = 0; 
 	// RunLoop global Timer
-	me.globT = 0; 
+	var globT = 0; 
+	me.getTime = function(type) {
+		return (type=='g') ? curT+globT : curT;
+	}
 	// Golbal gameboard dimensions
 	me.Xdim = 0;
 	me.Ydim = 0;
@@ -388,7 +391,7 @@ var rw = new function(){
 	me.start = function() {
 		if (runGame==false) {
 			runGame = true;
-			me.curT = setTimeout('rw.run()', speed);
+			curT = setTimeout('rw.run()', speed);
 		}
 		return this;
 	}
@@ -553,11 +556,11 @@ var rw = new function(){
 		}
 		//If game has not ended or been paused, continue
 		if (runGame==true) {
-			me.curT = setTimeout('rw.run()', speed);
+			curT = setTimeout('rw.run()', speed);
 		} else {
 			clearTimeout(me.curT);
-			me.globT = me.globT+me.curT;
-			me.curT = 0;
+			globT += curT;
+			curT = 0;
 		}
 	}
 } 
