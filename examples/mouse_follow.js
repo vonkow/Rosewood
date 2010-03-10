@@ -4,7 +4,7 @@ var ball = function(name) {
 	this.update = function(x1, x2, y1, y2) {
 		this.base.velX = 0;
 		this.base.velY = 0;
-		if (x2<rw.Xdim) {
+		if (x2<rw.Xdim()) {
 			if (x1+5 < rw.mouse.x) {
 				this.base.velX = 5;
 			} else if (x1 < rw.mouse.x) {
@@ -18,7 +18,7 @@ var ball = function(name) {
 				this.base.velX = -(x1-rw.mouse.x);
 			}
 		}
-		if (y2<rw.Ydim) {
+		if (y2<rw.Ydim()) {
 			if (y1+5 < rw.mouse.y) {
 				this.base.velY = 5;
 			} else if (y1 < rw.mouse.y) {

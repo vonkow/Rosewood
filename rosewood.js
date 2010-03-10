@@ -16,27 +16,33 @@ var rw = new function(){
 		return (type=='g') ? curT+globT : curT;
 	}
 	// Golbal gameboard dimensions
-	me.Xdim = 0;
-	me.Ydim = 0;
+	var X = 0;
+	var Y = 0;
+	me.Xdim = function() {
+		return X;
+	}
+	me.Ydim = function() {
+		return Y;
+	}
 	// Game speed settings
 	var speed = 50;
 	me.setFPS = function(fps) {
 		speed = 1000/parseInt(fps);
 	}
 	// Tile settings
-	me.tiles = false;
-	me.tileX = 0;
-	me.tileY = 0;
+	var tiles = false;
+	var tileX = 0;
+	var tileY = 0;
 	me.tilesOn = function(xDim, yDim) {
-		me.tiles = true;
-		me.tileX = xDim;
-		me.tileY = yDim;
+		tiles = true;
+		tileX = xDim;
+		tileY = yDim;
 		return this;
 	}
 	me.tilesOff = function() {
-		me.tiles = false;
-		me.tileX = 0;
-		me.tileY = 0;
+		tiles = false;
+		tileX = 0;
+		tileY = 0;
 		return this;
 	}
 	//KeyDown/Up settings
@@ -78,7 +84,7 @@ var rw = new function(){
 		y: 0,
 		down : false
 	};
-	me.mousePos = function(e) {
+	var mousePos = function(e) {
 		if (!e) {
 			// THIS IS WHY WE CAN'T HAVE PRETTY THINGS IE!!!
 			var e = window.event;
@@ -89,11 +95,11 @@ var rw = new function(){
 			me.mouse.y = e.pageY;
 		}
 	}
-	me.mouseDown = function(e) {
+	var mouseDown = function(e) {
 		if (!e) var e = window.event;
 		me.mouse.down = true;
 	}
-	me.mouseUp = function(e) {
+	var mouseUp = function(e) {
 		if (!e) var e = window.event;
 		me.mouse.down = false;
 
@@ -165,8 +171,8 @@ var rw = new function(){
 			}
 		}
 		this.tilePos = function() {
-			this.tileX = Math.floor(this.posX/me.tileX);
-			this.tileY = Math.floor(this.posY/me.tileY);
+			this.tileX = Math.floor(this.posX/tileX);
+			this.tileY = Math.floor(this.posY/tileY);
 		}
 	}
 	me.newEnt = function(ent, display, posX, posY, posZ) {
@@ -373,16 +379,16 @@ var rw = new function(){
 		me.browser.check();
 		var board = document.createElement('div');
 		board.id = 'board';
-		this.Xdim = dimX;
-		this.Ydim = dimY;
+		X = dimX;
+		Y = dimY;
 		board.style.width = dimX+'px';
 		board.style.height = dimY+'px';
 		board.style.overflow = 'hidden';
 		board.style.border = '1px solid black';
 		document.getElementsByTagName('body')[0].appendChild(board);
-		document.onmousemove = me.mousePos;
-		document.onmousedown = me.mouseDown;
-		document.onmouseup = me.mouseUp;
+		document.onmousemove = mousePos;
+		document.onmousedown = mouseDown;
+		document.onmouseup = mouseUp;
 		document.onkeydown=keyDown;
 		document.onkeyup=keyUp;
 		return this;
@@ -404,7 +410,7 @@ var rw = new function(){
 	me.run = function() {
 		// Update all sprites and remove those that are "dead"
 		// FIX THIS SO IT'S LESS REPETITIVE CODE, or don't cuz this is FAST
-		if (me.tiles==true) {
+		if (tiles==true) {
 			if (keyChange==true) {
 				for (var x=0; x<me.ents.length; x++) {
 					if (me.ents[x].base.active==true) {
