@@ -220,7 +220,7 @@ function endGameRule(active) {
 	this.dead = false;
 	this.rule = function() {
 		if (this.dead==true) {
-			rw.runGame = false;
+			rw.stop();
 			rw.wipeAll();
 		}
 	}

@@ -7,7 +7,7 @@
 var rw = new function(){
 	var me = this;
 	// RunLoop or stop
-	me.runGame = false; 
+	var runGame = false; 
 	// RunLoop current Timer
 	me.curT = 0; 
 	// RunLoop global Timer
@@ -16,9 +16,9 @@ var rw = new function(){
 	me.Xdim = 0;
 	me.Ydim = 0;
 	// Game speed settings
-	me.speed = 50;
+	var speed = 50;
 	me.setFPS = function(fps) {
-		me.speed = 1000/parseInt(fps);
+		speed = 1000/parseInt(fps);
 	}
 	// Tile settings
 	me.tiles = false;
@@ -37,33 +37,33 @@ var rw = new function(){
 		return this;
 	}
 	//KeyDown/Up settings
-	me.keyChange = false; 
-	me.keys = {};
-	me.keySwitch = function(code, bit) {
+	var keyChange = false; 
+	var keys = {};
+	var keySwitch = function(code, bit) {
 		var keyArray = [['bsp',8],['tab',9],['ent',13],['shf',16],['ctr',17],['alt',18],['pau',19],['cap',20],['esc',27],['sp',32],['pgu',33],['pgd',34],['end',35],['hom',36],['la',37],['ua',38],['ra',39],['da',40],['ins',45],['del',46],['d0',48],['d1',49],['d2',50],['d3',51],['d4',52],['d5',53],['d6',54],['d7',55],['d8',56],['d9',57],['sem',59],['eql',61],['a',65],['b',66],['c',67],['d',68],['e',69],['f',70],['g',71],['h',72],['i',73],['j',74],['k',75],['l',76],['m',77],['n',78],['o',79],['p',80],['q',81],['r',82],['s',83],['t',84],['u',85],['v',86],['w',67],['x',88],['y',89],['z',90],['lwn',91],['rwn',92],['sel',93],['n0',96],['n1',97],['n2',98],['n3',99],['n4',100],['n5',101],['n6',102],['n7',103],['n8',104],['n9',105],['mul',106],['add',107],['sub',109],['dec',110],['div',111],['f1',112],['f2',113],['f3',114],['f4',115],['f5',116],['f6',117],['f7',118],['f8',119],['f9',120],['f10',121],['f11',122],['f12',123],['num',144],['scr',145],['com',188],['per',190],['fsl',191],['acc',192],['obr',219],['bsl',220],['cbr',221],['qot',222]];
 		var len = keyArray.length;
 		for (var x=0;x<len;x++) {
 			if (keyArray[x][1]==code) {
 				if (bit) {
-					me.keys[keyArray[x][0]] = true;
+					keys[keyArray[x][0]] = true;
 				} else {
-					me.keys[keyArray[x][0]] = false;
+					keys[keyArray[x][0]] = false;
 				}
 			}
 		}
 	}
-	me.keyDown = function(e) {
+	var keyDown = function(e) {
 		var ev = e ? e : window.event;
-		me.keySwitch(ev.keyCode, true);
-		me.keyChange = true;
+		keySwitch(ev.keyCode, true);
+		keyChange = true;
 	}
-	me.keyUp = function(e) {
+	var keyUp = function(e) {
 		var ev = e ? e : window.event;
-		me.keySwitch(ev.keyCode, false);
-		me.keyChange = true;
+		keySwitch(ev.keyCode, false);
+		keyChange = true;
 	}
 	me.keyCheck = function(key) {
-		if (me.keys[key]) {
+		if (keys[key]) {
 			return true;
 		} else {
 			return false;
@@ -380,21 +380,21 @@ var rw = new function(){
 		document.onmousemove = me.mousePos;
 		document.onmousedown = me.mouseDown;
 		document.onmouseup = me.mouseUp;
-		document.onkeydown=me.keyDown;
-		document.onkeyup=me.keyUp;
+		document.onkeydown=keyDown;
+		document.onkeyup=keyUp;
 		return this;
 	}
 	// Start FUnction
 	me.start = function() {
-		if (me.runGame==false) {
-			me.runGame = true;
-			me.curT = setTimeout('rw.run()', this.speed);
+		if (runGame==false) {
+			runGame = true;
+			me.curT = setTimeout('rw.run()', speed);
 		}
 		return this;
 	}
 	// Stop Function
 	me.stop = function() {
-		me.runGame = false;
+		runGame = false;
 		return this;
 	}
 	// RunLoop Function
@@ -402,7 +402,7 @@ var rw = new function(){
 		// Update all sprites and remove those that are "dead"
 		// FIX THIS SO IT'S LESS REPETITIVE CODE, or don't cuz this is FAST
 		if (me.tiles==true) {
-			if (me.keyChange==true) {
+			if (keyChange==true) {
 				for (var x=0; x<me.ents.length; x++) {
 					if (me.ents[x].base.active==true) {
 						me.ents[x].base.tilePos();
@@ -418,7 +418,7 @@ var rw = new function(){
 						}
 					}
 				}
-				me.keyChange = false;
+				keyChange = false;
 			} else {
 				for(var x=0; x<me.ents.length; x++) {
 					if (me.ents[x].base.active==true) {
@@ -434,7 +434,7 @@ var rw = new function(){
 				}
 			}
 		} else {
-			if (me.keyChange==true) {
+			if (keyChange==true) {
 				for (var x=0; x<me.ents.length; x++) {
 					if (me.ents[x].base.active==true) {
 						if (me.ents[x].keyChangeSprite) {
@@ -449,7 +449,7 @@ var rw = new function(){
 						}
 					}
 				}
-				me.keyChange = false;
+				keyChange = false;
 			} else {
 				for(var x=0; x<me.ents.length; x++) {
 					if (me.ents[x].base.active==true) {
@@ -552,8 +552,8 @@ var rw = new function(){
 			}
 		}
 		//If game has not ended or been paused, continue
-		if (me.runGame==true) {
-			me.curT = setTimeout('rw.run()', this.speed);
+		if (runGame==true) {
+			me.curT = setTimeout('rw.run()', speed);
 		} else {
 			clearTimeout(me.curT);
 			me.globT = me.globT+me.curT;
