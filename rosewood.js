@@ -28,6 +28,10 @@ var rw = new function(){
 	var speed = 50;
 	me.setFPS = function(fps) {
 		speed = 1000/parseInt(fps);
+		return this;
+	}
+	me.getFPS = function() {
+		return 1000/speed;
 	}
 	// Tile settings
 	var tiles = false;
