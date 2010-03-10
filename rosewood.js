@@ -316,12 +316,12 @@ var rw = new function(){
 	}
 	//Maybe Fixed now?
 	// Image pre-loader
-	me.preImg = [];
+	var preImg = [];
 	me.using = function(path, ext, imgArray) {
 		var len = imgArray.length;
 		for (var x=0; x<len;x++) {
-			me.preImg[me.preImg.length] = new Image();
-			me.preImg[me.preImg.length-1].src = 'sprites/'+path+'/'+imgArray[x]+'.'+ext;
+			preImg[preImg.length] = new Image();
+			preImg[preImg.length-1].src = 'sprites/'+path+'/'+imgArray[x]+'.'+ext;
 		}
 		return this;
 	}
