@@ -305,6 +305,52 @@ var rw = new function(){
 		}
 		return this;
 	}
+	var states = {};
+	var copy = function(obj) {
+		var newCopy = (obj instanceof Array) ? [] : {};
+		for (prop in obj) {
+			if (obj[prop] && typeof obj[prop] == 'object') {
+				newCopy[prop] = copy(obj[prop]);
+			} else {
+				newCopy[prop] = obj[prop];
+			}
+		}
+		return newCopy;
+	}
+	var copyState = function() {
+		var things = {ents:null,maps:null,rules:null};
+		var state = {};
+		for (thing in things) {
+			state[thing] = copy(rw[thing]);
+		}
+		return state;
+	}
+
+	me.saveState = function(name) {
+		var state = copyState();
+		states[name] = {
+			ents : state.ents,
+			maps : state.maps,
+			rules : state.rules
+		};
+		return this;
+	}
+	me.loadState = function(name) {
+		if (states[name]) {
+			me.ents = states[name].ents;
+			me.maps = states[name].maps;
+			me.rules = states[name].rules;
+			var len = me.ents.length;
+			for (var x=0;x<len;x++) {
+				if (me.ents[x].base.active==true) me.ents[x].base.display();
+			}
+		}
+		return this;
+	}
+	me.rmState = function(name) {
+		if (states[name]) delete states[name];
+		return this;
+	}
 	// Ajax function, durr
 	me.ajax = function(targ, func) {
 		var xhr = new XMLHttpRequest();
