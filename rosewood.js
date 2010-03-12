@@ -337,9 +337,9 @@ var rw = new function(){
 	}
 	me.loadState = function(name) {
 		if (states[name]) {
-			me.ents = states[name].ents;
-			me.maps = states[name].maps;
-			me.rules = states[name].rules;
+			me.ents = copy(states[name].ents);
+			me.maps = copy(states[name].maps);
+			me.rules = copy(states[name].rules);
 			var len = me.ents.length;
 			for (var x=0;x<len;x++) {
 				if (me.ents[x].base.active==true) me.ents[x].base.display();

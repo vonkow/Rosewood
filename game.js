@@ -222,7 +222,6 @@ function endGameRule(active) {
 		if (this.dead==true) {
 			rw.wipeAll()
 			.loadState('test')
-			.saveState('test');
 		}
 	}
 }
