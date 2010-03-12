@@ -207,7 +207,7 @@ var rw = new function(){
 	me.lib = {
 		ent : function(name, type, xDim, yDim) {
 			this.base = new me.ent(name, type, ' ', ' ', xDim, yDim);
-			this.hitMap = [[0,0,xDim,yDim,type]];
+			this.hitMap = [[type,0,0,xDim,yDim]];
 			this.update = function(){};
 			this.iGotHit = function(){};
 		}
@@ -498,25 +498,25 @@ var rw = new function(){
 							for (var w=0;w<me.ents[y].hitMap.length;w++) {
 								var hit = true;
 								// Left Check
-								if (me.ents[x].base.posX+me.ents[x].hitMap[z][2]<=me.ents[y].base.posX+me.ents[y].hitMap[w][0]) {
+								if (me.ents[x].base.posX+me.ents[x].hitMap[z][3]<=me.ents[y].base.posX+me.ents[y].hitMap[w][1]) {
 									hit = false;
 								}
 								// Right Check
-								if (me.ents[x].base.posX+me.ents[x].hitMap[z][0]>=me.ents[y].base.posX+me.ents[y].hitMap[w][2]) {
+								if (me.ents[x].base.posX+me.ents[x].hitMap[z][1]>=me.ents[y].base.posX+me.ents[y].hitMap[w][3]) {
 									hit = false;
 								}
 								// Top Check
-								if (me.ents[x].base.posY+me.ents[x].hitMap[z][3]<=me.ents[y].base.posY+me.ents[y].hitMap[w][1]) {
+								if (me.ents[x].base.posY+me.ents[x].hitMap[z][4]<=me.ents[y].base.posY+me.ents[y].hitMap[w][2]) {
 									hit = false;
 								}
 								// Bottom Check
-								if (me.ents[x].base.posY+me.ents[x].hitMap[z][1]>=me.ents[y].base.posY+me.ents[y].hitMap[w][3]) {
+								if (me.ents[x].base.posY+me.ents[x].hitMap[z][2]>=me.ents[y].base.posY+me.ents[y].hitMap[w][4]) {
 									hit = false;
 								}
 								// If collision, add to list.
 								if (hit==true) {
 									// Maybe change this to call a collision resolution function for each ent?
-									cols[cols.length]=[[x,me.ents[x].hitMap[z][4]],[y,me.ents[y].hitMap[w][4]]];
+									cols[cols.length]=[[x,me.ents[x].hitMap[z][0]],[y,me.ents[y].hitMap[w][0]]];
 								}
 							}
 						}

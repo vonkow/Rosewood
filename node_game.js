@@ -1,6 +1,6 @@
 var Wall = function(name, wallType, xDim, yDim) {
 	this.base = new rw.ent(name, wallType, ' ', ' ', xDim, yDim);
-	this.hitMap = [[0,0,xDim,yDim,wallType]];
+	this.hitMap = [[wallType,0,0,xDim,yDim]];
 	this.update = function() {};
 }
 
@@ -11,7 +11,7 @@ var dot = function(name, type) {
 	this.left = false;
 	this.right = false;
 	this.count = 20;
-	this.hitMap = [[0,0,40,40,type]];
+	this.hitMap = [[type,0,0,40,40]];
 	this.update = function() {
 		if (this.count>0) {
 			this.count--;

@@ -1,13 +1,13 @@
 var Wall = function(name, wallType, xDim, yDim) {
 	this.base = new rw.ent(name, wallType, ' ', ' ', xDim, yDim);
-	this.hitMap = [[0,0,xDim,yDim,wallType]];
+	this.hitMap = [[wallType,0,0,xDim,yDim]];
 	this.update = function() {};
 }
 
 var blast = function(name, typeClass) {
 	this.base = new rw.ent(name, typeClass, 'blast', 'gif', 40, 32);
 	this.countdown = 25;
-	this.hitMap = [[0,0,40,32,typeClass]];
+	this.hitMap = [[typeClass,0,0,40,32]];
 	this.update = function() {
 		this.base.posZ = this.base.posY;
 		this.countdown -= 1;
@@ -22,7 +22,7 @@ var bomb = function(name, typeClass) {
 	this.countdown = 150;
 	this.blastSize = 2;
 	//this.spin = 0;
-	this.hitMap = [[0,0,40,32,typeClass]];
+	this.hitMap = [[typeClass,0,0,40,32]];
 	this.update = function() {
 		if (this.countdown == 150) {
 			this.base.posZ = this.base.posY;
@@ -84,7 +84,7 @@ var badguy = function(name) {
 	this.speed = 5;
 	this.ticker = 0;
 	this.heading = 'l';
-	this.hitMap = [[0,0,40,64,'baddie']];
+	this.hitMap = [['baddie',0,0,40,64]];
 	this.update = function() {
 		if (this.heading == 'r') {
 			if (this.ticker < 39) {
@@ -121,7 +121,7 @@ var bman = function(name, typeClass, heading) {
 	this.bombMax = 15;
 	this.bombs = [];
 	this.heading = 'u';
-	this.hitMap = [[0,0,40,64,typeClass]];
+	this.hitMap = [[typeClass,0,0,40,64]];
 	this.update = function() {
 		this.base.velX = 0;
 		this.base.velY = 0;
