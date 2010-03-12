@@ -26,7 +26,7 @@ var ball = function(name, dirX, dirY) {
 		switch (by) {
 			case 'rWall':
 				this.dirX = 'l';
-				this.base.velX = rw.Xdim-this.base.posX2();
+				this.base.velX = rw.Xdim()-this.base.posX2();
 				break;
 			case 'lWall':
 				this.dirX = 'r';
@@ -38,7 +38,7 @@ var ball = function(name, dirX, dirY) {
 				break;
 			case 'bWall':
 				this.dirY = 'u';
-				this.base.velY = rw.Ydim-this.base.posY2();
+				this.base.velY = rw.Ydim()-this.base.posY2();
 				break;
 		}
 	}
