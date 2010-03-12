@@ -64,6 +64,7 @@ var laser = function(name, angle) {
 	this.velX = 20*Math.cos((angle*0.0174532925));
 	this.velY = 20*Math.sin((angle*0.0174532925));
 	this.countDown = 25;
+	this.hasntHit = true;
 	this.hitMap = [['laser',0,0,10,10]];
 	this.update = function() {
 		this.base.rotate(angle);
@@ -81,6 +82,7 @@ var laser = function(name, angle) {
 	}
 	this.iGotHit = function(by) {
 		if (by=='roid') {
+			this.hasntHit = false;
 			this.base.hide();
 			return false;
 		}
@@ -108,31 +110,33 @@ var roid = function(name, size) {
 		if (this.base.posY1()<0) this.base.posY+=600;
 		if (this.base.posY2()>600) this.base.posY-=600;
 	}
-	this.iGotHit = function(by) {
+	this.iGotHit = function(by,inThe,id) {
 		if (by=='laser') {
-			switch (this.size) {
-				case 40:
-					var posX = this.base.posX+20;
-					var posY = this.base.posY+20;
-					rw.newEnt(new roid('roid'+(roidcounter++), 20), '20', posX,posY,posY)
-					rw.newEnt(new roid('roid'+(roidcounter++), 20), '20', posX,posY,posY)
-					rw.newEnt(new roid('roid'+(roidcounter++), 20), '20', posX,posY,posY)
-					this.base.hide();
-					return false;
-					break;
-				case 20:
-					var posX = this.base.posX+10;
-					var posY = this.base.posY+10;
-					rw.newEnt(new roid('roid'+(roidcounter++), 10), '10', posX,posY,posY)
-					rw.newEnt(new roid('roid'+(roidcounter++), 10), '10', posX,posY,posY)
-					rw.newEnt(new roid('roid'+(roidcounter++), 10), '10', posX,posY,posY)
-					this.base.hide();
-					return false;
-					break;
-				case 10:
-					this.base.hide();
-					return false;
-					break;
+			if (rw.ents[id].hasntHit) {
+				switch (this.size) {
+					case 40:
+						var posX = this.base.posX+20;
+						var posY = this.base.posY+20;
+						rw.newEnt(new roid('roid'+(roidcounter++), 20), '20', posX,posY,posY)
+						rw.newEnt(new roid('roid'+(roidcounter++), 20), '20', posX,posY,posY)
+						rw.newEnt(new roid('roid'+(roidcounter++), 20), '20', posX,posY,posY)
+						this.base.hide();
+						return false;
+						break;
+					case 20:
+						var posX = this.base.posX+10;
+						var posY = this.base.posY+10;
+						rw.newEnt(new roid('roid'+(roidcounter++), 10), '10', posX,posY,posY)
+						rw.newEnt(new roid('roid'+(roidcounter++), 10), '10', posX,posY,posY)
+						rw.newEnt(new roid('roid'+(roidcounter++), 10), '10', posX,posY,posY)
+						this.base.hide();
+						return false;
+						break;
+					case 10:
+						this.base.hide();
+						return false;
+						break;
+				}
 			}
 		}
 	}

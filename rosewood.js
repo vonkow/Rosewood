@@ -528,12 +528,12 @@ var rw = new function(){
 			var toBeRemoved = [];
 			for (var x=0; x<cols.length; x++) {
 				if (me.ents[cols[x][0][0]].iGotHit) {
-					if (me.ents[cols[x][0][0]].iGotHit(cols[x][1][1])==false) {
+					if (me.ents[cols[x][0][0]].iGotHit(cols[x][1][1],cols[x][0][1],cols[x][1][0])==false) {
 						toBeRemoved[toBeRemoved.length] = cols[x][0][0];
 					}
 				}
 				if (me.ents[cols[x][1][0]].iGotHit) {
-					if(me.ents[cols[x][1][0]].iGotHit(cols[x][0][1])==false) {
+					if (me.ents[cols[x][1][0]].iGotHit(cols[x][0][1],cols[x][1][1],cols[x][0][0])==false) {
 						toBeRemoved[toBeRemoved.length] = cols[x][1][0];
 					}
 				}
