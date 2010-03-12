@@ -220,8 +220,9 @@ function endGameRule(active) {
 	this.dead = false;
 	this.rule = function() {
 		if (this.dead==true) {
-			rw.stop();
-			rw.wipeAll();
+			rw.wipeAll()
+			.loadState('test')
+			.saveState('test');
 		}
 	}
 }
@@ -274,6 +275,7 @@ function startGame() {
 	.newEnt(new  Wall('lWall1', 'lWall', 1, 99), 'blank', 250, 250, 0)
 	.newEnt(new  Wall('dWall1', 'dWall', 99, 1), 'blank', 250, 350, 0)
 	.start()
+	.saveState('test')
 	.ajax('ajaxtest.json', 'addGuy');
 	/* Uncomment and put before start() for stress test 
 	rw.newEnt(new bman('Goon1', 'bman', 'u'), true, 51, 51);
