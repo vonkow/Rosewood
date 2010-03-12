@@ -83,10 +83,19 @@ var rw = new function(){
 		}
 	}
 	// Mouse Position settings
+	var mouseX = 0;
+	var mouseY = 0;
+	var mouseDown = false;
 	me.mouse = {
-		x: 0,
-		y: 0,
-		down : false
+		x: function() {
+			return mouseX
+		},
+		y: function() {
+			return mouseY
+		},
+		down : function() {
+			return mouseDown
+		}
 	};
 	var mousePos = function(e) {
 		if (!e) {
@@ -95,17 +104,17 @@ var rw = new function(){
 			me.mouse.x = e.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
 			me.mouse.y = e.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight);
 		} else {
-			me.mouse.x = e.pageX;
-			me.mouse.y = e.pageY;
+			mouseX= e.pageX;
+			mouseY= e.pageY;
 		}
 	}
 	var mouseDown = function(e) {
 		if (!e) var e = window.event;
-		me.mouse.down = true;
+		mouseDown= true;
 	}
 	var mouseUp = function(e) {
 		if (!e) var e = window.event;
-		me.mouse.down = false;
+		mouseDown= false;
 
 	}
 	// Game Entities
