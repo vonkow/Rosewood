@@ -1,0 +1,402 @@
+<html>
+	<head>
+		<title>Rosewood Documentation</title>
+	</head>
+	<body>
+		<h1>Rosewood Documentation</h1>
+		<h2>Introduction to the Rosewood Engine</h2>
+		<p>Add basic overview of the engine</p>
+		<h2>The Board</h2>
+		<h3>Basics</h3>
+		<p>
+			When Rosewood is initialized, it creates an html div with the id 'board'.
+			The board serves as the DOM parentNode for all backgrounds, sprites and 
+			invisible barriers within the game.
+			To create the board and initialize the game, the function rw.init(dimX, dimY)
+			must be called. 
+			The arguments dimX and dimY set the dimensions of the board.
+			Calling rw.init() does not start the main game loop and it must be called
+			before the creation of any entities or backgrounds.
+		</p>
+		<h2>Entities</h2>
+		<h3>Entity Basics</h3>
+		<p>
+			Entities (hereforth know as 'ents') form the core of the Rosewood engine.
+			Every non-background object that is appended to the game board is initialized
+			as an ent. All sprites, Characters, Enemies, Items and any invisble barriers
+			or specific areas within the board are created using the rw.newEnt() function
+			and are tracked within the rw.ents array.
+		</p>
+		<p>
+			A large portion of game design with Rosewood is creating custom ent
+			definitions for the objects witin the game. however there are a number of 
+			properties and functions that all ents share.
+		</p>
+		<h4>ent.base and rw.ent</h4>
+		<p>
+			Every ent is created with a custom constructor function written for the 
+			specific game, but every ent constructor must have certain properties.
+			In order to be considered valid by the engine an ent must possess a property 
+			named 'base' that references an rw.ent object. In other words, an ent
+			named 'ent' would have a property 'ent.base' that would refer to an
+			rw.ent object.
+			The rw.ent object, by way of ent.base contains much of the information that
+			all ents share. Properties within rw.ent are read by the engine to determine
+			the dimensions and location of each entity as well as what sprites to
+			represent them with onscreen.
+			At a minimum, an ent MUST have an rw.ent object assigned to its 'base' property.
+		</p>
+		<h5>rw.ent properties</h5>
+		<p>
+			The rw.ent object contains the properties used by the engine for positioning and
+			displaying entities onscreen. They are stored within an ent's 'base' property.
+			The ent.base properties inherited from rw.ent are as follows:
+		</p>
+		<ul>
+			<li>
+				<strong>ent.base.name</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.typeClass</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.sprites</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.spritesSct</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.width</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.height</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.posX, posY and posZ</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.velX, velY and velZ</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.heading</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.moving</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.active</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.display()</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.hide()</strong>
+				<p>
+					
+				</p>
+			</li>
+			<li>
+				<strong>ent.base.changeSprite(spriteName)</strong>
+				<p>
+					
+				</p>
+			</li>
+		</ul>
+		<h4>ent.update() and ent.iGotHit()</h4>
+		<p>
+			While not necessary for validation, ents must have an 'update()' function
+			if they are to be moved onscreen after initial placement.
+			The engin runs at a specified rate of frames per second; in each frame,
+			the update() function of every ent is called and if the ent moves, it is 
+			re-positioned onscreen.
+			In addition to the update() function, ents can also have a function called
+			'iGotHit()' which contains instructions for how an entity should react if it
+			collides with another entity. When two ents collide their 'ent.base.typeClass'
+			value is passed to the other ent's iGotHit() funtion like so: 
+				ent.iGotHit(otherEnt.base.typeClass)
+			This allows the game designer to specify different behavior for an ent running
+			into a wall as opposed to say, the ent being hit by a bullet.
+		</p>
+		<h3>rw.ents Array</h3>
+		<p>
+			Rosewood stores every game entity (or 'ent') within the rw.ents array.
+			When a new ent is created using the rw.newEnt() function it is appended
+			to the end of the array.
+			This means, that as ents are created and removed the array index of a 
+			given ent may change, making it difficult to refer to a specific ent 
+			using its location within the array.
+			However, this shortcoming is easily mitigated by crafting an ent's 
+			properties and functions in a way that does not rely on an absolute 
+			index within the rw.ents array.
+			In addition, the <strong>rules</strong> object provides methods of directly 
+			interfacing with specific ents. See the Rules section for more details.
+		</p>
+
+
+		<!-- TUTORIAL SECTION BEGINS HERE -->
+		<h1>Tutorial</h1>
+		<h2>Getting Started</h2>
+		<h3>Set Up</h3>
+		<p>
+			To start creating a game with Rosewood we first need to grab a copy of 
+			the engine and set up a project directory.
+			Create a folder for the game and place a copy of rosewood.js to it.
+			Then, using your favorite text-editor, create a file called 'mygame.js'
+			and another called 'game.html'.
+		</p>	
+		<h1>Full Reference</h1>
+		rw
+		<ul>
+			<li>
+				rw.runGame
+			</li>
+			<li>
+				rw.curT
+			</li>
+			<li>
+				rw.globT
+			</li>
+			<li>
+				rw.Xdim
+			</li>
+			<li>
+				rw.Ydim
+			</li>
+			<li>
+				rw.func(function)
+			</li>
+			<li>
+				rw.speed
+			</li>
+			<li>
+				rw.setFPS(fps)
+			</li>
+			<li>
+				rw.tiles
+			</li>
+			<li>
+				rw.tileX
+			</li>
+			<li>
+				rw.tileY
+			</li>
+			<li>
+				rw.tilesOn(xDim, yDim)
+			</li>
+			<li>
+				rw.tilesOff()
+			</li>
+			<li>
+				rw.keyChange
+			</li>
+			<li>
+				rw.keys
+				<ul>
+					<li>rw.keys.sp</li>
+					<li>rw.keys.la</li>
+					<li>rw.keys.ra</li>
+					<li>rw.keys.ua</li>
+				</ul>
+			</li>
+			<li>
+				rw.keyDown()
+			</li>
+			<li>
+				rw.keyUp()
+			</li>
+			<li>
+				rw.mouse
+				<ul>
+					<li>rw.mouse.x</li>
+					<li>rw.mouse.y</li>
+					<li>rw.mouse.down</li>
+				</ul>
+			</li>
+			<li>
+				rw.mousePos()
+			</li>
+			<li>
+				rw.mouseDown()
+			</li>
+			<li>
+				rw.mouseUp()
+			</li>
+			<li>
+				rw.ents
+			</li>
+			<li>
+				rw.ent(name, typeClass, sprites, spriteExt, width, height)
+				<ul>
+					<li>this.name</li>
+					<li>this.typeClass</li>
+					<li>this.sprites</li>
+					<li>this.spriteExt</li>
+					<li>this.width</li>
+					<li>this.height</li>
+					<li>this.posX</li>
+					<li>this.posY</li>
+					<li>this.posZ</li>
+					<li>this.posX1()</li>
+					<li>this.posX2()</li>
+					<li>this.posY1()</li>
+					<li>this.posY2()</li>
+					<li>this.velX</li>
+					<li>this.velY</li>
+					<li>this.velZ</li>
+					<li>this.tileX</li>
+					<li>this.tileY</li>
+					<li>this.active</li>
+					<li>this.display(graphic)</li>
+					<li>this.hide()</li>
+					<li>this.changeSprite(spriteName)</li>
+					<li>this.rotate(deg)</li>
+					<li>this.tilePos()</li>
+				</ul>
+			</li>
+			<li>
+				rw.newEnt(ent, display, posX, posY posZ)
+			</li>
+			<li>
+				rw.removeEnt(entNum)
+			</li>
+			<li>
+				rw.lib
+				<ul>
+					<li>rw.lib.ent(name, type, xDim, yDim)</li>
+				</ul>
+			</li>
+			<li>
+				rw.maps
+			</li>
+			<li>
+				rw.map(name, path, extention, xDim, yDim)
+				<ul>
+					<li>this.name</li>
+					<li>this.path</li>
+					<li>this.extention</li>
+					<li>this.width</li>
+					<li>this.height</li>
+					<li>this.offX</li>
+					<li>this.offY</li>
+					<li>this.offset(oX, oY)</li>
+					<li>this.show()</li>
+					<li>this.hide()</li>
+					<li>this.render()</li>
+					<li>this.remove()</li>
+				</ul>
+			</li>
+			<li>
+				rw.newMap(name, map, ext, dimX, dimY, render)
+			</li>
+			<li>
+				rw.removeMap(map)
+			</li>
+			<li>
+				rw.rules
+			</li>
+			<li>
+				rw.rule(active)
+				<ul>
+					<li>this.active</li>
+				</ul>
+			</li>
+			<li>
+				rw.newRule(name, rule)
+			</li>
+			<li>
+				rw.removeRule(rule)
+			</li>
+			<li>
+				rw.ajax(targ, func)
+			</li>
+			<li>
+				rw.preImg
+			</li>
+			<li>
+				rw.using(path, ext, imgArray)
+			</li>
+			<li>
+				rw.changeCursor(cursor)
+			</li>
+			<li>
+				rw.browser
+				<ul>
+					<li>rw.browser.check()</li>
+					<li>rw.browser.trans_name</li>
+				</ul>
+			</li>
+				rw.wipeBoard()
+			<li>
+			</li>
+			<li>
+				rw.wipeEnts()
+			</li>
+			<li>
+				rw.wipeMaps()
+			</li>
+			<li>
+				rw.wipeRules()
+			</li>
+			<li>
+				rw.wipeAll()
+			</li>
+			<li>
+				rw.init(dimX, dimY)
+			</li>
+			<li>
+				rw.start()
+			</li>
+			<li>
+				rw.stop()
+			</li>
+			<li>
+				rw.run()
+			</li>
+		</ul>
+
+		Custom Ent Constructor minimum
+		<br>
+		&nbsp;&nbsp;&nbsp;var ent = function(name, typeClass, sprites, spriteExt, width, height, heading) {<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.base = new rw.ent(name, typeClass, sprites, spriteExt, width, height);<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.update = function(x1, x2, y1, y2) {};<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.keyChangeSprite = function() {}; //Optional<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.iGotHit = function() {}; //Optional<br>
+		&nbsp;&nbsp;&nbsp;}<br>
+	</body>
+</html>
