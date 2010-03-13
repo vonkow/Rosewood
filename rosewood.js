@@ -115,10 +115,10 @@ var rw = new function(){
 	}
 	// Game Entities
 	me.ents = []; 
-	me.ent = function(name, typeClass, sprites, spriteExt, width, height) {
+	me.ent = function(name, sprites, baseSprite, spriteExt, width, height) {
 		this.name = name;
-		this.typeClass = typeClass;
 		this.sprites = sprites;
+		this.baseSprite = baseSprite;
 		this.spriteExt = spriteExt
 		this.width = width;
 		this.height = height;
@@ -343,8 +343,16 @@ var rw = new function(){
 			}
 			var len = me.ents.length;
 			for (var x=0;x<len;x++) {
-				if (me.ents[x].base.active==true) me.ents[x].base.display();
+				if (me.ents[x].base.active==true) {
+					me.ents[x].base.display(
+						me.ents[x].base.baseSprite,
+						me.ents[x].base.posX,
+						me.ents[x].base.posY,
+						me.ents[x].base.posZ
+					);
+				}
 			}
+			keyChange = true;
 		}
 		return this;
 	}

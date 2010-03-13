@@ -1,5 +1,5 @@
 var Wall = function(name, wallType, xDim, yDim) {
-	this.base = new rw.ent(name, wallType, ' ', ' ', xDim, yDim);
+	this.base = new rw.ent(name, ' ', ' ', ' ', xDim, yDim);
 	this.hitMap = [[wallType,0,0,xDim,yDim]];
 	this.update = function() {};
 }
@@ -18,7 +18,7 @@ var blast = function(name) {
 	}
 }
 var bomb = function(name, typeClass) {
-	this.base = new rw.ent(name, typeClass, 'bomb', 'gif', 40, 32);
+	this.base = new rw.ent(name, 'bomb', '1', 'gif', 40, 32);
 	this.countdown = 150;
 	this.blastSize = 2;
 	//this.spin = 0;
@@ -78,7 +78,7 @@ var bomb = function(name, typeClass) {
 	}
 }
 var badguy = function(name) {
-	this.base = new rw.ent(name, 'baddie', 'bman', 'gif', 40, 64);
+	this.base = new rw.ent(name, 'bman', 'l', 'gif', 40, 64);
 	this.speed = 5;
 	this.ticker = 0;
 	this.heading = 'l';
@@ -113,7 +113,7 @@ var badguy = function(name) {
 }
 // Custom Game Entity (calls rw.ent for this.base, requires this.update function)
 var bman = function(name, typeClass, heading) {
-	this.base = new rw.ent(name, typeClass, 'bman', 'gif', 40, 64);
+	this.base = new rw.ent(name, 'bman', 'u', 'gif', 40, 64);
 	this.maxSpeed = 5;
 	this.bombCooldown = 5;
 	this.bombMax = 15;

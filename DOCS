@@ -56,9 +56,11 @@ Reference
 		Checks wether the the mouse button is down or up. Returns true or false.
 		non-chainable
 
-	rw.ents[]
+	rw.ents
+		Array that stores all game entities.
 	
 	rw.ent(name, typeClass, sprites, spriteExt, width, height)
+		Constructor for base entity objects.
 
 		posX1()
 		
