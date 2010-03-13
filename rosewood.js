@@ -98,14 +98,15 @@ var rw = new function(){
 		}
 	};
 	var mousePos = function(e) {
-		if (!e) {
+		if (e) {
+			// Like a normal browser...
+			mouseX= e.pageX;
+			mouseY= e.pageY;
+		} else {
 			// THIS IS WHY WE CAN'T HAVE PRETTY THINGS IE!!!
 			var e = window.event;
 			me.mouse.x = e.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
 			me.mouse.y = e.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight);
-		} else {
-			mouseX= e.pageX;
-			mouseY= e.pageY;
 		}
 	}
 	var mouseDown = function(e) {
@@ -214,10 +215,11 @@ var rw = new function(){
 	}
 	// Map Entities
 	me.maps = {}; 
-	me.map = function(name, path, extention, xDim, yDim) {
+	me.map = function(name, path, extention, xDim, yDim, display) {
 		this.name = name;
 		this.path = path;
-		this.extention = extention
+		this.extention = extention;
+		this.display = display;
 		this.width = xDim;
 		this.height = yDim;
 		this.offX = 0;
@@ -231,24 +233,12 @@ var rw = new function(){
 				mapDiv.style.marginTop = this.offY+'px';
 			}
 		}
-		this.show = function() {
+		this.render = function() {
+			this.display = true;
 			if (document.getElementById('map_'+this.name)) {
 				var mapDiv = document.getElementById('map_'+this.name);
 				mapDiv.style.zIndex = '-1';
 				mapDiv.style.display = 'block';
-			} else {
-				this.render();
-			}
-		}
-		this.hide = function() {
-			if (document.getElementById('map_'+this.name)) {
-				var mapDiv = document.getElementById('map_'+this.name);
-				mapDiv.style.display = 'none';
-			}
-		}
-		this.render = function() {
-			if (document.getElementById('map_'+this.name)) {
-				this.show();
 			} else {
 				var mapArea = document.createElement('div');
 				mapArea.id = 'map_'+this.name;
@@ -263,7 +253,15 @@ var rw = new function(){
 				board.appendChild(mapArea);
 			}
 		}
+		this.hide = function() {
+			this.display = false;
+			if (document.getElementById('map_'+this.name)) {
+				var mapDiv = document.getElementById('map_'+this.name);
+				mapDiv.style.display = 'none';
+			}
+		}
 		this.remove = function() {
+			this.display = false;
 			if (document.getElementById('map_'+this.name)) {
 				var mapArea = document.getElementById('map_'+this.name);
 				mapArea.parentNode.removeChild(mapArea);
@@ -271,9 +269,9 @@ var rw = new function(){
 		}
 
 	}
-	me.newMap = function(name, map, ext, dimX, dimY, render) {
-		me.maps[name] = new me.map(map, map, ext, dimX, dimY);
-		if (render==true) {
+	me.newMap = function(name, map, ext, dimX, dimY, display) {
+		me.maps[name] = new me.map(map, map, ext, dimX, dimY, display);
+		if (display==true) {
 			me.maps[name].render();
 		}
 		return this;
@@ -340,6 +338,9 @@ var rw = new function(){
 			me.ents = copy(states[name].ents);
 			me.maps = copy(states[name].maps);
 			me.rules = copy(states[name].rules);
+			for (map in me.maps) {
+				if (me.maps[map].display==true) me.maps[map].render();
+			}
 			var len = me.ents.length;
 			for (var x=0;x<len;x++) {
 				if (me.ents[x].base.active==true) me.ents[x].base.display();
