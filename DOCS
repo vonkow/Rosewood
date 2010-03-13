@@ -1,26 +1,60 @@
 Reference
 
 	rw.getTime(type)
+		Returns the current game time (in frames).
+		non-chainable
+		
+		If the optional argument 'type' is set to "g", the global game time is returned instead.
+		Current game time is the number of frames since the engine was last started
+		and is reset to 0 whenever the engine is stopped.
+		Global game time is the total number of frames since the engine was loaded.
 
 	rw.Xdim()
+		Returns the width (x) of the game board.
+		non-chainable
 
 	rw.Ydim()
+		Returns the height (y) of the game board.
+		non-chainable
 
 	rw.getFPS()
+		Returns the current Frames Per Second speed that the engine is attempting to run at.
+		non-chainable
 
 	rw.setFPS(fps)
+		Sets the engine's Frames Per Second speed to the argument given.
+		chainable
+
+		Notes:
+			Rosewood is initialized with a speed of 20 FPS.
 
 	rw.tilesOn(xDim, yDim)
+		Turns on the tile grid feature and specifies the tile dimensions.
+		chainable
+
+		xDim and yDim specify the tile width and height.
+
+		When the tile grid is on, the tile location of all ent will be updated every fram.
 	
 	rw.tilesOff()
+		Turns off the tile grid.
+		chainable
 	
 	rw.keyCheck(key)
+		Checks wether the specified key is down or up. Returns true or false.
+		non-chainable
 
 	rw.mouse.x()
+		Returns the mouse's x-coordinate.
+		non-chainable
 
-	rw.mouse.()
+	rw.mouse.y()
+		Returns the mouse's y-coordinate.
+		non-chainable
 
 	rw.mouse.down()
+		Checks wether the the mouse button is down or up. Returns true or false.
+		non-chainable
 
 	rw.ents[]
 	
@@ -49,11 +83,11 @@ Reference
 	rw.newEnt(ent, display, posX, posY, posZ)
 		
 	rw.removeEnt(entNum)
-		;
+		
 	rw.lib.ent(name, type, xDim, yDim)
 
 	rw.maps{}
-		;
+	
 	rw.map(name, path, extention, xDim, yDim)
 
 		offset(oX, oY)
@@ -89,8 +123,8 @@ Reference
 	
 	rw.using(path, ext, imgArray)
 	
-	changeCursor(cursor)
-		;
+	rw.changeCursor(cursor)
+	
 	rw.browser.check()
 	
 	rw.wipeBoard()
