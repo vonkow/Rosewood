@@ -9,19 +9,19 @@ var ship = function(name) {
 	this.velY = 0;
 	this.hitMap = [['ship',10,10,30,30]];
 	this.update = function() {
-		if (rw.keyCheck('la')) {
+		if (rw.key('la')) {
 			this.heading-=10;
 			if (this.heading<0) {
 				this.heading+=360;
 			}
 		}
-		if (rw.keyCheck('ra')) {
+		if (rw.key('ra')) {
 			this.heading+=10;
 			if (this.heading>=360) {
 				this.heading-=360;
 			}
 		}
-		if (rw.keyCheck('ua')) {
+		if (rw.key('ua')) {
 			var angle = this.heading*0.0174532925;
 			var scaleX = Math.cos(angle);
 			var scaleY = Math.sin(angle);
@@ -32,7 +32,7 @@ var ship = function(name) {
 		}
 		if (this.coolDown>0) this.coolDown--;
 		if (this.coolDown<=0) {
-			if (rw.keyCheck('sp')) {
+			if (rw.key('sp')) {
 				var num = this.lasCount++;
 				var posX = this.base.posX+15;
 				var posY = this.base.posY+15;

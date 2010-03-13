@@ -135,7 +135,7 @@ var bman = function(name, typeClass, heading) {
 				}
 			}
 		}
-		if (rw.keyCheck('sp')) {
+		if (rw.key('sp')) {
 			if (this.bombCooldown == 5) {
 				if (this.bombs.length < this.bombMax) {
 					this.bombCooldown = 0;
@@ -148,16 +148,16 @@ var bman = function(name, typeClass, heading) {
 				}
 			}
 		}
-		if (rw.keyCheck('la')) {
+		if (rw.key('la')) {
 			this.base.velX += -this.maxSpeed;
 		}
-		if (rw.keyCheck('ra')) {
+		if (rw.key('ra')) {
 			this.base.velX += this.maxSpeed;
 		}
-		if (rw.keyCheck('ua')) {
+		if (rw.key('ua')) {
 			this.base.velY += -this.maxSpeed;
 		}
-		if (rw.keyCheck('da')) {
+		if (rw.key('da')) {
 			this.base.velY += this.maxSpeed;
 		}
 		this.base.velZ = this.base.velY;
@@ -171,16 +171,16 @@ var bman = function(name, typeClass, heading) {
 //		where args are sent to ent and keys.
 	this.keyChangeSprite = function() {
 		var entDiv = document.getElementById('ent_'+name);
-		if (rw.keyCheck('la')) {
+		if (rw.key('la')) {
 			this.heading = 'l';
 			this.base.changeSprite('Wl');
-		} else if (rw.keyCheck('ua')) {
+		} else if (rw.key('ua')) {
 			this.heading = 'u';
 			this.base.changeSprite('Wu');
-		} else if (rw.keyCheck('ra')) {
+		} else if (rw.key('ra')) {
 			this.heading = 'r';
 			this.base.changeSprite('Wr');
-		} else if (rw.keyCheck('da')) {
+		} else if (rw.key('da')) {
 			this.heading = 'd';
 			this.base.changeSprite('Wd');
 		} else {

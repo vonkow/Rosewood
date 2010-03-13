@@ -40,7 +40,7 @@ Reference
 		Turns off the tile grid.
 		chainable
 	
-	rw.keyCheck(key)
+	rw.key(key)
 		Checks wether the specified key is down or up. Returns true or false.
 		non-chainable
 

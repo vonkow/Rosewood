@@ -70,7 +70,7 @@ var rw = new function(){
 		keySwitch(ev.keyCode, false);
 		keyChange = true;
 	}
-	me.keyCheck = function(key) {
+	me.key = function(key) {
 		if (keys[key]) {
 			return true;
 		} else {
