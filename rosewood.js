@@ -149,7 +149,11 @@ var rw = new function(){
 		this.tileY = 0;
 		this.active = false; //Bool for is piece in play
 		// Display Entity Function, sets ent.base.active to true
-		this.display = function (graphic) {
+		this.display = function (graphic, posX, posY, posZ) {
+			this.posX = posX;
+			this.posY = posY;
+			this.posZ = posZ;
+			this.active = true;
 			var newEnt = document.createElement('div');
 			newEnt.id = 'ent_'+this.name;
 			newEnt.style.width = this.width;
@@ -162,8 +166,8 @@ var rw = new function(){
 			newEnt.style.position = 'absolute';
 			newEnt.style.left = this.posX+'px';
 			newEnt.style.top = this.posY+'px';
-			this.active = true;
 			document.getElementById('board').appendChild(newEnt);
+			return this;
 		}
 		this.hide = function() {
 			if (document.getElementById('ent_'+this.name)) {
@@ -188,17 +192,21 @@ var rw = new function(){
 			this.tileX = Math.floor(this.posX/tileX);
 			this.tileY = Math.floor(this.posY/tileY);
 		}
+		this.end = function() {
+			return me;
+		}
 	}
 	me.newEnt = function(ent, display, posX, posY, posZ) {
 		var curLength = me.ents.length;
 		me.ents[curLength] = ent;
-		if (display!=false) {
-			me.ents[curLength].base.posX = posX;
-			me.ents[curLength].base.posY = posY;
-			me.ents[curLength].base.posZ = posZ;
-			me.ents[curLength].base.display(display);
-		}
-		return this;
+		//if (display!=false) {
+		//	me.ents[curLength].base.posX = posX;
+		//	me.ents[curLength].base.posY = posY;
+		//	me.ents[curLength].base.posZ = posZ;
+		//	me.ents[curLength].base.display(display);
+		//}
+		//return this;
+		return ent;
 	}
 	me.removeEnt = function(entNum) {
 		me.ents.splice(entNum, 1);

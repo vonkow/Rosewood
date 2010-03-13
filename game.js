@@ -47,10 +47,8 @@ var bomb = function(name, typeClass) {
 			var bPos = [this.base.posX, this.base.posY];
 			var rPos = [this.base.posX, this.base.posY];
 			var tempLen = rw.ents.length;
-			rw.ents[tempLen] = new blast('blast'+tempLen, 'blast');
-			rw.ents[tempLen].base.posX = tPos[0];
-			rw.ents[tempLen].base.posY = tPos[1];
-			rw.ents[tempLen].base.display('c');
+			rw.newEnt(new blast('blast'+tempLen, 'blast'))
+				.base.display('c',tPos[0],tPos[1],tPos[1])
 			for (var x=0;x<this.blastSize;x++) {
 				tPos[1] -= this.base.height;
 				lPos[0] += this.base.width;
