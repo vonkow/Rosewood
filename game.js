@@ -4,10 +4,10 @@ var Wall = function(name, wallType, xDim, yDim) {
 	this.update = function() {};
 }
 
-var blast = function(name, typeClass) {
-	this.base = new rw.ent(name, typeClass, 'blast', 'gif', 40, 32);
+var blast = function(name) {
+	this.base = new rw.ent(name, 'blast', 'blast', 'gif', 40, 32);
 	this.countdown = 25;
-	this.hitMap = [[typeClass,0,0,40,32]];
+	this.hitMap = [['blast',0,0,40,32]];
 	this.update = function() {
 		this.base.posZ = this.base.posY;
 		this.countdown -= 1;
@@ -47,25 +47,25 @@ var bomb = function(name, typeClass) {
 			var bPos = [this.base.posX, this.base.posY];
 			var rPos = [this.base.posX, this.base.posY];
 			var tempLen = rw.ents.length;
-			rw.newEnt(new blast('blast'+tempLen, 'blast'))
-				.base.display('c',tPos[0],tPos[1],tPos[1])
+			rw.newEnt(new blast('blast'+tempLen))
+				.base.display('c',tPos[0],tPos[1],tPos[1]);
 			for (var x=0;x<this.blastSize;x++) {
 				tPos[1] -= this.base.height;
 				lPos[0] += this.base.width;
 				bPos[1] += this.base.height;
 				rPos[0] -= this.base.width;
-				var tempLen = rw.ents.length;
 				var tail = '';
 				if (x+1==this.blastSize) {
 					tail = 'T';
 				}
-				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast'), 'u'+tail, tPos[0], tPos[1]);
-				tempLen = rw.ents.length;
-				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast'), 'l'+tail, lPos[0], lPos[1]);
-				tempLen = rw.ents.length;
-				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast'), 'd'+tail, bPos[0], bPos[1]);
-				tempLen = rw.ents.length;
-				rw.newEnt(new blast('blast'+tempLen+"_"+this.base.name, 'blast'), 'r'+tail, rPos[0], rPos[1]);
+				rw.newEnt(new blast('blast'+rw.ents.length+"_"+this.base.name))
+					.base.display('u'+tail, tPos[0], tPos[1], tPos[1]).end()
+				.newEnt(new blast('blast'+rw.ents.length+"_"+this.base.name))
+					.base.display('l'+tail, lPos[0], lPos[1], lPos[1]).end()
+				.newEnt(new blast('blast'+rw.ents.length+"_"+this.base.name))
+					.base.display('d'+tail, bPos[0], bPos[1], bPos[1]).end()
+				.newEnt(new blast('blast'+rw.ents.length+"_"+this.base.name))
+					.base.display('r'+tail, rPos[0], rPos[1], rPos[1]);
 			}
 			this.base.hide();
 			return false;
@@ -141,7 +141,10 @@ var bman = function(name, typeClass, heading) {
 					this.bombCooldown = 0;
 					this.bombs[this.bombs.length] = 150;
 					var tempLen = rw.ents.length;
-					rw.newEnt(new bomb('bomb'+tempLen, 'bomb'), '1', this.base.posX, this.base.posY+32);
+					var tempX = this.base.posX;
+					var tempY = this.base.posY+32;
+					rw.newEnt(new bomb('bomb'+tempLen))
+						.base.display('1', tempX, tempY, tempY);
 				}
 			}
 		}
@@ -249,7 +252,8 @@ function mapRule() {
 
 // Ajax Function
 var addGuy = function(resp) {
-	rw.newEnt(new badguy(resp.name), resp.display, resp.posX, resp.posY, resp.posZ);
+	rw.newEnt(new badguy(resp.name))
+		.base.display(resp.display, resp.posX, resp.posY, resp.posZ);
 }
 
 // Begin Game Function
@@ -262,15 +266,15 @@ function startGame() {
 	.newMap('map1', 'map2', 'jpg', 1200, 600, true)
 	.newRule('rule1', new endGameRule(true))
 	.newRule('rule2', new mapRule())
-	.newEnt(new badguy('baddie_1'), 'Wr', 200, 100, 132)
-	.newEnt(new badguy('baddie_2'), 'Wr', 150, 200, 232)
-	.newEnt(new badguy('baddie_3'), 'Wr', 100, 400, 432)
-	.newEnt(new badguy('baddie_4'), 'Wr', 50, 500, 532)
-	.newEnt(new bman('Goon0', 'bman'), 'u', 50, 50, 82)
-	.newEnt(new  Wall('tWall1', 'tWall', 99, 1), 'blank', 251, 250, 0)
-	.newEnt(new  Wall('rWall1', 'rWall', 1, 99), 'blank', 350, 251, 0)
-	.newEnt(new  Wall('lWall1', 'lWall', 1, 99), 'blank', 250, 250, 0)
-	.newEnt(new  Wall('dWall1', 'dWall', 99, 1), 'blank', 250, 350, 0)
+	.newEnt(new badguy('baddie_1')).base.display( 'Wr', 200, 100, 132).end()
+	.newEnt(new badguy('baddie_2')).base.display( 'Wr', 150, 200, 232).end()
+	.newEnt(new badguy('baddie_3')).base.display( 'Wr', 100, 400, 432).end()
+	.newEnt(new badguy('baddie_4')).base.display( 'Wr', 50, 500, 532).end()
+	.newEnt(new bman('Goon0', 'bman')).base.display( 'u', 50, 50, 82).end()
+	.newEnt(new  Wall('tWall1', 'tWall', 99, 1)).base.display('blank', 251, 250, 0).end()
+	.newEnt(new  Wall('rWall1', 'rWall', 1, 99)).base.display('blank', 350, 251, 0).end()
+	.newEnt(new  Wall('lWall1', 'lWall', 1, 99)).base.display('blank', 250, 250, 0).end()
+	.newEnt(new  Wall('dWall1', 'dWall', 99, 1)).base.display('blank', 250, 350, 0).end()
 	.start()
 	.saveState('test')
 	.ajax('ajaxtest.json', 'addGuy');

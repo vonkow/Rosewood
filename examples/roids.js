@@ -36,7 +36,8 @@ var ship = function(name) {
 				var num = this.lasCount++;
 				var posX = this.base.posX+15;
 				var posY = this.base.posY+15;
-				rw.newEnt(new laser('laser_'+num,this.heading),'laser',posX,posY,posY);
+				rw.newEnt(new laser('laser_'+num,this.heading))
+					.base.display('laser',posX,posY,posY);
 				this.coolDown=5;
 			}
 		}
@@ -117,18 +118,24 @@ var roid = function(name, size) {
 					case 40:
 						var posX = this.base.posX+20;
 						var posY = this.base.posY+20;
-						rw.newEnt(new roid('roid'+(roidcounter++), 20), '20', posX,posY,posY)
-						rw.newEnt(new roid('roid'+(roidcounter++), 20), '20', posX,posY,posY)
-						rw.newEnt(new roid('roid'+(roidcounter++), 20), '20', posX,posY,posY)
+						rw.newEnt(new roid('roid'+(roidcounter++), 20))
+							.base.display('20', posX,posY,posY).end()
+						.newEnt(new roid('roid'+(roidcounter++), 20))
+							.base.display('20', posX,posY,posY).end()
+						.newEnt(new roid('roid'+(roidcounter++), 20))
+							.base.display('20', posX,posY,posY);
 						this.base.hide();
 						return false;
 						break;
 					case 20:
 						var posX = this.base.posX+10;
 						var posY = this.base.posY+10;
-						rw.newEnt(new roid('roid'+(roidcounter++), 10), '10', posX,posY,posY)
-						rw.newEnt(new roid('roid'+(roidcounter++), 10), '10', posX,posY,posY)
-						rw.newEnt(new roid('roid'+(roidcounter++), 10), '10', posX,posY,posY)
+						rw.newEnt(new roid('roid'+(roidcounter++), 10))
+							.base.display('10', posX,posY,posY).end()
+						.newEnt(new roid('roid'+(roidcounter++), 10))
+							.base.display('10', posX,posY,posY).end()
+						.newEnt(new roid('roid'+(roidcounter++), 10))
+							.base.display('10', posX,posY,posY);
 						this.base.hide();
 						return false;
 						break;
@@ -148,9 +155,17 @@ var startGame = function() {
 	.using('roid', 'png', ['40','20','10'])
 	.init(600,600).changeCursor('blank.cur')
 	.newMap('map1', 'space', 'gif', 1200, 600, true)
-	.newEnt(new ship('ship1'), 'ship', 280,280,280)
-	.newEnt(new roid('roid'+(roidcounter++), 40), '40', 500,500,500)
-	.newEnt(new roid('roid'+(roidcounter++), 40), '40', 100,100,100)
-	//.newEnt(new roid('roid'+(roidcounter++), 40), '40', 0,0,0)
-	.start()
+	.newEnt(new ship('ship1'))
+		.base.display('ship', 280,280,280)
+		.end()
+	.newEnt(new roid('roid'+(roidcounter++), 40))
+		.base.display('40', 500,500,500)
+		.end()
+	.newEnt(new roid('roid'+(roidcounter++), 40))
+		.base.display('40', 100,100,100)
+		.end()
+	.newEnt(new roid('roid'+(roidcounter++), 40))
+		.base.display('40', 0,0,0)
+		.end()
+	.start();
 }

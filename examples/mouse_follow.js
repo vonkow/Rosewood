@@ -37,7 +37,7 @@ var ball = function(name) {
 
 function startGame() {
 	rw.init(600, 600).changeCursor('blank.cur')
-	.newEnt(new ball('ball_1'), 'ball', 280, 280, 50)
+	.newEnt(new ball('ball_1')).base.display( 'ball', 280, 280, 50).end()
 	.func(alert('Mouse Follow Test'))
 	.start();
 }

@@ -196,16 +196,9 @@ var rw = new function(){
 			return me;
 		}
 	}
-	me.newEnt = function(ent, display, posX, posY, posZ) {
+	me.newEnt = function(ent) {
 		var curLength = me.ents.length;
 		me.ents[curLength] = ent;
-		//if (display!=false) {
-		//	me.ents[curLength].base.posX = posX;
-		//	me.ents[curLength].base.posY = posY;
-		//	me.ents[curLength].base.posZ = posZ;
-		//	me.ents[curLength].base.display(display);
-		//}
-		//return this;
 		return ent;
 	}
 	me.removeEnt = function(entNum) {
