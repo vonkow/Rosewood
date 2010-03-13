@@ -1,8 +1,3 @@
-//////// TO-DO ////////
-// Integrate good parts of old rw, bring back rw.state?
-// finish implementing keyChangeSprite for less ent sprite code, also, rename to keyChange
-// Add Inactive function for ents
-
 // The Rosewood Object
 var rw = new function(){
 	var me = this;
@@ -175,22 +170,26 @@ var rw = new function(){
 				dying.parentNode.removeChild(dying);
 				this.active=false;
 			}
+			return this;
 		}
 		this.changeSprite = function(spriteName) {
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
 				entDiv.style.backgroundImage = "url('sprites/"+this.sprites+"/"+spriteName+"."+this.spriteExt+"')";
 			}
+			return this;
 		}
 		this.rotate = function(deg) {
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
 				entDiv.style[me.browser.trans_name] = 'rotate('+deg+'deg)';
 			}
+			return this;
 		}
 		this.tilePos = function() {
 			this.tileX = Math.floor(this.posX/tileX);
 			this.tileY = Math.floor(this.posY/tileY);
+			return this;
 		}
 		this.end = function() {
 			return me;

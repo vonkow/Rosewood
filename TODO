@@ -1,4 +1,4 @@
-Add ent.move, and ent.position() functions for moving ent, instead of using ent.base.velX etc
+Add ent.move(), and ent.position() functions for moving ent, instead of using ent.base.velX etc
 
 Add triangular hitmaps and collision detection
 
@@ -10,3 +10,7 @@ attach a recalc function to window.onresize or whatever event it is.
 Canvas support someday
 
 Node.js server support someday soon
+
+finish implementing keyChangeSprite for less ent sprite code, also, rename to keyChange
+
+Add Inactive function for ents

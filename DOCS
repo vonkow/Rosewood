@@ -1,190 +1,114 @@
-rw = {
-	runGame
-		;
-	curT
-		;
-	globT
-		;
-	Xdim
-		;
-	Ydim
-		;
-	speed
-		;
-	setFPS(fps)
-		;
-	tiles
-		;
-	tileX
-		;
-	tileY
-		;
-	tilesOn(xDim, yDim)
-		;
-	tilesOff()
-		;
-	keyChange
-		;
-	keys
-		;
-	keySwitch(code, bit)
-		;
-	keyDown(e)
-		;
-	keyUp(e)
-		;
-	keyCheck(key)
-		;
-	mouse = {
-		;
-		x
-			;
-		y
-			;
-		down
-			;
-	}
-	mousePos(e)
-		;
-	mouseDown(e)
-		;
-	mouseUp(e)
-		;
-	ents
-		;
-	ent(name, typeClass, sprites, spriteExt, width, height)
+Reference
 
-		name
-			;
-		typeClass
-			;
-		sprites
-			;
-		spriteExt
-			;
-		width
-			;
-		height
-			;
-		posX
-			;
-		posY
-			;
-		posZ
-			;
+	rw.getTime(type)
+
+	rw.Xdim()
+
+	rw.Ydim()
+
+	rw.getFPS()
+
+	rw.setFPS(fps)
+
+	rw.tilesOn(xDim, yDim)
+	
+	rw.tilesOff()
+	
+	rw.keyCheck(key)
+
+	rw.mouse.x()
+
+	rw.mouse.()
+
+	rw.mouse.down()
+
+	rw.ents[]
+	
+	rw.ent(name, typeClass, sprites, spriteExt, width, height)
+
 		posX1()
-			;
-		posY1()
-			;
-		posX2()
-			;
-		posY2()
-			;
-		velX
-			;
-		velY
-			;
-		velZ
-			;
-		tileX
-			;
-		tileY
-			;
-		active
-			;
-		display(graphic)
-			;
-		hide()
-			;
-		changeSprite(spriteName)
-			;
-		rotate(deg)
-			;
-		tilePos()
-			;
-		;
-	newEnt(ent, display, posX, posY, posZ)
-		;
-	removeEnt(entNum)
-		;
-	lib = {
-		ent(name, type, xDim, yDim)
-			;
-		;
-	}
-	maps
-		;
-	map(name, path, extention, xDim, yDim)
 		
-		name
-			;
-		path
-			;
-		extention
-			;
-		width
-			;
-		height
-			;
-		offX
-			;
-		offY
-			;
-		offset(oX, oY)
-			;
-		show()
-			;
+		posY1()
+			
+		posX2()
+		
+		posY2()
+		
+		display(graphic, posX, posY, posZ)
+		
 		hide()
-			;
+		
+		changeSprite(spriteName)
+		
+		rotate(deg)
+		
+		tilePos()
+		
+		end()
+		
+	rw.newEnt(ent, display, posX, posY, posZ)
+		
+	rw.removeEnt(entNum)
+		;
+	rw.lib.ent(name, type, xDim, yDim)
+
+	rw.maps{}
+		;
+	rw.map(name, path, extention, xDim, yDim)
+
+		offset(oX, oY)
+
 		render()
-			;
+
+		hide()
+			
 		remove()
-			;
-		;
-	newMap(name, map, ext, dimX, dimY, render)
-		;
-	removeMap(map)
-		;
-	rules
-		;
-	rule(active)
-		;
-	newRule(name, rule)
-		;
-	removeRule(rule)
-		;
-	ajax(targ, func)
-		;
-	func()
-		;
-	preImg
-		;
-	using(path, ext, imgArray)
-		;
+		
+	
+	rw.newMap(name, map, ext, dimX, dimY, display)
+	
+	rw.removeMap(map)
+	
+	rw.rules{}
+	
+	rw.rule(active)
+	
+	rw.newRule(name, rule)
+	
+	rw.removeRule(rule)
+	
+	rw.saveState(state)
+
+	rw.loadState(state)
+
+	rw.rmState(state)
+
+	rw.ajax(targ, func)
+	
+	rw.func()
+	
+	rw.using(path, ext, imgArray)
+	
 	changeCursor(cursor)
 		;
-	browser = {
-		;
-		check()
-			;
-		trans_name
-			;
-		;
-	}
-	wipeBoard()
-		;
-	wipeEnts()
-		;
-	wipeMaps()
-		;
-	wipeAll()
-		;
-	init(dimX, dimY)
-		;
-	start()
-		;
-	stop()
-		;
-	run()
-		;
+	rw.browser.check()
+	
+	rw.wipeBoard()
+	
+	rw.wipeEnts()
+	
+	rw.wipeMaps()
+	
+	rw.wipeRules()
+
+	rw.wipeAll()
+	
+	rw.init(dimX, dimY)
+		
+	rw.start()
+	
+	rw.stop()
+	
+	rw.run()
+	
 }
