@@ -179,12 +179,12 @@ var rw = new function(){
 			return this;
 		}
 		this.move = function(x,y,z) {
-			this.velX = x;
-			this.velY = y;
+			this.velX += x;
+			this.velY += y;
 			if (z) {
-				this.velZ = z;
+				this.velZ += z;
 			} else {
-				this.velZ = y;
+				this.velZ += y;
 			}
 			return this;
 		}
@@ -645,6 +645,9 @@ var rw = new function(){
 				entDiv.style.left = me.ents[x].base.posX+'px';
 				entDiv.style.top = me.ents[x].base.posY+'px';
 				entDiv.style.zIndex = me.ents[x].base.posZ;
+				me.ents[x].base.velX = 0;
+				me.ents[x].base.velY = 0;
+				me.ents[x].base.velZ = 0;
 			}
 		}
 		//If game has not ended or been paused, continue
