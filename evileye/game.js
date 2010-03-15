@@ -62,32 +62,52 @@ var eye = function(name, heading) {
 				if (this.base.posY1()<heroY) {
 					this.base.move(0,5);
 				} else {
-					this.heading = 'l';
-					this.base.changeSprite('l1');
+					if (this.base.posX1()>heroX) {
+						this.heading = 'l';
+						this.base.changeSprite('l1');
+					} else {
+						this.heading = 'r';
+						this.base.changeSprite('r1');
+					}
 				}
 				break;
 			case 'l':
 				if (this.base.posX1()>heroX) {
 					this.base.move(-5,0);
 				} else {
-					this.heading = 'u';
-					this.base.changeSprite('u1');
+					if (this.base.posY1()>heroY) {
+						this.heading = 'u';
+						this.base.changeSprite('u1');
+					} else {
+						this.heading = 'd';
+						this.base.changeSprite('d1');
+					}
 				}
 				break;
 			case 'u':
 				if (this.base.posY1()>heroY) {
 					this.base.move(0,-5);
 				} else {
-					this.heading = 'r';
-					this.base.changeSprite('r1');
+					if (this.base.posX1()<heroX) {
+						this.heading = 'r';
+						this.base.changeSprite('r1');
+					} else {
+						this.heading = 'l';
+						this.base.changeSprite('l1');
+					}
 				}
 				break;
 			case 'r':
 				if (this.base.posX1()<heroX) {
 					this.base.move(5,0);
 				} else {
-					this.heading = 'd';
-					this.base.changeSprite('d1');
+					if (this.base.posY1()<heroY) {
+						this.heading = 'd';
+						this.base.changeSprite('d1');
+					} else {
+						this.heading = 'u';
+						this.base.changeSprite('u1');
+					}
 				}
 				break;
 		}
@@ -111,8 +131,21 @@ var makeEyes = function() {
 			this.counter = 20;
 			var x = Math.round(470*Math.random());
 			var y = Math.round(470*Math.random());
-			rw.newEnt(new eye(('eye'+eyeCounter++), 'd'))
-				.base.display('d1', x, y, y);
+			if (Math.random()>0.5) {
+				if (Math.random()>0.5) {
+					var heading = 'd';
+				} else {
+					var heading = 'u';
+				}
+			} else {
+				if (Math.random()>0.5) {
+					var heading = 'l';
+				} else {
+					var heading = 'r';
+				}
+			}
+			rw.newEnt(new eye(('eye'+eyeCounter++), heading))
+				.base.display(heading+'1', x, y, y);
 		}
 	}
 }
