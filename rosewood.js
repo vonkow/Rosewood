@@ -198,10 +198,20 @@ var rw = new function(){
 			}
 			return this;
 		}
-		this.wipeMove = function() {
-			this.velX = 0;
-			this.velY = 0;
-			this.velZ = 0;
+		this.wipeMove = function(axis) {
+			if (axis) {
+				if (axis=='x') {
+					this.velX = 0;
+				} else if (axis=='y') {
+					this.velY = 0;
+				} else if (axis=='z') {
+					this.velZ = 0;
+				}
+			} else {
+				this.velX = 0;
+				this.velY = 0;
+				this.velZ = 0;
+			}
 			return this;
 		}
 		this.rotate = function(deg) {
