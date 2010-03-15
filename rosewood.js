@@ -198,6 +198,12 @@ var rw = new function(){
 			}
 			return this;
 		}
+		this.wipeMove = function() {
+			this.velX = 0;
+			this.velY = 0;
+			this.velZ = 0;
+			return this;
+		}
 		this.rotate = function(deg) {
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
@@ -645,9 +651,7 @@ var rw = new function(){
 				entDiv.style.left = me.ents[x].base.posX+'px';
 				entDiv.style.top = me.ents[x].base.posY+'px';
 				entDiv.style.zIndex = me.ents[x].base.posZ;
-				me.ents[x].base.velX = 0;
-				me.ents[x].base.velY = 0;
-				me.ents[x].base.velZ = 0;
+				me.ents[x].base.wipeMove();
 			}
 		}
 		//If game has not ended or been paused, continue
