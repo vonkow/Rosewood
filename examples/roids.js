@@ -46,8 +46,9 @@ var ship = function(name) {
 		if (this.base.posX2()>600) this.base.posX-=600;
 		if (this.base.posY1()<0) this.base.posY+=600;
 		if (this.base.posY2()>600) this.base.posY-=600;
-		this.base.velX=this.velX;
-		this.base.velY=this.velY;
+		this.base.move(this.velX,this.velY);
+		//this.base.velX=this.velX;
+		//this.base.velY=this.velY;
 
 	}
 	this.iGotHit = function(by) {

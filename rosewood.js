@@ -151,8 +151,7 @@ var rw = new function(){
 			this.active = true;
 			var newEnt = document.createElement('div');
 			newEnt.id = 'ent_'+this.name;
-			newEnt.style.width = this.width;
-			newEnt.style.height = this.height;
+			newEnt.style.width = this.width; newEnt.style.height = this.height;
 			if (graphic!='blank') {
 				newEnt.style.backgroundImage = "url('sprites/"+this.sprites+"/"+graphic+"."+this.spriteExt+"')";
 			}
@@ -176,6 +175,26 @@ var rw = new function(){
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
 				entDiv.style.backgroundImage = "url('sprites/"+this.sprites+"/"+spriteName+"."+this.spriteExt+"')";
+			}
+			return this;
+		}
+		this.move = function(x,y,z) {
+			this.velX = x;
+			this.velY = y;
+			if (z) {
+				this.velZ = z;
+			} else {
+				this.velZ = y;
+			}
+			return this;
+		}
+		this.moveTo = function(x, y, z) {
+			this.posX = x;
+			this.posY = x;
+			if (z) {
+				this.posZ = z;
+			} else {
+				this.posZ = y;
 			}
 			return this;
 		}
