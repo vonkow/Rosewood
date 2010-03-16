@@ -13,6 +13,7 @@ var slow = false;
 var slowCountdown = 0;
 var badLuck = false;
 var badLuckCountdown = 0;
+var endGame = false;
 
 var hero = function(name) {
 	this.base = new rw.ent(name, 'hero', 'd1', 'gif', 30, 30);
@@ -63,7 +64,7 @@ var hero = function(name) {
 		if (!fatima) {
 			if (by=='eye') {
 				this.base.hide();
-				alert ("You killed "+eyesDead+" Evil Eyes");
+				endGame = true;
 				return false;
 			}
 		}
@@ -321,6 +322,33 @@ var badLuckTimer = function() {
 	}
 }
 
+var resetGame = function() {
+	this.base = new rw.rule(true);
+	this.rule = function() {
+		if (endGame) {
+			endGame = false;
+			alert ("You killed "+eyesDead+" Evil Eyes");
+			heroX = 0;
+			heroY = 0;
+			heroXTile = 0;
+			heroYTile = 0;
+			eyeCounter = 0;
+			eyesDead = 0;
+			itemCounter = 0;
+			fatima = false;
+			fatimaCountdown = 0;
+			blind = false;
+			blindEyeCountdown = 0;
+			slow = false;
+			slowCountdown = 0;
+			badLuck = false;
+			badLuckCountdown = 0;
+			endGame = false;
+			rw.wipeAll().loadState('init');
+		}
+	}
+}
+
 var pickTile = function() {
 	var xTile = Math.round(15*Math.random());
 	var yTile = Math.round(15*Math.random());
@@ -392,8 +420,10 @@ var startGame = function() {
 	.newRule('slow', new slowTimer())
 	.newRule('badluck', new badLuckTimer())
 	.newRule('dropItem', new dropItem())
+	.newRule('endGame', new resetGame())
 	.newEnt(new hero('hero'))
 		.base.display('d1',240,240,240)
 		.end()
+	.saveState('init')
 	.start();
 }
