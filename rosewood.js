@@ -280,6 +280,7 @@ var rw = new function(){
 				mapArea.style.backgroundImage = "url('sprites/maps/"+this.path+"/"+this.path+"."+this.extention+"')";
 				mapArea.style.width = this.width+'px';
 				mapArea.style.height = this.height+'px';
+				mapArea.style.position = 'absolute';
 				mapArea.style.overflow = 'hidden';
 				mapArea.style.zIndex = -1;
 				mapArea.style.marginLeft = this.offX+'px';
@@ -305,7 +306,7 @@ var rw = new function(){
 
 	}
 	me.newMap = function(name, map, ext, dimX, dimY, display) {
-		me.maps[name] = new me.map(map, map, ext, dimX, dimY, display);
+		me.maps[name] = new me.map(name, map, ext, dimX, dimY, display);
 		if (display==true) {
 			me.maps[name].render();
 		}
@@ -502,6 +503,7 @@ var rw = new function(){
 		board.style.height = dimY+'px';
 		board.style.overflow = 'hidden';
 		board.style.border = '1px solid black';
+		board.style.position = "relative";
 		document.getElementsByTagName('body')[0].appendChild(board);
 		document.onmousemove = mousePos;
 		document.onmousedown = mouseDown;
