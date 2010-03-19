@@ -34,7 +34,7 @@ Reference
 
 		xDim and yDim specify the tile width and height.
 
-		When the tile grid is on, the tile location of all ent will be updated every fram.
+		When the tile grid is on, the tile location of all ents will be updated every fram.
 	
 	rw.tilesOff()
 		Turns off the tile grid.

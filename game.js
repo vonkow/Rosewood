@@ -1,3 +1,5 @@
+rw.newSound('boom', 'exp.wav');
+
 var Wall = function(name, wallType, xDim, yDim) {
 	this.base = new rw.ent(name, ' ', ' ', ' ', xDim, yDim);
 	this.hitMap = [[wallType,0,0,xDim,yDim]];
@@ -41,6 +43,7 @@ var bomb = function(name, typeClass) {
 		//this.base.rotate(this.spin++);
 		this.countdown -= 1;
 		if (this.countdown<=0) {
+			rw.playSound('boom');
 			// Do Explody stuff!
 			var tPos = [this.base.posX, this.base.posY];
 			var lPos = [this.base.posX, this.base.posY];

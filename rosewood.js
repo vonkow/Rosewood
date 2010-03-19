@@ -413,6 +413,20 @@ var rw = new function(){
 	me.func = function() {
 		return this;
 	}
+
+	//AUDIO!!! NEW!!! UNTESTED!!!
+	me.soundBank = {};
+	me.sounds = [];
+	me.playSound = function(sound) {
+		var len = me.sounds.length;
+		me.sounds[len] = document.createElement('audio');
+		me.sounds[len].src = me.soundBank[sound].src;
+		me.sounds[len].play();
+	}
+	me.newSound = function(name, src) {
+		me.soundBank[name] = new Audio(src);
+	}
+
 	//Maybe Fixed now?
 	// Image pre-loader
 	var preImg = [];
@@ -511,6 +525,12 @@ var rw = new function(){
 	}
 	// RunLoop Function
 	me.run = function() {
+		for (var x=0; x<me.sounds.length; x++) {
+			if (me.sounds[x].ended) {
+				me.sounds.splice(x,1);
+				x--;
+			}
+		}
 		// Update all sprites and remove those that are "dead"
 		// FIX THIS SO IT'S LESS REPETITIVE CODE, or don't cuz this is FAST
 		if (tiles==true) {
