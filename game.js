@@ -266,7 +266,7 @@ function startGame() {
 	.using('bomb','gif',['1','2','3'])
 	.using('maps/map2','jpg',['map2'])
 	.init(600, 600).changeCursor('blank.cur').tilesOn(20, 20)
-	.newMap('map1', 'map2', 'jpg', 1200, 600).render().end()
+	.newMap('map1', 'map2', 'jpg', 1200, 600).display().end()
 	.newRule('rule1', new endGameRule(true))
 	.newRule('rule2', new mapRule())
 	.newEnt(new badguy('baddie_1')).base.display( 'Wr', 200, 100, 132).end()

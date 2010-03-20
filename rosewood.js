@@ -254,7 +254,7 @@ var rw = new function(){
 		this.name = name;
 		this.path = path;
 		this.extention = extention;
-		this.display = false;
+		this.active = false;
 		this.width = xDim;
 		this.height = yDim;
 		this.offX = 0;
@@ -269,8 +269,8 @@ var rw = new function(){
 			}
 			return this;
 		}
-		this.render = function() {
-			this.display = true;
+		this.display = function() {
+			this.active = true;
 			if (document.getElementById('map_'+this.name)) {
 				var mapDiv = document.getElementById('map_'+this.name);
 				mapDiv.style.zIndex = '-1';
@@ -292,7 +292,7 @@ var rw = new function(){
 			return this;
 		}
 		this.hide = function() {
-			this.display = false;
+			this.active = false;
 			if (document.getElementById('map_'+this.name)) {
 				var mapDiv = document.getElementById('map_'+this.name);
 				mapDiv.style.display = 'none';
@@ -300,7 +300,7 @@ var rw = new function(){
 			return this;
 		}
 		this.remove = function() {
-			this.display = false;
+			this.active = false;
 			if (document.getElementById('map_'+this.name)) {
 				var mapArea = document.getElementById('map_'+this.name);
 				mapArea.parentNode.removeChild(mapArea);

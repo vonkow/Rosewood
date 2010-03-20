@@ -23,7 +23,7 @@ function mapRule() {
 }
 function startGame() {
 	rw.init(600, 600)
-	.newMap('map1', 'map2', 'jpg', 1200, 600).render().end()
+	.newMap('map1', 'map2', 'jpg', 1200, 600).display().end()
 	.newRule('rule1', new mapRule())
 	.start();
 }
