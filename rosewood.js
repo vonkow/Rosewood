@@ -418,9 +418,11 @@ var rw = new function(){
 		me.sounds[len] = document.createElement('audio');
 		me.sounds[len].src = me.soundBank[sound].src;
 		me.sounds[len].play();
+		return me;
 	}
 	me.newSound = function(name, src) {
 		me.soundBank[name] = new Audio(src);
+		return me;
 	}
 
 	//Maybe Fixed now?
