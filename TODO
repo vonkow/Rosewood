@@ -1,10 +1,5 @@
-Add ent.move(), and ent.moveTo() functions for moving ent, instead of using ent.base.velX etc
-
 Add triangular hitmaps and collision detection
 
-Add audio
-
-Add support for determining 'board' div location onscreen and adjusting all placements to it.
 attach a recalc function to window.onresize or whatever event it is.
 
 Canvas support someday

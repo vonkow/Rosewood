@@ -351,21 +351,12 @@ var rw = new function(){
 		}
 		return newCopy;
 	}
-	var copyState = function() {
-		var things = {ents:null,maps:null,rules:null};
-		var state = {};
-		for (thing in things) {
-			state[thing] = copy(rw[thing]);
-		}
-		return state;
-	}
 
 	me.saveState = function(name) {
-		var state = copyState();
 		states[name] = {
-			ents : state.ents,
-			maps : state.maps,
-			rules : state.rules
+			ents : copy(rw.ents),
+			maps : copy(rw.maps),
+			rules : copy(rw.rules)
 		};
 		return this;
 	}
