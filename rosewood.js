@@ -250,11 +250,11 @@ var rw = new function(){
 	}
 	// Map Entities
 	me.maps = {}; 
-	me.map = function(name, path, extention, xDim, yDim, display) {
+	me.map = function(name, path, extention, xDim, yDim) {
 		this.name = name;
 		this.path = path;
 		this.extention = extention;
-		this.display = display;
+		this.display = false;
 		this.width = xDim;
 		this.height = yDim;
 		this.offX = 0;
@@ -267,6 +267,7 @@ var rw = new function(){
 				mapDiv.style.marginLeft = this.offX+'px';
 				mapDiv.style.marginTop = this.offY+'px';
 			}
+			return this;
 		}
 		this.render = function() {
 			this.display = true;
@@ -288,6 +289,7 @@ var rw = new function(){
 				var board = document.getElementById('board');
 				board.appendChild(mapArea);
 			}
+			return this;
 		}
 		this.hide = function() {
 			this.display = false;
@@ -295,6 +297,7 @@ var rw = new function(){
 				var mapDiv = document.getElementById('map_'+this.name);
 				mapDiv.style.display = 'none';
 			}
+			return this;
 		}
 		this.remove = function() {
 			this.display = false;
@@ -302,15 +305,16 @@ var rw = new function(){
 				var mapArea = document.getElementById('map_'+this.name);
 				mapArea.parentNode.removeChild(mapArea);
 			}
+			return this;
+		}
+		this.end = function() {
+			return me;
 		}
 
 	}
-	me.newMap = function(name, map, ext, dimX, dimY, display) {
-		me.maps[name] = new me.map(name, map, ext, dimX, dimY, display);
-		if (display==true) {
-			me.maps[name].render();
-		}
-		return this;
+	me.newMap = function(name, map, ext, dimX, dimY) {
+		me.maps[name] = new me.map(name, map, ext, dimX, dimY);
+		return me.maps[name];
 	}
 	me.removeMap = function(map) {
 		if (me.maps[map]) {
