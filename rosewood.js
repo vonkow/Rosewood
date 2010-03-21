@@ -147,7 +147,11 @@ var rw = new function(){
 		this.display = function (graphic, posX, posY, posZ) {
 			this.posX = posX;
 			this.posY = posY;
-			this.posZ = posZ;
+			if (posZ) {
+				this.posZ = posZ;
+			} else {
+				this.posZ = posY;
+			}
 			this.active = true;
 			var newEnt = document.createElement('div');
 			newEnt.id = 'ent_'+this.name;
