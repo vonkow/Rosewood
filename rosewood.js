@@ -494,7 +494,7 @@ var rw = new function(){
 		return this;
 	}
 	// Initilization Function
-	me.init = function(dimX, dimY) {
+	me.init = function(dimX, dimY, target) {
 		me.browser.check();
 		var board = document.createElement('div');
 		board.id = 'board';
@@ -505,7 +505,11 @@ var rw = new function(){
 		board.style.overflow = 'hidden';
 		board.style.border = '1px solid black';
 		board.style.position = "relative";
-		document.getElementsByTagName('body')[0].appendChild(board);
+		if (target) {
+			document.getElementById(target).appendChild(board);
+		} else {
+			document.getElementsByTagName('body')[0].appendChild(board);
+		}
 		document.onmousemove = mousePos;
 		document.onmousedown = mouseDown;
 		document.onmouseup = mouseUp;
