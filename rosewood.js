@@ -240,6 +240,10 @@ var rw = new function(){
 			}
 			return false;
 		}
+		this.attach = function(content) {
+			document.getElementById('ent_'+this.name).appendChild(content);
+			return this;
+		}
 		this.end = function() {
 			return me;
 		}
