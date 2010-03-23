@@ -88,7 +88,7 @@ var rw = new function(){
 		y: function() {
 			return mouseY
 		},
-		down : function() {
+		down: function() {
 			return mouseDown
 		}
 	};
@@ -229,6 +229,16 @@ var rw = new function(){
 			this.tileX = Math.floor(this.posX/tileX);
 			this.tileY = Math.floor(this.posY/tileY);
 			return this;
+		}
+		this.clicked = function() {
+			if (me.mouse.down()) {
+				if ((me.mouse.x()>this.posX1())&&(me.mouse.x()<this.posX2())) {
+					if ((me.mouse.y()>this.posY1())&&(me.mouse.y()<this.posY2())) {
+						return true;
+					}
+				}
+			}
+			return false;
 		}
 		this.end = function() {
 			return me;

@@ -156,7 +156,7 @@ var startGame = function() {
 	.using('roid', 'png', ['40','20','10'])
 	.init(600,600).changeCursor('blank.cur')
 	.newMap('map1', 'space', 'gif', 1200, 600)
-		.render()
+		.display()
 		.end()
 	.newEnt(new ship('ship1'))
 		.base.display('ship', 280,280,280)
