@@ -1,6 +1,6 @@
 Add triangular hitmaps and collision detection
 
-attach a recalc function to window.onresize or whatever event it is.
+find mouse pos based on "board" div's location
 
 Canvas support someday
 
