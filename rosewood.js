@@ -9,6 +9,10 @@ var rw = new function(){
 	me.getTime = function(type) {
 		return (type=='g') ? curT+globT : curT;
 	}
+	var currentLag = 0;
+	me.getLag = function() {
+		return currentLag;
+	}
 	// Golbal gameboard dimensions
 	var X = 0;
 	var Y = 0;
@@ -244,6 +248,12 @@ var rw = new function(){
 			return this;
 		}
 		this.detach = function() {
+			var ele = document.getElementById('ent_'+this.name);
+			var tot = ele.childNodes.length;
+			for (var x=0;x<tot;x++) {
+				ele.removeChild(ele.childNodes[0]);
+			}
+			return this;
 		}
 		this.end = function() {
 			return me;
@@ -716,6 +726,7 @@ var rw = new function(){
 			} else {
 				curT = setTimeout('rw.run()', 1);
 			}
+			currentLag = timeTotal-speed;
 		} else {
 			clearTimeout(me.curT);
 			globT += curT;
