@@ -547,6 +547,7 @@ var rw = new function(){
 	}
 	// RunLoop Function
 	me.run = function() {
+		var startTime = new Date();
 		for (var x=0; x<me.sounds.length; x++) {
 			if (me.sounds[x].ended) {
 				me.sounds.splice(x,1);
@@ -707,8 +708,14 @@ var rw = new function(){
 			}
 		}
 		//If game has not ended or been paused, continue
+		var endTime = new Date();
+		var timeTotal = endTime-startTime;
 		if (runGame==true) {
-			curT = setTimeout('rw.run()', speed);
+			if (timeTotal<speed) {
+				curT = setTimeout('rw.run()', speed-timeTotal);
+			} else {
+				curT = setTimeout('rw.run()', 1);
+			}
 		} else {
 			clearTimeout(me.curT);
 			globT += curT;
