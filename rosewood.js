@@ -1,4 +1,3 @@
-// The Rosewood Object
 var rw = new function(){
 	var me = this;
 	// RunLoop or stop
@@ -244,6 +243,8 @@ var rw = new function(){
 			document.getElementById('ent_'+this.name).appendChild(content);
 			return this;
 		}
+		this.detach = function() {
+		}
 		this.end = function() {
 			return me;
 		}
@@ -428,7 +429,7 @@ var rw = new function(){
 		return this;
 	}
 
-	//AUDIO!!! NEW!!! UNTESTED!!!
+	//AUDIO!!! NEW!!! Needs work integrating all browsers
 	me.soundBank = {};
 	me.sounds = [];
 	me.playSound = function(sound) {
