@@ -1,5 +1,12 @@
 rw.newSound('boom', 'exp.wav');
 
+var lagTimer = function() {
+	this.base = new rw.ent('lag', '','','',150,20);
+	this.update = function() {
+		this.base.detach();
+		this.base.attach(document.createTextNode('Lag: '+rw.getLag()+'(ms)'));
+	}
+}
 var Wall = function(name, wallType, xDim, yDim) {
 	this.base = new rw.ent(name, ' ', ' ', ' ', xDim, yDim);
 	this.hitMap = [[wallType,0,0,xDim,yDim]];
@@ -278,6 +285,7 @@ function startGame() {
 	.newEnt(new  Wall('rWall1', 'rWall', 1, 99)).base.display('blank', 350, 251, 0).end()
 	.newEnt(new  Wall('lWall1', 'lWall', 1, 99)).base.display('blank', 250, 250, 0).end()
 	.newEnt(new  Wall('dWall1', 'dWall', 99, 1)).base.display('blank', 250, 350, 0).end()
+	.newEnt(new lagTimer()).base.display('blank',0,0,0).end()
 	.start()
 	.saveState('test')
 	.ajax('ajaxtest.json', 'addGuy');
