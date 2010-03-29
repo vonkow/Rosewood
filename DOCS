@@ -28,6 +28,11 @@ Reference
 		Notes:
 			Rosewood is initialized with a speed of 20 FPS.
 
+	rw.getLag()
+		Returns the total time difference between the last frame and the target framerate in miliseconds.
+		A negative value indicates that the game is currently running at the desired framerate.
+		non-chainable
+
 	rw.tilesOn(xDim, yDim)
 		Turns on the tile grid feature and specifies the tile dimensions.
 		chainable
@@ -61,44 +66,117 @@ Reference
 	
 	rw.ent(name, typeClass, sprites, spriteExt, width, height)
 		Constructor for base entity objects.
+		All game entities must be objects with an rw.ent assigned to the property "base".
 
 		posX1()
+			returns the current X position of the top left corner of the entity.
+			non-chainable
 		
 		posY1()
+			returns the current Y position of the top left corner of the entity.
+			non-chainable
 			
 		posX2()
+			returns the current X position of the bottom right corner of the entity.
+			non-chainable
 		
 		posY2()
+			returns the current Y position of the bottom right corner of the entity.
+			non-chainable
 		
 		display(graphic, posX, posY, posZ)
+			renders the entity on the game board using the position and graphic specified.
+			tells the engine to begin tracking the entity (calling its update() function each frame)
+			chainable
 		
 		hide()
+			removes the entity from the game board.
+			tells the engine to stop actively tracking the entity.
+			chainable
 		
 		changeSprite(spriteName)
+			changes an active entity's sprite to the specified graphic.
+			chainable
 		
+		move(x, y, z)
+			moves entity the specified number of pixels in each direction
+			if the z value is not specified, the y value is used for the z value.
+			the move is not completed until the end of the frame, when all entities' positions are updated onscreen.
+			this allows for correction of movement following the collision detection phase of the frame, before onscreen update.
+			this function is additive, for example, calling move(4,0,0) twice would result in the entity moving 8 pixels on the X axis.
+			chainable
+
+		curMove()
+			returns an entity's current movement values as an array [x, y, z]
+			non-chainable
+
+		wipeMove(axis)
+			resets an entity's current movement values to 0.
+			if an axis is specified as an optional argument ('x', 'y' or 'z'), only that axis' move will be wiped.
+			chainable
+
+		moveTo(x, y, z)
+			instantly moves an entity to the specified absolute position on the gameboard.
+			this movement is not related to the movement values specified with the move() function and will leave them untouched
+			the absolute movement occurs the instant the moveTo() function is called, not during the oncreen update.
+			If the z position is not specified, the y value will be used as the z value.
+			chainable
+
 		rotate(deg)
+			rotates an entity (in absolute, not relative, degrees).
+			CSS3 technique, doesn't work with all browsers (IE, FF<3.5, etc)
+			chainable
 		
 		tilePos()
+			NEEDS TO BE FIXED, MOVE ALONG, MOVE ALONG
 		
+		clicked()
+			returns true if the entity is being clicked on.
+			non-chainable
+			NEEDS WORK, RW.MOUSE IS BUSTED AND THIS FUNCTION IS A SHODDY REPLACEMENT FOR ONCLICK
+
+		attach(content)
+			attaches specified DOM objects to the entity's onscreen sprite
+			chainable
+
+		detach()
+			removes all attached DOM content from the entity's onscreen sprite
+			chainable
+
 		end()
+			returns the rw object, thus leaving the entity sub-chain
+			*chainable
 		
-	rw.newEnt(ent, display, posX, posY, posZ)
+	rw.newEnt(ent)
+		creates a new entity returns the new entity, thus entering that entity's sub-chain
+		*chainable
 		
 	rw.removeEnt(entNum)
+		removes the entity specified.
+		DON'T CALL THIS, UNLESS YOU KNOW WHAT YOU'RE DOING,
+		INSTEAD, have an entity's update() or iGotHit() function return false,
+		as this will remove the entity without potentially messing up the run game function.
+		chainable
 		
 	rw.lib.ent(name, type, xDim, yDim)
 
+
 	rw.maps{}
+		Object the holds all current maps (backgrounds)
 	
 	rw.map(name, path, extention, xDim, yDim)
+		Constructor for base map objects.
+		All game maps must be objects with an rw.map assigned to the property "base".
 
 		offset(oX, oY)
 
-		render()
+		display()
 
 		hide()
 			
 		remove()
+
+		end()
 		
 	
 	rw.newMap(name, map, ext, dimX, dimY, display)
@@ -122,6 +200,14 @@ Reference
 	rw.ajax(targ, func)
 	
 	rw.func()
+
+	rw.soundBank{}
+
+	rw.sounds[]
+
+	rw.playSound(sound)
+
+	rw.newSound(name, src)
 	
 	rw.using(path, ext, imgArray)
 	
@@ -139,7 +225,7 @@ Reference
 
 	rw.wipeAll()
 	
-	rw.init(dimX, dimY)
+	rw.init(dimX, dimY, target)
 		
 	rw.start()
 	
@@ -147,4 +233,3 @@ Reference
 	
 	rw.run()
 	
-}

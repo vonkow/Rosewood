@@ -10,9 +10,6 @@ var rw = new function(){
 		return (type=='g') ? curT+globT : curT;
 	}
 	var currentLag = 0;
-	me.getLag = function() {
-		return currentLag;
-	}
 	// Golbal gameboard dimensions
 	var X = 0;
 	var Y = 0;
@@ -30,6 +27,9 @@ var rw = new function(){
 	}
 	me.getFPS = function() {
 		return 1000/speed;
+	}
+	me.getLag = function() {
+		return currentLag;
 	}
 	// Tile settings
 	var tiles = false;
@@ -195,15 +195,8 @@ var rw = new function(){
 			}
 			return this;
 		}
-		this.moveTo = function(x, y, z) {
-			this.posX = x;
-			this.posY = x;
-			if (z) {
-				this.posZ = z;
-			} else {
-				this.posZ = y;
-			}
-			return this;
+		this.curMove = function() {
+			return [this.velX, this.velY, this.velZ];
 		}
 		this.wipeMove = function(axis) {
 			if (axis) {
@@ -221,6 +214,17 @@ var rw = new function(){
 			}
 			return this;
 		}
+		this.moveTo = function(x, y, z) {
+			this.posX = x;
+			this.posY = x;
+			if (z) {
+				this.posZ = z;
+			} else {
+				this.posZ = y;
+			}
+			return this;
+		}
+
 		this.rotate = function(deg) {
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
