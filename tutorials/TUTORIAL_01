@@ -40,7 +40,7 @@ TUTORIAL 1: Introduction to Rosewood
 		The init(x,y) function creates a Game Board that is x pixels wide and y pixels high.
 		All of the action in our game will be contained inside this board, which is a div element with the id "board".
 		By default the board div is appended to the document's body
-		A third, optional argument, the id of the target element can be specified in the init function to append the board to a specific element.
+		A third, optional argument, the id of a target element can be specified in the init function to append the board to a specific element.
 		Example: rw.init(500, 500, "main") would create a 500 by 500 board appended to an element with the id "main".
 		The init() function also sets up a number of things behind the scenes, allowing Rosewood to begin tracking keyboard and mouse inputs.
 		The init() function, like many Rosewood functions, returns the rw object, allowing us to chain the next function.
@@ -74,7 +74,7 @@ TUTORIAL 1: Introduction to Rosewood
 		}
 
 	This function will be used to create our first ent.
-	As you can see, the function has one argument (name) and returns an object with 2 properties, base and update.
+	As you can see, the function has one argument (name) and creates an object with 2 properties, base and update.
 	The base property is of utmost importance. 
 	ALL ENTITIES MUST HAVE A base PROPERTY WITH AN rw.ent() AS ITS VALUE.
 	The rw.ent() Object that is assigned to the base property is what Rosewood uses to track and display an entity.
