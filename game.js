@@ -93,6 +93,13 @@ var badguy = function(name) {
 	this.ticker = 0;
 	this.heading = 'l';
 	this.hitMap = [['baddie',0,0,40,64]];
+	this.countdown = 100;
+	this.inactive = function() {
+		this.countdown--;
+		if (this.countdown<1) {
+			this.base.display('Wr',200,100,132);
+		}
+	}
 	this.update = function() {
 		if (this.heading == 'r') {
 			if (this.ticker < 39) {
@@ -276,7 +283,7 @@ function startGame() {
 	.newMap('map1', 'map2', 'jpg', 1200, 600).display().end()
 	.newRule('rule1', new endGameRule(true))
 	.newRule('rule2', new mapRule())
-	.newEnt(new badguy('baddie_1')).base.display( 'Wr', 200, 100, 132).end()
+	.newEnt(new badguy('baddie_1')).base.end()
 	.newEnt(new badguy('baddie_2')).base.display( 'Wr', 150, 200, 232).end()
 	.newEnt(new badguy('baddie_3')).base.display( 'Wr', 100, 400, 432).end()
 	.newEnt(new badguy('baddie_4')).base.display( 'Wr', 50, 500, 532).end()

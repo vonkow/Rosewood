@@ -585,6 +585,12 @@ var rw = new function(){
 						} else {
 							//Nothing for now
 						}
+					} else if (me.ents[x].inactive) {
+						var currentSprite = me.ents[x].inactive();
+						if (currentSprite==false) {
+							me.removeEnt(x);
+							x--;
+						}
 					}
 				}
 				keyChange = false;
@@ -598,6 +604,12 @@ var rw = new function(){
 							x--;
 						} else {
 							//Nothing for now
+						}
+					} else if (me.ents[x].inactive) {
+						var currentSprite = me.ents[x].inactive();
+						if (currentSprite==false) {
+							me.removeEnt(x);
+							x--;
 						}
 					}
 				}
@@ -616,6 +628,12 @@ var rw = new function(){
 						} else {
 							//Nothing for now
 						}
+					} else if (me.ents[x].inactive) {
+						var currentSprite = me.ents[x].inactive();
+						if (currentSprite==false) {
+							me.removeEnt(x);
+							x--;
+						}
 					}
 				}
 				keyChange = false;
@@ -628,6 +646,12 @@ var rw = new function(){
 							x--;
 						} else {
 							//Nothing for now
+						}
+					} else if (me.ents[x].inactive) {
+						var currentSprite = me.ents[x].inactive();
+						if (currentSprite==false) {
+							me.removeEnt(x);
+							x--;
 						}
 					}
 				}
