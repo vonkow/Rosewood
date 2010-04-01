@@ -15,3 +15,8 @@ Add audio mixing support
 BUGS
 
 Sound support died after using a bunch of bombs in bman clone, in chrome.
+
+It appears that rw.key(key) will return false for a key that is pressed every few frames
+	this has happened on my machine in FF and Chrome
+	it seems to happen when ent.base.move is used, as it doesn't show up in the bman game,
+	which uses the old ent.base.velX/velY tricks for setting vel.
