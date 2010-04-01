@@ -9,3 +9,5 @@ Canvas support someday
 Node.js server support someday soon
 
 finish implementing keyChangeSprite for less ent sprite code, also, rename to keyChange
+
+Add audio mixing support
