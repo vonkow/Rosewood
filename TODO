@@ -11,3 +11,7 @@ Node.js server support someday soon
 finish implementing keyChangeSprite for less ent sprite code, also, rename to keyChange
 
 Add audio mixing support
+
+BUGS
+
+Sound support died after using a bunch of bombs in bman clone, in chrome.

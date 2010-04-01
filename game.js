@@ -1,4 +1,4 @@
-rw.newSound('boom', 'exp.wav');
+rw.newSound('boom', 'exp.ogg');
 
 var lagTimer = function() {
 	this.base = new rw.ent('lag', '','','',150,20);
