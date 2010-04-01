@@ -2,10 +2,10 @@ Add triangular hitmaps and collision detection
 
 find mouse pos based on "board" div's location
 
+Add set depth for maps
+
 Canvas support someday
 
 Node.js server support someday soon
 
 finish implementing keyChangeSprite for less ent sprite code, also, rename to keyChange
-
-Add Inactive function for ents
