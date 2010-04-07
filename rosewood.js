@@ -49,16 +49,15 @@ var rw = new function(){
 	}
 	//KeyDown/Up settings
 	var keyChange = false; 
-	var keys = {};
+	var keys = [['bsp',8],['tab',9],['ent',13],['shf',16],['ctr',17],['alt',18],['pau',19],['cap',20],['esc',27],['sp',32],['pgu',33],['pgd',34],['end',35],['hom',36],['la',37],['ua',38],['ra',39],['da',40],['ins',45],['del',46],['d0',48],['d1',49],['d2',50],['d3',51],['d4',52],['d5',53],['d6',54],['d7',55],['d8',56],['d9',57],['sem',59],['eql',61],['a',65],['b',66],['c',67],['d',68],['e',69],['f',70],['g',71],['h',72],['i',73],['j',74],['k',75],['l',76],['m',77],['n',78],['o',79],['p',80],['q',81],['r',82],['s',83],['t',84],['u',85],['v',86],['w',67],['x',88],['y',89],['z',90],['lwn',91],['rwn',92],['sel',93],['n0',96],['n1',97],['n2',98],['n3',99],['n4',100],['n5',101],['n6',102],['n7',103],['n8',104],['n9',105],['mul',106],['add',107],['sub',109],['dec',110],['div',111],['f1',112],['f2',113],['f3',114],['f4',115],['f5',116],['f6',117],['f7',118],['f8',119],['f9',120],['f10',121],['f11',122],['f12',123],['num',144],['scr',145],['com',188],['per',190],['fsl',191],['acc',192],['obr',219],['bsl',220],['cbr',221],['qot',222]];
 	var keySwitch = function(code, bit) {
-		var keyArray = [['bsp',8],['tab',9],['ent',13],['shf',16],['ctr',17],['alt',18],['pau',19],['cap',20],['esc',27],['sp',32],['pgu',33],['pgd',34],['end',35],['hom',36],['la',37],['ua',38],['ra',39],['da',40],['ins',45],['del',46],['d0',48],['d1',49],['d2',50],['d3',51],['d4',52],['d5',53],['d6',54],['d7',55],['d8',56],['d9',57],['sem',59],['eql',61],['a',65],['b',66],['c',67],['d',68],['e',69],['f',70],['g',71],['h',72],['i',73],['j',74],['k',75],['l',76],['m',77],['n',78],['o',79],['p',80],['q',81],['r',82],['s',83],['t',84],['u',85],['v',86],['w',67],['x',88],['y',89],['z',90],['lwn',91],['rwn',92],['sel',93],['n0',96],['n1',97],['n2',98],['n3',99],['n4',100],['n5',101],['n6',102],['n7',103],['n8',104],['n9',105],['mul',106],['add',107],['sub',109],['dec',110],['div',111],['f1',112],['f2',113],['f3',114],['f4',115],['f5',116],['f6',117],['f7',118],['f8',119],['f9',120],['f10',121],['f11',122],['f12',123],['num',144],['scr',145],['com',188],['per',190],['fsl',191],['acc',192],['obr',219],['bsl',220],['cbr',221],['qot',222]];
-		var len = keyArray.length;
+		var len = keys.length;
 		for (var x=0;x<len;x++) {
-			if (keyArray[x][1]==code) {
+			if (keys[x][1]==code) {
 				if (bit) {
-					keys[keyArray[x][0]] = true;
+					keys[x][2] = true;
 				} else {
-					keys[keyArray[x][0]] = false;
+					keys[x][2] = false;
 				}
 			}
 		}
@@ -74,13 +73,18 @@ var rw = new function(){
 		keyChange = true;
 	}
 	me.key = function(key) {
-		if (keys[key]) {
-			return true;
-		} else {
-			return false;
+		for (var x=0; x<keys.length;x++) {
+			if (keys[x][0]==key) {
+				if (keys[x][2]) {
+					return true;
+				} else {
+					return false;
+				}
+			}
 		}
 	}
 	// Mouse Position settings
+	// These are currently not working correctly, as they will return absolute position of mouse, not relative pos.
 	var mouseX = 0;
 	var mouseY = 0;
 	var mouseDown = false;
@@ -224,7 +228,6 @@ var rw = new function(){
 			}
 			return this;
 		}
-
 		this.rotate = function(deg) {
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
@@ -340,6 +343,13 @@ var rw = new function(){
 			}
 			return this;
 		}
+		this.setDepth=function(depth) {
+			if (document.getElementById('map_'+this.name)) {
+				var mapDiv=document.getElementById('map_'+this.name);
+				mapDiv.style.zIndex=-depth;
+			}
+			return this;
+		}
 		this.end = function() {
 			return me;
 		}
@@ -403,7 +413,7 @@ var rw = new function(){
 			me.maps = copy(states[name].maps);
 			me.rules = copy(states[name].rules);
 			for (map in me.maps) {
-				if (me.maps[map].display==true) me.maps[map].render();
+				if (me.maps[map].active==true) me.maps[map].display();
 			}
 			var len = me.ents.length;
 			for (var x=0;x<len;x++) {
@@ -539,11 +549,18 @@ var rw = new function(){
 		} else {
 			document.getElementsByTagName('body')[0].appendChild(board);
 		}
+		if (window.document.addEventListener) {
+			window.document.addEventListener("keydown", keyDown, false);
+			window.document.addEventListener("keyup", keyUp, false);
+		} else {
+			window.document.attachEvent("onkeydown", keyDown);
+			window.document.attachEvent("onkeyup", keyUp);
+		}
 		document.onmousemove = mousePos;
 		document.onmousedown = mouseDown;
 		document.onmouseup = mouseUp;
-		document.onkeydown=keyDown;
-		document.onkeyup=keyUp;
+		//document.onkeydown=keyDown;
+		//document.onkeyup=keyUp;
 		return this;
 	}
 	// Start FUnction
