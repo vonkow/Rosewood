@@ -293,6 +293,7 @@ var rw = new function(){
 		this.active = false;
 		this.width = xDim;
 		this.height = yDim;
+		this.depth = 1;
 		this.offX = 0;
 		this.offY = 0;
 		this.offset = function(oX, oY) {
@@ -319,7 +320,7 @@ var rw = new function(){
 				mapArea.style.height = this.height+'px';
 				mapArea.style.position = 'absolute';
 				mapArea.style.overflow = 'hidden';
-				mapArea.style.zIndex = -1;
+				mapArea.style.zIndex = -this.depth;
 				mapArea.style.marginLeft = this.offX+'px';
 				mapArea.style.marginTop = this.offY+'px';
 				var board = document.getElementById('board');
@@ -344,6 +345,7 @@ var rw = new function(){
 			return this;
 		}
 		this.setDepth=function(depth) {
+			this.depth = depth;
 			if (document.getElementById('map_'+this.name)) {
 				var mapDiv=document.getElementById('map_'+this.name);
 				mapDiv.style.zIndex=-depth;
