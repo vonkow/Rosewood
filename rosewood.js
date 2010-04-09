@@ -561,8 +561,6 @@ var rw = new function(){
 		document.onmousemove = mousePos;
 		document.onmousedown = mouseDown;
 		document.onmouseup = mouseUp;
-		//document.onkeydown=keyDown;
-		//document.onkeyup=keyUp;
 		return this;
 	}
 	// Start FUnction
