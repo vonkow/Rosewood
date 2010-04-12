@@ -151,7 +151,8 @@ var rw = new function(){
 		this.tileY = 0;
 		this.active = false; //Bool for is piece in play
 		// Display Entity Function, sets ent.base.active to true
-		this.display = function (graphic, posX, posY, posZ) {
+		this.display = function (sprite, posX, posY, posZ) {
+			this.baseSprite=sprite;
 			this.posX = posX;
 			this.posY = posY;
 			if (posZ) {
@@ -163,8 +164,8 @@ var rw = new function(){
 			var newEnt = document.createElement('div');
 			newEnt.id = 'ent_'+this.name;
 			newEnt.style.width = this.width; newEnt.style.height = this.height;
-			if (graphic!='blank') {
-				newEnt.style.backgroundImage = "url('sprites/"+this.sprites+"/"+graphic+"."+this.spriteExt+"')";
+			if (sprite!='blank') {
+				newEnt.style.backgroundImage = "url('sprites/"+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
 			}
 			newEnt.style.backgroundRepeat = 'no-repeat';
 			newEnt.style.backgroundPosition = 'center';
@@ -182,10 +183,11 @@ var rw = new function(){
 			}
 			return this;
 		}
-		this.changeSprite = function(spriteName) {
+		this.changeSprite = function(sprite) {
+			this.baseSprite=sprite;
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
-				entDiv.style.backgroundImage = "url('sprites/"+this.sprites+"/"+spriteName+"."+this.spriteExt+"')";
+				entDiv.style.backgroundImage = "url('sprites/"+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
 			}
 			return this;
 		}
