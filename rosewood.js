@@ -578,6 +578,58 @@ var rw = new function(){
 		runGame = false;
 		return this;
 	}
+	// Point in Triangle Test
+	var pointInTri=function(p,a,b,c) {
+		var cp = ((b[0]-a[0])*(p[1]-a[1]))-((b[1]-a[1])*(p[0]-a[0]));
+		var cp_ref = ((b[0]-a[0])*(c[1]-a[1]))-((b[1]-a[1])*(c[0]-a[0]));
+		if (cp_ref>=0) {
+			if (cp>=0) {
+				return true;
+			} else {
+				return false;
+			}
+		} else if (cp<=0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	// Check Point in tri
+	var checkTriCol=function(p,a,b,c) {
+		if (pointInTri(p,a,b,c)) {
+			//alert('1');
+			if (pointInTri(p,b,c,a)) {
+				//alert('2');
+				if (pointInTri(p,c,a,b)) {
+					//alert('3');
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				//alert('false on 2');
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	// Check Point in rec
+	var checkRecCol=function(p,a,b) {
+		if (p[0]<a[0]) {
+			return false;
+		}
+		if (p[0]>b[0]) {
+			return false;
+		}
+		if (p[1]<a[1]) {
+			return false;
+		}
+		if (p[1]>b[1]) {
+			return false;
+		}
+		return true;
+	}
 	// RunLoop Function
 	me.run = function() {
 		var startTime = new Date();
@@ -687,21 +739,97 @@ var rw = new function(){
 						if (me.ents[y].hitMap) {
 							for (var w=0;w<me.ents[y].hitMap.length;w++) {
 								var hit = true;
-								// Left Check
-								if (me.ents[x].base.posX+me.ents[x].hitMap[z][3]<=me.ents[y].base.posX+me.ents[y].hitMap[w][1]) {
-									hit = false;
-								}
-								// Right Check
-								if (me.ents[x].base.posX+me.ents[x].hitMap[z][1]>=me.ents[y].base.posX+me.ents[y].hitMap[w][3]) {
-									hit = false;
-								}
-								// Top Check
-								if (me.ents[x].base.posY+me.ents[x].hitMap[z][4]<=me.ents[y].base.posY+me.ents[y].hitMap[w][2]) {
-									hit = false;
-								}
-								// Bottom Check
-								if (me.ents[x].base.posY+me.ents[x].hitMap[z][2]>=me.ents[y].base.posY+me.ents[y].hitMap[w][4]) {
-									hit = false;
+								// If ent 1 hitMap is triangle
+								if (me.ents[x].hitMap[z][6]) {
+									// If ent 2 hitMap is triangle
+									if (me.ents[y].hitMap[w][6]) {
+										// Test tri tri
+										var e1p1 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
+										var e1p2 = [me.ents[x].hitMap[z][3]+me.ents[x].base.posX,me.ents[x].hitMap[z][4]+me.ents[x].base.posY];
+										var e1p3 = [me.ents[x].hitMap[z][5]+me.ents[x].base.posX,me.ents[x].hitMap[z][6]+me.ents[x].base.posY];
+										var e2p1 = [me.ents[y].hitMap[w][1]+me.ents[y].base.posX,me.ents[y].hitMap[w][2]+me.ents[y].base.posY];
+										var e2p2 = [me.ents[y].hitMap[w][3]+me.ents[y].base.posX,me.ents[y].hitMap[w][4]+me.ents[y].base.posY];
+										var e2p3 = [me.ents[y].hitMap[w][5]+me.ents[y].base.posX,me.ents[y].hitMap[w][6]+me.ents[y].base.posY];
+										if (checkTriCol(e1p1,e2p1,e2p2,e2p3)==false) {
+											if (checkTriCol(e1p2,e2p1,e2p2,e2p3)==false) {
+												if (checkTriCol(e1p3,e2p1,e2p2,e2p3)==false) {
+													if (checkTriCol(e2p1,e1p1,e1p2,e1p3)==false) {
+														if (checkTriCol(e2p2,e1p1,e1p2,e1p3)==false) {
+															if (checkTriCol(e2p3,e1p1,e1p2,e1p3)==false) {
+																hit = false;
+															}
+														}
+													}
+												}
+											}
+										}
+									} else {
+										// Test tri rec
+										var e1p1 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
+										var e1p2 = [me.ents[x].hitMap[z][3]+me.ents[x].base.posX,me.ents[x].hitMap[z][4]+me.ents[x].base.posY];
+										var e1p3 = [me.ents[x].hitMap[z][5]+me.ents[x].base.posX,me.ents[x].hitMap[z][6]+me.ents[x].base.posY];
+										var e2p1 = [me.ents[y].hitMap[w][1]+me.ents[y].base.posX,me.ents[y].hitMap[w][2]+me.ents[y].base.posY];
+										var e2p2 = [me.ents[y].hitMap[w][1]+me.ents[y].base.posX,me.ents[y].hitMap[w][4]+me.ents[y].base.posY];
+										var e2p3 = [me.ents[y].hitMap[w][3]+me.ents[y].base.posX,me.ents[y].hitMap[w][4]+me.ents[y].base.posY];
+										var e2p4 = [me.ents[y].hitMap[w][3]+me.ents[y].base.posX,me.ents[y].hitMap[w][2]+me.ents[y].base.posY];
+										if (checkRecCol(e1p1,e2p1,e2p3)==false) {
+											if (checkRecCol(e1p2,e2p1,e2p3)==false) {
+												if (checkRecCol(e1p3,e2p1,e2p3)==false) {
+													if (checkTriCol(e2p1,e1p1,e1p2,e1p3)==false) {
+														if (checkTriCol(e2p2,e1p1,e1p2,e1p3)==false) {
+															if (checkTriCol(e2p3,e1p1,e1p2,e1p3)==false) {
+																if (checkTriCol(e2p4,e1p1,e1p2,e1p3)==false) {
+																	hit=false;
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								} else if (me.ents[y].hitMap[w][6]) {
+									// Test rec tri
+									var e1p1 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
+									var e1p2 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][4]+me.ents[x].base.posY];
+									var e1p3 = [me.ents[x].hitMap[z][3]+me.ents[x].base.posX,me.ents[x].hitMap[z][4]+me.ents[x].base.posY];
+									var e1p4 = [me.ents[x].hitMap[z][3]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
+									var e2p1 = [me.ents[y].hitMap[w][1]+me.ents[y].base.posX,me.ents[y].hitMap[w][2]+me.ents[y].base.posY];
+									var e2p2 = [me.ents[y].hitMap[w][3]+me.ents[y].base.posX,me.ents[y].hitMap[w][4]+me.ents[y].base.posY];
+									var e2p3 = [me.ents[y].hitMap[w][5]+me.ents[y].base.posX,me.ents[y].hitMap[w][6]+me.ents[y].base.posY];
+									if (checkRecCol(e2p1,e1p1,e1p3)==false) {
+										if (checkRecCol(e2p2,e1p1,e1p3)==false) {
+											if (checkRecCol(e2p3,e1p1,e1p3)==false) {
+												if (checkTriCol(e1p1,e2p1,e2p2,e2p3)==false) {
+													if (checkTriCol(e1p2,e2p1,e2p2,e2p3)==false) {
+														if (checkTriCol(e1p3,e2p1,e2p2,e2p3)==false) {
+															if (checkTriCol(e1p4,e2p1,e2p2,e2p3)==false) {
+																hit=false;
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								} else {
+									// Test rec rec
+									// Left Check
+									if (me.ents[x].base.posX+me.ents[x].hitMap[z][3]<=me.ents[y].base.posX+me.ents[y].hitMap[w][1]) {
+										hit = false;
+									}
+									// Right Check
+									if (me.ents[x].base.posX+me.ents[x].hitMap[z][1]>=me.ents[y].base.posX+me.ents[y].hitMap[w][3]) {
+										hit = false;
+									}
+									// Top Check
+									if (me.ents[x].base.posY+me.ents[x].hitMap[z][4]<=me.ents[y].base.posY+me.ents[y].hitMap[w][2]) {
+										hit = false;
+									}
+									// Bottom Check
+									if (me.ents[x].base.posY+me.ents[x].hitMap[z][2]>=me.ents[y].base.posY+me.ents[y].hitMap[w][4]) {
+										hit = false;
+									}
 								}
 								// If collision, add to list.
 								if (hit==true) {
