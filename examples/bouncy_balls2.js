@@ -3,7 +3,7 @@ var ball = function(name, dirX, dirY) {
 	this.dirX = dirX;
 	this.dirY = dirY;
 	this.hit = false;
-	this.hitMap=[['ball',0,0,40,40,0,40]];
+	this.hitMap=[['ball',0,20,40,20,20,0],['ball',0,20,40,20,20,40]];
 	this.update = function() {
 		this.hit = false;
 		switch (this.dirX) {
@@ -65,7 +65,7 @@ var ball = function(name, dirX, dirY) {
 }
 function startGame() {
 	rw.init(600, 600)
-	.newEnt(new  rw.lib.ent('tWall', 'tWall', 600, 10)).base.display( 'blank', 0, -10, 0).end()
+	.newEnt(new  rw.lib.ent('tWall', 'tWall', 600, 10)).base.display( 'blank', 0, 0, 0).end()
 	.newEnt(new  rw.lib.ent('rWall', 'rWall', 10, 600)).base.display( 'blank', 600, 0, 0).end()
 	.newEnt(new  rw.lib.ent('lWall', 'lWall', 10, 600)).base.display( 'blank', -10, 0, 0).end()
 	.newEnt(new  rw.lib.ent('bWall', 'bWall', 600, 10)).base.display( 'blank', 0, 600, 0).end()
