@@ -22,7 +22,7 @@ var ball = function(name, dirX, dirY) {
 				break;
 		}
 	}
-	this.iGotHit = function(by) {
+	this.gotHit = function(by) {
 		switch (by) {
 			case 'rWall':
 				this.dirX = 'l';

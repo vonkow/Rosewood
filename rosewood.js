@@ -594,8 +594,8 @@ var rw = new function(){
 				for (var x=0; x<me.ents.length; x++) {
 					if (me.ents[x].base.active==true) {
 						me.ents[x].base.tilePos();
-						if (me.ents[x].keyChangeSprite) {
-							me.ents[x].keyChangeSprite();
+						if (me.ents[x].keyChange) {
+							me.ents[x].keyChange();
 						}
 						var currentSprite = me.ents[x].update(me.ents[x].base.posX1(), me.ents[x].base.posX2(), me.ents[x].base.posY1(), me.ents[x].base.posY2());
 						if (currentSprite==false) {
@@ -637,8 +637,8 @@ var rw = new function(){
 			if (keyChange==true) {
 				for (var x=0; x<me.ents.length; x++) {
 					if (me.ents[x].base.active==true) {
-						if (me.ents[x].keyChangeSprite) {
-							me.ents[x].keyChangeSprite();
+						if (me.ents[x].keyChange) {
+							me.ents[x].keyChange();
 						}
 						var currentSprite = me.ents[x].update(me.ents[x].base.posX1(), me.ents[x].base.posX2(), me.ents[x].base.posY1(), me.ents[x].base.posY2());
 						if (currentSprite==false) {
@@ -717,13 +717,13 @@ var rw = new function(){
 		if (cols.length>0) {
 			var toBeRemoved = [];
 			for (var x=0; x<cols.length; x++) {
-				if (me.ents[cols[x][0][0]].iGotHit) {
-					if (me.ents[cols[x][0][0]].iGotHit(cols[x][1][1],cols[x][0][1],cols[x][1][0])==false) {
+				if (me.ents[cols[x][0][0]].gotHit) {
+					if (me.ents[cols[x][0][0]].gotHit(cols[x][1][1],cols[x][0][1],cols[x][1][0])==false) {
 						toBeRemoved[toBeRemoved.length] = cols[x][0][0];
 					}
 				}
-				if (me.ents[cols[x][1][0]].iGotHit) {
-					if (me.ents[cols[x][1][0]].iGotHit(cols[x][0][1],cols[x][1][1],cols[x][0][0])==false) {
+				if (me.ents[cols[x][1][0]].gotHit) {
+					if (me.ents[cols[x][1][0]].gotHit(cols[x][0][1],cols[x][1][1],cols[x][0][0])==false) {
 						toBeRemoved[toBeRemoved.length] = cols[x][1][0];
 					}
 				}

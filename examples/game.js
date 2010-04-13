@@ -81,7 +81,7 @@ var bomb = function(name, typeClass) {
 			return false;
 		}
 	}
-	this.iGotHit = function(by) {
+	this.gotHit = function(by) {
 		if (by=='blast') {
 			this.countdown = 1;
 		}
@@ -121,7 +121,7 @@ var badguy = function(name) {
 			}
 		}
 	}
-	this.iGotHit = function(by) {
+	this.gotHit = function(by) {
 		if (by=='blast') {
 			this.base.hide();
 			return false;
@@ -186,7 +186,7 @@ var bman = function(name, typeClass, heading) {
 	// Fix logic of displaying non-moving sprites
 //!!!!!!!!!!!!! Move most of keyCHangeSprite to ent.base with an rw.keys loop: 
 //		where args are sent to ent and keys.
-	this.keyChangeSprite = function() {
+	this.keyChange = function() {
 		var entDiv = document.getElementById('ent_'+name);
 		if (rw.key('la')) {
 			this.heading = 'l';
@@ -204,7 +204,7 @@ var bman = function(name, typeClass, heading) {
 			this.base.changeSprite(this.heading);
 		}
 	}
-	this.iGotHit = function(by) {
+	this.gotHit = function(by) {
 		if ((by=='blast')||(by=='baddie')) {
 			rw.rules['rule1'].dead = true;
 			this.base.hide();

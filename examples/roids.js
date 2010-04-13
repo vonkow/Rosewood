@@ -51,7 +51,7 @@ var ship = function(name) {
 		//this.base.velY=this.velY;
 
 	}
-	this.iGotHit = function(by) {
+	this.gotHit = function(by) {
 		switch (by) {
 			case 'roid':
 				this.base.hide();
@@ -82,7 +82,7 @@ var laser = function(name, angle) {
 			return false;
 		}
 	}
-	this.iGotHit = function(by) {
+	this.gotHit = function(by) {
 		if (by=='roid') {
 			this.hasntHit = false;
 			this.base.hide();
@@ -112,7 +112,7 @@ var roid = function(name, size) {
 		if (this.base.posY1()<0) this.base.posY+=600;
 		if (this.base.posY2()>600) this.base.posY-=600;
 	}
-	this.iGotHit = function(by,inThe,id) {
+	this.gotHit = function(by,inThe,id) {
 		if (by=='laser') {
 			if (rw.ents[id].hasntHit) {
 				switch (this.size) {

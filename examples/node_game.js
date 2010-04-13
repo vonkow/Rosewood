@@ -65,7 +65,7 @@ var dot = function(name, type) {
 			this.base.velX = 0;
 		}
 	};
-	this.iGotHit = function(by) {
+	this.gotHit = function(by) {
 			switch (by) {
 			case 'rWall':
 				this.right = false;
