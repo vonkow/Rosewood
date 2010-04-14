@@ -746,19 +746,12 @@ var rw = new function(){
 										var e2p1 = [me.ents[y].hitMap[w][1]+me.ents[y].base.posX,me.ents[y].hitMap[w][2]+me.ents[y].base.posY];
 										var e2p2 = [me.ents[y].hitMap[w][3]+me.ents[y].base.posX,me.ents[y].hitMap[w][4]+me.ents[y].base.posY];
 										var e2p3 = [me.ents[y].hitMap[w][5]+me.ents[y].base.posX,me.ents[y].hitMap[w][6]+me.ents[y].base.posY];
-										if (checkTriCol(e1p1,e2p1,e2p2,e2p3)==false) {
-											if (checkTriCol(e1p2,e2p1,e2p2,e2p3)==false) {
-												if (checkTriCol(e1p3,e2p1,e2p2,e2p3)==false) {
-													if (checkTriCol(e2p1,e1p1,e1p2,e1p3)==false) {
-														if (checkTriCol(e2p2,e1p1,e1p2,e1p3)==false) {
-															if (checkTriCol(e2p3,e1p1,e1p2,e1p3)==false) {
-																hit = false;
-															}
-														}
-													}
-												}
-											}
-										}
+										checkTriCol(e1p1,e2p1,e2p2,e2p3) ? hit=true :
+										checkTriCol(e1p2,e2p1,e2p2,e2p3) ? hit=true :
+										checkTriCol(e1p3,e2p1,e2p2,e2p3) ? hit=true :
+										checkTriCol(e2p1,e1p1,e1p2,e1p3) ? hit=true :
+										checkTriCol(e2p2,e1p1,e1p2,e1p3) ? hit=true :
+										checkTriCol(e2p3,e1p1,e1p2,e1p3) ? hit=true : hit=false;
 									} else {
 										// Test tri rec
 										var e1p1 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
@@ -768,21 +761,13 @@ var rw = new function(){
 										var e2p2 = [me.ents[y].hitMap[w][1]+me.ents[y].base.posX,me.ents[y].hitMap[w][4]+me.ents[y].base.posY];
 										var e2p3 = [me.ents[y].hitMap[w][3]+me.ents[y].base.posX,me.ents[y].hitMap[w][4]+me.ents[y].base.posY];
 										var e2p4 = [me.ents[y].hitMap[w][3]+me.ents[y].base.posX,me.ents[y].hitMap[w][2]+me.ents[y].base.posY];
-										if (checkRecCol(e1p1,e2p1,e2p3)==false) {
-											if (checkRecCol(e1p2,e2p1,e2p3)==false) {
-												if (checkRecCol(e1p3,e2p1,e2p3)==false) {
-													if (checkTriCol(e2p1,e1p1,e1p2,e1p3)==false) {
-														if (checkTriCol(e2p2,e1p1,e1p2,e1p3)==false) {
-															if (checkTriCol(e2p3,e1p1,e1p2,e1p3)==false) {
-																if (checkTriCol(e2p4,e1p1,e1p2,e1p3)==false) {
-																	hit=false;
-																}
-															}
-														}
-													}
-												}
-											}
-										}
+										checkRecCol(e1p1,e2p1,e2p3) ? hit=true :
+										checkRecCol(e1p2,e2p1,e2p3) ? hit=true :
+										checkRecCol(e1p3,e2p1,e2p3) ? hit=true :
+										checkTriCol(e2p1,e1p1,e1p2,e1p3) ? hit=true :
+										checkTriCol(e2p2,e1p1,e1p2,e1p3) ? hit=true :
+										checkTriCol(e2p3,e1p1,e1p2,e1p3) ? hit=true :
+										checkTriCol(e2p4,e1p1,e1p2,e1p3) ? hit=true : hit=false;
 									}
 								} else if (me.ents[y].hitMap[w][6]) {
 									// Test rec tri
@@ -793,37 +778,22 @@ var rw = new function(){
 									var e2p1 = [me.ents[y].hitMap[w][1]+me.ents[y].base.posX,me.ents[y].hitMap[w][2]+me.ents[y].base.posY];
 									var e2p2 = [me.ents[y].hitMap[w][3]+me.ents[y].base.posX,me.ents[y].hitMap[w][4]+me.ents[y].base.posY];
 									var e2p3 = [me.ents[y].hitMap[w][5]+me.ents[y].base.posX,me.ents[y].hitMap[w][6]+me.ents[y].base.posY];
-									if (checkRecCol(e2p1,e1p1,e1p3)==false) {
-										if (checkRecCol(e2p2,e1p1,e1p3)==false) {
-											if (checkRecCol(e2p3,e1p1,e1p3)==false) {
-												if (checkTriCol(e1p1,e2p1,e2p2,e2p3)==false) {
-													if (checkTriCol(e1p2,e2p1,e2p2,e2p3)==false) {
-														if (checkTriCol(e1p3,e2p1,e2p2,e2p3)==false) {
-															if (checkTriCol(e1p4,e2p1,e2p2,e2p3)==false) {
-																hit=false;
-															}
-														}
-													}
-												}
-											}
-										}
-									}
+									checkRecCol(e2p1,e1p1,e1p3) ? hit=true :
+									checkRecCol(e2p2,e1p1,e1p3) ? hit=true :
+									checkRecCol(e2p3,e1p1,e1p3) ? hit=true :
+									checkTriCol(e1p1,e2p1,e2p2,e2p3) ? hit=true :
+									checkTriCol(e1p2,e2p1,e2p2,e2p3) ? hit=true :
+									checkTriCol(e1p3,e2p1,e2p2,e2p3) ? hit=true :
+									checkTriCol(e1p4,e2p1,e2p2,e2p3) ? hit=true : hit=false;
 								} else {
 									// Test rec rec
-									// Left Check
 									if (me.ents[x].base.posX+me.ents[x].hitMap[z][3]<=me.ents[y].base.posX+me.ents[y].hitMap[w][1]) {
 										hit = false;
-									}
-									// Right Check
-									if (me.ents[x].base.posX+me.ents[x].hitMap[z][1]>=me.ents[y].base.posX+me.ents[y].hitMap[w][3]) {
+									} else if (me.ents[x].base.posX+me.ents[x].hitMap[z][1]>=me.ents[y].base.posX+me.ents[y].hitMap[w][3]) {
 										hit = false;
-									}
-									// Top Check
-									if (me.ents[x].base.posY+me.ents[x].hitMap[z][4]<=me.ents[y].base.posY+me.ents[y].hitMap[w][2]) {
+									} else if (me.ents[x].base.posY+me.ents[x].hitMap[z][4]<=me.ents[y].base.posY+me.ents[y].hitMap[w][2]) {
 										hit = false;
-									}
-									// Bottom Check
-									if (me.ents[x].base.posY+me.ents[x].hitMap[z][2]>=me.ents[y].base.posY+me.ents[y].hitMap[w][4]) {
+									} else if (me.ents[x].base.posY+me.ents[x].hitMap[z][2]>=me.ents[y].base.posY+me.ents[y].hitMap[w][4]) {
 										hit = false;
 									}
 								}
