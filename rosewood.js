@@ -597,17 +597,13 @@ var rw = new function(){
 	// Check Point in tri
 	var checkTriCol=function(p,a,b,c) {
 		if (pointInTri(p,a,b,c)) {
-			//alert('1');
 			if (pointInTri(p,b,c,a)) {
-				//alert('2');
 				if (pointInTri(p,c,a,b)) {
-					//alert('3');
 					return true;
 				} else {
 					return false;
 				}
 			} else {
-				//alert('false on 2');
 				return false;
 			}
 		} else {
