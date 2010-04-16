@@ -635,6 +635,73 @@ var rw = new function(){
 		}
 		return true;
 	}
+	// Check Point in circle
+	var checkPtCirc=function(px,py,cx,cy,cr) {
+		var hit = true;
+		var dist = ((cx-px)*(cx-px))+((cy-py)*(cy-py));
+		(dist<(cr*cr)) ? hit=true : hit=false;
+		return hit;
+	}
+	// Check Circle in circle
+	var checkCircCirc=function(c1x,c1y,c1r,c2x,c2y,c2r) {
+		var hit = true;
+		var dist = ((c1x-c2x)*(c1x-c2x))+((c1y-c2y)*(c1y-c2y));
+		(dist<((c1r+c2r)*(c1r+c2r))) ? hit=true : hit=false;
+		return hit;
+	}
+	// Check circle cross line
+	var checkCircLine=function(a,b,c) {
+		if ((c[0]-c[2]>a[0])&&(c[0]-c[2]>b[0])) {
+			return false;
+		} else if ((c[0]+c[2]<a[0])&&(c[0]+c[2]<b[0])) {
+			return false;
+		} else if ((c[1]-c[1]>a[1])&&(c[1]-c[2]>b[1])) {
+			return false;
+		} else if ((c[1]+c[2]<a[1])&&(c[1]+c[2]<b[1])) {
+			return false;
+		} else {
+			var doubleArea=(a[0]*b[1])+(b[0]*c[1])+(c[0]*a[1])-(b[0]*a[1])-(c[0]*b[1])-(a[0]*c[1]);
+			if (doubleArea<0) doubleArea=-doubleArea;
+			var base=Math.sqrt(((b[0]-a[0])*(b[0]-a[0]))+((b[1]-a[1])*(b[1]-a[1])));
+			var dist=doubleArea/base;
+			if (c[2]>dist) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+	// Check Circle in rec
+	var checkCircRec=function(cx,cy,cr,rx1,ry1,rx2,ry2) {
+		var hit = true;
+		var rW = (rx2-rx1)/2;
+		var circDistX = cx-(rx1+rW);
+		if (circDistX<0) circDistX=-circDistX;
+		if (circDistX>rW+cr) {
+			hit=false;
+		} else {
+			var rH = (ry2-ry1)/2;
+			var circDistY = cy-(ry1+rH);
+			if (circDistY<0) circDistY=-circDistY;
+			if (circDistY>rH+cr) {
+				hit = false;
+			} else {
+				if (circDistX<=rW) {
+					hit=true;
+				} else if (circDistY<=rH) {
+					hit=true;
+				} else {
+					var cornerDistSq = ((circDistX+rW)*(circDistX+rW))+((circDistY+rH)*(circDistY+rH));
+					if (cornerDistSq<=cr*cr) {
+						hit=true;
+					} else {
+						hit=false;
+					}
+				}
+			}
+		}
+		return hit;
+	}
 	// RunLoop Function
 	me.run = function() {
 		var startTime = new Date();
@@ -761,7 +828,7 @@ var rw = new function(){
 										checkTriCol(e2p1,e1p1,e1p2,e1p3) ? hit=true :
 										checkTriCol(e2p2,e1p1,e1p2,e1p3) ? hit=true :
 										checkTriCol(e2p3,e1p1,e1p2,e1p3) ? hit=true : hit=false;
-									} else {
+									} else if (me.ents[y].hitMap[w][4]) {
 										// Test tri rec
 										var e1p1 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
 										var e1p2 = [me.ents[x].hitMap[z][3]+me.ents[x].base.posX,me.ents[x].hitMap[z][4]+me.ents[x].base.posY];
@@ -777,34 +844,106 @@ var rw = new function(){
 										checkTriCol(e2p2,e1p1,e1p2,e1p3) ? hit=true :
 										checkTriCol(e2p3,e1p1,e1p2,e1p3) ? hit=true :
 										checkTriCol(e2p4,e1p1,e1p2,e1p3) ? hit=true : hit=false;
+									} else if (me.ents[y].hitMap[w][3]) {
+										// Test tri circ
+										var c = [me.ents[y].hitMap[w][1]+me.ents[y].base.posX,me.ents[y].hitMap[w][2]+me.ents[y].base.posY,me.ents[y].hitMap[w][3]];
+										var tp1 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
+										var tp2 = [me.ents[x].hitMap[z][3]+me.ents[x].base.posX,me.ents[x].hitMap[z][4]+me.ents[x].base.posY];
+										var tp3 = [me.ents[x].hitMap[z][5]+me.ents[x].base.posX,me.ents[x].hitMap[z][6]+me.ents[x].base.posY];
+										checkTriCol(c,tp1,tp2,tp3) ? hit=true :
+										checkCircLine(tp1,tp2,c) ? hit=true :
+										checkCircLine(tp2,tp3,c) ? hit=true :
+										checkCircLine(tp3,tp1,c) ? hit=true : hit=false;
+									} else {
+										// Test tri point
+										var e1p1 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
+										var e1p2 = [me.ents[x].hitMap[z][3]+me.ents[x].base.posX,me.ents[x].hitMap[z][4]+me.ents[x].base.posY];
+										var e1p3 = [me.ents[x].hitMap[z][5]+me.ents[x].base.posX,me.ents[x].hitMap[z][6]+me.ents[x].base.posY];
+										var e2p1 = [me.ents[y].hitMap[w][1]+me.ents[y].base.posX,me.ents[y].hitMap[w][2]+me.ents[y].base.posY];
+										hit = checkTriCol(e2p1,e1p1,e1p2,e1p3);
 									}
-								} else if (me.ents[y].hitMap[w][6]) {
-									// Test rec tri
-									var e1p1 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
-									var e1p2 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][4]+me.ents[x].base.posY];
-									var e1p3 = [me.ents[x].hitMap[z][3]+me.ents[x].base.posX,me.ents[x].hitMap[z][4]+me.ents[x].base.posY];
-									var e1p4 = [me.ents[x].hitMap[z][3]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
-									var e2p1 = [me.ents[y].hitMap[w][1]+me.ents[y].base.posX,me.ents[y].hitMap[w][2]+me.ents[y].base.posY];
-									var e2p2 = [me.ents[y].hitMap[w][3]+me.ents[y].base.posX,me.ents[y].hitMap[w][4]+me.ents[y].base.posY];
-									var e2p3 = [me.ents[y].hitMap[w][5]+me.ents[y].base.posX,me.ents[y].hitMap[w][6]+me.ents[y].base.posY];
-									checkRecCol(e2p1,e1p1,e1p3) ? hit=true :
-									checkRecCol(e2p2,e1p1,e1p3) ? hit=true :
-									checkRecCol(e2p3,e1p1,e1p3) ? hit=true :
-									checkTriCol(e1p1,e2p1,e2p2,e2p3) ? hit=true :
-									checkTriCol(e1p2,e2p1,e2p2,e2p3) ? hit=true :
-									checkTriCol(e1p3,e2p1,e2p2,e2p3) ? hit=true :
-									checkTriCol(e1p4,e2p1,e2p2,e2p3) ? hit=true : hit=false;
+								} else if (me.ents[x].hitMap[z][4]) {
+									// Ent 1 is rec
+									if (me.ents[y].hitMap[w][6]) {
+										// Test rec tri
+										var e1p1 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
+										var e1p2 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][4]+me.ents[x].base.posY];
+										var e1p3 = [me.ents[x].hitMap[z][3]+me.ents[x].base.posX,me.ents[x].hitMap[z][4]+me.ents[x].base.posY];
+										var e1p4 = [me.ents[x].hitMap[z][3]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
+										var e2p1 = [me.ents[y].hitMap[w][1]+me.ents[y].base.posX,me.ents[y].hitMap[w][2]+me.ents[y].base.posY];
+										var e2p2 = [me.ents[y].hitMap[w][3]+me.ents[y].base.posX,me.ents[y].hitMap[w][4]+me.ents[y].base.posY];
+										var e2p3 = [me.ents[y].hitMap[w][5]+me.ents[y].base.posX,me.ents[y].hitMap[w][6]+me.ents[y].base.posY];
+										checkRecCol(e2p1,e1p1,e1p3) ? hit=true :
+										checkRecCol(e2p2,e1p1,e1p3) ? hit=true :
+										checkRecCol(e2p3,e1p1,e1p3) ? hit=true :
+										checkTriCol(e1p1,e2p1,e2p2,e2p3) ? hit=true :
+										checkTriCol(e1p2,e2p1,e2p2,e2p3) ? hit=true :
+										checkTriCol(e1p3,e2p1,e2p2,e2p3) ? hit=true :
+										checkTriCol(e1p4,e2p1,e2p2,e2p3) ? hit=true : hit=false;
+									} else if (me.ents[y].hitMap[w][4]) {
+										// Test rec rec
+										if (me.ents[x].base.posX+me.ents[x].hitMap[z][3]<=me.ents[y].base.posX+me.ents[y].hitMap[w][1]) {
+											hit = false;
+										} else if (me.ents[x].base.posX+me.ents[x].hitMap[z][1]>=me.ents[y].base.posX+me.ents[y].hitMap[w][3]) {
+											hit = false;
+										} else if (me.ents[x].base.posY+me.ents[x].hitMap[z][4]<=me.ents[y].base.posY+me.ents[y].hitMap[w][2]) {
+											hit = false;
+										} else if (me.ents[x].base.posY+me.ents[x].hitMap[z][2]>=me.ents[y].base.posY+me.ents[y].hitMap[w][4]) {
+											hit = false;
+										}
+									} else if (me.ents[y].hitMap[w][3]) {
+										// Test rec circ
+										var cx=me.ents[y].hitMap[w][1]+me.ents[y].base.posX;
+										var cy=me.ents[y].hitMap[w][2]+me.ents[y].base.posY;
+										var cr=me.ents[y].hitMap[w][3];
+										var rx1 = me.ents[x].hitMap[z][1]+me.ents[x].base.posX;
+										var rx2 = me.ents[x].hitMap[z][3]+me.ents[x].base.posX;
+										var ry1 = me.ents[x].hitMap[z][2]+me.ents[x].base.posY;
+										var ry2 = me.ents[x].hitMap[z][4]+me.ents[x].base.posY;
+										hit = checkCircRec(cx,cy,cr,rx1,ry1,rx2,ry2);
+									} else {
+										// Test rec pt
+										var rp1 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
+										var rp2 = [me.ents[x].hitMap[z][3]+me.ents[x].base.posX,me.ents[x].hitMap[z][4]+me.ents[x].base.posY];
+										var p = [me.ents[y].hitMap[w][1]+me.ents[y].base.posX,me.ents[y].hitMap[w][4]+me.ents[y].base.posY];
+										hit = checkRecCol(p,rp1,rp2);
+									}
+								} else if (me.ents[x].hitMap[z][3]) {
+									// Ent 1 is circ
+									if (me.ents[y].hitMap[w][6]) {
+										// Test circ tri
+										var c = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY,me.ents[x].hitMap[z][3]];
+										var tp1 = [me.ents[y].hitMap[w][1]+me.ents[y].base.posX,me.ents[y].hitMap[w][2]+me.ents[y].base.posY];
+										var tp2 = [me.ents[y].hitMap[w][3]+me.ents[y].base.posX,me.ents[y].hitMap[w][4]+me.ents[y].base.posY];
+										var tp3 = [me.ents[y].hitMap[w][5]+me.ents[y].base.posX,me.ents[y].hitMap[w][6]+me.ents[y].base.posY];
+										checkTriCol(c,tp1,tp2,tp3) ? hit=true :
+										checkCircLine(tp1,tp2,c) ? hit=true :
+										checkCircLine(tp2,tp3,c) ? hit=true :
+										checkCircLine(tp3,tp1,c) ? hit=true : hit=false;
+									} else if (me.ents[y].hitMap[w][4]) {
+										// Test circ rec
+										var cx=me.ents[x].hitMap[z][1]+me.ents[x].base.posX;
+										var cy=me.ents[x].hitMap[z][2]+me.ents[x].base.posY;
+										var cr=me.ents[x].hitMap[z][3];
+										var rx1 = me.ents[y].hitMap[w][1]+me.ents[y].base.posX;
+										var rx2 = me.ents[y].hitMap[w][3]+me.ents[y].base.posX;
+										var ry1 = me.ents[y].hitMap[w][2]+me.ents[y].base.posY;
+										var ry2 = me.ents[y].hitMap[w][4]+me.ents[y].base.posY;
+										hit = checkCircRec(cx,cy,cr,rx1,ry1,rx2,ry2);
+									} else if (me.ents[y].hitMap[w][3]) {
+										// Test circ circ
+										var c1x = me.ents[x].hitMap[z][1]+me.ents[x].base.posX;
+										var c1y = me.ents[x].hitMap[z][2]+me.ents[x].base.posY;
+										var c1r = me.ents[x].hitMap[z][3];
+										var c2x = me.ents[y].hitMap[w][1]+me.ents[y].base.posX;
+										var c2y = me.ents[y].hitMap[w][2]+me.ents[y].base.posY;
+										var c2r = me.ents[y].hitMap[w][3];
+										hit = checkCircCirc(c1x,c1y,c1r,c2x,c2y,c2r);
+									} else {
+										// Test circ pt
+									}
 								} else {
-									// Test rec rec
-									if (me.ents[x].base.posX+me.ents[x].hitMap[z][3]<=me.ents[y].base.posX+me.ents[y].hitMap[w][1]) {
-										hit = false;
-									} else if (me.ents[x].base.posX+me.ents[x].hitMap[z][1]>=me.ents[y].base.posX+me.ents[y].hitMap[w][3]) {
-										hit = false;
-									} else if (me.ents[x].base.posY+me.ents[x].hitMap[z][4]<=me.ents[y].base.posY+me.ents[y].hitMap[w][2]) {
-										hit = false;
-									} else if (me.ents[x].base.posY+me.ents[x].hitMap[z][2]>=me.ents[y].base.posY+me.ents[y].hitMap[w][4]) {
-										hit = false;
-									}
+									// Ent 1 is point
 								}
 								// If collision, add to list.
 								if (hit==true) {
