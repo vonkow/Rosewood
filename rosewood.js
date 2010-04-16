@@ -31,6 +31,15 @@ var rw = new function(){
 	me.getLag = function() {
 		return currentLag;
 	}
+	// Resource Path Settings
+	var resPath = 'sprites/';
+	me.setPath = function(newPath) {
+		resPath = newPath;
+		return this;
+	}
+	me.getPath = function() {
+		return resPath;
+	}
 	// Tile settings
 	var tiles = false;
 	var tileX = 0;
@@ -165,7 +174,7 @@ var rw = new function(){
 			newEnt.id = 'ent_'+this.name;
 			newEnt.style.width = this.width; newEnt.style.height = this.height;
 			if (sprite!='blank') {
-				newEnt.style.backgroundImage = "url('sprites/"+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
+				newEnt.style.backgroundImage = "url('"+resPath+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
 			}
 			newEnt.style.backgroundRepeat = 'no-repeat';
 			newEnt.style.backgroundPosition = 'center';
@@ -187,7 +196,7 @@ var rw = new function(){
 			this.baseSprite=sprite;
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
-				entDiv.style.backgroundImage = "url('sprites/"+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
+				entDiv.style.backgroundImage = "url('"+resPath+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
 			}
 			return this;
 		}
