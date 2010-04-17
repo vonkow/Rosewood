@@ -517,7 +517,7 @@ var rw = new function(){
 				this.trans_name = 'none';
 			}
 		},
-		trans_name: 'none',
+		trans_name: 'none'
 	}
 	// Wipe Functions
 	// Removes all children of the board
