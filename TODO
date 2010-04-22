@@ -1,8 +1,16 @@
+UPCOMING CHANGES
+
+Canvas support someday
+
+Rotation of triangular hitmaps made easy
+
+Ent Groups
+
+POSSIBLE CHANGES
+
 Possibly prepend "ent_" to all ent.base.names, for (marginally) faster runtime
 
 find mouse pos based on "board" div's location
-
-Canvas support someday
 
 Node.js server support someday soon
 
