@@ -129,6 +129,14 @@ var rw = new function(){
 		mouseDown= false;
 
 	}
+	var rotatePoint=function(p,o,a) {
+		var ang = a*0.0174532925;
+		var trans=[p[0]-o[0],p[1]-o[1]];
+		var newP=[(trans[0]*Math.cos(ang))-(trans[1]*Math.sin(ang)),(trans[1]*Math.sin(ang))+(trans[0]*Math.cos(ang))];
+		newP[0]+=o[0];
+		newP[1]+=o[1];
+		return newP;
+	}
 	// Game Entities
 	me.ents = []; 
 	me.ent = function(name, sprites, baseSprite, spriteExt, width, height) {
@@ -245,6 +253,20 @@ var rw = new function(){
 				entDiv.style[me.browser.trans_name] = 'rotate('+deg+'deg)';
 			}
 			return this;
+		}
+		this.rotMap=function(hitMap, angle) {
+			var centerP = [this.width*0.5,this.height*0.5];
+			var newMap = [hitMap[0]];
+			var pt1 = rotatePoint([hitMap[1],hitMap[2]],centerP,angle);
+			var pt2 = rotatePoint([hitMap[3],hitMap[4]],centerP,angle);
+			var pt3 = rotatePoint([hitMap[5],hitMap[6]],centerP,angle);
+			newMap.push(pt1[0]);
+			newMap.push(pt1[1]);
+			newMap.push(pt2[0]);
+			newMap.push(pt2[1]);
+			newMap.push(pt3[0]);
+			newMap.push(pt3[1]);
+			return newMap;
 		}
 		this.tilePos = function() {
 			this.tileX = Math.floor(this.posX/tileX);

@@ -1,6 +1,14 @@
 var triTest = function() {
 	this.base = new rw.ent('tri','','blank','',100,100);
-	this.update=function() {};
+	this.rot = false;
+	this.update=function() {
+		/*
+		if (this.rot==false) {
+			this.hitMap[0]=this.base.rotMap(this.hitMap[0],90);
+			this.rot=true;
+		}
+		*/
+	};
 	this.hitMap=[['tri',0,0,0,100,100,100]];
 }
 var ball = function(name, dirX, dirY) {
