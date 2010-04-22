@@ -44,7 +44,7 @@ var hero = function(name) {
 			}
 		}
 	}
-	this.keyChangeSprite = function() {
+	this.keyChange = function() {
 		if (rw.key('la')) {
 			this.heading = 'l';
 		}
@@ -60,7 +60,7 @@ var hero = function(name) {
 		this.base.changeSprite(this.heading+1);
 	}
 	this.hitMap = [[name,0,0,30,30]];
-	this.iGotHit = function(by) {
+	this.gotHit = function(by) {
 		if (!fatima) {
 			if (by=='eye') {
 				this.base.hide();
@@ -152,7 +152,7 @@ var eye = function(name, heading) {
 		}
 	}
 	this.hitMap = [['eye',10,10,20,20]];
-	this.iGotHit = function(by) {
+	this.gotHit = function(by) {
 		if ((by=='eye')||(by=='hero')) {
 			eyesDead++;
 			this.base.hide();
@@ -199,7 +199,7 @@ var item = function() {
 		}
 	}
 	this.hitMap = [['item',0,0,30,30]];
-	this.iGotHit = function(by) {
+	this.gotHit = function(by) {
 		if (by=='hero') {
 			switch (this.counter) {
 				case 0:
