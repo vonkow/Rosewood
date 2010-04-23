@@ -132,7 +132,7 @@ var rw = new function(){
 	var rotatePoint=function(p,o,a) {
 		var ang = a*0.0174532925;
 		var trans=[p[0]-o[0],p[1]-o[1]];
-		var newP=[(trans[0]*Math.cos(ang))-(trans[1]*Math.sin(ang)),(trans[1]*Math.sin(ang))+(trans[0]*Math.cos(ang))];
+		var newP=[(trans[0]*Math.cos(ang))-(trans[1]*Math.sin(ang)),(trans[0]*Math.sin(ang))+(trans[1]*Math.cos(ang))];
 		newP[0]+=o[0];
 		newP[1]+=o[1];
 		return newP;
@@ -255,7 +255,7 @@ var rw = new function(){
 			return this;
 		}
 		this.rotMap=function(hitMap, angle) {
-			var centerP = [this.width*0.5,this.height*0.5];
+			var centerP = [this.width/2,this.height/2];
 			var newMap = [hitMap[0]];
 			var pt1 = rotatePoint([hitMap[1],hitMap[2]],centerP,angle);
 			var pt2 = rotatePoint([hitMap[3],hitMap[4]],centerP,angle);
