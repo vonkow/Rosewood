@@ -7,8 +7,8 @@ var ship = function(name) {
 	this.coolDown = 0;
 	this.velX = 0;
 	this.velY = 0;
-	this.baseMap = ['ship',0,0,40,20,0,40];
-	this.hitMap = [['ship',20,0,0,40,40,40]];
+	this.hitMap = [['ship',5,5,35,20,5,35]];
+	this.baseMap = ['ship',5,5,35,20,5,35];
 	this.update = function() {
 		if (rw.key('la')) {
 			this.heading-=10;
@@ -43,7 +43,7 @@ var ship = function(name) {
 			}
 		}
 		this.base.rotate(this.heading);
-		//this.hitMap[0] = this.base.rotMap(this.baseMap, this.heading);
+		this.hitMap[0] = this.base.rotMap(this.baseMap, this.heading);
 		if (this.base.posX1()<0) this.base.posX+=600;
 		if (this.base.posX2()>600) this.base.posX-=600;
 		if (this.base.posY1()<0) this.base.posY+=600;

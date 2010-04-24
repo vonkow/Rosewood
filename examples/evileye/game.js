@@ -212,19 +212,19 @@ var item = function() {
 					blind = true;
 					blindEyeCountdown = 100;
 					rw.newEnt(new blindEyeNotification())
-						.base.display('blindeye',0,0,0);
+						.base.display('blindeye',90,0,0);
 					break;
 				case 2:
 					slow = true;
 					slowCountdown = 100;
 					rw.newEnt(new slowNotification())
-						.base.display('slow',0,0,0);
+						.base.display('slow',180,0,0);
 					break;
 				case 3:
 					badLuck = true;
 					badLuckCountdown = 50;
 					rw.newEnt(new badLuckNotification())
-						.base.display('badluck',0,0,0);
+						.base.display('badluck',270,0,0);
 					eyeGenerator();
 					eyeGenerator();
 					eyeGenerator();
@@ -322,12 +322,20 @@ var badLuckTimer = function() {
 	}
 }
 
+var deadEyes=function() {
+	this.base=new rw.ent('eyecounter','','','',100,50);
+	this.update=function() {
+		this.base.detach();
+		this.base.attach(document.createTextNode('Score: '+eyesDead));
+	}
+}
+
 var resetGame = function() {
 	this.base = new rw.rule(true);
 	this.rule = function() {
 		if (endGame) {
 			endGame = false;
-			alert ("You killed "+eyesDead+" Evil Eyes");
+			//alert ("You killed "+eyesDead+" Evil Eyes");
 			heroX = 0;
 			heroY = 0;
 			heroXTile = 0;
@@ -424,6 +432,8 @@ var startGame = function() {
 	.newEnt(new hero('hero'))
 		.base.display('d1',240,240,240)
 		.end()
+	.newEnt(new deadEyes())
+		.base.display('',380,0,0).end()
 	.saveState('init')
 	.start();
 }
