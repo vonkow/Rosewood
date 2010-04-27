@@ -7,8 +7,8 @@ var ship = function(name) {
 	this.coolDown = 0;
 	this.velX = 0;
 	this.velY = 0;
-	this.hitMap = [['ship',5,5,35,20,5,35]];
-	this.baseMap = ['ship',5,5,35,20,5,35];
+	this.hitMap = [['ship',0,0,40,20,0,40]];
+	this.baseMap = ['ship',0,0,40,20,0,40];
 	this.update = function() {
 		if (rw.key('la')) {
 			this.heading-=10;
@@ -98,7 +98,8 @@ var roid = function(name, size) {
 	this.spin = Math.round((Math.random()*20)-10);
 	this.velX = Math.round((Math.random()*20)-10);
 	this.velY = Math.round((Math.random()*20)-10);
-	this.hitMap = [['roid',0,0,size,size]];
+	//this.hitMap = [['roid',0,0,size,size]];
+	this.hitMap = [['roid',size/2,size/2,size/2]];
 	this.update = function() {
 		this.heading += this.spin;
 		if (this.heading>=360) this.heading-=360;

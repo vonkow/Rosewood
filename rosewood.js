@@ -677,7 +677,7 @@ var rw = new function(){
 			return false;
 		} else if ((c[0]+c[2]<a[0])&&(c[0]+c[2]<b[0])) {
 			return false;
-		} else if ((c[1]-c[1]>a[1])&&(c[1]-c[2]>b[1])) {
+		} else if ((c[1]-c[2]>a[1])&&(c[1]-c[2]>b[1])) {
 			return false;
 		} else if ((c[1]+c[2]<a[1])&&(c[1]+c[2]<b[1])) {
 			return false;
@@ -872,10 +872,10 @@ var rw = new function(){
 										var tp1 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
 										var tp2 = [me.ents[x].hitMap[z][3]+me.ents[x].base.posX,me.ents[x].hitMap[z][4]+me.ents[x].base.posY];
 										var tp3 = [me.ents[x].hitMap[z][5]+me.ents[x].base.posX,me.ents[x].hitMap[z][6]+me.ents[x].base.posY];
-										checkTriCol(c,tp1,tp2,tp3) ? hit=true :
+										checkTriCol([c[0],c[1]],tp1,tp2,tp3) ? hit=true :
 										checkCircLine(tp1,tp2,c) ? hit=true :
 										checkCircLine(tp2,tp3,c) ? hit=true :
-										checkCircLine(tp3,tp1,c) ? hit=true : hit=false;
+										checkCircLine(tp1,tp3,c) ? hit=true : hit=false;
 									} else {
 										// Test tri point
 										var e1p1 = [me.ents[x].hitMap[z][1]+me.ents[x].base.posX,me.ents[x].hitMap[z][2]+me.ents[x].base.posY];
@@ -938,10 +938,10 @@ var rw = new function(){
 										var tp1 = [me.ents[y].hitMap[w][1]+me.ents[y].base.posX,me.ents[y].hitMap[w][2]+me.ents[y].base.posY];
 										var tp2 = [me.ents[y].hitMap[w][3]+me.ents[y].base.posX,me.ents[y].hitMap[w][4]+me.ents[y].base.posY];
 										var tp3 = [me.ents[y].hitMap[w][5]+me.ents[y].base.posX,me.ents[y].hitMap[w][6]+me.ents[y].base.posY];
-										checkTriCol(c,tp1,tp2,tp3) ? hit=true :
+										checkTriCol([c[0],c[1]],tp1,tp2,tp3) ? hit=true :
 										checkCircLine(tp1,tp2,c) ? hit=true :
 										checkCircLine(tp2,tp3,c) ? hit=true :
-										checkCircLine(tp3,tp1,c) ? hit=true : hit=false;
+										checkCircLine(tp1,tp3,c) ? hit=true : hit=false;
 									} else if (me.ents[y].hitMap[w][4]) {
 										// Test circ rec
 										var cx=me.ents[x].hitMap[z][1]+me.ents[x].base.posX;
