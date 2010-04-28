@@ -355,7 +355,7 @@ var rw = new function(){
 			} else {
 				var mapArea = document.createElement('div');
 				mapArea.id = 'map_'+this.name;
-				mapArea.style.backgroundImage = "url('sprites/maps/"+this.path+"/"+this.path+"."+this.extention+"')";
+				mapArea.style.backgroundImage = "url('sprites/maps/"+this.path+"."+this.extention+"')";
 				mapArea.style.width = this.width+'px';
 				mapArea.style.height = this.height+'px';
 				mapArea.style.position = 'absolute';
