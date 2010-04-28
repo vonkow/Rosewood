@@ -164,8 +164,6 @@ var rw = new function(){
 		this.velX = 0;
 		this.velY = 0;
 		this.velZ = 0;
-		this.tileX = 0;
-		this.tileY = 0;
 		this.active = false; //Bool for is piece in play
 		// Display Entity Function, sets ent.base.active to true
 		this.display = function (sprite, posX, posY, posZ) {
@@ -268,10 +266,19 @@ var rw = new function(){
 			newMap.push(pt3[1]);
 			return newMap;
 		}
-		this.tilePos = function() {
-			this.tileX = Math.floor(this.posX/tileX);
-			this.tileY = Math.floor(this.posY/tileY);
-			return this;
+		this.tileX=function() {
+			if (tiles) {
+				return Math.floor(this.posY/tileY);
+			} else {
+				return false;
+			}
+		}
+		this.tileY=function() {
+			if (tiles) {
+				return Math.floor(this.posY/tileY);
+			} else {
+				return false;
+			}
 		}
 		this.clicked = function() {
 			if (me.mouse.down()) {
@@ -733,96 +740,49 @@ var rw = new function(){
 				x--;
 			}
 		}
-		// Update all sprites and remove those that are "dead"
-		// FIX THIS SO IT'S LESS REPETITIVE CODE, or don't cuz this is FAST
-		if (tiles==true) {
-			if (keyChange==true) {
-				for (var x=0; x<me.ents.length; x++) {
-					if (me.ents[x].base.active==true) {
-						me.ents[x].base.tilePos();
-						if (me.ents[x].keyChange) {
-							me.ents[x].keyChange();
-						}
-						var currentSprite = me.ents[x].update(me.ents[x].base.posX1(), me.ents[x].base.posX2(), me.ents[x].base.posY1(), me.ents[x].base.posY2());
-						if (currentSprite==false) {
-							me.removeEnt(x);
-							x--;
-						} else {
-							//Nothing for now
-						}
-					} else if (me.ents[x].inactive) {
-						var currentSprite = me.ents[x].inactive();
-						if (currentSprite==false) {
-							me.removeEnt(x);
-							x--;
-						}
+		// Update Loop
+		if (keyChange==true) {
+			for (var x=0; x<me.ents.length; x++) {
+				if (me.ents[x].base.active==true) {
+					if (me.ents[x].keyChange) {
+						me.ents[x].keyChange();
 					}
-				}
-				keyChange = false;
-			} else {
-				for(var x=0; x<me.ents.length; x++) {
-					if (me.ents[x].base.active==true) {
-						me.ents[x].base.tilePos();
-						var currentSprite = me.ents[x].update(me.ents[x].base.posX1(), me.ents[x].base.posX2(), me.ents[x].base.posY1(), me.ents[x].base.posY2());
-						if (currentSprite==false) {
-							me.removeEnt(x);
-							x--;
-						} else {
-							//Nothing for now
-						}
-					} else if (me.ents[x].inactive) {
-						var currentSprite = me.ents[x].inactive();
-						if (currentSprite==false) {
-							me.removeEnt(x);
-							x--;
-						}
+					var currentSprite = me.ents[x].update(me.ents[x].base.posX1(), me.ents[x].base.posX2(), me.ents[x].base.posY1(), me.ents[x].base.posY2());
+					if (currentSprite==false) {
+						me.removeEnt(x);
+						x--;
+					} else {
+						//Nothing for now
+					}
+				} else if (me.ents[x].inactive) {
+					var currentSprite = me.ents[x].inactive();
+					if (currentSprite==false) {
+						me.removeEnt(x);
+						x--;
 					}
 				}
 			}
+			keyChange = false;
 		} else {
-			if (keyChange==true) {
-				for (var x=0; x<me.ents.length; x++) {
-					if (me.ents[x].base.active==true) {
-						if (me.ents[x].keyChange) {
-							me.ents[x].keyChange();
-						}
-						var currentSprite = me.ents[x].update(me.ents[x].base.posX1(), me.ents[x].base.posX2(), me.ents[x].base.posY1(), me.ents[x].base.posY2());
-						if (currentSprite==false) {
-							me.removeEnt(x);
-							x--;
-						} else {
-							//Nothing for now
-						}
-					} else if (me.ents[x].inactive) {
-						var currentSprite = me.ents[x].inactive();
-						if (currentSprite==false) {
-							me.removeEnt(x);
-							x--;
-						}
+			for(var x=0; x<me.ents.length; x++) {
+				if (me.ents[x].base.active==true) {
+					var currentSprite = me.ents[x].update(me.ents[x].base.posX1(), me.ents[x].base.posX2(), me.ents[x].base.posY1(), me.ents[x].base.posY2());
+					if (currentSprite==false) {
+						me.removeEnt(x);
+						x--;
+					} else {
+						//Nothing for now
 					}
-				}
-				keyChange = false;
-			} else {
-				for(var x=0; x<me.ents.length; x++) {
-					if (me.ents[x].base.active==true) {
-						var currentSprite = me.ents[x].update(me.ents[x].base.posX1(), me.ents[x].base.posX2(), me.ents[x].base.posY1(), me.ents[x].base.posY2());
-						if (currentSprite==false) {
-							me.removeEnt(x);
-							x--;
-						} else {
-							//Nothing for now
-						}
-					} else if (me.ents[x].inactive) {
-						var currentSprite = me.ents[x].inactive();
-						if (currentSprite==false) {
-							me.removeEnt(x);
-							x--;
-						}
+				} else if (me.ents[x].inactive) {
+					var currentSprite = me.ents[x].inactive();
+					if (currentSprite==false) {
+						me.removeEnt(x);
+						x--;
 					}
 				}
 			}
 		}
-		// Check collisions
+		// Collision Loop
 		var len = me.ents.length;
 		var cols = [];
 		// For each ent

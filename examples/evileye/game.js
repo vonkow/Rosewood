@@ -21,8 +21,8 @@ var hero = function(name) {
 	this.update = function() {
 		heroX = this.base.posX1();
 		heroY = this.base.posY1();
-		heroXTile = this.base.tileX;
-		heroYTile = this.base.tileY;
+		heroXTile = this.base.tileX();
+		heroYTile = this.base.tileY();
 		if (rw.key('la')) {
 			if (this.base.posX1()>4) {
 				this.base.move(-5,0).heading = 'l';
