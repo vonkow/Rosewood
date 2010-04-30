@@ -234,7 +234,7 @@ var rw = new function(){
 		}
 		this.moveTo = function(x, y, z) {
 			this.posX = x;
-			this.posY = x;
+			this.posY = y;
 			if (z) {
 				this.posZ = z;
 			} else {
