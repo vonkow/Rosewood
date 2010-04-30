@@ -1,24 +1,25 @@
-re-do map.offset to be ent.move and ent.moveTo
+------UPCOMING CHANGES---------------------------------------------------------------------------
 
-UPCOMING CHANGES
+re-do map.offset to be ent.move and ent.moveTo
 
 Canvas support someday
 
-Rotation of triangular hitmaps made easy
-
-Ent Groups
-
-POSSIBLE CHANGES
+------POSSIBLE CHANGES---------------------------------------------------------------------------
 
 Possibly prepend "ent_" to all ent.base.names, for (marginally) faster runtime
 
-find mouse pos based on "board" div's location
+Ent Groups? Or, fuck that, that's what rules are for.
+
+Leading us to:
+	Split rules into three categories? Before ent update loop, before ent collision loop and normal rule time?
+
+find mouse pos based on "board" div's location - You would think this wouldn't be so hard...
 
 Node.js server support someday soon
 
 Add audio mixing support
 
-BUGS
+------BUGS----------------------------------------------------------------------------------------
 
 Sound support died after using a bunch of bombs in bman clone, in chrome.
 
