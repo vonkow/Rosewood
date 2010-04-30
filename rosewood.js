@@ -63,11 +63,7 @@ var rw = new function(){
 		var len = keys.length;
 		for (var x=0;x<len;x++) {
 			if (keys[x][1]==code) {
-				if (bit) {
-					keys[x][2] = true;
-				} else {
-					keys[x][2] = false;
-				}
+				keys[x][2] = bit;
 			}
 		}
 	}
@@ -82,7 +78,8 @@ var rw = new function(){
 		keyChange = true;
 	}
 	me.key = function(key) {
-		for (var x=0; x<keys.length;x++) {
+		var len=keys.length;
+		for (var x=0; x<len;x++) {
 			if (keys[x][0]==key) {
 				if (keys[x][2]) {
 					return true;
