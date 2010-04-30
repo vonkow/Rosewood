@@ -252,14 +252,14 @@ function mapRule() {
 		if (this.forward==true) {
 			if (this.currentOffset>-600) {
 				this.currentOffset--;
-				rw.maps['map1'].offset(-1, 0);
+				rw.maps['map1'].move(-1, 0);
 			} else {
 				this.forward = false;
 			}
 		} else {
 			if (this.currentOffset<0) {
 				this.currentOffset++;
-				rw.maps['map1'].offset(1, 0);
+				rw.maps['map1'].move(1, 0);
 			} else {
 				this.forward = true;
 			}
@@ -296,10 +296,4 @@ function startGame() {
 	.start()
 	.saveState('test')
 	.ajax('ajaxtest.json', 'addGuy');
-	/* Uncomment and put before start() for stress test 
-	rw.newEnt(new bman('Goon1', 'bman', 'u'), true, 51, 51);
-	rw.newEnt(new bman('Goon2', 'bman', 'u'), true, 52, 52);
-	rw.newEnt(new bman('Goon3', 'bman', 'u'), true, 53, 53);
-	rw.newEnt(new bman('Goon4', 'bman', 'u'), true, 54, 54);
-	End stress test */
 }

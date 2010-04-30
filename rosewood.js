@@ -333,16 +333,30 @@ var rw = new function(){
 		this.active = false;
 		this.width = xDim;
 		this.height = yDim;
-		this.depth = 1;
-		this.offX = 0;
-		this.offY = 0;
-		this.offset = function(oX, oY) {
+		this.x = 0;
+		this.y = 0;
+		this.z = -1;
+		this.move=function(x,y,z) {
+			this.x+=x;
+			this.y+=y;
+			if (z) this.z+=z;
 			if (document.getElementById('map_'+this.name)) {
 				var mapDiv = document.getElementById('map_'+this.name);
-				this.offX += oX;
-				this.offY += oY;
-				mapDiv.style.marginLeft = this.offX+'px';
-				mapDiv.style.marginTop = this.offY+'px';
+				mapDiv.style.marginLeft = this.x+'px';
+				mapDiv.style.marginTop = this.y+'px';
+				mapDiv.style.zIndex=this.z;
+			}
+			return this;
+		}
+		this.moveTo=function(x,y,z) {
+			this.x=x;
+			this.y=y;
+			if (z) this.z=z;
+			if (document.getElementById('map_'+this.name)) {
+				var mapDiv = document.getElementById('map_'+this.name);
+				mapDiv.style.marginLeft = this.x+'px';
+				mapDiv.style.marginTop = this.y+'px';
+				mapDiv.style.zIndex=this.z;
 			}
 			return this;
 		}
@@ -350,7 +364,6 @@ var rw = new function(){
 			this.active = true;
 			if (document.getElementById('map_'+this.name)) {
 				var mapDiv = document.getElementById('map_'+this.name);
-				mapDiv.style.zIndex = '-1';
 				mapDiv.style.display = 'block';
 			} else {
 				var mapArea = document.createElement('div');
@@ -360,9 +373,9 @@ var rw = new function(){
 				mapArea.style.height = this.height+'px';
 				mapArea.style.position = 'absolute';
 				mapArea.style.overflow = 'hidden';
-				mapArea.style.zIndex = -this.depth;
-				mapArea.style.marginLeft = this.offX+'px';
-				mapArea.style.marginTop = this.offY+'px';
+				mapArea.style.marginLeft = this.x+'px';
+				mapArea.style.marginTop = this.y+'px';
+				mapArea.style.zIndex = this.z;
 				var board = document.getElementById('board');
 				board.appendChild(mapArea);
 			}
@@ -381,14 +394,6 @@ var rw = new function(){
 			if (document.getElementById('map_'+this.name)) {
 				var mapArea = document.getElementById('map_'+this.name);
 				mapArea.parentNode.removeChild(mapArea);
-			}
-			return this;
-		}
-		this.setDepth=function(depth) {
-			this.depth = depth;
-			if (document.getElementById('map_'+this.name)) {
-				var mapDiv=document.getElementById('map_'+this.name);
-				mapDiv.style.zIndex=-depth;
 			}
 			return this;
 		}
