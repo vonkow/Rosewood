@@ -6,6 +6,9 @@ Canvas support someday
 
 ------POSSIBLE CHANGES---------------------------------------------------------------------------
 
+Make rw.ent return ent.base as a normal object, as opposed to the standard new rw.ent() method,
+this looks like it would be a lot faster, but then ent.base wouldn't be typeof "rw.ent"
+
 Possibly prepend "ent_" to all ent.base.names, for (marginally) faster runtime
 
 Ent Groups? Or, fuck that, that's what rules are for.
