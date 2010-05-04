@@ -478,6 +478,11 @@ var rw = new function(){
 		if (states[name]) delete states[name];
 		return this;
 	}
+	var doAtEnd=null;
+	me.atEnd=function(arg) {
+		doAtEnd=arg;
+		return this;
+	}
 	// Ajax function, durr
 	me.ajax = function(targ, func) {
 		var xhr = new XMLHttpRequest();
@@ -989,6 +994,11 @@ var rw = new function(){
 				entDiv.style.zIndex = me.ents[x].base.posZ;
 				me.ents[x].base.wipeMove();
 			}
+		}
+		// At end function, if any
+		if (typeof(doAtEnd)=='function') {
+			doAtEnd();
+			doAtEnd=null;
 		}
 		//If game has not ended or been paused, continue
 		var endTime = new Date();
