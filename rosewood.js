@@ -591,7 +591,7 @@ var rw = new function(){
 		board.style.width = dimX+'px';
 		board.style.height = dimY+'px';
 		board.style.overflow = 'hidden';
-		board.style.border = '1px solid black';
+		//board.style.border = '1px solid black';
 		board.style.position = "relative";
 		if (target) {
 			document.getElementById(target).appendChild(board);
