@@ -984,16 +984,16 @@ var rw = new function(){
 		}
 		// Run Through all ents and update position
 		for (var x=0; x<me.ents.length; x++) {
+			me.ents[x].base.posX += me.ents[x].base.velX;
+			me.ents[x].base.posY += me.ents[x].base.velY;
+			me.ents[x].base.posZ += me.ents[x].base.velZ;
 			if (me.ents[x].base.active==true) {
-				me.ents[x].base.posX += me.ents[x].base.velX;
-				me.ents[x].base.posY += me.ents[x].base.velY;
-				me.ents[x].base.posZ += me.ents[x].base.velZ;
 				var entDiv = document.getElementById('ent_'+me.ents[x].base.name);
 				entDiv.style.left = me.ents[x].base.posX+'px';
 				entDiv.style.top = me.ents[x].base.posY+'px';
 				entDiv.style.zIndex = me.ents[x].base.posZ;
-				me.ents[x].base.wipeMove();
 			}
+			me.ents[x].base.wipeMove();
 		}
 		// At end function, if any
 		if (typeof(doAtEnd)=='function') {
