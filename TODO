@@ -1,3 +1,9 @@
+------NOW----------------------------------------------------------------------------------------
+
+Don't create divs for ents that have no sprites, this is wasteful.
+
+Better tile support, especially RE collisions.
+
 ------UPCOMING CHANGES---------------------------------------------------------------------------
 
 Canvas support someday
