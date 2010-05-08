@@ -162,6 +162,7 @@ var rw = new function(){
 		this.velY = 0;
 		this.velZ = 0;
 		this.active = false; //Bool for is piece in play
+		this.visible=false; //Bool for if piece should have a div
 		// Display Entity Function, sets ent.base.active to true
 		this.display = function (sprite, posX, posY, posZ) {
 			this.baseSprite=sprite;
@@ -171,38 +172,56 @@ var rw = new function(){
 				this.posZ = posZ;
 			} else {
 				this.posZ = posY;
-			}
+			};
 			this.active = true;
-			var newEnt = document.createElement('div');
-			newEnt.id = 'ent_'+this.name;
-			newEnt.style.width = this.width; newEnt.style.height = this.height;
-			if (sprite!='blank') {
-				newEnt.style.backgroundImage = "url('"+resPath+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
-			}
-			newEnt.style.backgroundRepeat = 'no-repeat';
-			newEnt.style.backgroundPosition = 'center';
-			newEnt.style.position = 'absolute';
-			newEnt.style.left = this.posX+'px';
-			newEnt.style.top = this.posY+'px';
-			document.getElementById('board').appendChild(newEnt);
+			if (sprite!=='') {
+				this.visible=true;
+				var newEnt = document.createElement('div');
+				newEnt.id = 'ent_'+this.name;
+				newEnt.style.width = this.width; newEnt.style.height = this.height;
+				if (sprite!=' ') {
+					newEnt.style.backgroundImage = "url('"+resPath+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
+					newEnt.style.backgroundRepeat = 'no-repeat';
+					newEnt.style.backgroundPosition = 'center';
+				};
+				newEnt.style.position = 'absolute';
+				newEnt.style.left = this.posX+'px';
+				newEnt.style.top = this.posY+'px';
+				document.getElementById('board').appendChild(newEnt);
+			} else {
+				this.visible=false;
+			};
 			return this;
-		}
+		};
 		this.hide = function() {
 			if (document.getElementById('ent_'+this.name)) {
 				var dying = document.getElementById('ent_'+this.name);
 				dying.parentNode.removeChild(dying);
-				this.active=false;
-			}
+			};
+			this.active=false;
+			this.visible=false;
 			return this;
-		}
+		};
 		this.changeSprite = function(sprite) {
 			this.baseSprite=sprite;
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
-				entDiv.style.backgroundImage = "url('"+resPath+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
-			}
+				if (sprite!='') {
+					this.visible=true;
+					entDiv.style.backgroundImage = "url('"+resPath+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
+				} else {
+					entDiv.parentNode.removeChild(entDiv);
+					this.visible=false;
+				};
+			} else {
+				if (sprite!='') {
+					this.display(sprite,this.posX,this.posY,this.posX);
+				} else {
+					this.visible=false;
+				};
+			};
 			return this;
-		}
+		};
 		this.move = function(x,y,z) {
 			this.velX += x;
 			this.velY += y;
@@ -262,56 +281,61 @@ var rw = new function(){
 			newMap.push(pt3[0]);
 			newMap.push(pt3[1]);
 			return newMap;
-		}
+		};
 		this.tileX=function() {
 			if (tiles) {
 				return Math.floor(this.posY/tileY);
 			} else {
 				return false;
-			}
-		}
+			};
+		};
 		this.tileY=function() {
 			if (tiles) {
 				return Math.floor(this.posY/tileY);
 			} else {
 				return false;
-			}
-		}
+			};
+		};
 		this.clicked = function() {
 			if (me.mouse.down()) {
 				if ((me.mouse.x()>this.posX1())&&(me.mouse.x()<this.posX2())) {
 					if ((me.mouse.y()>this.posY1())&&(me.mouse.y()<this.posY2())) {
 						return true;
-					}
-				}
-			}
+					};
+				};
+			};
 			return false;
-		}
+		};
 		this.attach = function(content) {
-			document.getElementById('ent_'+this.name).appendChild(content);
+			var entDiv=document.getElementById('ent_'+this.name);
+			if (entDiv) {
+				entDiv.appendChild(content);
+			};
 			return this;
-		}
+		};
 		this.detach = function() {
 			var ele = document.getElementById('ent_'+this.name);
-			var tot = ele.childNodes.length;
-			for (var x=0;x<tot;x++) {
-				ele.removeChild(ele.childNodes[0]);
-			}
+			if (ele) {
+				var tot = ele.childNodes.length;
+				for (var x=0;x<tot;x++) {
+					ele.removeChild(ele.childNodes[0]);
+				};
+			};
 			return this;
-		}
+		};
 		this.end = function() {
 			return me;
-		}
-	}
+		};
+	};
 	me.newEnt = function(ent) {
 		var curLength = me.ents.length;
 		me.ents[curLength] = ent;
 		return ent;
-	}
+	};
 	me.removeEnt = function(entNum) {
 		me.ents.splice(entNum, 1);
 		return this;
-	}
+	};
 	// Object and Ent Library, helper functions
 	me.lib = {
 		ent : function(name, type, xDim, yDim) {
@@ -320,7 +344,7 @@ var rw = new function(){
 			this.update = function(){};
 			this.iGotHit = function(){};
 		}
-	}
+	};
 	// Map Entities
 	me.maps = {}; 
 	me.map = function(name, path, extention, xDim, yDim) {
@@ -342,9 +366,9 @@ var rw = new function(){
 				mapDiv.style.marginLeft = this.x+'px';
 				mapDiv.style.marginTop = this.y+'px';
 				mapDiv.style.zIndex=this.z;
-			}
+			};
 			return this;
-		}
+		};
 		this.moveTo=function(x,y,z) {
 			this.x=x;
 			this.y=y;
@@ -354,9 +378,9 @@ var rw = new function(){
 				mapDiv.style.marginLeft = this.x+'px';
 				mapDiv.style.marginTop = this.y+'px';
 				mapDiv.style.zIndex=this.z;
-			}
+			};
 			return this;
-		}
+		};
 		this.display = function() {
 			this.active = true;
 			if (document.getElementById('map_'+this.name)) {
@@ -995,7 +1019,7 @@ var rw = new function(){
 			me.ents[x].base.posX += me.ents[x].base.velX;
 			me.ents[x].base.posY += me.ents[x].base.velY;
 			me.ents[x].base.posZ += me.ents[x].base.velZ;
-			if (me.ents[x].base.active==true) {
+			if (me.ents[x].base.visible) {
 				var entDiv = document.getElementById('ent_'+me.ents[x].base.name);
 				entDiv.style.left = me.ents[x].base.posX+'px';
 				entDiv.style.top = me.ents[x].base.posY+'px';
