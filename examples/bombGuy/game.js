@@ -10,13 +10,13 @@ var lagTimer = function() {
 var Wall = function(name, wallType, xDim, yDim) {
 	this.base = new rw.ent(name, ' ', ' ', ' ', xDim, yDim);
 	this.hitMap = [[wallType,0,0,xDim,yDim]];
+	this.canHit=['bman'];
 	this.update = function() {};
 }
 
 var blast = function(name) {
 	this.base = new rw.ent(name, 'blast', 'blast', 'gif', 40, 32);
 	this.countdown = 25;
-	this.hitMap = [['blast',0,0,40,32]];
 	this.update = function() {
 		this.base.posZ = this.base.posY;
 		this.countdown -= 1;
@@ -25,13 +25,14 @@ var blast = function(name) {
 			return false;
 		}
 	}
+	this.hitMap = [['blast',0,0,40,32]];
+	this.canHit = ['bman','baddie','bomb'];
 }
 var bomb = function(name, typeClass) {
 	this.base = new rw.ent(name, 'bomb', '1', 'gif', 40, 32);
 	this.countdown = 150;
 	this.blastSize = 2;
 	//this.spin = 0;
-	this.hitMap = [[typeClass,0,0,40,32]];
 	this.update = function() {
 		if (this.countdown == 150) {
 			this.base.posZ = this.base.posY;
@@ -81,6 +82,8 @@ var bomb = function(name, typeClass) {
 			return false;
 		}
 	}
+	this.hitMap = [[typeClass,0,0,40,32]];
+	this.canHit = ['blast'];
 	this.gotHit = function(by) {
 		if (by=='blast') {
 			this.countdown = 1;
@@ -92,7 +95,6 @@ var badguy = function(name) {
 	this.speed = 5;
 	this.ticker = 0;
 	this.heading = 'l';
-	this.hitMap = [['baddie',0,0,40,64]];
 	this.countdown = 100;
 	this.inactive = function() {
 		this.countdown--;
@@ -121,6 +123,8 @@ var badguy = function(name) {
 			}
 		}
 	}
+	this.hitMap = [['baddie',0,0,40,64]];
+	this.canHit=['blast','bman'];
 	this.gotHit = function(by) {
 		if (by=='blast') {
 			this.base.hide();
@@ -136,7 +140,6 @@ var bman = function(name, typeClass, heading) {
 	this.bombMax = 15;
 	this.bombs = [];
 	this.heading = 'u';
-	this.hitMap = [[typeClass,0,0,40,64]];
 	this.update = function() {
 		this.base.velX = 0;
 		this.base.velY = 0;
@@ -204,6 +207,8 @@ var bman = function(name, typeClass, heading) {
 			this.base.changeSprite(this.heading);
 		}
 	}
+	this.hitMap = [['bman',0,0,40,64]];
+	this.canHit = ['blast','baddie','lWall','rWall','tWall','dWall'];
 	this.gotHit = function(by) {
 		if ((by=='blast')||(by=='baddie')) {
 			rw.rules['rule1'].dead = true;

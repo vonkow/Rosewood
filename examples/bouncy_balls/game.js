@@ -6,6 +6,14 @@ var lagTimer = function() {
 	}
 }
 
+var wallCount=0;
+var wall=function(type,x,y) {
+	this.base=new rw.ent('wall_'+wallCount++,'','','',x,y);
+	this.update=function() {};
+	this.canHit=['ball'];
+	this.hitMap=[[type,0,0,x,y]];
+};
+
 var triWall = function(dir) {
 	this.base = new rw.ent('tri','','blank','',100,100);
 	this.update=function() {};
@@ -13,6 +21,7 @@ var triWall = function(dir) {
 	if (dir=='tl') this.hitMap=[['tri',0,0,100,0,0,100]];
 	if (dir=='br') this.hitMap=[['tri',100,0,100,100,0,100]];
 	if (dir=='tr') this.hitMap=[['tri',0,0,100,0,100,100]];
+	this.canHit=['ball'];
 }
 var ball = function(name, dirX, dirY) {
 	this.base = new rw.ent(name, 'ball', 'ball', 'png', 40, 40);
@@ -39,6 +48,7 @@ var ball = function(name, dirX, dirY) {
 				break;
 		}
 	}
+	this.canHit = ['rWall','lWall','tWall','bWall','tri','ball'];
 	this.gotHit = function(by) {
 		switch (by) {
 			case 'rWall':
@@ -80,22 +90,22 @@ function startGame() {
 	rw.init(600, 600)
 	.setFPS(60)
 	.newEnt(new lagTimer()).base.display('blank',0,0,0).end()
-	.newEnt(new  rw.lib.ent('tWall', 'tWall', 600, 10))
-		.base.display( 'blank', 0, -10, 0).end()
-	.newEnt(new  rw.lib.ent('rWall', 'rWall', 10, 600))
-		.base.display( 'blank', 600, 0, 0).end()
-	.newEnt(new  rw.lib.ent('lWall', 'lWall', 10, 600))
-		.base.display( 'blank', -10, 0, 0).end()
-	.newEnt(new  rw.lib.ent('bWall', 'bWall', 600, 10))
-		.base.display( 'blank', 0, 600, 0).end()
+	.newEnt(new wall('tWall',600,10))
+		.base.display( '', 0, -10, 0).end()
+	.newEnt(new wall('rWall',10,600))
+		.base.display( '', 600, 0, 0).end()
+	.newEnt(new wall('lWall',10,600))
+		.base.display( '', -10, 0, 0).end()
+	.newEnt(new wall('bWall',600,10))
+		.base.display( '', 0, 600, 0).end()
 	.newEnt(new triWall('bl'))
-		.base.display('blank',0,500,500).end()
+		.base.display('',0,500,500).end()
 	.newEnt(new triWall('br'))
-		.base.display('blank',500,500,500).end()
+		.base.display('',500,500,500).end()
 	.newEnt(new triWall('tl'))
-		.base.display('blank',0,0,0).end()
+		.base.display('',0,0,0).end()
 	.newEnt(new triWall('tr'))
-		.base.display('blank',500,0,0).end()
+		.base.display('',500,0,0).end()
 	.newEnt(new ball('ball_1', 'r', 'd'))
 		.base.display( 'ball', 362, 426, 50).end()
 	.newEnt(new ball('ball_2', 'l', 'd'))

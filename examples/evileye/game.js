@@ -60,6 +60,7 @@ var hero = function(name) {
 		this.base.changeSprite(this.heading+1);
 	}
 	this.hitMap = [[name,0,0,30,30]];
+	this.canHit = ['eye','item'];
 	this.gotHit = function(by) {
 		if (!fatima) {
 			if (by=='eye') {
@@ -152,6 +153,7 @@ var eye = function(name, heading) {
 		}
 	}
 	this.hitMap = [['eye',10,10,20,20]];
+	this.canHit = ['eye','hero'];
 	this.gotHit = function(by) {
 		if ((by=='eye')||(by=='hero')) {
 			eyesDead++;
@@ -199,6 +201,7 @@ var item = function() {
 		}
 	}
 	this.hitMap = [['item',0,0,30,30]];
+	this.canHit = ['hero'];
 	this.gotHit = function(by) {
 		if (by=='hero') {
 			switch (this.counter) {
