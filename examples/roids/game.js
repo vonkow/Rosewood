@@ -7,8 +7,6 @@ var ship = function(name) {
 	this.coolDown = 0;
 	this.velX = 0;
 	this.velY = 0;
-	this.hitMap = [['ship',0,0,40,20,0,40]];
-	this.baseMap = ['ship',0,0,40,20,0,40];
 	this.update = function() {
 		if (rw.key('la')) {
 			this.heading-=10;
@@ -50,7 +48,8 @@ var ship = function(name) {
 		if (this.base.posY2()>600) this.base.posY-=600;
 		this.base.move(this.velX,this.velY);
 	}
-	this.canHit = ['roid'];
+	this.hitMap = [['ship',['roid'],0,0,40,20,0,40]];
+	this.baseMap = ['ship',['roid'],0,0,40,20,0,40];
 	this.gotHit = function(by) {
 		switch (by) {
 			case 'roid':
@@ -67,7 +66,7 @@ var laser = function(name, angle) {
 	this.velY = 20*Math.sin((angle*0.0174532925));
 	this.countDown = 25;
 	this.hasntHit = true;
-	this.hitMap = [this.base.rotMap(['laser',5,0,5,10,6,10],angle)];
+	this.hitMap = [this.base.rotMap(['laser',['roid'],5,0,5,10,6,10],angle)];
 	this.update = function() {
 		this.base.rotate(angle);
 		this.base.velX = this.velX;
@@ -82,7 +81,6 @@ var laser = function(name, angle) {
 			return false;
 		}
 	}
-	this.canHit = ['roid'];
 	this.gotHit = function(by) {
 		if (by=='roid') {
 			this.hasntHit = false;
@@ -101,7 +99,6 @@ var roid = function(name, size) {
 	this.velX = Math.round((Math.random()*20)-10);
 	this.velY = Math.round((Math.random()*20)-10);
 	//this.hitMap = [['roid',0,0,size,size]];
-	this.hitMap = [['roid',size/2,size/2,size/2]];
 	this.update = function() {
 		this.heading += this.spin;
 		if (this.heading>=360) this.heading-=360;
@@ -114,7 +111,7 @@ var roid = function(name, size) {
 		if (this.base.posY1()<0) this.base.posY+=600;
 		if (this.base.posY2()>600) this.base.posY-=600;
 	}
-	this.canHit = ['laser','ship'];
+	this.hitMap = [['roid',['laser','ship'],size/2,size/2,size/2]];
 	this.gotHit = function(by,inThe,id) {
 		if (by=='laser') {
 			if (rw.ents[id].hasntHit) {
