@@ -1,9 +1,5 @@
 ------NOW----------------------------------------------------------------------------------------
 
-Collisions should factor in velX&Y
-
-Pointerify ents in collisions
-
 Don't create divs for ents that have no sprites, this is wasteful.
 
 Better tile support, especially RE collisions.

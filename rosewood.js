@@ -803,20 +803,22 @@ var rw = new function(){
 						if (eY.hitMap) {
 							for (var w=0;w<eY.hitMap.length;w++) {
 								var eYm=eY.hitMap[w];
-								var eXb=eX.base;
-								var eYb=eY.base;
+								var eXx=eX.base.posX+eX.base.velX;
+								var eXy=eX.base.posY+eX.base.velY;
+								var eYx=eY.base.posX+eY.base.velX;
+								var eYy=eY.base.posY+eY.base.velY;
 								var hit = true;
 								// If ent 1 hitMap is triangle
 								if (eXm[6]) {
 									// If ent 2 hitMap is triangle
 									if (eYm[6]) {
 										// Test tri tri
-										var eXp1 = [eXm[1]+eXb.posX,eXm[2]+eXb.posY];
-										var eXp2 = [eXm[3]+eXb.posX,eXm[4]+eXb.posY];
-										var eXp3 = [eXm[5]+eXb.posX,eXm[6]+eXb.posY];
-										var eYp1 = [eYm[1]+eYb.posX,eYm[2]+eYb.posY];
-										var eYp2 = [eYm[3]+eYb.posX,eYm[4]+eYb.posY];
-										var eYp3 = [eYm[5]+eYb.posX,eYm[6]+eYb.posY];
+										var eXp1 = [eXm[1]+eXx,eXm[2]+eXy];
+										var eXp2 = [eXm[3]+eXx,eXm[4]+eXy];
+										var eXp3 = [eXm[5]+eXx,eXm[6]+eXy];
+										var eYp1 = [eYm[1]+eYx,eYm[2]+eYy];
+										var eYp2 = [eYm[3]+eYx,eYm[4]+eYy];
+										var eYp3 = [eYm[5]+eYx,eYm[6]+eYy];
 										checkTriCol(eXp1,eYp1,eYp2,eYp3) ? hit=true :
 										checkTriCol(eXp2,eYp1,eYp2,eYp3) ? hit=true :
 										checkTriCol(eXp3,eYp1,eYp2,eYp3) ? hit=true :
@@ -825,13 +827,13 @@ var rw = new function(){
 										checkTriCol(eYp3,eXp1,eXp2,eXp3) ? hit=true : hit=false;
 									} else if (eYm[4]) {
 										// Test tri rec
-										var eXp1 = [eXm[1]+eXb.posX,eXm[2]+eXb.posY];
-										var eXp2 = [eXm[3]+eXb.posX,eXm[4]+eXb.posY];
-										var eXp3 = [eXm[5]+eXb.posX,eXm[6]+eXb.posY];
-										var eYp1 = [eYm[1]+eYb.posX,eYm[2]+eYb.posY];
-										var eYp2 = [eYm[1]+eYb.posX,eYm[4]+eYb.posY];
-										var eYp3 = [eYm[3]+eYb.posX,eYm[4]+eYb.posY];
-										var eYp4 = [eYm[3]+eYb.posX,eYm[2]+eYb.posY];
+										var eXp1 = [eXm[1]+eXx,eXm[2]+eXy];
+										var eXp2 = [eXm[3]+eXx,eXm[4]+eXy];
+										var eXp3 = [eXm[5]+eXx,eXm[6]+eXy];
+										var eYp1 = [eYm[1]+eYx,eYm[2]+eYy];
+										var eYp2 = [eYm[1]+eYx,eYm[4]+eYy];
+										var eYp3 = [eYm[3]+eYx,eYm[4]+eYy];
+										var eYp4 = [eYm[3]+eYx,eYm[2]+eYy];
 										checkRecCol(eXp1,eYp1,eYp3) ? hit=true :
 										checkRecCol(eXp2,eYp1,eYp3) ? hit=true :
 										checkRecCol(eXp3,eYp1,eYp3) ? hit=true :
@@ -841,33 +843,33 @@ var rw = new function(){
 										checkTriCol(eYp4,eXp1,eXp2,eXp3) ? hit=true : hit=false;
 									} else if (eYm[3]) {
 										// Test tri circ
-										var c = [eYm[1]+eYb.posX,eYm[2]+eYb.posY,eYm[3]];
-										var tp1 = [eXm[1]+eXb.posX,eXm[2]+eXb.posY];
-										var tp2 = [eXm[3]+eXb.posX,eXm[4]+eXb.posY];
-										var tp3 = [eXm[5]+eXb.posX,eXm[6]+eXb.posY];
+										var c = [eYm[1]+eYx,eYm[2]+eYy,eYm[3]];
+										var tp1 = [eXm[1]+eXx,eXm[2]+eXy];
+										var tp2 = [eXm[3]+eXx,eXm[4]+eXy];
+										var tp3 = [eXm[5]+eXx,eXm[6]+eXy];
 										checkTriCol([c[0],c[1]],tp1,tp2,tp3) ? hit=true :
 										checkCircLine(tp1,tp2,c) ? hit=true :
 										checkCircLine(tp2,tp3,c) ? hit=true :
 										checkCircLine(tp1,tp3,c) ? hit=true : hit=false;
 									} else {
 										// Test tri point
-										var eXp1 = [eXm[1]+eXb.posX,eXm[2]+eXb.posY];
-										var eXp2 = [eXm[3]+eXb.posX,eXm[4]+eXb.posY];
-										var eXp3 = [eXm[5]+eXb.posX,eXm[6]+eXb.posY];
-										var eYp1 = [eYm[1]+eYb.posX,eYm[2]+eYb.posY];
+										var eXp1 = [eXm[1]+eXx,eXm[2]+eXy];
+										var eXp2 = [eXm[3]+eXx,eXm[4]+eXy];
+										var eXp3 = [eXm[5]+eXx,eXm[6]+eXy];
+										var eYp1 = [eYm[1]+eYx,eYm[2]+eYy];
 										hit = checkTriCol(eYp1,eXp1,eXp2,eXp3);
 									}
 								} else if (eXm[4]) {
 									// Ent 1 is rec
 									if (eYm[6]) {
 										// Test rec tri
-										var eXp1 = [eXm[1]+eXb.posX,eXm[2]+eXb.posY];
-										var eXp2 = [eXm[1]+eXb.posX,eXm[4]+eXb.posY];
-										var eXp3 = [eXm[3]+eXb.posX,eXm[4]+eXb.posY];
-										var eXp4 = [eXm[3]+eXb.posX,eXm[2]+eXb.posY];
-										var eYp1 = [eYm[1]+eYb.posX,eYm[2]+eYb.posY];
-										var eYp2 = [eYm[3]+eYb.posX,eYm[4]+eYb.posY];
-										var eYp3 = [eYm[5]+eYb.posX,eYm[6]+eYb.posY];
+										var eXp1 = [eXm[1]+eXx,eXm[2]+eXy];
+										var eXp2 = [eXm[1]+eXx,eXm[4]+eXy];
+										var eXp3 = [eXm[3]+eXx,eXm[4]+eXy];
+										var eXp4 = [eXm[3]+eXx,eXm[2]+eXy];
+										var eYp1 = [eYm[1]+eYx,eYm[2]+eYy];
+										var eYp2 = [eYm[3]+eYx,eYm[4]+eYy];
+										var eYp3 = [eYm[5]+eYx,eYm[6]+eYy];
 										checkRecCol(eYp1,eXp1,eXp3) ? hit=true :
 										checkRecCol(eYp2,eXp1,eXp3) ? hit=true :
 										checkRecCol(eYp3,eXp1,eXp3) ? hit=true :
@@ -877,61 +879,61 @@ var rw = new function(){
 										checkTriCol(eXp4,eYp1,eYp2,eYp3) ? hit=true : hit=false;
 									} else if (eYm[4]) {
 										// Test rec rec
-										if (eXb.posX+eXm[3]<=eYb.posX+eYm[1]) {
+										if (eXx+eXm[3]<=eYx+eYm[1]) {
 											hit = false;
-										} else if (eXb.posX+eXm[1]>=eYb.posX+eYm[3]) {
+										} else if (eXx+eXm[1]>=eYx+eYm[3]) {
 											hit = false;
-										} else if (eXb.posY+eXm[4]<=eYb.posY+eYm[2]) {
+										} else if (eXy+eXm[4]<=eYy+eYm[2]) {
 											hit = false;
-										} else if (eXb.posY+eXm[2]>=eYb.posY+eYm[4]) {
+										} else if (eXy+eXm[2]>=eYy+eYm[4]) {
 											hit = false;
 										}
 									} else if (eYm[3]) {
 										// Test rec circ
-										var cx=eYm[1]+eYb.posX;
-										var cy=eYm[2]+eYb.posY;
+										var cx=eYm[1]+eYx;
+										var cy=eYm[2]+eYy;
 										var cr=eYm[3];
-										var rx1 = eXm[1]+eXb.posX;
-										var rx2 = eXm[3]+eXb.posX;
-										var ry1 = eXm[2]+eXb.posY;
-										var ry2 = eXm[4]+eXb.posY;
+										var rx1 = eXm[1]+eXx;
+										var rx2 = eXm[3]+eXx;
+										var ry1 = eXm[2]+eXy;
+										var ry2 = eXm[4]+eXy;
 										hit = checkCircRec(cx,cy,cr,rx1,ry1,rx2,ry2);
 									} else {
 										// Test rec pt
-										var rp1 = [eXm[1]+eXb.posX,eXm[2]+eXb.posY];
-										var rp2 = [eXm[3]+eXb.posX,eXm[4]+eXb.posY];
-										var p = [eYm[1]+eYb.posX,eYm[4]+eYb.posY];
+										var rp1 = [eXm[1]+eXx,eXm[2]+eXy];
+										var rp2 = [eXm[3]+eXx,eXm[4]+eXy];
+										var p = [eYm[1]+eYx,eYm[4]+eYy];
 										hit = checkRecCol(p,rp1,rp2);
 									}
 								} else if (eXm[3]) {
 									// Ent 1 is circ
 									if (eYm[6]) {
 										// Test circ tri
-										var c = [eXm[1]+eXb.posX,eXm[2]+eXb.posY,eXm[3]];
-										var tp1 = [eYm[1]+eYb.posX,eYm[2]+eYb.posY];
-										var tp2 = [eYm[3]+eYb.posX,eYm[4]+eYb.posY];
-										var tp3 = [eYm[5]+eYb.posX,eYm[6]+eYb.posY];
+										var c = [eXm[1]+eXx,eXm[2]+eXy,eXm[3]];
+										var tp1 = [eYm[1]+eYx,eYm[2]+eYy];
+										var tp2 = [eYm[3]+eYx,eYm[4]+eYy];
+										var tp3 = [eYm[5]+eYx,eYm[6]+eYy];
 										checkTriCol([c[0],c[1]],tp1,tp2,tp3) ? hit=true :
 										checkCircLine(tp1,tp2,c) ? hit=true :
 										checkCircLine(tp2,tp3,c) ? hit=true :
 										checkCircLine(tp1,tp3,c) ? hit=true : hit=false;
 									} else if (eYm[4]) {
 										// Test circ rec
-										var cx=eXm[1]+eXb.posX;
-										var cy=eXm[2]+eXb.posY;
+										var cx=eXm[1]+eXx;
+										var cy=eXm[2]+eXy;
 										var cr=eXm[3];
-										var rx1 = eYm[1]+eYb.posX;
-										var rx2 = eYm[3]+eYb.posX;
-										var ry1 = eYm[2]+eYb.posY;
-										var ry2 = eYm[4]+eYb.posY;
+										var rx1 = eYm[1]+eYx;
+										var rx2 = eYm[3]+eYx;
+										var ry1 = eYm[2]+eYy;
+										var ry2 = eYm[4]+eYy;
 										hit = checkCircRec(cx,cy,cr,rx1,ry1,rx2,ry2);
-									} else if (me.ents[y].hitMap[w][3]) {
+									} else if (eYm[3]) {
 										// Test circ circ
-										var c1x = eXm[1]+eXb.posX;
-										var c1y = eXm[2]+eXb.posY;
+										var c1x = eXm[1]+eXx;
+										var c1y = eXm[2]+eXy;
 										var c1r = eXm[3];
-										var c2x = eYm[1]+eYb.posX;
-										var c2y = eYm[2]+eYb.posY;
+										var c2x = eYm[1]+eYx;
+										var c2y = eYm[2]+eYy;
 										var c2r = eYm[3];
 										hit = checkCircCirc(c1x,c1y,c1r,c2x,c2y,c2r);
 									} else {
