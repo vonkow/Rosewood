@@ -58,17 +58,17 @@ var ball = function(name, dirX, dirY) {
 				if (this.hit==false) {
 					if (this.dirX=='r') {
 						this.dirX = 'l';
-						this.base.move(-2,0);
+						this.base.wipeMove();
 					} else {
 						this.dirX = 'r';
-						this.base.move(2,0);
+						this.base.wipeMove();
 					}
 					if (this.dirY=='u') {
 						this.dirY = 'd';
-						this.base.move(0,2);
+						this.base.wipeMove();
 					} else {
 						this.dirY = 'u';
-						this.base.move(0,-2);
+						this.base.wipeMove();
 					}
 					this.hit = true;
 				}
