@@ -10,25 +10,23 @@ var wallCount=0;
 var wall=function(type,x,y) {
 	this.base=new rw.ent('wall_'+wallCount++,'','','',x,y);
 	this.update=function() {};
-	this.canHit=['ball'];
-	this.hitMap=[[type,0,0,x,y]];
+	this.hitMap=[[type,['ball'],0,0,x,y]];
 };
 
 var triWall = function(dir) {
 	this.base = new rw.ent('tri','','blank','',100,100);
 	this.update=function() {};
-	if (dir=='bl') this.hitMap=[['tri',0,0,0,100,100,100]];
-	if (dir=='tl') this.hitMap=[['tri',0,0,100,0,0,100]];
-	if (dir=='br') this.hitMap=[['tri',100,0,100,100,0,100]];
-	if (dir=='tr') this.hitMap=[['tri',0,0,100,0,100,100]];
-	this.canHit=['ball'];
+	if (dir=='bl') this.hitMap=[['tri',['ball'],0,0,0,100,100,100]];
+	if (dir=='tl') this.hitMap=[['tri',['ball'],0,0,100,0,0,100]];
+	if (dir=='br') this.hitMap=[['tri',['ball'],100,0,100,100,0,100]];
+	if (dir=='tr') this.hitMap=[['tri',['ball'],0,0,100,0,100,100]];
 }
+
 var ball = function(name, dirX, dirY) {
 	this.base = new rw.ent(name, 'ball', 'ball', 'png', 40, 40);
 	this.dirX = dirX;
 	this.dirY = dirY;
 	this.hit = false;
-	this.hitMap=[['ball',20,20,20]];
 	this.update = function() {
 		this.hit = false;
 		switch (this.dirX) {
@@ -48,7 +46,7 @@ var ball = function(name, dirX, dirY) {
 				break;
 		}
 	}
-	this.canHit = ['rWall','lWall','tWall','bWall','tri','ball'];
+	this.hitMap=[['ball',['rWall','lWall','tWall','bWall','tri','ball'],20,20,20]];
 	this.gotHit = function(by) {
 		switch (by) {
 			case 'rWall':

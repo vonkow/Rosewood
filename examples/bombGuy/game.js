@@ -9,8 +9,7 @@ var lagTimer = function() {
 }
 var Wall = function(name, wallType, xDim, yDim) {
 	this.base = new rw.ent(name, ' ', ' ', ' ', xDim, yDim);
-	this.hitMap = [[wallType,0,0,xDim,yDim]];
-	this.canHit=['bman'];
+	this.hitMap = [[wallType,['bman'],0,0,xDim,yDim]];
 	this.update = function() {};
 }
 
@@ -25,8 +24,7 @@ var blast = function(name) {
 			return false;
 		}
 	}
-	this.hitMap = [['blast',0,0,40,32]];
-	this.canHit = ['bman','baddie','bomb'];
+	this.hitMap = [['blast',['bman','baddie','bomb'],0,0,40,32]];
 }
 var bomb = function(name, typeClass) {
 	this.base = new rw.ent(name, 'bomb', '1', 'gif', 40, 32);
@@ -82,8 +80,7 @@ var bomb = function(name, typeClass) {
 			return false;
 		}
 	}
-	this.hitMap = [[typeClass,0,0,40,32]];
-	this.canHit = ['blast'];
+	this.hitMap = [[typeClass,['blast'],0,0,40,32]];
 	this.gotHit = function(by) {
 		if (by=='blast') {
 			this.countdown = 1;
@@ -123,8 +120,7 @@ var badguy = function(name) {
 			}
 		}
 	}
-	this.hitMap = [['baddie',0,0,40,64]];
-	this.canHit=['blast','bman'];
+	this.hitMap = [['baddie',['blast','bman'],0,0,40,64]];
 	this.gotHit = function(by) {
 		if (by=='blast') {
 			this.base.hide();
@@ -207,8 +203,7 @@ var bman = function(name, typeClass, heading) {
 			this.base.changeSprite(this.heading);
 		}
 	}
-	this.hitMap = [['bman',0,0,40,64]];
-	this.canHit = ['blast','baddie','lWall','rWall','tWall','dWall'];
+	this.hitMap = [['bman',['blast','baddie','lWall','rWall','tWall','dWall'],0,0,40,64]];
 	this.gotHit = function(by) {
 		if ((by=='blast')||(by=='baddie')) {
 			rw.rules['rule1'].dead = true;
