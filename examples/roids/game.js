@@ -50,6 +50,7 @@ var ship = function(name) {
 		if (this.base.posY2()>600) this.base.posY-=600;
 		this.base.move(this.velX,this.velY);
 	}
+	this.canHit = ['roid'];
 	this.gotHit = function(by) {
 		switch (by) {
 			case 'roid':
@@ -81,6 +82,7 @@ var laser = function(name, angle) {
 			return false;
 		}
 	}
+	this.canHit = ['roid'];
 	this.gotHit = function(by) {
 		if (by=='roid') {
 			this.hasntHit = false;
@@ -112,6 +114,7 @@ var roid = function(name, size) {
 		if (this.base.posY1()<0) this.base.posY+=600;
 		if (this.base.posY2()>600) this.base.posY-=600;
 	}
+	this.canHit = ['laser','ship'];
 	this.gotHit = function(by,inThe,id) {
 		if (by=='laser') {
 			if (rw.ents[id].hasntHit) {
