@@ -136,51 +136,51 @@ var rw = new function(){
 	}
 	// Game Entities
 	me.ents = []; 
-	me.ent = function(name, sprites, baseSprite, spriteExt, width, height) {
-		this.name = name;
-		this.sprites = sprites;
-		this.baseSprite = baseSprite;
-		this.spriteExt = spriteExt
-		this.width = width;
-		this.height = height;
-		this.posX = 0;
-		this.posY = 0;
-		this.posZ = 0;
-		this.posX1 = function() {
+	me.ent = function(nameIn, spritesIn, baseSpriteIn, spriteExtIn, widthIn, heightIn) {
+		var name = nameIn;
+		var sprites = spritesIn;
+		var baseSprite = baseSpriteIn;
+		var spriteExt = spriteExtIn;
+		var width = widthIn;
+		var height = heightIn;
+		var posX = 0;
+		var posY = 0;
+		var posZ = 0;
+		var posX1 = function() {
 			return this.posX;
 		}
-		this.posY1 = function() {
+		var posY1 = function() {
 			return this.posY;
 		}
-		this.posX2 = function() {
+		var posX2 = function() {
 			return this.posX+this.width;
 		}
-		this.posY2 = function() {
+		var posY2 = function() {
 			return this.posY+this.height;
 		}
-		this.velX = 0;
-		this.velY = 0;
-		this.velZ = 0;
-		this.active = false; //Bool for is piece in play
-		this.visible=false; //Bool for if piece should have a div
+		var velX = 0;
+		var velY = 0;
+		var velZ = 0;
+		var active = false; //Bool for is piece in play
+		var visible=false; //Bool for if piece should have a div
 		// Display Entity Function, sets ent.base.active to true
-		this.display = function (sprite, posX, posY, posZ) {
-			this.baseSprite=sprite;
-			this.posX = posX;
-			this.posY = posY;
-			if (posZ) {
-				this.posZ = posZ;
+		var display = function (spriteIn, posXIn, posYIn, posZIn) {
+			this.baseSprite=spriteIn;
+			this.posX = posXIn;
+			this.posY = posYIn;
+			if (posZIn) {
+				this.posZ = posZIn;
 			} else {
-				this.posZ = posY;
+				this.posZ = posYIn;
 			};
 			this.active = true;
-			if (sprite!=='') {
+			if (spriteIn!=='') {
 				this.visible=true;
 				var newEnt = document.createElement('div');
 				newEnt.id = 'ent_'+this.name;
 				newEnt.style.width = this.width; newEnt.style.height = this.height;
-				if (sprite!=' ') {
-					newEnt.style.backgroundImage = "url('"+resPath+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
+				if (spriteIn!=' ') {
+					newEnt.style.backgroundImage = "url('"+resPath+this.sprites+"/"+spriteIn+"."+this.spriteExt+"')";
 					newEnt.style.backgroundRepeat = 'no-repeat';
 					newEnt.style.backgroundPosition = 'center';
 				};
@@ -193,7 +193,7 @@ var rw = new function(){
 			};
 			return this;
 		};
-		this.hide = function() {
+		var hide = function() {
 			if (document.getElementById('ent_'+this.name)) {
 				var dying = document.getElementById('ent_'+this.name);
 				dying.parentNode.removeChild(dying);
@@ -202,7 +202,7 @@ var rw = new function(){
 			this.visible=false;
 			return this;
 		};
-		this.changeSprite = function(sprite) {
+		var changeSprite = function(sprite) {
 			this.baseSprite=sprite;
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
@@ -222,7 +222,7 @@ var rw = new function(){
 			};
 			return this;
 		};
-		this.move = function(x,y,z) {
+		var move = function(x,y,z) {
 			this.velX += x;
 			this.velY += y;
 			if (z) {
@@ -232,10 +232,10 @@ var rw = new function(){
 			}
 			return this;
 		}
-		this.curMove = function() {
+		var curMove = function() {
 			return [this.velX, this.velY, this.velZ];
 		}
-		this.wipeMove = function(axis) {
+		var wipeMove = function(axis) {
 			if (axis) {
 				if (axis=='x') {
 					this.velX = 0;
@@ -251,7 +251,7 @@ var rw = new function(){
 			}
 			return this;
 		}
-		this.moveTo = function(x, y, z) {
+		var moveTo = function(x, y, z) {
 			this.posX = x;
 			this.posY = y;
 			if (z) {
@@ -261,14 +261,14 @@ var rw = new function(){
 			}
 			return this;
 		}
-		this.rotate = function(deg) {
+		var rotate = function(deg) {
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
 				entDiv.style[me.browser.trans_name] = 'rotate('+deg+'deg)';
 			}
 			return this;
 		}
-		this.rotMap=function(hitMap, angle) {
+		var rotMap=function(hitMap, angle) {
 			var centerP = [this.width/2,this.height/2];
 			var newMap = [hitMap[0],hitMap[1]];
 			var pt1 = rotatePoint([hitMap[2],hitMap[3]],centerP,angle);
@@ -282,21 +282,21 @@ var rw = new function(){
 			newMap.push(pt3[1]);
 			return newMap;
 		};
-		this.tileX=function() {
+		var getTileX=function() {
 			if (tiles) {
 				return Math.floor(this.posY/tileY);
 			} else {
 				return false;
 			};
 		};
-		this.tileY=function() {
+		var getTileY=function() {
 			if (tiles) {
 				return Math.floor(this.posY/tileY);
 			} else {
 				return false;
 			};
 		};
-		this.clicked = function() {
+		var clicked = function() {
 			if (me.mouse.down()) {
 				if ((me.mouse.x()>this.posX1())&&(me.mouse.x()<this.posX2())) {
 					if ((me.mouse.y()>this.posY1())&&(me.mouse.y()<this.posY2())) {
@@ -306,14 +306,14 @@ var rw = new function(){
 			};
 			return false;
 		};
-		this.attach = function(content) {
+		var attach = function(content) {
 			var entDiv=document.getElementById('ent_'+this.name);
 			if (entDiv) {
 				entDiv.appendChild(content);
 			};
 			return this;
 		};
-		this.detach = function() {
+		var detach = function() {
 			var ele = document.getElementById('ent_'+this.name);
 			if (ele) {
 				var tot = ele.childNodes.length;
@@ -323,8 +323,43 @@ var rw = new function(){
 			};
 			return this;
 		};
-		this.end = function() {
+		var end = function() {
 			return me;
+		};
+		return {
+			name:name,
+			sprites:sprites,
+			baseSprite:baseSprite,
+			spriteExt:spriteExt,
+			width:width,
+			height:height,
+			posX:posX,
+			posY:posY,
+			posZ:posZ,
+			posX1:posX1,
+			posY1:posY1,
+			posX2:posX2,
+			posY2:posY2,
+			velX:velX,
+			velY:velY,
+			velZ:velZ,
+			active:active,
+			visible:visible,
+			display:display,
+			hide:hide,
+			changeSprite:changeSprite,
+			move:move,
+			curMove:curMove,
+			wipeMove:wipeMove,
+			moveTo:moveTo,
+			rotate:rotate,
+			rotMap:rotMap,
+			getTileX:getTileX,
+			getTileY:getTileY,
+			clicked:clicked,
+			attach:attach,
+			detach:detach,
+			end:end
 		};
 	};
 	me.newEnt = function(ent) {

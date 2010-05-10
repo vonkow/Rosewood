@@ -1,20 +1,20 @@
 rw.newSound('boom', 'exp.ogg');
 
 var lagTimer = function() {
-	this.base = new rw.ent('lag', '','','',150,20);
+	this.base = rw.ent('lag', '','','',150,20);
 	this.update = function() {
 		this.base.detach();
 		this.base.attach(document.createTextNode('Lag: '+rw.getLag()+'(ms)'));
 	}
 }
 var Wall = function(name, wallType, xDim, yDim) {
-	this.base = new rw.ent(name, ' ', ' ', ' ', xDim, yDim);
+	this.base = rw.ent(name, ' ', ' ', ' ', xDim, yDim);
 	this.hitMap = [[wallType,['bman'],0,0,xDim,yDim]];
 	this.update = function() {};
 }
 
 var blast = function(name) {
-	this.base = new rw.ent(name, 'blast', 'blast', 'gif', 40, 32);
+	this.base = rw.ent(name, 'blast', 'blast', 'gif', 40, 32);
 	this.countdown = 25;
 	this.update = function() {
 		this.base.posZ = this.base.posY;
@@ -27,7 +27,7 @@ var blast = function(name) {
 	this.hitMap = [['blast',['bman','baddie','bomb'],0,0,40,32]];
 }
 var bomb = function(name, typeClass) {
-	this.base = new rw.ent(name, 'bomb', '1', 'gif', 40, 32);
+	this.base = rw.ent(name, 'bomb', '1', 'gif', 40, 32);
 	this.countdown = 150;
 	this.blastSize = 2;
 	//this.spin = 0;
@@ -88,7 +88,7 @@ var bomb = function(name, typeClass) {
 	}
 }
 var badguy = function(name) {
-	this.base = new rw.ent(name, 'bman', 'l', 'gif', 40, 64);
+	this.base = rw.ent(name, 'bman', 'l', 'gif', 40, 64);
 	this.speed = 5;
 	this.ticker = 0;
 	this.heading = 'l';
@@ -130,7 +130,7 @@ var badguy = function(name) {
 }
 // Custom Game Entity (calls rw.ent for this.base, requires this.update function)
 var bman = function(name, typeClass, heading) {
-	this.base = new rw.ent(name, 'bman', 'u', 'gif', 40, 64);
+	this.base = rw.ent(name, 'bman', 'u', 'gif', 40, 64);
 	this.maxSpeed = 5;
 	this.bombCooldown = 5;
 	this.bombMax = 15;
