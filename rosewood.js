@@ -537,11 +537,17 @@ var rw = new function(){
 		if (states[name]) delete states[name];
 		return this;
 	}
+	// At start and end function assignments
+	var doAtStart=null;
+	me.atStart=function(arg) {
+		doAtStart=arg;
+		return this;
+	};
 	var doAtEnd=null;
 	me.atEnd=function(arg) {
 		doAtEnd=arg;
 		return this;
-	}
+	};
 	// Ajax function, durr
 	me.ajax = function(targ, func) {
 		var xhr = new XMLHttpRequest();
@@ -805,6 +811,11 @@ var rw = new function(){
 				me.sounds.splice(x,1);
 				x--;
 			}
+		}
+		// At end function, if any
+		if (typeof(doAtStart)=='function') {
+			doAtStart();
+			doAtStart=null;
 		}
 		// Update Loop
 		if (keyChange==true) {
