@@ -1034,6 +1034,7 @@ var rw = new function(){
 					}
 				}
 			}
+			if (eX.postCol) eX.postCol();
 		}
 		if (cols.length>0) {
 			var toBeRemoved = [];
