@@ -595,7 +595,7 @@ var rw = new function(){
 	}
 	// Changes Cursor
 	me.changeCursor = function(cursor) {
-		document.getElementById('board').style.cursor="url('"resPath+cursor+"')";
+		document.getElementById('board').style.cursor="url('"+resPath+cursor+"')";
 		return this;
 	}
 	// Browser-specific values, runs at init
