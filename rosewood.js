@@ -424,7 +424,7 @@ var rw = new function(){
 			} else {
 				var mapArea = document.createElement('div');
 				mapArea.id = 'map_'+this.name;
-				mapArea.style.backgroundImage = "url('sprites/maps/"+this.path+"."+this.extention+"')";
+				mapArea.style.backgroundImage = "url('"+resPath+"maps/"+this.path+"."+this.extention+"')";
 				mapArea.style.width = this.width+'px';
 				mapArea.style.height = this.height+'px';
 				mapArea.style.position = 'absolute';
@@ -583,13 +583,13 @@ var rw = new function(){
 		var len = imgArray.length;
 		for (var x=0; x<len;x++) {
 			preImg[preImg.length] = new Image();
-			preImg[preImg.length-1].src = 'sprites/'+path+'/'+imgArray[x]+'.'+ext;
+			preImg[preImg.length-1].src = resPath+path+'/'+imgArray[x]+'.'+ext;
 		}
 		return this;
 	}
 	// Changes Cursor
 	me.changeCursor = function(cursor) {
-		document.getElementById('board').style.cursor="url(sprites/"+cursor+"), wait";
+		document.getElementById('board').style.cursor="url('"resPath+cursor+"')";
 		return this;
 	}
 	// Browser-specific values, runs at init
