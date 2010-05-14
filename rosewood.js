@@ -182,7 +182,7 @@ var rw = new function(){
 				if (spriteIn!=' ') {
 					newEnt.style.backgroundImage = "url('"+resPath+this.sprites+"/"+spriteIn+"."+this.spriteExt+"')";
 					newEnt.style.backgroundRepeat = 'no-repeat';
-					newEnt.style.backgroundPosition = 'center';
+					//newEnt.style.backgroundPosition = 'center';
 				};
 				newEnt.style.position = 'absolute';
 				newEnt.style.left = this.posX+'px';
@@ -221,6 +221,12 @@ var rw = new function(){
 				};
 			};
 			return this;
+		};
+		var shiftSprite=function(x,y) {
+			var entDiv=document.getElementById('ent_'+this.name);
+			if (entDiv) {
+				entDiv.style.background="url('"+resPath+this.sprites+"/"+this.baseSprite+"."+this.spriteExt+"') "+x+"px "+y+"px no-repeat";
+			};
 		};
 		var move = function(x,y,z) {
 			this.velX += x;
@@ -348,6 +354,7 @@ var rw = new function(){
 			display:display,
 			hide:hide,
 			changeSprite:changeSprite,
+			shiftSprite:shiftSprite,
 			move:move,
 			curMove:curMove,
 			wipeMove:wipeMove,
