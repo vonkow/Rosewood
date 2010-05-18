@@ -330,8 +330,10 @@ var rw = new function(){
 			return this;
 		};
 		var children=[];
-		var addChild=function(name,g,x,y,w,h) {
-			children.push([name,g,x,y,w,h]);
+		var addChild=function(name,g,x,y,z,w,h,ox,oy) {
+			var oX =(ox) ? ox : 0;
+			var oY =(oy) ? oy : 0;
+			children.push([name,g,x,y,z,w,h,oX,oY]);
 			var entDiv=document.getElementById('ent_'+this.name);
 			if (entDiv) {
 				var childDiv=document.createElement('div');
@@ -339,29 +341,67 @@ var rw = new function(){
 				childDiv.style.position='absolute';
 				childDiv.style.left=x+'px';
 				childDiv.style.top=y+'px';
+				childDiv.style.zIndex=z;
 				childDiv.style.width=w+'px';
 				childDiv.style.height=h+'px';
+				childDiv.style.overflow='hidden';
 				if (g!=' ') {
-					childDiv.style.background='url("'+resPath+this.sprites+'/'+g+'.'+this.spriteExt+'") no-repeat';
+					childDiv.style.background='url("'+resPath+this.sprites+'/'+g+'.'+this.spriteExt+'") no-repeat '+oX+'px '+oY+'px';
 				};
 				entDiv.appendChild(childDiv);
 			};
 			return this;
 		};
-		var changeChild=function(child,g) {
+		var getChild=function(meme,child) {
 			if (typeof(child)=='number') {
-				var theChild=this.children[child];
+				var theChild=meme.children[child];
 			} else {
-				for (var x=0;x<this.children.length;x++) {
-					if (this.children[x][0]==child) {
-						var theChild=this.children[x];
+				for (var x=0;x<meme.children.length;x++) {
+					if (meme.children[x][0]==child) {
+						var theChild=meme.children[x];
 						break;
 					};
 				};
 			};
+			if (theChild) return theChild;
+			return false;
+		};
+		var blitChildDiv=function(meme,child) {
+			var childDiv=document.getElementById('ent_'+meme.name+'_'+child[0]);
+			if (childDiv) {
+				childDiv.style.left=child[2]+'px';
+				childDiv.style.top=child[3]+'px';
+				childDiv.style.zIndex=child[4];
+				childDiv.style.width=child[5]+'px';
+				childDiv.style.height=child[6]+'px';
+				childDiv.style.background='url("'+resPath+meme.sprites+'/'+child[1]+'.'+meme.spriteExt+'") no-repeat '+child[7]+'px '+child[8]+'px';
+			};
+		};
+		var moveChild=function(child,x,y,z) {
+			var theChild=getChild(this,child);
 			if (theChild) {
-				var childDiv=document.getElementById('ent_'+this.name+'_'+theChild[0]);
-				childDiv.style.background='url("'+resPath+this.sprites+'/'+g+'.'+this.spriteExt+'") no-repeat';
+				theChild[2]=x;
+				theChild[3]=y;
+				theChild[4]=z;
+				blitChildDiv(this,theChild);
+			};
+			return this;
+		};
+		var resizeChild=function(child,w,h) {
+			var theChild=getChild(this,child);
+			if (theChild) {
+				theChild[5]=w;
+				theChild[6]=h;
+				blitChildDiv(this,theChild);
+			};
+			return this;
+		};
+		var changeChild=function(child,g,ox,oy) {
+			var theChild=getChild(this,child);
+			if (theChild) {
+				theChild[7] = (ox) ? ox : theChild[7];
+				theChild[8] = (oy) ? oy : theChild[8];
+				blitChildDiv(this,theChild);
 			};
 			return this;
 		};
@@ -424,6 +464,8 @@ var rw = new function(){
 			detach:detach,
 			children:children,
 			addChild:addChild,
+			moveChild:moveChild,
+			resizeChild:resizeChild,
 			changeChild:changeChild,
 			removeChild:removeChild,
 			end:end
