@@ -399,8 +399,9 @@ var rw = new function(){
 		var changeChild=function(child,g,ox,oy) {
 			var theChild=getChild(this,child);
 			if (theChild) {
-				theChild[7] = (ox) ? ox : theChild[7];
-				theChild[8] = (oy) ? oy : theChild[8];
+				theChild[1] = g;
+				theChild[7] = ((ox)||(ox===0)) ? ox : theChild[7];
+				theChild[8] = ((oy)||(oy===0)) ? oy : theChild[8];
 				blitChildDiv(this,theChild);
 			};
 			return this;
