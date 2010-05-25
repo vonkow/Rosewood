@@ -260,7 +260,7 @@ var rw = new function(){
 		var moveTo = function(x, y, z) {
 			this.posX = x;
 			this.posY = y;
-			if (z) {
+			if (z||z==0) {
 				this.posZ = z;
 			} else {
 				this.posZ = y;
