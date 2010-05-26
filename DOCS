@@ -1,3 +1,30 @@
+Basics
+
+	Before you start creating games with Rosewood, it's a good idea to understand the basics of how the engine works.
+	Once the engine has been started, Rosewood will enter it's main run loop. This loop runs through all the objects and rules within our game, updating their conditions and loactions onscreen. The engine then waits a specified amount of time before calling the main run loop again. Each run through the loop is called a frame, and the amount of time between frames is refered to as the frame rate (measured in frames per second). With the basics out of the way, let's move on to objects within Rosewood.
+
+	We will start with the all-important 'ent'. Ents, short for entities, are Rosewood's equivalent to 'actors' or 'sprites' that are found in other gaming environments. Any object that you want to move around or have interact with other objects will probably be an ent. 
+	Every ent must be an object with a property called base, and a method called update().
+	The base property must be a pointer to an rw.ent object. The rw.ent object, or ent.base property contains values that Rosewood uses to track and display your ents. This object also has a number of important movement and display functions that all ents have access to. rw.ent() takes a number of arguments, such as a name and dimensions, we will review them later. 
+	The update method must be a function. The update function is the script that tells each ent what to do within the game. If an ent is to be completely stationary (like a wall) the update function can be left blank, but it must still exist.
+	Below is an example of a very simple ent:
+
+		var ent={
+			base:rw.ent(name, fileWhereSpritesAre, baseSprite, spriteExension, width, height),
+			update:function() {}
+		};
+
+	Ents are added to Rosewood using the rw.newEnt(ent) function. This will add the ent specified to the rw.ents array, it then returns the ent, allowing us to work with our newly created ent. For example, if we wanted to create and display an ent, we would write something like this:
+
+	rw.newEnt(ent).base.display(image,xPosition,yPosition,zPosition);
+
+	As you can see, we register the ent with Rosewood, then call its base.display() method. The display method is one of the many methods that we have access to by assigning an rw.ent to the ent's base property. Once an ent has been displayed, it is considered active by the engine. Each frame, every active ent has its update() function called, allowing us to control their behavior.
+
+
+
+
+let's review them. Firstly, every ent requires a name, this must be unique. Secondly, we supply a path to where any images the ent might use are, this can be a blank quote if the ent uses no images. Next, we supply a default image for the ent to use, if this is left blank.
+
 Reference
 
 	rw.getTime(type)
