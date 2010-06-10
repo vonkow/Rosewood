@@ -188,6 +188,11 @@ var rw = new function(){
 				newEnt.style.left = this.posX+'px';
 				newEnt.style.top = this.posY+'px';
 				document.getElementById('board').appendChild(newEnt);
+				if (children.length>0) {
+					for (var x=0;x<children.length;x++) {
+						blitChildDiv(this,children[x])
+					}
+				}
 			} else {
 				this.visible=false;
 			};
@@ -336,21 +341,9 @@ var rw = new function(){
 			children.push([name,g,x,y,z,w,h,oX,oY]);
 			var entDiv=document.getElementById('ent_'+this.name);
 			if (entDiv) {
-				var childDiv=document.createElement('div');
-				childDiv.id='ent_'+this.name+'_'+name;
-				childDiv.style.position='absolute';
-				childDiv.style.left=x+'px';
-				childDiv.style.top=y+'px';
-				childDiv.style.zIndex=z;
-				childDiv.style.width=w+'px';
-				childDiv.style.height=h+'px';
-				childDiv.style.overflow='hidden';
-				if (g!=' ') {
-					childDiv.style.background='url("'+resPath+this.sprites+'/'+g+'.'+this.spriteExt+'") no-repeat '+oX+'px '+oY+'px';
-				};
-				entDiv.appendChild(childDiv);
+				blitChildDiv(this,children[children.length-1])
 			};
-			return this;
+			return this
 		};
 		var getChild=function(meme,child) {
 			if (typeof(child)=='number') {
@@ -359,12 +352,12 @@ var rw = new function(){
 				for (var x=0;x<meme.children.length;x++) {
 					if (meme.children[x][0]==child) {
 						var theChild=meme.children[x];
-						break;
-					};
-				};
+						break
+					}
+				}
 			};
 			if (theChild) return theChild;
-			return false;
+			return false
 		};
 		var blitChildDiv=function(meme,child) {
 			var childDiv=document.getElementById('ent_'+meme.name+'_'+child[0]);
@@ -374,8 +367,25 @@ var rw = new function(){
 				childDiv.style.zIndex=child[4];
 				childDiv.style.width=child[5]+'px';
 				childDiv.style.height=child[6]+'px';
-				childDiv.style.background='url("'+resPath+meme.sprites+'/'+child[1]+'.'+meme.spriteExt+'") no-repeat '+child[7]+'px '+child[8]+'px';
-			};
+				childDiv.style.background='url("'+resPath+meme.sprites+'/'+child[1]+'.'+meme.spriteExt+'") no-repeat '+child[7]+'px '+child[8]+'px'
+			} else {
+				var entDiv=document.getElementById('ent_'+meme.name);
+				if (entDiv) {
+					var childDiv=document.createElement('div');
+					childDiv.id='ent_'+meme.name+'_'+child[0];
+					childDiv.style.position='absolute';
+					childDiv.style.left=child[2]+'px';
+					childDiv.style.top=child[3]+'px';
+					childDiv.style.zIndex=child[4];
+					childDiv.style.width=child[5]+'px';
+					childDiv.style.height=child[6]+'px';
+					childDiv.style.overflow='hidden';
+					if (child[1]!=' ') {
+						childDiv.style.background='url("'+resPath+meme.sprites+'/'+child[1]+'.'+meme.spriteExt+'") no-repeat '+child[7]+'px '+child[8]+'px'
+					};
+					entDiv.appendChild(childDiv)
+				}
+			}
 		};
 		var moveChild=function(child,x,y,z) {
 			var theChild=getChild(this,child);
@@ -383,18 +393,18 @@ var rw = new function(){
 				theChild[2]=x;
 				theChild[3]=y;
 				theChild[4]=z;
-				blitChildDiv(this,theChild);
+				blitChildDiv(this,theChild)
 			};
-			return this;
+			return this
 		};
 		var resizeChild=function(child,w,h) {
 			var theChild=getChild(this,child);
 			if (theChild) {
 				theChild[5]=w;
 				theChild[6]=h;
-				blitChildDiv(this,theChild);
+				blitChildDiv(this,theChild)
 			};
-			return this;
+			return this
 		};
 		var changeChild=function(child,g,ox,oy) {
 			var theChild=getChild(this,child);
@@ -402,32 +412,30 @@ var rw = new function(){
 				theChild[1] = g;
 				theChild[7] = ((ox)||(ox===0)) ? ox : theChild[7];
 				theChild[8] = ((oy)||(oy===0)) ? oy : theChild[8];
-				blitChildDiv(this,theChild);
+				blitChildDiv(this,theChild)
 			};
-			return this;
+			return this
 		};
 		var removeChild=function(child) {
 			if (typeof(child)=='number') {
-				var childId=child;
+				var childId=child
 			} else {
 				for (var x=0;x<this.children.length;x++) {
 					if (this.children[x][0]==child) {
 						var childId=x;
-						break;
-					};
-				};
+						break
+					}
+				}
 			};
 			if ((childId)||(childId==0)) {
 				var childDiv=document.getElementById('ent_'+this.name+'_'+this.children[childId][0]);
 				childDiv.parentNode.removeChild(childDiv);
-				this.children.slice(childId,1);
+				this.children.slice(childId,1)
 			};
-			return this;
+			return this
 		};
-
-
 		var end = function() {
-			return me;
+			return me
 		};
 		return {
 			name:name,
