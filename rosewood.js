@@ -930,63 +930,62 @@ var rw = new function(){
 				x--;
 			}
 		}
-		// At end function, if any
+		// At start function, if any
 		if (typeof(doAtStart)=='function') {
 			doAtStart();
 			doAtStart=null;
 		}
+		var toBeRemoved = [];
+		var len = me.ents.length;
 		// Update Loop
 		if (keyChange==true) {
-			for (var x=0; x<me.ents.length; x++) {
-				if (me.ents[x].base.active==true) {
-					if (me.ents[x].keyChange) {
-						me.ents[x].keyChange();
+			for (var x=0; x<len; x++) {
+				var curEnt = me.ents[x];
+				if (curEnt.base.active==true) {
+					if (curEnt.keyChange) {
+						curEnt.keyChange();
 					}
-					var currentSprite = me.ents[x].update(me.ents[x].base.posX1(), me.ents[x].base.posX2(), me.ents[x].base.posY1(), me.ents[x].base.posY2());
+					var currentSprite = curEnt.update(curEnt.base.posX1(), curEnt.base.posX2(), curEnt.base.posY1(), curEnt.base.posY2());
 					if (currentSprite==false) {
-						me.removeEnt(x);
-						x--;
+						toBeRemoved.push(x)
 					} else {
 						//Nothing for now
 					}
-				} else if (me.ents[x].inactive) {
-					var currentSprite = me.ents[x].inactive();
+				} else if (curEnt.inactive) {
+					var currentSprite = curEnt.inactive();
 					if (currentSprite==false) {
-						me.removeEnt(x);
-						x--;
+						toBeRemoved.push(x)
 					}
 				}
 			}
 			keyChange = false;
 		} else {
-			for(var x=0; x<me.ents.length; x++) {
-				if (me.ents[x].base.active==true) {
-					var currentSprite = me.ents[x].update(me.ents[x].base.posX1(), me.ents[x].base.posX2(), me.ents[x].base.posY1(), me.ents[x].base.posY2());
+			for(var x=0; x<len; x++) {
+				var curEnt = me.ents[x];
+				if (curEnt.base.active==true) {
+					var currentSprite = curEnt.update(curEnt.base.posX1(), curEnt.base.posX2(), curEnt.base.posY1(), curEnt.base.posY2());
 					if (currentSprite==false) {
-						me.removeEnt(x);
-						x--;
+						toBeRemoved.push(x)
 					} else {
 						//Nothing for now
 					}
-				} else if (me.ents[x].inactive) {
-					var currentSprite = me.ents[x].inactive();
+				} else if (curEnt.inactive) {
+					var currentSprite = curEnt.inactive();
 					if (currentSprite==false) {
-						me.removeEnt(x);
-						x--;
+						toBeRemoved.push(x)
 					}
 				}
 			}
 		}
 		// Collision Loop
-		var len = me.ents.length;
 		var cols = [];
 		// For each ent
 		for (var x=0;x<len;x++) {
 			var eX=me.ents[x];
-			if (eX.hitMap) {
+			if (eX.base.active&&eX.hitMap) {
 				for (var y=x+1;y<len;y++) {
 					var eY=me.ents[y];
-					if (eY.hitMap) {
+					if (eY.base.active&&eY.hitMap) {
 						for (var z=0;z<eX.hitMap.length;z++) {
 							var eXm=eX.hitMap[z];
 							for (var w=0;w<eY.hitMap.length;w++) {
@@ -1155,34 +1154,33 @@ var rw = new function(){
 			if (eX.postCol) eX.postCol();
 		}
 		if (cols.length>0) {
-			var toBeRemoved = [];
 			for (var x=0; x<cols.length; x++) {
 				if (me.ents[cols[x][0][0]].gotHit) {
 					if (me.ents[cols[x][0][0]].gotHit(cols[x][1][1],cols[x][0][1],cols[x][1][0])==false) {
-						toBeRemoved[toBeRemoved.length] = cols[x][0][0];
+						toBeRemoved.push(cols[x][0][0])
 					}
 				}
 				if (me.ents[cols[x][1][0]].gotHit) {
 					if (me.ents[cols[x][1][0]].gotHit(cols[x][0][1],cols[x][1][1],cols[x][0][0])==false) {
-						toBeRemoved[toBeRemoved.length] = cols[x][1][0];
+						toBeRemoved.push(cols[x][1][0])
 					}
 				}
 			}
-			if (toBeRemoved.length>0) {
-				toBeRemoved.sort(function(a,b){return a - b});
-				toBeRemoved.reverse();
-				var killThese = [];
-				o:for(var x=0; x<toBeRemoved.length; x++) {
-					for(var y=0; y<killThese.length; y++) {
-						if (killThese[y]==toBeRemoved[x]) {
-							continue o;
-						}
+		}
+		if (toBeRemoved.length>0) {
+			toBeRemoved.sort(function(a,b){return a - b});
+			toBeRemoved.reverse();
+			var killThese = [];
+			o:for(var x=0; x<toBeRemoved.length; x++) {
+				for(var y=0; y<killThese.length; y++) {
+					if (killThese[y]==toBeRemoved[x]) {
+						continue o;
 					}
-					killThese[killThese.length] = toBeRemoved[x];
 				}
-				for (var x=0;x<killThese.length;x++) {
-					me.removeEnt(killThese[x]);
-				}
+				killThese[killThese.length] = toBeRemoved[x];
+			}
+			for (var x=0;x<killThese.length;x++) {
+				me.removeEnt(killThese[x]);
 			}
 		}
 		// Run Through all rules;
