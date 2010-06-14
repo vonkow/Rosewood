@@ -32,30 +32,62 @@ var rw = new function(){
 	// Golbal gameboard dimensions
 	var X = 0;
 	var Y = 0;
+	/**
+	 * Gets width of game board.
+	 * @returns width of board, in pixels
+	 */
 	this.Xdim = function() {
 		return X;
 	}
+	/**
+	 * Gets height of game board.
+	 * @returns height of board, in pixels
+	 */
 	this.Ydim = function() {
 		return Y;
 	}
 	// Game speed settings
 	var speed = 50;
+	/**
+	 * Sets speed of game.
+	 * @param fps New game framerate, in Frames Per Second.
+	 * @returns rw
+	 */
 	this.setFPS = function(fps) {
 		speed = 1000/parseInt(fps);
 		return this;
 	}
+	/**
+	 * Gets game speed
+	 * @returns Current game speed, in Frames Per Second
+	 */
 	this.getFPS = function() {
 		return 1000/speed;
 	}
+	/**
+	 * Gets current lag.
+	 * @returns current lag, in miliseconds. <br>
+	 A negative number indicates no lag and represents the number of spare miliseconds per frame.
+	 */
 	this.getLag = function() {
 		return currentLag;
 	}
 	// Resource Path Settings
 	var resPath = 'sprites/';
+	/**
+	 * Sets resource path for images, sounds, etc. <br>
+	 * 'sprites/' is the default.
+	 * @param newPath Filepath to base resource file.
+	 * @returns rw
+	 */
 	this.setPath = function(newPath) {
 		resPath = newPath;
 		return this;
 	}
+	/**
+	 * Gets current resource path for images, sounds, etc.
+	 * @returns Current resource path
+	 */
 	this.getPath = function() {
 		return resPath;
 	}
@@ -63,12 +95,22 @@ var rw = new function(){
 	var tiles = false;
 	var tileX = 0;
 	var tileY = 0;
+	/**
+	 * Turns on support for tiles and sets tile X & Y dimensions.
+	 * @param xDim Tile width
+	 * @param yDim Tile height
+	 * @returns rw
+	 */
 	this.tilesOn = function(xDim, yDim) {
 		tiles = true;
 		tileX = xDim;
 		tileY = yDim;
 		return this;
 	}
+	/**
+	 * Turns off support for tiles.
+	 * @returns rw
+	 */
 	this.tilesOff = function() {
 		tiles = false;
 		tileX = 0;
@@ -96,6 +138,11 @@ var rw = new function(){
 		keySwitch(ev.keyCode, false);
 		keyChange = true;
 	}
+	/**
+	 * Checks to see if the specified key is currently being pressed.
+	 * @param key Key to check. List of keynames to follow.
+	 * @returns true or false based on key's down/up status
+	 */
 	this.key = function(key) {
 		var len=keys.length;
 		for (var x=0; x<len;x++) {
@@ -166,15 +213,27 @@ var rw = new function(){
 		this.posX = 0;
 		this.posY = 0;
 		this.posZ = 0;
+		/**
+		 * @returns ent's leftmost position, in pixels
+		 */
 		this.posX1 = function() {
 			return this.posX;
 		}
+		/**
+		 * @returns ent's topmost position, in pixels
+		 */
 		this.posY1 = function() {
 			return this.posY;
 		}
+		/**
+		 * @returns ent's rightmost position, in pixels
+		 */
 		this.posX2 = function() {
 			return this.posX+this.width;
 		}
+		/**
+		 * @returns ent's bottommost position, in pixels
+		 */
 		this.posY2 = function() {
 			return this.posY+this.height;
 		}
@@ -184,6 +243,18 @@ var rw = new function(){
 		this.active = false; //Bool for is piece in play
 		this.visible=false; //Bool for if piece should have a div
 		// Display Entity Function, sets ent.base.active to true
+		/**
+		 * Displays an ent on the board and sets ent.base.active to true.<br>
+		 * Creates or re-displays a div, with the id 'ent_'+ent.base.name<br>
+		 * Sets ent.base.active to true, causing rosewood to call the ent's update() function one per frame.
+		 * @param spriteIn Sprite to be displayed. <br>
+		 * If set to '', no div will be created, however the ent will still be active. <br>
+		 * Set as ' ' to create a blank div (for ent.base.attach(),etc.)
+		 * @param posXIn Ent's X position on the board
+		 * @param posYIn Ent's Y position on the board
+		 * @param posZIn Optional, Ent's Z position on the board (will default to posYIn if unspecified)
+		 * @returns ent.base
+		 */
 		this.display = function (spriteIn, posXIn, posYIn, posZIn) {
 			this.baseSprite=spriteIn;
 			this.posX = posXIn;
@@ -218,6 +289,9 @@ var rw = new function(){
 			};
 			return this;
 		};
+		/**
+		 * Removes ent from game board.
+		 */
 		this.hide = function() {
 			if (document.getElementById('ent_'+this.name)) {
 				var dying = document.getElementById('ent_'+this.name);
@@ -458,28 +532,31 @@ var rw = new function(){
 			return me
 		};
 	};
+	/**
+	 * Registers a new ent with the engine.
+	 * @param ent Ent to be added to rw.ents
+	 * @returns ent
+	 */
 	this.newEnt = function(ent) {
 		var curLength = me.ents.length;
 		me.ents[curLength] = ent;
 		return ent;
 	};
+	/**
+	 * Removes an ent from rw.ents. <br>
+	 * <strong>CAUTION:</strong> Don't use unless you know what you're ding, can cause lots of havoc if impropery called. <br>
+	 * To remove an ent without creating conflicts, have ent.update(), ent.inactive() or ent.gotHit() return false.
+	 * @param entNum Absolute position of ent to be removed in rw.ents array.
+	 * @returns rw
+	 */
 	this.removeEnt = function(entNum) {
 		me.ents.splice(entNum, 1);
 		return this;
 	};
-	// Object and Ent Library, helper functions
-	this.lib = {
-		ent : function(name, type, xDim, yDim) {
-			this.base = new me.ent(name, type, ' ', ' ', xDim, yDim);
-			this.hitMap = [[type,0,0,xDim,yDim]];
-			this.update = function(){};
-			this.iGotHit = function(){};
-		}
-	};
 	// Map Entities
 	this.maps = {}; 
 	/**
-	 * @constructor
+	 * @class
 	 */
 	this.map = function(name, path, extention, xDim, yDim) {
 		this.name = name;
@@ -491,6 +568,13 @@ var rw = new function(){
 		this.x = 0;
 		this.y = 0;
 		this.z = -1;
+		/**
+		 * Moves map the specified number of pixels.
+		 * @param x Number of pixels map is to be moved horizontally.
+		 * @param y Number of pixels map is to be moved vertically.
+		 * @param z Optional: Number of depth levels map is to be moved. <br>
+		 * If unspecified, 0 will be assumed.
+		 */
 		this.move=function(x,y,z) {
 			this.x+=x;
 			this.y+=y;
@@ -552,6 +636,10 @@ var rw = new function(){
 			}
 			return this;
 		}
+		/**
+		 * Ends map sub-chain and returns to rw chain.
+		 * @returns rw
+		 */
 		this.end = function() {
 			return me;
 		}
@@ -573,7 +661,7 @@ var rw = new function(){
 	// Rule Entities
 	this.rules = {};
 	/**
-	 * @constructor
+	 * @class
 	 */
 	this.rule = function(active) {
 		this.active = active;
@@ -604,6 +692,12 @@ var rw = new function(){
 		return newCopy;
 	}
 
+	/**
+	 * Saves current gamestate. <br>
+	 * <strong>CAUTION:</strong> Will blindly overwrite a state of the same name.
+	 * @param name Name of saved state.
+	 * @returns rw
+	 */
 	this.saveState = function(name) {
 		states[name] = {
 			ents : copy(rw.ents),
@@ -612,6 +706,11 @@ var rw = new function(){
 		};
 		return this;
 	}
+	/**
+	 * Loads specified state.
+	 * @param name Name of state to load
+	 * @returns rw
+	 */
 	this.loadState = function(name) {
 		if (states[name]) {
 			me.ents = copy(states[name].ents);
@@ -635,6 +734,11 @@ var rw = new function(){
 		}
 		return this;
 	}
+	/**
+	 * Removes specified state
+	 * @param name Name of state to remove
+	 * @returns rw
+	 */
 	this.rmState = function(name) {
 		if (states[name]) delete states[name];
 		return this;
@@ -724,6 +828,10 @@ var rw = new function(){
 	}
 	// Wipe Functions
 	// Removes all children of the board
+	/**
+	 * Removes all DOM content from the board
+	 * @returns rw
+	 */
 	this.wipeBoard = function() {
 		var board = document.getElementById('board');
 		var total = board.childNodes.length;
@@ -732,24 +840,44 @@ var rw = new function(){
 		}
 		return this;
 	}
+	/**
+	 * Removes all ents
+	 * @returns rw
+	 */
 	this.wipeEnts = function() {
 		me.ents = [];
 		return this;
 	}
+	/**
+	 * Removes all maps
+	 * @returns rw
+	 */
 	this.wipeMaps = function() {
 		me.maps = {};
 		return this;
 	}
+	/**
+	 * Removes all rules
+	 * @returns rw
+	 */
 	this.wipeRules = function() {
 		me.rules = {};
 		return this;
 	}
+	/**
+	 * Removes all ents, maps and rules. Removes all DOM content from board.
+	 * @returns rw
+	 */
 	this.wipeAll = function() {
 		me.wipeBoard().wipeEnts().wipeMaps().wipeRules();
 		return this;
 	}
 	/**
-	 * Creates an instance of Rosewood
+	 * Initializes Rosewood and creates the game board element.
+	 * @param dimX Width of board, in pixels.
+	 * @param dimY Height of board, in pixels.
+	 * @param Optional, target id of element to attach board to. <br>
+	 * If unspecified, the board will be attached to the body.
 	 * @returns rw
 	 */
 	this.init = function(dimX, dimY, target) {
@@ -780,7 +908,10 @@ var rw = new function(){
 		document.onmouseup = mouseUp;
 		return this;
 	}
-	// Start FUnction
+	/**
+	 * Starts the gameloop
+	 * @returns rw
+	 */
 	this.start = function() {
 		if (runGame==false) {
 			runGame = true;
@@ -788,7 +919,10 @@ var rw = new function(){
 		}
 		return this;
 	}
-	// Stop Function
+	/**
+	 * Stops the gameloop. Resets current time to 0.
+	 * @returns rw
+	 */
 	this.stop = function() {
 		runGame = false;
 		return this;
@@ -908,7 +1042,9 @@ var rw = new function(){
 		}
 		return hit;
 	}
-	// RunLoop Function
+	/**
+	 * Gameloop function, not called directly.
+	 */
 	this.run = function() {
 		var startTime = new Date();
 		for (var x=0; x<me.sounds.length; x++) {
