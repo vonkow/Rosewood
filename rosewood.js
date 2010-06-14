@@ -1,3 +1,14 @@
+/**
+ * @fileoverview The Rosewood js gaming engine, because simple is better
+ * @author Caz vonKow skopsycats@gmail.com
+ * @version <1.0
+ */
+
+/**
+ * The Rosewood object, holds everything else
+ * @class rw base class, there should only be one instance
+ * @constructor
+ */
 var rw = new function(){
 	var me = this;
 	// RunLoop or stop
@@ -6,23 +17,60 @@ var rw = new function(){
 	var curT = 0; 
 	// RunLoop global Timer
 	var globT = 0; 
+<<<<<<< HEAD
 	me.getTime = function(type) {
 		return (type=='g') ? curT+globT : curT
 	};
+=======
+	/**
+	 * Gets the current or global time, in frames.<br>
+	 * Current time is the number of frames that have elapsed since the last call to rw.start()
+	 * and is reset to 0 when rw.stop() is called.<br>
+	 * Global time is the total number of frames that have elapsed since rw.inti() was called.<br>
+	 * @param type Opional, if set to 'g', global, not current time will be returned
+	 * @returns current time, in frames elapsed.
+	 */
+	this.getTime = function(type) {
+		return (type=='g') ? curT+globT : curT;
+	}
+>>>>>>> docs
 	var currentLag = 0;
 	// Golbal gameboard dimensions
 	var X = 0;
 	var Y = 0;
+<<<<<<< HEAD
 	me.Xdim = function() {
 		return X
 	};
 	me.Ydim = function() {
 		return Y
 	};
+=======
+	/**
+	 * Gets width of game board.
+	 * @returns width of board, in pixels
+	 */
+	this.Xdim = function() {
+		return X;
+	}
+	/**
+	 * Gets height of game board.
+	 * @returns height of board, in pixels
+	 */
+	this.Ydim = function() {
+		return Y;
+	}
+>>>>>>> docs
 	// Game speed settings
 	var speed = 50;
-	me.setFPS = function(fps) {
+	/**
+	 * Sets speed of game.
+	 * @param fps New game framerate, in Frames Per Second.
+	 * @returns rw
+	 */
+	this.setFPS = function(fps) {
 		speed = 1000/parseInt(fps);
+<<<<<<< HEAD
 		return this
 	};
 	me.getFPS = function() {
@@ -31,26 +79,79 @@ var rw = new function(){
 	me.getLag = function() {
 		return currentLag
 	};
+=======
+		return this;
+	}
+	/**
+	 * Gets game speed
+	 * @returns Current game speed, in Frames Per Second
+	 */
+	this.getFPS = function() {
+		return 1000/speed;
+	}
+	/**
+	 * Gets current lag.
+	 * @returns current lag, in miliseconds. <br>
+	 A negative number indicates no lag and represents the number of spare miliseconds per frame.
+	 */
+	this.getLag = function() {
+		return currentLag;
+	}
+>>>>>>> docs
 	// Resource Path Settings
 	var resPath = 'sprites/';
-	me.setPath = function(newPath) {
+	/**
+	 * Sets resource path for images, sounds, etc. <br>
+	 * 'sprites/' is the default.
+	 * @param newPath Filepath to base resource file.
+	 * @returns rw
+	 */
+	this.setPath = function(newPath) {
 		resPath = newPath;
+<<<<<<< HEAD
 		return this
 	};
 	me.getPath = function() {
 		return resPath
 	};
+=======
+		return this;
+	}
+	/**
+	 * Gets current resource path for images, sounds, etc.
+	 * @returns Current resource path
+	 */
+	this.getPath = function() {
+		return resPath;
+	}
+>>>>>>> docs
 	// Tile settings
 	var tiles = false;
 	var tileX = 0;
 	var tileY = 0;
-	me.tilesOn = function(xDim, yDim) {
+	/**
+	 * Turns on support for tiles and sets tile X & Y dimensions.
+	 * @param xDim Tile width
+	 * @param yDim Tile height
+	 * @returns rw
+	 */
+	this.tilesOn = function(xDim, yDim) {
 		tiles = true;
 		tileX = xDim;
 		tileY = yDim;
+<<<<<<< HEAD
 		return this
 	};
 	me.tilesOff = function() {
+=======
+		return this;
+	}
+	/**
+	 * Turns off support for tiles.
+	 * @returns rw
+	 */
+	this.tilesOff = function() {
+>>>>>>> docs
 		tiles = false;
 		tileX = 0;
 		tileY = 0;
@@ -77,7 +178,12 @@ var rw = new function(){
 		keySwitch(ev.keyCode, false);
 		keyChange = true;
 	}
-	me.key = function(key) {
+	/**
+	 * Checks to see if the specified key is currently being pressed.
+	 * @param key Key to check. List of keynames to follow.
+	 * @returns true or false based on key's down/up status
+	 */
+	this.key = function(key) {
 		var len=keys.length;
 		for (var x=0; x<len;x++) {
 			if (keys[x][0]==key) {
@@ -94,7 +200,7 @@ var rw = new function(){
 	var mouseX = 0;
 	var mouseY = 0;
 	var mouseDown = false;
-	me.mouse = {
+	this.mouse = {
 		x: function() {
 			return mouseX
 		},
@@ -135,36 +241,61 @@ var rw = new function(){
 		return newP;
 	}
 	// Game Entities
-	me.ents = []; 
-	me.ent = function(nameIn, spritesIn, baseSpriteIn, spriteExtIn, widthIn, heightIn) {
-		var name = nameIn;
-		var sprites = spritesIn;
-		var baseSprite = baseSpriteIn;
-		var spriteExt = spriteExtIn;
-		var width = widthIn;
-		var height = heightIn;
-		var posX = 0;
-		var posY = 0;
-		var posZ = 0;
-		var posX1 = function() {
+	this.ents = []; 
+	/** @class */
+	this.ent = function(nameIn, spritesIn, baseSpriteIn, spriteExtIn, widthIn, heightIn) {
+		this.name = nameIn;
+		this.sprites = spritesIn;
+		this.baseSprite = baseSpriteIn;
+		this.spriteExt = spriteExtIn;
+		this.width = widthIn;
+		this.height = heightIn;
+		this.posX = 0;
+		this.posY = 0;
+		this.posZ = 0;
+		/**
+		 * @returns ent's leftmost position, in pixels
+		 */
+		this.posX1 = function() {
 			return this.posX;
 		}
-		var posY1 = function() {
+		/**
+		 * @returns ent's topmost position, in pixels
+		 */
+		this.posY1 = function() {
 			return this.posY;
 		}
-		var posX2 = function() {
+		/**
+		 * @returns ent's rightmost position, in pixels
+		 */
+		this.posX2 = function() {
 			return this.posX+this.width;
 		}
-		var posY2 = function() {
+		/**
+		 * @returns ent's bottommost position, in pixels
+		 */
+		this.posY2 = function() {
 			return this.posY+this.height;
 		}
-		var velX = 0;
-		var velY = 0;
-		var velZ = 0;
-		var active = false; //Bool for is piece in play
-		var visible=false; //Bool for if piece should have a div
+		this.velX = 0;
+		this.velY = 0;
+		this.velZ = 0;
+		this.active = false; //Bool for is piece in play
+		this.visible=false; //Bool for if piece should have a div
 		// Display Entity Function, sets ent.base.active to true
-		var display = function (spriteIn, posXIn, posYIn, posZIn) {
+		/**
+		 * Displays an ent on the board and sets ent.base.active to true.<br>
+		 * Creates or re-displays a div, with the id 'ent_'+ent.base.name<br>
+		 * Sets ent.base.active to true, causing rosewood to call the ent's update() function one per frame.
+		 * @param spriteIn Sprite to be displayed. <br>
+		 * If set to '', no div will be created, however the ent will still be active. <br>
+		 * Set as ' ' to create a blank div (for ent.base.attach(),etc.)
+		 * @param posXIn Ent's X position on the board
+		 * @param posYIn Ent's Y position on the board
+		 * @param posZIn Optional, Ent's Z position on the board (will default to posYIn if unspecified)
+		 * @returns ent.base
+		 */
+		this.display = function (spriteIn, posXIn, posYIn, posZIn) {
 			this.baseSprite=spriteIn;
 			this.posX = posXIn;
 			this.posY = posYIn;
@@ -198,7 +329,10 @@ var rw = new function(){
 			};
 			return this;
 		};
-		var hide = function() {
+		/**
+		 * Removes ent from game board.
+		 */
+		this.hide = function() {
 			if (document.getElementById('ent_'+this.name)) {
 				var dying = document.getElementById('ent_'+this.name);
 				dying.parentNode.removeChild(dying);
@@ -207,7 +341,7 @@ var rw = new function(){
 			this.visible=false;
 			return this;
 		};
-		var changeSprite = function(sprite) {
+		this.changeSprite = function(sprite) {
 			this.baseSprite=sprite;
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
@@ -227,13 +361,13 @@ var rw = new function(){
 			};
 			return this;
 		};
-		var shiftSprite=function(x,y) {
+		this.shiftSprite=function(x,y) {
 			var entDiv=document.getElementById('ent_'+this.name);
 			if (entDiv) {
 				entDiv.style.background="url('"+resPath+this.sprites+"/"+this.baseSprite+"."+this.spriteExt+"') "+x+"px "+y+"px no-repeat";
 			};
 		};
-		var move = function(x,y,z) {
+		this.move = function(x,y,z) {
 			this.velX += x;
 			this.velY += y;
 			if (z) {
@@ -243,10 +377,10 @@ var rw = new function(){
 			}
 			return this;
 		}
-		var curMove = function() {
+		this.curMove = function() {
 			return [this.velX, this.velY, this.velZ];
 		}
-		var wipeMove = function(axis) {
+		this.wipeMove = function(axis) {
 			if (axis) {
 				if (axis=='x') {
 					this.velX = 0;
@@ -262,7 +396,7 @@ var rw = new function(){
 			}
 			return this;
 		}
-		var moveTo = function(x, y, z) {
+		this.moveTo = function(x, y, z) {
 			this.posX = x;
 			this.posY = y;
 			if (z||z==0) {
@@ -272,14 +406,14 @@ var rw = new function(){
 			}
 			return this;
 		}
-		var rotate = function(deg) {
+		this.rotate = function(deg) {
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
 				entDiv.style[me.browser.trans_name] = 'rotate('+deg+'deg)';
 			}
 			return this;
 		}
-		var rotMap=function(hitMap, angle) {
+		this.rotMap=function(hitMap, angle) {
 			var centerP = [this.width/2,this.height/2];
 			var newMap = [hitMap[0],hitMap[1]];
 			var pt1 = rotatePoint([hitMap[2],hitMap[3]],centerP,angle);
@@ -293,21 +427,21 @@ var rw = new function(){
 			newMap.push(pt3[1]);
 			return newMap;
 		};
-		var getTileX=function() {
+		this.getTileX=function() {
 			if (tiles) {
 				return Math.floor(this.posY/tileY);
 			} else {
 				return false;
 			};
 		};
-		var getTileY=function() {
+		this.getTileY=function() {
 			if (tiles) {
 				return Math.floor(this.posY/tileY);
 			} else {
 				return false;
 			};
 		};
-		var clicked = function() {
+		this.clicked = function() {
 			if (me.mouse.down()) {
 				if ((me.mouse.x()>this.posX1())&&(me.mouse.x()<this.posX2())) {
 					if ((me.mouse.y()>this.posY1())&&(me.mouse.y()<this.posY2())) {
@@ -317,14 +451,14 @@ var rw = new function(){
 			};
 			return false;
 		};
-		var attach = function(content) {
+		this.attach = function(content) {
 			var entDiv=document.getElementById('ent_'+this.name);
 			if (entDiv) {
 				entDiv.appendChild(content);
 			};
 			return this;
 		};
-		var detach = function() {
+		this.detach = function() {
 			var ele = document.getElementById('ent_'+this.name);
 			if (ele) {
 				var tot = ele.childNodes.length;
@@ -335,7 +469,7 @@ var rw = new function(){
 			return this;
 		};
 		var children=[];
-		var addChild=function(name,g,x,y,z,w,h,ox,oy) {
+		this.addChild=function(name,g,x,y,z,w,h,ox,oy) {
 			var oX =(ox) ? ox : 0;
 			var oY =(oy) ? oy : 0;
 			children.push([name,g,x,y,z,w,h,oX,oY]);
@@ -387,7 +521,7 @@ var rw = new function(){
 				}
 			}
 		};
-		var moveChild=function(child,x,y,z) {
+		this.moveChild=function(child,x,y,z) {
 			var theChild=getChild(this,child);
 			if (theChild) {
 				theChild[2]=x;
@@ -397,7 +531,7 @@ var rw = new function(){
 			};
 			return this
 		};
-		var resizeChild=function(child,w,h) {
+		this.resizeChild=function(child,w,h) {
 			var theChild=getChild(this,child);
 			if (theChild) {
 				theChild[5]=w;
@@ -406,7 +540,7 @@ var rw = new function(){
 			};
 			return this
 		};
-		var changeChild=function(child,g,ox,oy) {
+		this.changeChild=function(child,g,ox,oy) {
 			var theChild=getChild(this,child);
 			if (theChild) {
 				theChild[1] = g;
@@ -416,7 +550,7 @@ var rw = new function(){
 			};
 			return this
 		};
-		var removeChild=function(child) {
+		this.removeChild=function(child) {
 			if (typeof(child)=='number') {
 				var childId=child
 			} else {
@@ -434,73 +568,37 @@ var rw = new function(){
 			};
 			return this
 		};
-		var end = function() {
+		this.end = function() {
 			return me
 		};
-		return {
-			name:name,
-			sprites:sprites,
-			baseSprite:baseSprite,
-			spriteExt:spriteExt,
-			width:width,
-			height:height,
-			posX:posX,
-			posY:posY,
-			posZ:posZ,
-			posX1:posX1,
-			posY1:posY1,
-			posX2:posX2,
-			posY2:posY2,
-			velX:velX,
-			velY:velY,
-			velZ:velZ,
-			active:active,
-			visible:visible,
-			display:display,
-			hide:hide,
-			changeSprite:changeSprite,
-			shiftSprite:shiftSprite,
-			move:move,
-			curMove:curMove,
-			wipeMove:wipeMove,
-			moveTo:moveTo,
-			rotate:rotate,
-			rotMap:rotMap,
-			getTileX:getTileX,
-			getTileY:getTileY,
-			clicked:clicked,
-			attach:attach,
-			detach:detach,
-			children:children,
-			addChild:addChild,
-			moveChild:moveChild,
-			resizeChild:resizeChild,
-			changeChild:changeChild,
-			removeChild:removeChild,
-			end:end
-		};
 	};
-	me.newEnt = function(ent) {
+	/**
+	 * Registers a new ent with the engine.
+	 * @param ent Ent to be added to rw.ents
+	 * @returns ent
+	 */
+	this.newEnt = function(ent) {
 		var curLength = me.ents.length;
 		me.ents[curLength] = ent;
 		return ent;
 	};
-	me.removeEnt = function(entNum) {
+	/**
+	 * Removes an ent from rw.ents. <br>
+	 * <strong>CAUTION:</strong> Don't use unless you know what you're ding, can cause lots of havoc if impropery called. <br>
+	 * To remove an ent without creating conflicts, have ent.update(), ent.inactive() or ent.gotHit() return false.
+	 * @param entNum Absolute position of ent to be removed in rw.ents array.
+	 * @returns rw
+	 */
+	this.removeEnt = function(entNum) {
 		me.ents.splice(entNum, 1);
 		return this;
 	};
-	// Object and Ent Library, helper functions
-	me.lib = {
-		ent : function(name, type, xDim, yDim) {
-			this.base = new me.ent(name, type, ' ', ' ', xDim, yDim);
-			this.hitMap = [[type,0,0,xDim,yDim]];
-			this.update = function(){};
-			this.iGotHit = function(){};
-		}
-	};
 	// Map Entities
-	me.maps = {}; 
-	me.map = function(name, path, extention, xDim, yDim) {
+	this.maps = {}; 
+	/**
+	 * @class
+	 */
+	this.map = function(name, path, extention, xDim, yDim) {
 		this.name = name;
 		this.path = path;
 		this.extention = extention;
@@ -510,6 +608,13 @@ var rw = new function(){
 		this.x = 0;
 		this.y = 0;
 		this.z = -1;
+		/**
+		 * Moves map the specified number of pixels.
+		 * @param x Number of pixels map is to be moved horizontally.
+		 * @param y Number of pixels map is to be moved vertically.
+		 * @param z Optional: Number of depth levels map is to be moved. <br>
+		 * If unspecified, 0 will be assumed.
+		 */
 		this.move=function(x,y,z) {
 			this.x+=x;
 			this.y+=y;
@@ -571,16 +676,20 @@ var rw = new function(){
 			}
 			return this;
 		}
+		/**
+		 * Ends map sub-chain and returns to rw chain.
+		 * @returns rw
+		 */
 		this.end = function() {
 			return me;
 		}
 
 	}
-	me.newMap = function(name, map, ext, dimX, dimY) {
+	this.newMap = function(name, map, ext, dimX, dimY) {
 		me.maps[name] = new me.map(name, map, ext, dimX, dimY);
 		return me.maps[name];
 	}
-	me.removeMap = function(map) {
+	this.removeMap = function(map) {
 		if (me.maps[map]) {
 			delete me.maps[map];
 			return true;
@@ -590,15 +699,18 @@ var rw = new function(){
 		return this;
 	}
 	// Rule Entities
-	me.rules = {};
-	me.rule = function(active) {
+	this.rules = {};
+	/**
+	 * @class
+	 */
+	this.rule = function(active) {
 		this.active = active;
 	}
-	me.newRule = function(name, rule) {
+	this.newRule = function(name, rule) {
 		me.rules[name] = rule;
 		return this;
 	}
-	me.removeRule = function(rule) {
+	this.removeRule = function(rule) {
 		if (me.rules[rule]) {
 			delete me.rules[rule];
 			return true;
@@ -620,7 +732,13 @@ var rw = new function(){
 		return newCopy;
 	}
 
-	me.saveState = function(name) {
+	/**
+	 * Saves current gamestate. <br>
+	 * <strong>CAUTION:</strong> Will blindly overwrite a state of the same name.
+	 * @param name Name of saved state.
+	 * @returns rw
+	 */
+	this.saveState = function(name) {
 		states[name] = {
 			ents : copy(rw.ents),
 			maps : copy(rw.maps),
@@ -628,7 +746,12 @@ var rw = new function(){
 		};
 		return this;
 	}
-	me.loadState = function(name) {
+	/**
+	 * Loads specified state.
+	 * @param name Name of state to load
+	 * @returns rw
+	 */
+	this.loadState = function(name) {
 		if (states[name]) {
 			me.ents = copy(states[name].ents);
 			me.maps = copy(states[name].maps);
@@ -651,23 +774,28 @@ var rw = new function(){
 		}
 		return this;
 	}
-	me.rmState = function(name) {
+	/**
+	 * Removes specified state
+	 * @param name Name of state to remove
+	 * @returns rw
+	 */
+	this.rmState = function(name) {
 		if (states[name]) delete states[name];
 		return this;
 	}
 	// At start and end function assignments
 	var doAtStart=null;
-	me.atStart=function(arg) {
+	this.atStart=function(arg) {
 		doAtStart=arg;
 		return this;
 	};
 	var doAtEnd=null;
-	me.atEnd=function(arg) {
+	this.atEnd=function(arg) {
 		doAtEnd=arg;
 		return this;
 	};
 	// Ajax function, durr
-	me.ajax = function(targ, func) {
+	this.ajax = function(targ, func) {
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET",targ,true);
 		xhr.overrideMimeType("application/json");
@@ -681,21 +809,21 @@ var rw = new function(){
 		return this;
 	}
 	// Inline function call function
-	me.func = function() {
+	this.func = function() {
 		return this;
 	}
 
 	//AUDIO!!! NEW!!! Needs work integrating all browsers
-	me.soundBank = {};
-	me.sounds = [];
-	me.playSound = function(sound) {
+	this.soundBank = {};
+	this.sounds = [];
+	this.playSound = function(sound) {
 		var len = me.sounds.length;
 		me.sounds[len] = document.createElement('audio');
 		me.sounds[len].src = me.soundBank[sound].src;
 		me.sounds[len].play();
 		return me;
 	}
-	me.newSound = function(name, src) {
+	this.newSound = function(name, src) {
 		me.soundBank[name] = new Audio(src);
 		return me;
 	}
@@ -703,7 +831,7 @@ var rw = new function(){
 	//Maybe Fixed now?
 	// Image pre-loader
 	var preImg = [];
-	me.using = function(path, ext, imgArray) {
+	this.using = function(path, ext, imgArray) {
 		var len = imgArray.length;
 		for (var x=0; x<len;x++) {
 			preImg[preImg.length] = new Image();
@@ -712,12 +840,12 @@ var rw = new function(){
 		return this;
 	}
 	// Changes Cursor
-	me.changeCursor = function(cursor) {
+	this.changeCursor = function(cursor) {
 		document.getElementById('board').style.cursor="url('"+resPath+cursor+"')";
 		return this;
 	}
 	// Browser-specific values, runs at init
-	me.browser = {
+	this.browser = {
 		check: function() {
 			var trans = function() {
 				var body = document.getElementsByTagName('body')[0];
@@ -740,7 +868,11 @@ var rw = new function(){
 	}
 	// Wipe Functions
 	// Removes all children of the board
-	me.wipeBoard = function() {
+	/**
+	 * Removes all DOM content from the board
+	 * @returns rw
+	 */
+	this.wipeBoard = function() {
 		var board = document.getElementById('board');
 		var total = board.childNodes.length;
 		for (var x=0; x<total; x++) {
@@ -748,24 +880,47 @@ var rw = new function(){
 		}
 		return this;
 	}
-	me.wipeEnts = function() {
+	/**
+	 * Removes all ents
+	 * @returns rw
+	 */
+	this.wipeEnts = function() {
 		me.ents = [];
 		return this;
 	}
-	me.wipeMaps = function() {
+	/**
+	 * Removes all maps
+	 * @returns rw
+	 */
+	this.wipeMaps = function() {
 		me.maps = {};
 		return this;
 	}
-	me.wipeRules = function() {
+	/**
+	 * Removes all rules
+	 * @returns rw
+	 */
+	this.wipeRules = function() {
 		me.rules = {};
 		return this;
 	}
-	me.wipeAll = function() {
+	/**
+	 * Removes all ents, maps and rules. Removes all DOM content from board.
+	 * @returns rw
+	 */
+	this.wipeAll = function() {
 		me.wipeBoard().wipeEnts().wipeMaps().wipeRules();
 		return this;
 	}
-	// Initilization Function
-	me.init = function(dimX, dimY, target) {
+	/**
+	 * Initializes Rosewood and creates the game board element.
+	 * @param dimX Width of board, in pixels.
+	 * @param dimY Height of board, in pixels.
+	 * @param Optional, target id of element to attach board to. <br>
+	 * If unspecified, the board will be attached to the body.
+	 * @returns rw
+	 */
+	this.init = function(dimX, dimY, target) {
 		me.browser.check();
 		var board = document.createElement('div');
 		board.id = 'board';
@@ -793,16 +948,22 @@ var rw = new function(){
 		document.onmouseup = mouseUp;
 		return this;
 	}
-	// Start FUnction
-	me.start = function() {
+	/**
+	 * Starts the gameloop
+	 * @returns rw
+	 */
+	this.start = function() {
 		if (runGame==false) {
 			runGame = true;
 			curT = setTimeout('rw.run()', speed);
 		}
 		return this;
 	}
-	// Stop Function
-	me.stop = function() {
+	/**
+	 * Stops the gameloop. Resets current time to 0.
+	 * @returns rw
+	 */
+	this.stop = function() {
 		runGame = false;
 		return this;
 	}
@@ -921,8 +1082,10 @@ var rw = new function(){
 		}
 		return hit;
 	}
-	// RunLoop Function
-	me.run = function() {
+	/**
+	 * Gameloop function, not called directly.
+	 */
+	this.run = function() {
 		var startTime = new Date();
 		for (var x=0; x<me.sounds.length; x++) {
 			if (me.sounds[x].ended) {
