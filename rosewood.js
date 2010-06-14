@@ -1,3 +1,14 @@
+/**
+ * @fileoverview The Rosewood js gaming engine, because simple is better
+ * @author Caz vonKow skopsycats@gmail.com
+ * @version <1.0
+ */
+
+/**
+ * The Rosewood object, holds everything else
+ * @class rw base class, there should only be one instance
+ * @constructor
+ */
 var rw = new function(){
 	var me = this;
 	// RunLoop or stop
@@ -6,51 +17,59 @@ var rw = new function(){
 	var curT = 0; 
 	// RunLoop global Timer
 	var globT = 0; 
-	me.getTime = function(type) {
+	/**
+	 * Gets the current or global time, in frames.<br>
+	 * Current time is the number of frames that have elapsed since the last call to rw.start()
+	 * and is reset to 0 when rw.stop() is called.<br>
+	 * Global time is the total number of frames that have elapsed since rw.inti() was called.<br>
+	 * @param type Opional, if set to 'g', global, not current time will be returned
+	 * @returns current time, in frames elapsed.
+	 */
+	this.getTime = function(type) {
 		return (type=='g') ? curT+globT : curT;
 	}
 	var currentLag = 0;
 	// Golbal gameboard dimensions
 	var X = 0;
 	var Y = 0;
-	me.Xdim = function() {
+	this.Xdim = function() {
 		return X;
 	}
-	me.Ydim = function() {
+	this.Ydim = function() {
 		return Y;
 	}
 	// Game speed settings
 	var speed = 50;
-	me.setFPS = function(fps) {
+	this.setFPS = function(fps) {
 		speed = 1000/parseInt(fps);
 		return this;
 	}
-	me.getFPS = function() {
+	this.getFPS = function() {
 		return 1000/speed;
 	}
-	me.getLag = function() {
+	this.getLag = function() {
 		return currentLag;
 	}
 	// Resource Path Settings
 	var resPath = 'sprites/';
-	me.setPath = function(newPath) {
+	this.setPath = function(newPath) {
 		resPath = newPath;
 		return this;
 	}
-	me.getPath = function() {
+	this.getPath = function() {
 		return resPath;
 	}
 	// Tile settings
 	var tiles = false;
 	var tileX = 0;
 	var tileY = 0;
-	me.tilesOn = function(xDim, yDim) {
+	this.tilesOn = function(xDim, yDim) {
 		tiles = true;
 		tileX = xDim;
 		tileY = yDim;
 		return this;
 	}
-	me.tilesOff = function() {
+	this.tilesOff = function() {
 		tiles = false;
 		tileX = 0;
 		tileY = 0;
@@ -77,7 +96,7 @@ var rw = new function(){
 		keySwitch(ev.keyCode, false);
 		keyChange = true;
 	}
-	me.key = function(key) {
+	this.key = function(key) {
 		var len=keys.length;
 		for (var x=0; x<len;x++) {
 			if (keys[x][0]==key) {
@@ -94,7 +113,7 @@ var rw = new function(){
 	var mouseX = 0;
 	var mouseY = 0;
 	var mouseDown = false;
-	me.mouse = {
+	this.mouse = {
 		x: function() {
 			return mouseX
 		},
@@ -135,8 +154,9 @@ var rw = new function(){
 		return newP;
 	}
 	// Game Entities
-	me.ents = []; 
-	me.ent = function(nameIn, spritesIn, baseSpriteIn, spriteExtIn, widthIn, heightIn) {
+	this.ents = []; 
+	/** @class */
+	this.ent = function(nameIn, spritesIn, baseSpriteIn, spriteExtIn, widthIn, heightIn) {
 		var name = nameIn;
 		var sprites = spritesIn;
 		var baseSprite = baseSpriteIn;
@@ -164,6 +184,7 @@ var rw = new function(){
 		var active = false; //Bool for is piece in play
 		var visible=false; //Bool for if piece should have a div
 		// Display Entity Function, sets ent.base.active to true
+		/** @public */
 		var display = function (spriteIn, posXIn, posYIn, posZIn) {
 			this.baseSprite=spriteIn;
 			this.posX = posXIn;
@@ -480,17 +501,17 @@ var rw = new function(){
 			end:end
 		};
 	};
-	me.newEnt = function(ent) {
+	this.newEnt = function(ent) {
 		var curLength = me.ents.length;
 		me.ents[curLength] = ent;
 		return ent;
 	};
-	me.removeEnt = function(entNum) {
+	this.removeEnt = function(entNum) {
 		me.ents.splice(entNum, 1);
 		return this;
 	};
 	// Object and Ent Library, helper functions
-	me.lib = {
+	this.lib = {
 		ent : function(name, type, xDim, yDim) {
 			this.base = new me.ent(name, type, ' ', ' ', xDim, yDim);
 			this.hitMap = [[type,0,0,xDim,yDim]];
@@ -499,8 +520,11 @@ var rw = new function(){
 		}
 	};
 	// Map Entities
-	me.maps = {}; 
-	me.map = function(name, path, extention, xDim, yDim) {
+	this.maps = {}; 
+	/**
+	 * @constructor
+	 */
+	this.map = function(name, path, extention, xDim, yDim) {
 		this.name = name;
 		this.path = path;
 		this.extention = extention;
@@ -576,11 +600,11 @@ var rw = new function(){
 		}
 
 	}
-	me.newMap = function(name, map, ext, dimX, dimY) {
+	this.newMap = function(name, map, ext, dimX, dimY) {
 		me.maps[name] = new me.map(name, map, ext, dimX, dimY);
 		return me.maps[name];
 	}
-	me.removeMap = function(map) {
+	this.removeMap = function(map) {
 		if (me.maps[map]) {
 			delete me.maps[map];
 			return true;
@@ -590,15 +614,18 @@ var rw = new function(){
 		return this;
 	}
 	// Rule Entities
-	me.rules = {};
-	me.rule = function(active) {
+	this.rules = {};
+	/**
+	 * @constructor
+	 */
+	this.rule = function(active) {
 		this.active = active;
 	}
-	me.newRule = function(name, rule) {
+	this.newRule = function(name, rule) {
 		me.rules[name] = rule;
 		return this;
 	}
-	me.removeRule = function(rule) {
+	this.removeRule = function(rule) {
 		if (me.rules[rule]) {
 			delete me.rules[rule];
 			return true;
@@ -620,7 +647,7 @@ var rw = new function(){
 		return newCopy;
 	}
 
-	me.saveState = function(name) {
+	this.saveState = function(name) {
 		states[name] = {
 			ents : copy(rw.ents),
 			maps : copy(rw.maps),
@@ -628,7 +655,7 @@ var rw = new function(){
 		};
 		return this;
 	}
-	me.loadState = function(name) {
+	this.loadState = function(name) {
 		if (states[name]) {
 			me.ents = copy(states[name].ents);
 			me.maps = copy(states[name].maps);
@@ -651,23 +678,23 @@ var rw = new function(){
 		}
 		return this;
 	}
-	me.rmState = function(name) {
+	this.rmState = function(name) {
 		if (states[name]) delete states[name];
 		return this;
 	}
 	// At start and end function assignments
 	var doAtStart=null;
-	me.atStart=function(arg) {
+	this.atStart=function(arg) {
 		doAtStart=arg;
 		return this;
 	};
 	var doAtEnd=null;
-	me.atEnd=function(arg) {
+	this.atEnd=function(arg) {
 		doAtEnd=arg;
 		return this;
 	};
 	// Ajax function, durr
-	me.ajax = function(targ, func) {
+	this.ajax = function(targ, func) {
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET",targ,true);
 		xhr.overrideMimeType("application/json");
@@ -681,21 +708,21 @@ var rw = new function(){
 		return this;
 	}
 	// Inline function call function
-	me.func = function() {
+	this.func = function() {
 		return this;
 	}
 
 	//AUDIO!!! NEW!!! Needs work integrating all browsers
-	me.soundBank = {};
-	me.sounds = [];
-	me.playSound = function(sound) {
+	this.soundBank = {};
+	this.sounds = [];
+	this.playSound = function(sound) {
 		var len = me.sounds.length;
 		me.sounds[len] = document.createElement('audio');
 		me.sounds[len].src = me.soundBank[sound].src;
 		me.sounds[len].play();
 		return me;
 	}
-	me.newSound = function(name, src) {
+	this.newSound = function(name, src) {
 		me.soundBank[name] = new Audio(src);
 		return me;
 	}
@@ -703,7 +730,7 @@ var rw = new function(){
 	//Maybe Fixed now?
 	// Image pre-loader
 	var preImg = [];
-	me.using = function(path, ext, imgArray) {
+	this.using = function(path, ext, imgArray) {
 		var len = imgArray.length;
 		for (var x=0; x<len;x++) {
 			preImg[preImg.length] = new Image();
@@ -712,12 +739,12 @@ var rw = new function(){
 		return this;
 	}
 	// Changes Cursor
-	me.changeCursor = function(cursor) {
+	this.changeCursor = function(cursor) {
 		document.getElementById('board').style.cursor="url('"+resPath+cursor+"')";
 		return this;
 	}
 	// Browser-specific values, runs at init
-	me.browser = {
+	this.browser = {
 		check: function() {
 			var trans = function() {
 				var body = document.getElementsByTagName('body')[0];
@@ -740,7 +767,7 @@ var rw = new function(){
 	}
 	// Wipe Functions
 	// Removes all children of the board
-	me.wipeBoard = function() {
+	this.wipeBoard = function() {
 		var board = document.getElementById('board');
 		var total = board.childNodes.length;
 		for (var x=0; x<total; x++) {
@@ -748,24 +775,27 @@ var rw = new function(){
 		}
 		return this;
 	}
-	me.wipeEnts = function() {
+	this.wipeEnts = function() {
 		me.ents = [];
 		return this;
 	}
-	me.wipeMaps = function() {
+	this.wipeMaps = function() {
 		me.maps = {};
 		return this;
 	}
-	me.wipeRules = function() {
+	this.wipeRules = function() {
 		me.rules = {};
 		return this;
 	}
-	me.wipeAll = function() {
+	this.wipeAll = function() {
 		me.wipeBoard().wipeEnts().wipeMaps().wipeRules();
 		return this;
 	}
-	// Initilization Function
-	me.init = function(dimX, dimY, target) {
+	/**
+	 * Creates an instance of Rosewood
+	 * @returns rw
+	 */
+	this.init = function(dimX, dimY, target) {
 		me.browser.check();
 		var board = document.createElement('div');
 		board.id = 'board';
@@ -794,7 +824,7 @@ var rw = new function(){
 		return this;
 	}
 	// Start FUnction
-	me.start = function() {
+	this.start = function() {
 		if (runGame==false) {
 			runGame = true;
 			curT = setTimeout('rw.run()', speed);
@@ -802,7 +832,7 @@ var rw = new function(){
 		return this;
 	}
 	// Stop Function
-	me.stop = function() {
+	this.stop = function() {
 		runGame = false;
 		return this;
 	}
@@ -922,7 +952,7 @@ var rw = new function(){
 		return hit;
 	}
 	// RunLoop Function
-	me.run = function() {
+	this.run = function() {
 		var startTime = new Date();
 		for (var x=0; x<me.sounds.length; x++) {
 			if (me.sounds[x].ended) {
