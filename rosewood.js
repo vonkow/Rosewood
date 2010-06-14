@@ -157,35 +157,34 @@ var rw = new function(){
 	this.ents = []; 
 	/** @class */
 	this.ent = function(nameIn, spritesIn, baseSpriteIn, spriteExtIn, widthIn, heightIn) {
-		var name = nameIn;
-		var sprites = spritesIn;
-		var baseSprite = baseSpriteIn;
-		var spriteExt = spriteExtIn;
-		var width = widthIn;
-		var height = heightIn;
-		var posX = 0;
-		var posY = 0;
-		var posZ = 0;
-		var posX1 = function() {
+		this.name = nameIn;
+		this.sprites = spritesIn;
+		this.baseSprite = baseSpriteIn;
+		this.spriteExt = spriteExtIn;
+		this.width = widthIn;
+		this.height = heightIn;
+		this.posX = 0;
+		this.posY = 0;
+		this.posZ = 0;
+		this.posX1 = function() {
 			return this.posX;
 		}
-		var posY1 = function() {
+		this.posY1 = function() {
 			return this.posY;
 		}
-		var posX2 = function() {
+		this.posX2 = function() {
 			return this.posX+this.width;
 		}
-		var posY2 = function() {
+		this.posY2 = function() {
 			return this.posY+this.height;
 		}
-		var velX = 0;
-		var velY = 0;
-		var velZ = 0;
-		var active = false; //Bool for is piece in play
-		var visible=false; //Bool for if piece should have a div
+		this.velX = 0;
+		this.velY = 0;
+		this.velZ = 0;
+		this.active = false; //Bool for is piece in play
+		this.visible=false; //Bool for if piece should have a div
 		// Display Entity Function, sets ent.base.active to true
-		/** @public */
-		var display = function (spriteIn, posXIn, posYIn, posZIn) {
+		this.display = function (spriteIn, posXIn, posYIn, posZIn) {
 			this.baseSprite=spriteIn;
 			this.posX = posXIn;
 			this.posY = posYIn;
@@ -219,7 +218,7 @@ var rw = new function(){
 			};
 			return this;
 		};
-		var hide = function() {
+		this.hide = function() {
 			if (document.getElementById('ent_'+this.name)) {
 				var dying = document.getElementById('ent_'+this.name);
 				dying.parentNode.removeChild(dying);
@@ -228,7 +227,7 @@ var rw = new function(){
 			this.visible=false;
 			return this;
 		};
-		var changeSprite = function(sprite) {
+		this.changeSprite = function(sprite) {
 			this.baseSprite=sprite;
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
@@ -248,13 +247,13 @@ var rw = new function(){
 			};
 			return this;
 		};
-		var shiftSprite=function(x,y) {
+		this.shiftSprite=function(x,y) {
 			var entDiv=document.getElementById('ent_'+this.name);
 			if (entDiv) {
 				entDiv.style.background="url('"+resPath+this.sprites+"/"+this.baseSprite+"."+this.spriteExt+"') "+x+"px "+y+"px no-repeat";
 			};
 		};
-		var move = function(x,y,z) {
+		this.move = function(x,y,z) {
 			this.velX += x;
 			this.velY += y;
 			if (z) {
@@ -264,10 +263,10 @@ var rw = new function(){
 			}
 			return this;
 		}
-		var curMove = function() {
+		this.curMove = function() {
 			return [this.velX, this.velY, this.velZ];
 		}
-		var wipeMove = function(axis) {
+		this.wipeMove = function(axis) {
 			if (axis) {
 				if (axis=='x') {
 					this.velX = 0;
@@ -283,7 +282,7 @@ var rw = new function(){
 			}
 			return this;
 		}
-		var moveTo = function(x, y, z) {
+		this.moveTo = function(x, y, z) {
 			this.posX = x;
 			this.posY = y;
 			if (z||z==0) {
@@ -293,14 +292,14 @@ var rw = new function(){
 			}
 			return this;
 		}
-		var rotate = function(deg) {
+		this.rotate = function(deg) {
 			var entDiv = document.getElementById('ent_'+this.name);
 			if (entDiv) {
 				entDiv.style[me.browser.trans_name] = 'rotate('+deg+'deg)';
 			}
 			return this;
 		}
-		var rotMap=function(hitMap, angle) {
+		this.rotMap=function(hitMap, angle) {
 			var centerP = [this.width/2,this.height/2];
 			var newMap = [hitMap[0],hitMap[1]];
 			var pt1 = rotatePoint([hitMap[2],hitMap[3]],centerP,angle);
@@ -314,21 +313,21 @@ var rw = new function(){
 			newMap.push(pt3[1]);
 			return newMap;
 		};
-		var getTileX=function() {
+		this.getTileX=function() {
 			if (tiles) {
 				return Math.floor(this.posY/tileY);
 			} else {
 				return false;
 			};
 		};
-		var getTileY=function() {
+		this.getTileY=function() {
 			if (tiles) {
 				return Math.floor(this.posY/tileY);
 			} else {
 				return false;
 			};
 		};
-		var clicked = function() {
+		this.clicked = function() {
 			if (me.mouse.down()) {
 				if ((me.mouse.x()>this.posX1())&&(me.mouse.x()<this.posX2())) {
 					if ((me.mouse.y()>this.posY1())&&(me.mouse.y()<this.posY2())) {
@@ -338,14 +337,14 @@ var rw = new function(){
 			};
 			return false;
 		};
-		var attach = function(content) {
+		this.attach = function(content) {
 			var entDiv=document.getElementById('ent_'+this.name);
 			if (entDiv) {
 				entDiv.appendChild(content);
 			};
 			return this;
 		};
-		var detach = function() {
+		this.detach = function() {
 			var ele = document.getElementById('ent_'+this.name);
 			if (ele) {
 				var tot = ele.childNodes.length;
@@ -356,7 +355,7 @@ var rw = new function(){
 			return this;
 		};
 		var children=[];
-		var addChild=function(name,g,x,y,z,w,h,ox,oy) {
+		this.addChild=function(name,g,x,y,z,w,h,ox,oy) {
 			var oX =(ox) ? ox : 0;
 			var oY =(oy) ? oy : 0;
 			children.push([name,g,x,y,z,w,h,oX,oY]);
@@ -408,7 +407,7 @@ var rw = new function(){
 				}
 			}
 		};
-		var moveChild=function(child,x,y,z) {
+		this.moveChild=function(child,x,y,z) {
 			var theChild=getChild(this,child);
 			if (theChild) {
 				theChild[2]=x;
@@ -418,7 +417,7 @@ var rw = new function(){
 			};
 			return this
 		};
-		var resizeChild=function(child,w,h) {
+		this.resizeChild=function(child,w,h) {
 			var theChild=getChild(this,child);
 			if (theChild) {
 				theChild[5]=w;
@@ -427,7 +426,7 @@ var rw = new function(){
 			};
 			return this
 		};
-		var changeChild=function(child,g,ox,oy) {
+		this.changeChild=function(child,g,ox,oy) {
 			var theChild=getChild(this,child);
 			if (theChild) {
 				theChild[1] = g;
@@ -437,7 +436,7 @@ var rw = new function(){
 			};
 			return this
 		};
-		var removeChild=function(child) {
+		this.removeChild=function(child) {
 			if (typeof(child)=='number') {
 				var childId=child
 			} else {
@@ -455,50 +454,8 @@ var rw = new function(){
 			};
 			return this
 		};
-		var end = function() {
+		this.end = function() {
 			return me
-		};
-		return {
-			name:name,
-			sprites:sprites,
-			baseSprite:baseSprite,
-			spriteExt:spriteExt,
-			width:width,
-			height:height,
-			posX:posX,
-			posY:posY,
-			posZ:posZ,
-			posX1:posX1,
-			posY1:posY1,
-			posX2:posX2,
-			posY2:posY2,
-			velX:velX,
-			velY:velY,
-			velZ:velZ,
-			active:active,
-			visible:visible,
-			display:display,
-			hide:hide,
-			changeSprite:changeSprite,
-			shiftSprite:shiftSprite,
-			move:move,
-			curMove:curMove,
-			wipeMove:wipeMove,
-			moveTo:moveTo,
-			rotate:rotate,
-			rotMap:rotMap,
-			getTileX:getTileX,
-			getTileY:getTileY,
-			clicked:clicked,
-			attach:attach,
-			detach:detach,
-			children:children,
-			addChild:addChild,
-			moveChild:moveChild,
-			resizeChild:resizeChild,
-			changeChild:changeChild,
-			removeChild:removeChild,
-			end:end
 		};
 	};
 	this.newEnt = function(ent) {

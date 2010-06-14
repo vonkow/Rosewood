@@ -16,7 +16,7 @@ var badLuckCountdown = 0;
 var endGame = false;
 
 var hero = function(name) {
-	this.base = rw.ent(name, 'hero', 'd1', 'gif', 30, 30);
+	this.base = new rw.ent(name, 'hero', 'd1', 'gif', 30, 30);
 	this.heading = 'd';
 	this.update = function() {
 		heroX = this.base.posX1();
@@ -72,7 +72,7 @@ var hero = function(name) {
 }
 
 var eye = function(name, heading) {
-	this.base = rw.ent(name, 'eye', heading+1, 'gif', 30, 30);
+	this.base = new rw.ent(name, 'eye', heading+1, 'gif', 30, 30);
 	this.heading = heading;
 	this.update = function() {
 		if ((this.base.posX1()<0)||(this.base.posX2()>480)||(this.base.posY1()<0)||(this.base.posY2()>480)) {
@@ -162,7 +162,7 @@ var eye = function(name, heading) {
 }
 
 var item = function() {
-	this.base = rw.ent('item'+itemCounter++, 'items', 'question', 'gif', 30, 30);
+	this.base = new rw.ent('item'+itemCounter++, 'items', 'question', 'gif', 30, 30);
 	this.switchCounter = 0;
 	this.lifeCounter = 200;
 	this.counter = Math.round(Math.random()*3);
@@ -239,7 +239,7 @@ var item = function() {
 }
 
 var fatimaNotification = function() {
-	this.base = rw.ent('fatimanotification'+itemCounter, 'notifications', 'fatima', 'gif', 90, 30);
+	this.base = new rw.ent('fatimanotification'+itemCounter, 'notifications', 'fatima', 'gif', 90, 30);
 	this.update = function() {
 		if (!fatima) {
 			this.base.hide();
@@ -260,7 +260,7 @@ var fatimaTimer = function() {
 }
 
 var blindEyeNotification = function() {
-	this.base = rw.ent('blindeyenotification'+itemCounter, 'notifications', 'blindeye', 'gif', 90, 30);
+	this.base = new rw.ent('blindeyenotification'+itemCounter, 'notifications', 'blindeye', 'gif', 90, 30);
 	this.update = function() {
 		if (!blind) {
 			this.base.hide();
@@ -281,7 +281,7 @@ var blindEyeTimer = function() {
 }
 
 var slowNotification = function() {
-	this.base = rw.ent('slownotification'+itemCounter, 'notifications', 'slow', 'gif', 90, 30);
+	this.base = new rw.ent('slownotification'+itemCounter, 'notifications', 'slow', 'gif', 90, 30);
 	this.update = function () {
 		if (!slow) {
 			this.base.hide();
@@ -302,7 +302,7 @@ var slowTimer = function() {
 }
 
 var badLuckNotification = function() {
-	this.base = rw.ent('badlucknotification'+itemCounter, 'notifications', 'badluck', 'gif', 90, 30);
+	this.base = new rw.ent('badlucknotification'+itemCounter, 'notifications', 'badluck', 'gif', 90, 30);
 	this.update = function() {
 		if (!badLuck) {
 			this.base.hide();
@@ -323,7 +323,7 @@ var badLuckTimer = function() {
 }
 
 var deadEyes=function() {
-	this.base=rw.ent('eyecounter','','','',100,50);
+	this.base= new rw.ent('eyecounter','','','',100,50);
 	this.update=function() {
 		this.base.detach();
 		this.base.attach(document.createTextNode('Score: '+eyesDead));
