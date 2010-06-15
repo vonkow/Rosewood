@@ -17,11 +17,6 @@ var rw = new function(){
 	var curT = 0; 
 	// RunLoop global Timer
 	var globT = 0; 
-<<<<<<< HEAD
-	me.getTime = function(type) {
-		return (type=='g') ? curT+globT : curT
-	};
-=======
 	/**
 	 * Gets the current or global time, in frames.<br>
 	 * Current time is the number of frames that have elapsed since the last call to rw.start()
@@ -33,19 +28,10 @@ var rw = new function(){
 	this.getTime = function(type) {
 		return (type=='g') ? curT+globT : curT;
 	}
->>>>>>> docs
 	var currentLag = 0;
 	// Golbal gameboard dimensions
 	var X = 0;
 	var Y = 0;
-<<<<<<< HEAD
-	me.Xdim = function() {
-		return X
-	};
-	me.Ydim = function() {
-		return Y
-	};
-=======
 	/**
 	 * Gets width of game board.
 	 * @returns width of board, in pixels
@@ -60,7 +46,6 @@ var rw = new function(){
 	this.Ydim = function() {
 		return Y;
 	}
->>>>>>> docs
 	// Game speed settings
 	var speed = 50;
 	/**
@@ -70,16 +55,6 @@ var rw = new function(){
 	 */
 	this.setFPS = function(fps) {
 		speed = 1000/parseInt(fps);
-<<<<<<< HEAD
-		return this
-	};
-	me.getFPS = function() {
-		return 1000/speed
-	};
-	me.getLag = function() {
-		return currentLag
-	};
-=======
 		return this;
 	}
 	/**
@@ -97,7 +72,6 @@ var rw = new function(){
 	this.getLag = function() {
 		return currentLag;
 	}
->>>>>>> docs
 	// Resource Path Settings
 	var resPath = 'sprites/';
 	/**
@@ -108,13 +82,6 @@ var rw = new function(){
 	 */
 	this.setPath = function(newPath) {
 		resPath = newPath;
-<<<<<<< HEAD
-		return this
-	};
-	me.getPath = function() {
-		return resPath
-	};
-=======
 		return this;
 	}
 	/**
@@ -124,7 +91,6 @@ var rw = new function(){
 	this.getPath = function() {
 		return resPath;
 	}
->>>>>>> docs
 	// Tile settings
 	var tiles = false;
 	var tileX = 0;
@@ -139,11 +105,6 @@ var rw = new function(){
 		tiles = true;
 		tileX = xDim;
 		tileY = yDim;
-<<<<<<< HEAD
-		return this
-	};
-	me.tilesOff = function() {
-=======
 		return this;
 	}
 	/**
@@ -151,7 +112,6 @@ var rw = new function(){
 	 * @returns rw
 	 */
 	this.tilesOff = function() {
->>>>>>> docs
 		tiles = false;
 		tileX = 0;
 		tileY = 0;
