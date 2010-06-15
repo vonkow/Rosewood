@@ -298,6 +298,7 @@ var rw = new function(){
 		};
 		/**
 		 * Removes ent from game board.
+		 * Sets ent.active & ent.visible to false.
 		 */
 		this.hide = function() {
 			if (document.getElementById('ent_'+this.name)) {
