@@ -301,6 +301,11 @@ var rw = new function(){
 			this.visible=false;
 			return this;
 		};
+		/**
+		  * Changes the sprite used to display an ent.
+		  * @param sprite File name of new sprite. <br>
+		  * @returns ent.base
+		  */
 		this.changeSprite = function(sprite) {
 			this.baseSprite=sprite;
 			var entDiv = document.getElementById('ent_'+this.name);
