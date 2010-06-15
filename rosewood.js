@@ -160,7 +160,14 @@ var rw = new function(){
 	var mouseX = 0;
 	var mouseY = 0;
 	var mouseDown = false;
+	/**
+	 * Mouse position and click status container.
+	 */
 	this.mouse = {
+		/**
+		 * Gets the mouse's current X position, in pixels.
+		 * @returns X position of mouse, in pixels.
+		 */
 		x: function() {
 			return mouseX
 		},
@@ -788,6 +795,11 @@ var rw = new function(){
 		me.sounds[len].play();
 		return me;
 	}
+	/** 
+	 * Adds a new sound to rw.soundBank.
+	 * @param name Name of new sound.
+	 * @param src Filepath to sound file. 
+	 */
 	this.newSound = function(name, src) {
 		me.soundBank[name] = new Audio(src);
 		return me;
