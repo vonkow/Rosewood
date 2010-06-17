@@ -234,7 +234,7 @@ var bman = function(name, typeClass, heading) {
 }
 
 function endGameRule(active) {
-	this.base = new rw.rule(true);
+	this.base = new rw.rule(true,3);
 	this.dead = false;
 	this.rule = function() {
 		if (this.dead==true) {
@@ -245,7 +245,7 @@ function endGameRule(active) {
 }
 
 function mapRule() {
-	this.base = new rw.rule(true);
+	this.base = new rw.rule(true,2);
 	this.currentOffset = 0;
 	this.forward = true;
 	this.rule = function() {
