@@ -673,22 +673,30 @@ var rw = new function(){
 	}
 	// Rule Entities
 	this.rules = {};
+	this.ruleList = [[],[],[],[]];
 	/**
 	 * @class
 	 */
-	this.rule = function(active) {
+	this.rule = function(active, pos) {
 		this.active = active;
+		this.pos = pos;
 	}
 	this.newRule = function(name, rule) {
 		me.rules[name] = rule;
+		me.ruleList[rule.base.pos].push(name);
 		return this;
 	}
 	this.removeRule = function(rule) {
 		if (me.rules[rule]) {
+			var pos = me.rules[rule].base.pos;
+			var list = me.ruleList[pos];
+			for (var x=0, len=list.length; x<len; x++) {
+				if (list[x]==rule) {
+					list.splice(x,1);
+					break;
+				};
+			};
 			delete me.rules[rule];
-			return true;
-		} else {
-			return false;
 		}
 		return this;
 	}
@@ -1076,6 +1084,12 @@ var rw = new function(){
 			doAtStart();
 			doAtStart=null;
 		}
+		// Rule position 0, pre-update loop
+		for (var x=0, l=me.ruleList[0].length; x<l; x++) {
+			if (me.rules[me.ruleList[0][x]].base.active) {
+				me.rules[me.ruleList[0][x]].rule();
+			};
+		};
 		var toBeRemoved = [];
 		var len = me.ents.length;
 		// Update Loop
@@ -1118,6 +1132,12 @@ var rw = new function(){
 				}
 			}
 		}
+		// Rule position 1, pre-collision loop
+		for (var x=0, l=me.ruleList[1].length; x<l; x++) {
+			if (me.rules[me.ruleList[1][x]].base.active) {
+				me.rules[me.ruleList[1][x]].rule();
+			};
+		};
 		// Collision Loop
 		var cols = [];
 		// For each ent
@@ -1324,12 +1344,18 @@ var rw = new function(){
 				me.removeEnt(killThese[x]);
 			}
 		}
+		// Rule position 2, pre-redraw loop
+		for (var x=0, l=me.ruleList[2].length; x<l; x++) {
+			if (me.rules[me.ruleList[2][x]].base.active) {
+				me.rules[me.ruleList[2][x]].rule();
+			};
+		};
 		// Run Through all rules;
-		for (var x in me.rules) {
+		/*for (var x in me.rules) {
 			if (me.rules[x].base.active==true) {
 				me.rules[x].rule();
 			}
-		}
+		}*/
 		// Run Through all ents and update position
 		for (var x=0; x<me.ents.length; x++) {
 			me.ents[x].base.posX += me.ents[x].base.velX;
@@ -1343,6 +1369,12 @@ var rw = new function(){
 			}
 			me.ents[x].base.wipeMove();
 		}
+		// Rule position 3, end of frame
+		for (var x=0, l=me.ruleList[3].length; x<l; x++) {
+			if (me.rules[me.ruleList[3][x]].base.active) {
+				me.rules[me.ruleList[3][x]].rule();
+			};
+		};
 		// At end function, if any
 		if (typeof(doAtEnd)=='function') {
 			doAtEnd();

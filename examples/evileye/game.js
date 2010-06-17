@@ -249,7 +249,7 @@ var fatimaNotification = function() {
 }
 
 var fatimaTimer = function() {
-	this.base = new rw.rule(true);
+	this.base = new rw.rule(true,2);
 	this.rule = function() {
 		if (fatimaCountdown>0) {
 			fatimaCountdown--;
@@ -270,7 +270,7 @@ var blindEyeNotification = function() {
 }
 
 var blindEyeTimer = function() {
-	this.base = new rw.rule(true);
+	this.base = new rw.rule(true,2);
 	this.rule = function() {
 		if (blindEyeCountdown>0) {
 			blindEyeCountdown--;
@@ -291,7 +291,7 @@ var slowNotification = function() {
 }
 
 var slowTimer = function() {
-	this.base = new rw.rule(true);
+	this.base = new rw.rule(true,2);
 	this.rule = function() {
 		if (slowCountdown>0) {
 			slowCountdown--;
@@ -312,7 +312,7 @@ var badLuckNotification = function() {
 }
 
 var badLuckTimer = function() {
-	this.base = new rw.rule(true);
+	this.base = new rw.rule(true,2);
 	this.rule = function() {
 		if (badLuckCountdown>0) {
 			badLuckCountdown--;
@@ -331,7 +331,7 @@ var deadEyes=function() {
 }
 
 var resetGame = function() {
-	this.base = new rw.rule(true);
+	this.base = new rw.rule(true,3);
 	this.rule = function() {
 		if (endGame) {
 			endGame = false;
@@ -394,7 +394,7 @@ var eyeGenerator = function() {
 }
 
 var makeEyes = function() {
-	this.base = new rw.rule(true);
+	this.base = new rw.rule(true,0);
 	this.counter = 20;
 	this.rule = function() {
 		if (this.counter>0) {
@@ -407,7 +407,7 @@ var makeEyes = function() {
 }
 
 var dropItem = function() {
-	this.base = new rw.rule(true);
+	this.base = new rw.rule(true,0);
 	this.rule = function() {
 		if (Math.random()>0.995) {
 			var newTiles = pickTile()
