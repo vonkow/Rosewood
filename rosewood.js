@@ -209,7 +209,12 @@ var rw = new function(){
 	}
 	// Game Entities
 	this.ents = []; 
-	/** @class */
+	/**
+	 * @class 
+	 * Base constructor for game entities (ents). <br>
+	 * Every ent must be an object with a new rw.ent assigned to a property named 'base'. <br>
+	 * In addition, ents must also have a funtion method named 'update' (though it may be an empty function). <br>
+	 */
 	this.ent = function(nameIn, spritesIn, baseSpriteIn, spriteExtIn, widthIn, heightIn) {
 		this.name = nameIn;
 		this.sprites = spritesIn;
@@ -286,9 +291,9 @@ var rw = new function(){
 				newEnt.style.left = this.posX+'px';
 				newEnt.style.top = this.posY+'px';
 				document.getElementById('board').appendChild(newEnt);
-				if (children.length>0) {
-					for (var x=0;x<children.length;x++) {
-						blitChildDiv(this,children[x])
+				if (this.children.length>0) {
+					for (var x=0;x<this.children.length;x++) {
+						blitChildDiv(this,this.children[x])
 					}
 				}
 			} else {
@@ -299,6 +304,7 @@ var rw = new function(){
 		/**
 		 * Removes ent from game board.
 		 * Sets ent.active & ent.visible to false.
+		 * @returns ent.base
 		 */
 		this.hide = function() {
 			if (document.getElementById('ent_'+this.name)) {
@@ -340,6 +346,27 @@ var rw = new function(){
 				entDiv.style.background="url('"+resPath+this.sprites+"/"+this.baseSprite+"."+this.spriteExt+"') "+x+"px "+y+"px no-repeat";
 			};
 		};
+		this.shifts={};
+		this.addShift=function(name,x,y) {
+			this.shifts[name]=[x,y];
+			return this;
+		};
+		this.shiftTo=function(name) {
+			if (name in this.shifts) {
+				this.shiftSprite(this.shifts[name][0],this.shifts[name][1]);
+			};
+		};
+		/**
+		 * Moves ent specified distance. <br>
+		 * <strong>Note:</strong> This function is additive, subsequent calls within a single frame
+		 * will be summed as a single velocity value before being applied at the end of the frame.
+		 * To reset velocity mid-frame, use wipeMove(). 
+		 * @param x Horizontal distance of move.
+		 * @param y Vertical distance of move.
+		 * @param z Optional: Distance of z-index (depth) movement. <br>
+		 * <strong>Note:</strong> Will default to y if unspecified.
+		 * @returns ent.base
+		 */
 		this.move = function(x,y,z) {
 			this.velX += x;
 			this.velY += y;
@@ -350,6 +377,10 @@ var rw = new function(){
 			}
 			return this;
 		}
+		/**
+		 * Gets ent's current velocity, or sum total of movement within the current frame.
+		 * @returns An array: [x velocity, y velocity, z velocity]
+		 */
 		this.curMove = function() {
 			return [this.velX, this.velY, this.velZ];
 		}
@@ -369,6 +400,14 @@ var rw = new function(){
 			}
 			return this;
 		}
+		/**
+		 * Immediately moves ent to specified absolute position on the board. <br>
+		 * <strong>Note:</strong> This action occurs instantaneously, unlike move()
+		 * @param x Absolute horizontal position to place ent.
+		 * @param y Absolute vertical position to place ent.
+		 * @param z Absolute z-index, or depth position to place ent.
+		 * @returns ent.base
+		 */
 		this.moveTo = function(x, y, z) {
 			this.posX = x;
 			this.posY = y;
@@ -441,14 +480,14 @@ var rw = new function(){
 			};
 			return this;
 		};
-		var children=[];
+		this. children=[];
 		this.addChild=function(name,g,x,y,z,w,h,ox,oy) {
 			var oX =(ox) ? ox : 0;
 			var oY =(oy) ? oy : 0;
-			children.push([name,g,x,y,z,w,h,oX,oY]);
+			this.children.push([name,g,x,y,z,w,h,oX,oY]);
 			var entDiv=document.getElementById('ent_'+this.name);
 			if (entDiv) {
-				blitChildDiv(this,children[children.length-1])
+				blitChildDiv(this,this.children[this.children.length-1])
 			};
 			return this
 		};
@@ -553,11 +592,12 @@ var rw = new function(){
 	this.newEnt = function(ent) {
 		var curLength = me.ents.length;
 		me.ents[curLength] = ent;
+		if (ent.init) ent.init();
 		return ent;
 	};
 	/**
 	 * Removes an ent from rw.ents. <br>
-	 * <strong>CAUTION:</strong> Don't use unless you know what you're ding, can cause lots of havoc if impropery called. <br>
+	 * <strong>CAUTION:</strong> Don't use unless you know what you're doing, can cause lots of havoc if impropery called. <br>
 	 * To remove an ent without creating conflicts, have ent.update(), ent.inactive() or ent.gotHit() return false.
 	 * @param entNum Absolute position of ent to be removed in rw.ents array.
 	 * @returns rw
