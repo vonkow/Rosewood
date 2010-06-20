@@ -928,6 +928,7 @@ var rw = new function(){
 	 */
 	this.wipeRules = function() {
 		me.rules = {};
+		me.ruleList = [[],[],[],[]];
 		return this;
 	}
 	/**
