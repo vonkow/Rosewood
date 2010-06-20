@@ -12,18 +12,6 @@ Better Server Tools
 
 ------POSSIBLE CHANGES---------------------------------------------------------------------------
 
-Make rw.ent return ent.base as a normal object, as opposed to the standard new rw.ent() method,
-this looks like it would be a lot faster, but then ent.base wouldn't be typeof "rw.ent"
-
-Possibly prepend "ent_" to all ent.base.names, for (marginally) faster runtime
-
-Ent Groups? Or, fuck that, that's what rules are for.
-
-Leading us to:
-	Split rules into three categories? Before ent update loop, before ent collision loop and normal rule time?
-
-find mouse pos based on "board" div's location - You would think this wouldn't be so hard...
-
 Node.js server support someday soon
 
 Add audio mixing support
@@ -32,7 +20,3 @@ Add audio mixing support
 
 Sound support died after using a bunch of bombs in bman clone, in chrome.
 
-It appears that rw.key(key) will return false for a key that is pressed every few frames
-	this has happened on my machine in FF and Chrome
-	it seems to happen when ent.base.move is used, as it doesn't show up in the bman game,
-	which uses the old ent.base.velX/velY tricks for setting vel.
