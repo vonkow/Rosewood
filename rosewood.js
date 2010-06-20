@@ -163,32 +163,40 @@ var rw = new function(){
 	/**
 	 * Mouse position and click status container.
 	 */
-	this.mouse = {
+	this.mouse = new function() {
 		/**
 		 * Gets the mouse's current X position, in pixels.
 		 * @returns X position of mouse, in pixels.
 		 */
-		x: function() {
-			return mouseX
+		this.x = function() {
+			return mouseX;
 		},
-		y: function() {
-			return mouseY
+		this.y = function() {
+			return mouseY;
 		},
-		down: function() {
-			return mouseDown
+		this.down = function() {
+			return mouseDown;
 		}
 	};
 	var mousePos = function(e) {
-		if (e) {
+		//if (e) {
 			// Like a normal browser...
-			mouseX= e.pageX;
-			mouseY= e.pageY;
-		} else {
+			//mouseX= e.pageX;
+			//mouseY= e.pageY;
+		//} else {
 			// THIS IS WHY WE CAN'T HAVE PRETTY THINGS IE!!!
-			var e = window.event;
-			me.mouse.x = e.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-			me.mouse.y = e.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight);
-		}
+			//var e = window.event;
+			//me.mouse.x = e.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+			//me.mouse.y = e.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight);
+		//}
+		if (!e) var e=window.event;
+		if (e.offsetX) {
+			mouseX=e.offsetX;
+			mouseY=e.offsetY;
+		} else {
+			mouseX=e.layerX;
+			mouseY=e.layerY;
+		};
 	}
 	var mouseDown = function(e) {
 		if (!e) var e = window.event;
@@ -285,7 +293,6 @@ var rw = new function(){
 				if (spriteIn!=' ') {
 					newEnt.style.backgroundImage = "url('"+resPath+this.sprites+"/"+spriteIn+"."+this.spriteExt+"')";
 					newEnt.style.backgroundRepeat = 'no-repeat';
-					//newEnt.style.backgroundPosition = 'center';
 				};
 				newEnt.style.position = 'absolute';
 				newEnt.style.left = this.posX+'px';
@@ -347,14 +354,27 @@ var rw = new function(){
 			};
 		};
 		this.shifts={};
+		/**
+		 * Adds a named sprite shift to ent.base.shifts.
+		 * @param name Name of new shift.
+		 * @param x Horizontal position of new shift.
+		 * @param y Vertical position of new shift.
+		 * @returns ent.base
+		 */
 		this.addShift=function(name,x,y) {
 			this.shifts[name]=[x,y];
 			return this;
 		};
+		/**
+		 * Shifts ent's sprite to named sprite shift.
+		 * @param name Name of sprite shift.
+		 * @returns ent.base
+		 */
 		this.shiftTo=function(name) {
 			if (name in this.shifts) {
 				this.shiftSprite(this.shifts[name][0],this.shifts[name][1]);
 			};
+			return this;
 		};
 		/**
 		 * Moves ent specified distance. <br>
@@ -384,6 +404,11 @@ var rw = new function(){
 		this.curMove = function() {
 			return [this.velX, this.velY, this.velZ];
 		}
+		/**
+		 * Resets ent's current velocity to 0 (velocity is the sum total of all calls to ent.base.move() thus far within the current frame).
+		 * @param axis Optional: Can be set to 'x', 'y', or 'z' to wipe only a single axis of movement.
+		 * @returns ent.base
+		 */
 		this.wipeMove = function(axis) {
 			if (axis) {
 				if (axis=='x') {
@@ -402,7 +427,7 @@ var rw = new function(){
 		}
 		/**
 		 * Immediately moves ent to specified absolute position on the board. <br>
-		 * <strong>Note:</strong> This action occurs instantaneously, unlike move()
+		 * <strong>Note:</strong> Unlike ent.base.move() this action occurs instantaneously and does not effect velocity.
 		 * @param x Absolute horizontal position to place ent.
 		 * @param y Absolute vertical position to place ent.
 		 * @param z Absolute z-index, or depth position to place ent.
@@ -956,7 +981,6 @@ var rw = new function(){
 		board.style.width = dimX+'px';
 		board.style.height = dimY+'px';
 		board.style.overflow = 'hidden';
-		//board.style.border = '1px solid black';
 		board.style.position = "relative";
 		if (target) {
 			document.getElementById(target).appendChild(board);
@@ -970,9 +994,12 @@ var rw = new function(){
 			window.document.attachEvent("onkeydown", keyDown);
 			window.document.attachEvent("onkeyup", keyUp);
 		}
-		document.onmousemove = mousePos;
-		document.onmousedown = mouseDown;
-		document.onmouseup = mouseUp;
+		//document.onmousemove = mousePos;
+		//document.onmousedown = mouseDown;
+		//document.onmouseup = mouseUp;
+		board.onmousemove = mousePos;
+		board.onmousedown = mouseDown;
+		board.onmouseup = mouseUp;
 		return this;
 	}
 	/**
