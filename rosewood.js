@@ -768,8 +768,10 @@ var rw = new function(){
 	var copy = function(obj,par) {
 		var newCopy = (obj instanceof Array) ? [] : {};
 		for (prop in obj) {
+			// Don't add ent.base.ent, as this gets all loopy (in the infinite sense)
+			// rw.loadState() handles re-adding ent.base.ent on state load.
 			if (prop=='ent') {
-				newCopy[prop]=par;
+				newCopy[prop]='';
 			} else {
 				if (obj[prop] && typeof obj[prop] == 'object') {
 					newCopy[prop] = copy(obj[prop],newCopy);
@@ -816,6 +818,7 @@ var rw = new function(){
 			}
 			var len = me.ents.length;
 			for (var x=0;x<len;x++) {
+				me.ents[x].base.ent = me.ents[x];
 				if (me.ents[x].base.active==true) {
 					me.ents[x].base.display(
 						me.ents[x].base.baseSprite,
