@@ -431,7 +431,5 @@ var startGame = function() {
 		.base.display('d1',240,240,240).end()
 	.newEnt(new deadEyes())
 		.base.display('',380,0,0).end()
-	.start().func(alert('hi1'))
-	.saveState('init')
-	.func(alert('hi2'));
+	.start().saveState('init');
 }
