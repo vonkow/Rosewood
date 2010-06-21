@@ -1,5 +1,5 @@
 var lagTimer = function() {
-	this.base = new rw.ent('lag', '','','',150,20);
+	this.base = new rw.ent(this,'lag', '','','',150,20);
 	this.update = function() {
 		this.base.detach();
 		this.base.attach(document.createTextNode('Lag: '+rw.getLag()+'(ms)'));
@@ -8,13 +8,13 @@ var lagTimer = function() {
 
 var wallCount=0;
 var wall=function(type,x,y) {
-	this.base = new rw.ent('wall_'+wallCount++,'','','',x,y);
+	this.base = new rw.ent(this,'wall_'+wallCount++,'','','',x,y);
 	this.update=function() {};
 	this.hitMap=[[type,['ball'],0,0,x,y]];
 };
 
 var triWall = function(dir) {
-	this.base = new rw.ent('tri','','blank','',100,100);
+	this.base = new rw.ent(this,'tri','','blank','',100,100);
 	this.update=function() {};
 	if (dir=='bl') this.hitMap=[['tri',['ball'],0,0,0,100,100,100]];
 	if (dir=='tl') this.hitMap=[['tri',['ball'],0,0,100,0,0,100]];
@@ -23,7 +23,7 @@ var triWall = function(dir) {
 }
 
 var ball = function(name, dirX, dirY) {
-	this.base = new rw.ent(name, 'ball', 'ball', 'png', 40, 40);
+	this.base = new rw.ent(this,name, 'ball', 'ball', 'png', 40, 40);
 	this.dirX = dirX;
 	this.dirY = dirY;
 	this.hit = false;
