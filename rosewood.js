@@ -772,7 +772,7 @@ var rw = new function(){
 				newCopy[prop]=par;
 			} else {
 				if (obj[prop] && typeof obj[prop] == 'object') {
-					newCopy[prop] = copy(obj[prop],obj);
+					newCopy[prop] = copy(obj[prop],newCopy);
 				} else {
 					newCopy[prop] = obj[prop];
 				}
