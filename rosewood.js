@@ -55,7 +55,7 @@ var rw = new function(){
 	 */
 	this.setFPS = function(fps) {
 		speed = 1000/parseInt(fps);
-		return this;
+		return me;
 	}
 	/**
 	 * Gets game speed
@@ -82,7 +82,7 @@ var rw = new function(){
 	 */
 	this.setPath = function(newPath) {
 		resPath = newPath;
-		return this;
+		return me;
 	}
 	/**
 	 * Gets current resource path for images, sounds, etc.
@@ -105,7 +105,7 @@ var rw = new function(){
 		tiles = true;
 		tileX = xDim;
 		tileY = yDim;
-		return this;
+		return me;
 	}
 	/**
 	 * Turns off support for tiles.
@@ -115,7 +115,7 @@ var rw = new function(){
 		tiles = false;
 		tileX = 0;
 		tileY = 0;
-		return this
+		return me
 	};
 	//KeyDown/Up settings
 	var keyChange = false; 
@@ -223,7 +223,8 @@ var rw = new function(){
 	 * Every ent must be an object with a new rw.ent assigned to a property named 'base'. <br>
 	 * In addition, ents must also have a funtion method named 'update' (though it may be an empty function). <br>
 	 */
-	this.ent = function(nameIn, spritesIn, baseSpriteIn, spriteExtIn, widthIn, heightIn) {
+	this.ent = function(ent, nameIn, spritesIn, baseSpriteIn, spriteExtIn, widthIn, heightIn) {
+		this.ent = ent;
 		this.name = nameIn;
 		this.sprites = spritesIn;
 		this.baseSprite = baseSpriteIn;
@@ -605,6 +606,9 @@ var rw = new function(){
 			};
 			return this
 		};
+		this.back = function() {
+			return this.ent;
+		};
 		this.end = function() {
 			return me
 		};
@@ -629,7 +633,7 @@ var rw = new function(){
 	 */
 	this.removeEnt = function(entNum) {
 		me.ents.splice(entNum, 1);
-		return this;
+		return me;
 	};
 	// Map Entities
 	this.maps = {}; 
@@ -728,13 +732,8 @@ var rw = new function(){
 		return me.maps[name];
 	}
 	this.removeMap = function(map) {
-		if (me.maps[map]) {
-			delete me.maps[map];
-			return true;
-		} else {
-			return false;
-		}
-		return this;
+		if (me.maps[map]) delete me.maps[map];
+		return me;
 	}
 	// Rule Entities
 	this.rules = {};
@@ -749,7 +748,7 @@ var rw = new function(){
 	this.newRule = function(name, rule) {
 		me.rules[name] = rule;
 		me.ruleList[rule.base.pos].push(name);
-		return this;
+		return me;
 	}
 	this.removeRule = function(rule) {
 		if (me.rules[rule]) {
@@ -763,16 +762,20 @@ var rw = new function(){
 			};
 			delete me.rules[rule];
 		}
-		return this;
+		return me;
 	}
 	var states = {};
-	var copy = function(obj) {
+	var copy = function(obj,par) {
 		var newCopy = (obj instanceof Array) ? [] : {};
 		for (prop in obj) {
-			if (obj[prop] && typeof obj[prop] == 'object') {
-				newCopy[prop] = copy(obj[prop]);
+			if (prop=='ent') {
+				newCopy[prop]=par;
 			} else {
-				newCopy[prop] = obj[prop];
+				if (obj[prop] && typeof obj[prop] == 'object') {
+					newCopy[prop] = copy(obj[prop],newCopy);
+				} else {
+					newCopy[prop] = obj[prop];
+				}
 			}
 		}
 		return newCopy;
@@ -786,12 +789,17 @@ var rw = new function(){
 	 */
 	this.saveState = function(name) {
 		states[name] = {
-			ents : copy(rw.ents),
-			maps : copy(rw.maps),
-			rules : copy(rw.rules)
+			ents : copy(me.ents,me),
+			maps : copy(me.maps,me),
+			rules : copy(me.rules,me),
+			ruleList : copy(me.ruleList,me)
 		};
-		return this;
+		return me;
 	}
+	this.isState=function(name) {
+		if (states[name]) return true;
+		return false;
+	};
 	/**
 	 * Loads specified state.
 	 * @param name Name of state to load
@@ -799,9 +807,10 @@ var rw = new function(){
 	 */
 	this.loadState = function(name) {
 		if (states[name]) {
-			me.ents = copy(states[name].ents);
-			me.maps = copy(states[name].maps);
-			me.rules = copy(states[name].rules);
+			me.ents = copy(states[name].ents,name);
+			me.maps = copy(states[name].maps,name);
+			me.rules = copy(states[name].rules,name);
+			me.ruleList = copy(states[name].ruleList,name);
 			for (map in me.maps) {
 				if (me.maps[map].active==true) me.maps[map].display();
 			}
@@ -818,7 +827,7 @@ var rw = new function(){
 			}
 			keyChange = true;
 		}
-		return this;
+		return me;
 	}
 	/**
 	 * Removes specified state
@@ -827,18 +836,18 @@ var rw = new function(){
 	 */
 	this.rmState = function(name) {
 		if (states[name]) delete states[name];
-		return this;
+		return me;
 	}
 	// At start and end function assignments
 	var doAtStart=null;
 	this.atStart=function(arg) {
 		doAtStart=arg;
-		return this;
+		return me;
 	};
 	var doAtEnd=null;
 	this.atEnd=function(arg) {
 		doAtEnd=arg;
-		return this;
+		return me;
 	};
 	// Ajax function, durr
 	this.ajax = function(targ, func) {
@@ -852,11 +861,11 @@ var rw = new function(){
 			}
 		}
 		xhr.send(null);
-		return this;
+		return me;
 	}
 	// Inline function call function
 	this.func = function() {
-		return this;
+		return me;
 	}
 
 	//AUDIO!!! NEW!!! Needs work integrating all browsers
@@ -888,12 +897,12 @@ var rw = new function(){
 			preImg[preImg.length] = new Image();
 			preImg[preImg.length-1].src = resPath+path+'/'+imgArray[x]+'.'+ext;
 		}
-		return this;
+		return me;
 	}
 	// Changes Cursor
 	this.changeCursor = function(cursor) {
 		document.getElementById('board').style.cursor="url('"+resPath+cursor+"')";
-		return this;
+		return me;
 	}
 	// Browser-specific values, runs at init
 	this.browser = {
@@ -929,7 +938,7 @@ var rw = new function(){
 		for (var x=0; x<total; x++) {
 			board.removeChild(board.childNodes[0]);
 		}
-		return this;
+		return me;
 	}
 	/**
 	 * Removes all ents
@@ -937,7 +946,7 @@ var rw = new function(){
 	 */
 	this.wipeEnts = function() {
 		me.ents = [];
-		return this;
+		return me;
 	}
 	/**
 	 * Removes all maps
@@ -945,7 +954,7 @@ var rw = new function(){
 	 */
 	this.wipeMaps = function() {
 		me.maps = {};
-		return this;
+		return me;
 	}
 	/**
 	 * Removes all rules
@@ -954,7 +963,7 @@ var rw = new function(){
 	this.wipeRules = function() {
 		me.rules = {};
 		me.ruleList = [[],[],[],[]];
-		return this;
+		return me;
 	}
 	/**
 	 * Removes all ents, maps and rules. Removes all DOM content from board.
@@ -962,7 +971,7 @@ var rw = new function(){
 	 */
 	this.wipeAll = function() {
 		me.wipeBoard().wipeEnts().wipeMaps().wipeRules();
-		return this;
+		return me;
 	}
 	/**
 	 * Initializes Rosewood and creates the game board element.
@@ -1000,7 +1009,7 @@ var rw = new function(){
 		board.onmousemove = mousePos;
 		board.onmousedown = mouseDown;
 		board.onmouseup = mouseUp;
-		return this;
+		return me;
 	}
 	/**
 	 * Starts the gameloop
@@ -1011,7 +1020,7 @@ var rw = new function(){
 			runGame = true;
 			curT = setTimeout('rw.run()', speed);
 		}
-		return this;
+		return me;
 	}
 	/**
 	 * Stops the gameloop. Resets current time to 0.
@@ -1019,7 +1028,7 @@ var rw = new function(){
 	 */
 	this.stop = function() {
 		runGame = false;
-		return this;
+		return me;
 	}
 	// Point in Triangle Test
 	var pointInTri=function(p,a,b,c) {
@@ -1418,12 +1427,6 @@ var rw = new function(){
 				me.rules[me.ruleList[2][x]].rule();
 			};
 		};
-		// Run Through all rules;
-		/*for (var x in me.rules) {
-			if (me.rules[x].base.active==true) {
-				me.rules[x].rule();
-			}
-		}*/
 		// Run Through all ents and update position
 		for (var x=0; x<me.ents.length; x++) {
 			me.ents[x].base.posX += me.ents[x].base.velX;
@@ -1464,4 +1467,4 @@ var rw = new function(){
 			curT = 0;
 		}
 	}
-} 
+};
