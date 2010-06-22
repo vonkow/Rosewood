@@ -49,7 +49,7 @@ var rw = new function(){
 	// Game speed settings
 	var speed = 50;
 	/**
-	 * Sets speed of game.
+	 * Sets speed of game, or framerate.
 	 * @param fps New game framerate, in Frames Per Second.
 	 * @returns rw
 	 */
