@@ -1,13 +1,15 @@
 The Rosewood Gaming Engine
 For all your browser-based gaming needs, without the flash.
 
-Open rwtest.html or one of the examples in a browser to see a little of what it can do.
+Open examples/bouncy_balls/play.html or one of the other examples in a browser to see Rosewood in action.
 
-All the game logic for rwtest.html is in game.js, check it out.
+All the game logic for play.html is in game.js, check it out.
 
-Read docs.html for info (well, not much at the moment, sometimes it's hard to believe that I'm the child of a Technical Writer)
+The docs folder contains at least a partial reference for the API.
 
 The engine is in the aptly titled rosewood.js file, if you feel like tinkering.
+
+Assuming that you have a copy of the jsdoc-toolkit located one directory up from Rosewood, you can rebuild the html documentation using ./builddoc.sh
 
 The biggest goal of Rosewood, aside from becoming the best 2d javascript gaming engine out there, is eventual support for multiplayer features, using node.js or something of the like.
 
