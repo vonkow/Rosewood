@@ -4,6 +4,8 @@ Improve upon newly implemented sprite shift names.
 
 Better tile support, especially RE collisions.
 
+Add compiling suite with Closure, full auto-build, maybe something to optimize sprites as well
+
 ------UPCOMING CHANGES---------------------------------------------------------------------------
 
 Canvas support someday
