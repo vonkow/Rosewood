@@ -791,15 +791,14 @@ var rw = new function(){
 	 * @returns rw
 	 */
 	this.saveState = function(name) {
-		states[name] = {
-			ents : copy(me.ents,me),
-			maps : copy(me.maps,me),
-			rules : copy(me.rules,me),
-			ruleList : copy(me.ruleList,me)
-		};
+		states[name] = {};
+		states[name]['ents']=copy(me.ents,me);
+		states[name]['maps']=copy(me.maps,me);
+		states[name]['rules']=copy(me.rules,me);
+		states[name]['ruleList']=copy(me.ruleList,me);
 		var len = states[name].ents.length;
 		for (var x=0; x<len; x++) {
-			states[name].ents[x].base.ent = states[name].ents[x];
+			states[name]['ents'][x].base.ent = states[name].ents[x];
 		}
 		return me;
 	}
@@ -1476,3 +1475,6 @@ var rw = new function(){
 		}
 	}
 };
+window['rw']=rw;
+window['rw']['run']=rw.run;
+window['rw']['loadState']=rw.loadState;
