@@ -1,5 +1,5 @@
 var ship = function(name) {
-	this.base = new rw.ent(this,name, 'ship', 'ship', 'png', 40, 40);
+	this.base = new rw.ent(name, 'ship', 'ship', 'png', 40, 40);
 	this.heading = 270;
 	this.maxSpeed = 25;
 	this.accel = 1;
@@ -61,7 +61,7 @@ var ship = function(name) {
 }
 
 var laser = function(name, angle) {
-	this.base = new rw.ent(this,name, 'laser', 'laser', 'png', 10, 10);
+	this.base = new rw.ent(name, 'laser', 'laser', 'png', 10, 10);
 	this.velX = 20*Math.cos((angle*0.0174532925));
 	this.velY = 20*Math.sin((angle*0.0174532925));
 	this.countDown = 25;
@@ -92,7 +92,7 @@ var laser = function(name, angle) {
 
 var roidcounter = 0;
 var roid = function(name, size) {
-	this.base = new rw.ent(this,name, 'roid', 'roid', 'png', size, size);
+	this.base = new rw.ent(name, 'roid', 'roid', 'png', size, size);
 	this.size = size;
 	this.heading = Math.round(Math.random()*360);
 	this.spin = Math.round((Math.random()*20)-10);

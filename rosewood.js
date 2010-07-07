@@ -223,8 +223,8 @@ var rw = new function(){
 	 * Every ent must be an object with a new rw.ent assigned to a property named 'base'. <br>
 	 * In addition, ents must also have a funtion method named 'update' (though it may be an empty function). <br>
 	 */
-	this.ent = function(ent, nameIn, spritesIn, baseSpriteIn, spriteExtIn, widthIn, heightIn) {
-		this.ent = ent;
+	this.ent = function(nameIn, spritesIn, baseSpriteIn, spriteExtIn, widthIn, heightIn) {
+		this.ent = '';
 		this.name = nameIn;
 		this.sprites = spritesIn;
 		this.baseSprite = baseSpriteIn;
@@ -619,6 +619,7 @@ var rw = new function(){
 	 * @returns ent
 	 */
 	this.newEnt = function(ent) {
+		ent.base.ent = ent;
 		var curLength = me.ents.length;
 		me.ents[curLength] = ent;
 		if (ent.init) ent.init();
@@ -796,6 +797,10 @@ var rw = new function(){
 			rules : copy(me.rules,me),
 			ruleList : copy(me.ruleList,me)
 		};
+		var len = states[name].ents.length;
+		for (var x=0; x<len; x++) {
+			states[name].ents[x].base.ent = states[name].ents[x];
+		}
 		return me;
 	}
 	this.isState=function(name) {
