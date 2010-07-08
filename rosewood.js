@@ -860,10 +860,9 @@ var rw = new function(){
 	this.ajax = function(targ, func) {
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET",targ,true);
-		xhr.overrideMimeType("application/json");
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState==4) {
-				var resp = eval('('+xhr.responseText+')');
+				var resp = xhr.responseText;
 				eval(func+'(resp)');
 			}
 		}
