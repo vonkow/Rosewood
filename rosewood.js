@@ -290,7 +290,7 @@ var rw = new function(){
 				this.visible=true;
 				var newEnt = document.createElement('div');
 				newEnt.id = 'ent_'+this.name;
-				newEnt.style.width = this.width; newEnt.style.height = this.height;
+				newEnt.style.width = this.width+'px'; newEnt.style.height = this.height+'px';
 				if (spriteIn!=' ') {
 					newEnt.style.backgroundImage = "url('"+resPath+this.sprites+"/"+spriteIn+"."+this.spriteExt+"')";
 					newEnt.style.backgroundRepeat = 'no-repeat';
