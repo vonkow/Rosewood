@@ -1,180 +1,190 @@
 rw.newSound('boom', 'exp.ogg');
 
 function lagTimer() {
-	this.base = new rw.ent('lag', '','','',150,20);
-	this.update = function() {
-		this.base.detach();
-		this.base.attach(document.createTextNode('Lag: '+rw.getLag()+'(ms)'));
+	var me = this;
+	me.base = new rw.ent('lag', '','','',150,20);
+	me.update = function() {
+		me.base.detach();
+		me.base.attach(document.createTextNode('Lag: '+rw.getLag()+'(ms)'));
 	}
 }
+
 function Wall(name, wallType, xDim, yDim) {
-	this.base = new rw.ent(name, ' ', ' ', ' ', xDim, yDim);
-	this.hitMap = [[wallType,['bman'],0,0,xDim,yDim]];
-	this.update = function() {};
+	var me = this;
+	me.base = new rw.ent(name, ' ', ' ', ' ', xDim, yDim);
+	me.hitMap = [[wallType,['bman'],0,0,xDim,yDim]];
+	me.update = function() {};
 }
 
 function blast(name) {
-	this.base = new rw.ent(name, 'blast', 'blast', 'gif', 40, 32);
-	this.countdown = 25;
-	this.update = function() {
-		this.base.posZ = this.base.posY;
-		this.countdown -= 1;
-		if (this.countdown<=0) {
-			this.base.hide();
+	var me = this;
+	me.base = new rw.ent(name, 'blast', 'blast', 'gif', 40, 32);
+	me.countdown = 25;
+	me.update = function() {
+		me.base.posZ = me.base.posY;
+		me.countdown -= 1;
+		if (me.countdown<=0) {
+			me.base.hide();
 			return false;
 		}
 	}
-	this.hitMap = [['blast',['bman','baddie','bomb'],0,0,40,32]];
+	me.hitMap = [['blast',['bman','baddie','bomb'],0,0,40,32]];
 }
+
 function bomb(name, typeClass) {
-	this.base = new rw.ent(name, 'bomb', '1', 'gif', 40, 32);
-	this.countdown = 150;
-	this.blastSize = 2;
-	this.update = function() {
-		if (this.countdown == 150) {
-			this.base.posZ = this.base.posY;
-			this.base.changeSprite('2');
-		} else if (this.countdown == 125) {
-			this.base.changeSprite('1');
-		} else if (this.countdown == 100) {
-			this.base.changeSprite('2');
-		} else if (this.countdown == 75) {
-			this.base.changeSprite('3');
-		} else if (this.countdown == 50) {
-			this.base.changeSprite('2');
-		} else if (this.countdown == 25) {
-			this.base.changeSprite('3');
+	var me = this;
+	me.base = new rw.ent(name, 'bomb', '1', 'gif', 40, 32);
+	me.countdown = 150;
+	me.blastSize = 2;
+	me.update = function() {
+		if (me.countdown == 150) {
+			me.base.posZ = me.base.posY;
+			me.base.changeSprite('2');
+		} else if (me.countdown == 125) {
+			me.base.changeSprite('1');
+		} else if (me.countdown == 100) {
+			me.base.changeSprite('2');
+		} else if (me.countdown == 75) {
+			me.base.changeSprite('3');
+		} else if (me.countdown == 50) {
+			me.base.changeSprite('2');
+		} else if (me.countdown == 25) {
+			me.base.changeSprite('3');
 		}
-		this.countdown -= 1;
-		if (this.countdown<=0) {
+		me.countdown -= 1;
+		if (me.countdown<=0) {
 			rw.playSound('boom');
 			// Do Explody stuff!
-			var tPos = [this.base.posX, this.base.posY];
-			var lPos = [this.base.posX, this.base.posY];
-			var bPos = [this.base.posX, this.base.posY];
-			var rPos = [this.base.posX, this.base.posY];
+			var tPos = [me.base.posX, me.base.posY];
+			var lPos = [me.base.posX, me.base.posY];
+			var bPos = [me.base.posX, me.base.posY];
+			var rPos = [me.base.posX, me.base.posY];
 			var tempLen = rw.ents.length;
 			rw.newEnt(new blast('blast'+tempLen))
 				.base.display('c',tPos[0],tPos[1],tPos[1]);
-			for (var x=0;x<this.blastSize;x++) {
-				tPos[1] -= this.base.height;
-				lPos[0] += this.base.width;
-				bPos[1] += this.base.height;
-				rPos[0] -= this.base.width;
+			for (var x=0;x<me.blastSize;x++) {
+				tPos[1] -= me.base.height;
+				lPos[0] += me.base.width;
+				bPos[1] += me.base.height;
+				rPos[0] -= me.base.width;
 				var tail = '';
-				if (x+1==this.blastSize) {
+				if (x+1==me.blastSize) {
 					tail = 'T';
 				}
-				rw.newEnt(new blast('blast'+rw.ents.length+"_"+this.base.name))
+				rw.newEnt(new blast('blast'+rw.ents.length+"_"+me.base.name))
 					.base.display('u'+tail, tPos[0], tPos[1], tPos[1]).end()
-				.newEnt(new blast('blast'+rw.ents.length+"_"+this.base.name))
+				.newEnt(new blast('blast'+rw.ents.length+"_"+me.base.name))
 					.base.display('l'+tail, lPos[0], lPos[1], lPos[1]).end()
-				.newEnt(new blast('blast'+rw.ents.length+"_"+this.base.name))
+				.newEnt(new blast('blast'+rw.ents.length+"_"+me.base.name))
 					.base.display('d'+tail, bPos[0], bPos[1], bPos[1]).end()
-				.newEnt(new blast('blast'+rw.ents.length+"_"+this.base.name))
+				.newEnt(new blast('blast'+rw.ents.length+"_"+me.base.name))
 					.base.display('r'+tail, rPos[0], rPos[1], rPos[1]);
 			}
-			this.base.hide();
+			me.base.hide();
 			return false;
 		}
 	}
-	this.hitMap = [[typeClass,['blast'],0,0,40,32]];
-	this.gotHit = function(by) {
+	me.hitMap = [[typeClass,['blast'],0,0,40,32]];
+	me.gotHit = function(by) {
 		if (by=='blast') {
-			this.countdown = 1;
+			me.countdown = 1;
 		}
 	}
 }
+
 function badguy(name) {
-	this.base = new rw.ent(name, 'bman', 'l', 'gif', 40, 64);
-	this.speed = 5;
-	this.ticker = 0;
-	this.heading = 'l';
-	this.countdown = 100;
-	this.inactive = function() {
-		this.countdown--;
-		if (this.countdown<1) {
-			this.base.display('Wr',200,100,132);
+	var me = this;
+	me.base = new rw.ent(name, 'bman', 'l', 'gif', 40, 64);
+	me.speed = 5;
+	me.ticker = 0;
+	me.heading = 'l';
+	me.countdown = 100;
+	me.inactive = function() {
+		me.countdown--;
+		if (me.countdown<1) {
+			me.base.display('Wr',200,100,132);
 		}
 	}
-	this.update = function() {
-		if (this.heading == 'r') {
-			if (this.ticker < 39) {
-				this.ticker++;
-				this.base.velX = this.speed;
+	me.update = function() {
+		if (me.heading == 'r') {
+			if (me.ticker < 39) {
+				me.ticker++;
+				me.base.velX = me.speed;
 			} else {
-				this.base.velX = 0;
-				this.heading = 'l';
-				this.base.changeSprite('Wl');
+				me.base.velX = 0;
+				me.heading = 'l';
+				me.base.changeSprite('Wl');
 			}
 		} else {
-			if (this.ticker > 0) {
-				this.ticker--;
-				this.base.velX = -this.speed;
+			if (me.ticker > 0) {
+				me.ticker--;
+				me.base.velX = -me.speed;
 			} else {
-				this.base.velX = 0;
-				this.heading = 'r';
-				this.base.changeSprite('Wr');
+				me.base.velX = 0;
+				me.heading = 'r';
+				me.base.changeSprite('Wr');
 			}
 		}
 	}
-	this.hitMap = [['baddie',['blast','bman'],0,0,40,64]];
-	this.gotHit = function(by) {
+	me.hitMap = [['baddie',['blast','bman'],0,0,40,64]];
+	me.gotHit = function(by) {
 		if (by=='blast') {
-			this.base.hide();
+			me.base.hide();
 			return false;
 		}
 	}
 }
+
 // Custom Game Entity (calls rw.ent for this.base, requires this.update function)
 function bman(name, typeClass, heading) {
-	this.base = new rw.ent(name, 'bman', 'u', 'gif', 40, 64);
-	this.maxSpeed = 5;
-	this.bombCooldown = 5;
-	this.bombMax = 15;
-	this.bombs = [];
-	this.heading = 'u';
-	this.update = function() {
-		this.base.velX = 0;
-		this.base.velY = 0;
-		if (this.bombCooldown < 5) {
-			this.bombCooldown += 1;
+	var me = this;
+	me.base = new rw.ent(name, 'bman', 'u', 'gif', 40, 64);
+	me.maxSpeed = 5;
+	me.bombCooldown = 5;
+	me.bombMax = 15;
+	me.bombs = [];
+	me.heading = 'u';
+	me.update = function() {
+		me.base.velX = 0;
+		me.base.velY = 0;
+		if (me.bombCooldown < 5) {
+			me.bombCooldown += 1;
 		}
-		if (this.bombs.length > 0) {
-			for (var x=0; x<this.bombs.length; x++) {
-				if (this.bombs[x] > 0) {
-					this.bombs[x] -= 1;
+		if (me.bombs.length > 0) {
+			for (var x=0; x<me.bombs.length; x++) {
+				if (me.bombs[x] > 0) {
+					me.bombs[x] -= 1;
 				} else {
-					this.bombs.splice(x, 1);
+					me.bombs.splice(x, 1);
 				}
 			}
 		}
 		if (rw.key('sp')) {
-			if (this.bombCooldown == 5) {
-				if (this.bombs.length < this.bombMax) {
-					this.bombCooldown = 0;
-					this.bombs[this.bombs.length] = 150;
+			if (me.bombCooldown == 5) {
+				if (me.bombs.length < me.bombMax) {
+					me.bombCooldown = 0;
+					me.bombs[me.bombs.length] = 150;
 					var tempLen = rw.ents.length;
-					var tempX = this.base.posX;
-					var tempY = this.base.posY+32;
+					var tempX = me.base.posX;
+					var tempY = me.base.posY+32;
 					rw.newEnt(new bomb('bomb'+tempLen))
 						.base.display('1', tempX, tempY, tempY);
 				}
 			}
 		}
 		if (rw.key('la')) {
-			this.base.velX += -this.maxSpeed;
+			me.base.velX += -me.maxSpeed;
 		}
 		if (rw.key('ra')) {
-			this.base.velX += this.maxSpeed;
+			me.base.velX += me.maxSpeed;
 		}
 		if (rw.key('ua')) {
-			this.base.velY += -this.maxSpeed;
+			me.base.velY += -me.maxSpeed;
 		}
 		if (rw.key('da')) {
-			this.base.velY += this.maxSpeed;
+			me.base.velY += me.maxSpeed;
 		}
-		this.base.velZ = this.base.velY;
+		me.base.velZ = me.base.velY;
 	}
 	// THis will be the funct that calls the new this.base.changeSprite();
 	// heading and moving will possible be split into seperate functions
@@ -183,59 +193,60 @@ function bman(name, typeClass, heading) {
 	// Fix logic of displaying non-moving sprites
 //!!!!!!!!!!!!! Move most of keyCHangeSprite to ent.base with an rw.keys loop: 
 //		where args are sent to ent and keys.
-	this.keyChange = function() {
+	me.keyChange = function() {
 		var entDiv = document.getElementById('ent_'+name);
 		if (rw.key('la')) {
-			this.heading = 'l';
-			this.base.changeSprite('Wl');
+			me.heading = 'l';
+			me.base.changeSprite('Wl');
 		} else if (rw.key('ua')) {
-			this.heading = 'u';
-			this.base.changeSprite('Wu');
+			me.heading = 'u';
+			me.base.changeSprite('Wu');
 		} else if (rw.key('ra')) {
-			this.heading = 'r';
-			this.base.changeSprite('Wr');
+			me.heading = 'r';
+			me.base.changeSprite('Wr');
 		} else if (rw.key('da')) {
-			this.heading = 'd';
-			this.base.changeSprite('Wd');
+			me.heading = 'd';
+			me.base.changeSprite('Wd');
 		} else {
-			this.base.changeSprite(this.heading);
+			me.base.changeSprite(me.heading);
 		}
 	}
-	this.hitMap = [['bman',['blast','baddie','lWall','rWall','tWall','dWall'],0,0,40,64]];
-	this.gotHit = function(by) {
+	me.hitMap = [['bman',['blast','baddie','lWall','rWall','tWall','dWall'],0,0,40,64]];
+	me.gotHit = function(by) {
 		if ((by=='blast')||(by=='baddie')) {
 			rw.rules['rule1'].dead = true;
-			this.base.hide();
+			me.base.hide();
 			return false;
 		}
 		if (by=='lWall') {
-			if (this.base.velX > 0) {
-				this.base.posX += -this.base.velX;
+			if (me.base.velX > 0) {
+				me.base.posX += -me.base.velX;
 			}
 		}
 		if (by=='tWall') {
-			if (this.base.velY > 0) {
-				this.base.posY += -this.base.velY;
+			if (me.base.velY > 0) {
+				me.base.posY += -me.base.velY;
 			}
 		}
 		if (by=='rWall') {
-			if (this.base.velX < 0) {
-				this.base.posX += -this.base.velX;
+			if (me.base.velX < 0) {
+				me.base.posX += -me.base.velX;
 			}
 		}
 		if (by=='dWall') {
-			if (this.base.velY < 0) {
-				this.base.posY += -this.base.velY;
+			if (me.base.velY < 0) {
+				me.base.posY += -me.base.velY;
 			}
 		}
 	}
 }
 
 function endGameRule(active) {
-	this.base = new rw.rule(true,3);
-	this.dead = false;
-	this.rule = function() {
-		if (this.dead==true) {
+	var me = this;
+	me.base = new rw.rule(true,3);
+	me.dead = false;
+	me.rule = function() {
+		if (me.dead==true) {
 			rw.wipeAll()
 			.loadState('test')
 		}
@@ -243,23 +254,24 @@ function endGameRule(active) {
 }
 
 function mapRule() {
-	this.base = new rw.rule(true,2);
-	this.currentOffset = 0;
-	this.forward = true;
-	this.rule = function() {
-		if (this.forward==true) {
-			if (this.currentOffset>-600) {
-				this.currentOffset--;
+	var me = this;
+	me.base = new rw.rule(true,2);
+	me.currentOffset = 0;
+	me.forward = true;
+	me.rule = function() {
+		if (me.forward==true) {
+			if (me.currentOffset>-600) {
+				me.currentOffset--;
 				rw.maps['map1'].move(-1, 0);
 			} else {
-				this.forward = false;
+				me.forward = false;
 			}
 		} else {
-			if (this.currentOffset<0) {
-				this.currentOffset++;
+			if (me.currentOffset<0) {
+				me.currentOffset++;
 				rw.maps['map1'].move(1, 0);
 			} else {
-				this.forward = true;
+				me.forward = true;
 			}
 		}
 	}
