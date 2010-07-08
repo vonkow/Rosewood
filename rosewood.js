@@ -619,7 +619,7 @@ var rw = new function(){
 	 * @returns ent
 	 */
 	this.newEnt = function(ent) {
-		ent.base.ent = ent;
+		ent.base['ent'] = ent;
 		var curLength = me.ents.length;
 		me.ents[curLength] = ent;
 		if (ent.init) ent.init();
@@ -796,9 +796,9 @@ var rw = new function(){
 		states[name]['maps']=copy(me.maps,me);
 		states[name]['rules']=copy(me.rules,me);
 		states[name]['ruleList']=copy(me.ruleList,me);
-		var len = states[name].ents.length;
+		var len = states[name]['ents'].length;
 		for (var x=0; x<len; x++) {
-			states[name]['ents'][x].base.ent = states[name].ents[x];
+			states[name]['ents'][x].base['ent'] = states[name]['ents'][x];
 		}
 		return me;
 	}
@@ -813,10 +813,10 @@ var rw = new function(){
 	 */
 	this.loadState = function(name) {
 		if (states[name]) {
-			me.ents = copy(states[name].ents,name);
-			me.maps = copy(states[name].maps,name);
-			me.rules = copy(states[name].rules,name);
-			me.ruleList = copy(states[name].ruleList,name);
+			me.ents = copy(states[name]['ents'],name);
+			me.maps = copy(states[name]['maps'],name);
+			me.rules = copy(states[name]['rules'],name);
+			me.ruleList = copy(states[name]['ruleList'],name);
 			for (map in me.maps) {
 				if (me.maps[map].active==true) me.maps[map].display();
 			}
@@ -1477,4 +1477,7 @@ var rw = new function(){
 };
 window['rw']=rw;
 window['rw']['run']=rw.run;
-window['rw']['loadState']=rw.loadState;
+window['rw']['ents']=rw.ents;
+window['rw']['maps']=rw.maps;
+window['rw']['rules']=rw.rules;
+window['rw']['ruleList']=rw.ruleList;

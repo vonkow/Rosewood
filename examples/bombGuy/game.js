@@ -272,7 +272,7 @@ function addGuy(resp) {
 }
 
 // Begin Game Function
-function startGame() {
+var startGame=function() {
 	rw.using('bman','gif', ['u','d','l','r','Wu','Wd','Wl','Wr'])
 	.using('blast','gif',['c','u','d','l','r','uT','dT','lT','rT'])
 	.using('bomb','gif',['1','2','3'])
@@ -296,4 +296,4 @@ function startGame() {
 	.ajax('ajaxtest.json', 'addGuy');
 }
 
-window['startGame']=startGame;
+startGame();

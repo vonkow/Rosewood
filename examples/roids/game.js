@@ -171,3 +171,5 @@ var startGame = function() {
 		.end()
 	.start();
 }
+
+window['startGame'] = startGame;
