@@ -234,289 +234,13 @@ var rw = new function(){
 		this.posX = 0;
 		this.posY = 0;
 		this.posZ = 0;
-		/**
-		 * @returns ent's leftmost position, in pixels
-		 */
-		this.posX1 = function() {
-			return this.posX;
-		}
-		/**
-		 * @returns ent's topmost position, in pixels
-		 */
-		this.posY1 = function() {
-			return this.posY;
-		}
-		/**
-		 * @returns ent's rightmost position, in pixels
-		 */
-		this.posX2 = function() {
-			return this.posX+this.width;
-		}
-		/**
-		 * @returns ent's bottommost position, in pixels
-		 */
-		this.posY2 = function() {
-			return this.posY+this.height;
-		}
 		this.velX = 0;
 		this.velY = 0;
 		this.velZ = 0;
 		this.active = false; //Bool for is piece in play
 		this.visible=false; //Bool for if piece should have a div
-		// Display Entity Function, sets ent.base.active to true
-		/**
-		 * Displays an ent on the board and sets ent.base.active to true.<br>
-		 * Creates or re-displays a div, with the id 'ent_'+ent.base.name<br>
-		 * Sets ent.base.active to true, causing rosewood to call the ent's update() function one per frame.
-		 * @param spriteIn Sprite to be displayed. <br>
-		 * If set to '', no div will be created, however the ent will still be active. <br>
-		 * Set as ' ' to create a blank div (for ent.base.attach(),etc.)
-		 * @param posXIn Ent's X position on the board
-		 * @param posYIn Ent's Y position on the board
-		 * @param posZIn Optional, Ent's Z position on the board (will default to posYIn if unspecified)
-		 * @returns ent.base
-		 */
-		this.display = function (spriteIn, posXIn, posYIn, posZIn) {
-			this.baseSprite=spriteIn;
-			this.posX = posXIn;
-			this.posY = posYIn;
-			if (posZIn) {
-				this.posZ = posZIn;
-			} else {
-				this.posZ = posYIn;
-			};
-			this.active = true;
-			if (spriteIn!=='') {
-				this.visible=true;
-				var newEnt = document.createElement('div');
-				newEnt.id = 'ent_'+this.name;
-				newEnt.style.width = this.width+'px'; newEnt.style.height = this.height+'px';
-				if (spriteIn!=' ') {
-					newEnt.style.backgroundImage = "url('"+resPath+this.sprites+"/"+spriteIn+"."+this.spriteExt+"')";
-					newEnt.style.backgroundRepeat = 'no-repeat';
-				};
-				newEnt.style.position = 'absolute';
-				newEnt.style.left = this.posX+'px';
-				newEnt.style.top = this.posY+'px';
-				document.getElementById('board').appendChild(newEnt);
-				if (this.children.length>0) {
-					for (var x=0;x<this.children.length;x++) {
-						blitChildDiv(this,this.children[x])
-					}
-				}
-			} else {
-				this.visible=false;
-			};
-			return this;
-		};
-		/**
-		 * Removes ent from game board.
-		 * Sets ent.active & ent.visible to false.
-		 * @returns ent.base
-		 */
-		this.hide = function() {
-			if (document.getElementById('ent_'+this.name)) {
-				var dying = document.getElementById('ent_'+this.name);
-				dying.parentNode.removeChild(dying);
-			};
-			this.active=false;
-			this.visible=false;
-			return this;
-		};
-		/**
-		  * Changes the sprite used to display an ent.
-		  * @param sprite File name of new sprite. <br>
-		  * @returns ent.base
-		  */
-		this.changeSprite = function(sprite) {
-			this.baseSprite=sprite;
-			var entDiv = document.getElementById('ent_'+this.name);
-			if (entDiv) {
-				if (sprite!='') {
-					this.visible=true;
-					entDiv.style.backgroundImage = "url('"+resPath+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
-				} else {
-					entDiv.parentNode.removeChild(entDiv);
-					this.visible=false;
-				};
-			} else {
-				if (sprite!='') {
-					this.display(sprite,this.posX,this.posY,this.posX);
-				} else {
-					this.visible=false;
-				};
-			};
-			return this;
-		};
-		this.shiftSprite=function(x,y) {
-			var entDiv=document.getElementById('ent_'+this.name);
-			if (entDiv) {
-				entDiv.style.background="url('"+resPath+this.sprites+"/"+this.baseSprite+"."+this.spriteExt+"') "+x+"px "+y+"px no-repeat";
-			};
-		};
 		this.shifts={};
-		/**
-		 * Adds a named sprite shift to ent.base.shifts.
-		 * @param name Name of new shift.
-		 * @param x Horizontal position of new shift.
-		 * @param y Vertical position of new shift.
-		 * @returns ent.base
-		 */
-		this.addShift=function(name,x,y) {
-			this.shifts[name]=[x,y];
-			return this;
-		};
-		/**
-		 * Shifts ent's sprite to named sprite shift.
-		 * @param name Name of sprite shift.
-		 * @returns ent.base
-		 */
-		this.shiftTo=function(name) {
-			if (name in this.shifts) {
-				this.shiftSprite(this.shifts[name][0],this.shifts[name][1]);
-			};
-			return this;
-		};
-		/**
-		 * Moves ent specified distance. <br>
-		 * <strong>Note:</strong> This function is additive, subsequent calls within a single frame
-		 * will be summed as a single velocity value before being applied at the end of the frame.
-		 * To reset velocity mid-frame, use wipeMove(). 
-		 * @param x Horizontal distance of move.
-		 * @param y Vertical distance of move.
-		 * @param z Optional: Distance of z-index (depth) movement. <br>
-		 * <strong>Note:</strong> Will default to y if unspecified.
-		 * @returns ent.base
-		 */
-		this.move = function(x,y,z) {
-			this.velX += x;
-			this.velY += y;
-			if (z) {
-				this.velZ += z;
-			} else {
-				this.velZ += y;
-			}
-			return this;
-		}
-		/**
-		 * Gets ent's current velocity, or sum total of movement within the current frame.
-		 * @returns An array: [x velocity, y velocity, z velocity]
-		 */
-		this.curMove = function() {
-			return [this.velX, this.velY, this.velZ];
-		}
-		/**
-		 * Resets ent's current velocity to 0 (velocity is the sum total of all calls to ent.base.move() thus far within the current frame).
-		 * @param axis Optional: Can be set to 'x', 'y', or 'z' to wipe only a single axis of movement.
-		 * @returns ent.base
-		 */
-		this.wipeMove = function(axis) {
-			if (axis) {
-				if (axis=='x') {
-					this.velX = 0;
-				} else if (axis=='y') {
-					this.velY = 0;
-				} else if (axis=='z') {
-					this.velZ = 0;
-				}
-			} else {
-				this.velX = 0;
-				this.velY = 0;
-				this.velZ = 0;
-			}
-			return this;
-		}
-		/**
-		 * Immediately moves ent to specified absolute position on the board. <br>
-		 * <strong>Note:</strong> Unlike ent.base.move() this action occurs instantaneously and does not effect velocity.
-		 * @param x Absolute horizontal position to place ent.
-		 * @param y Absolute vertical position to place ent.
-		 * @param z Absolute z-index, or depth position to place ent.
-		 * @returns ent.base
-		 */
-		this.moveTo = function(x, y, z) {
-			this.posX = x;
-			this.posY = y;
-			if (z||z==0) {
-				this.posZ = z;
-			} else {
-				this.posZ = y;
-			}
-			return this;
-		}
-		this.rotate = function(deg) {
-			var entDiv = document.getElementById('ent_'+this.name);
-			if (entDiv) {
-				entDiv.style[me.browser.trans_name] = 'rotate('+deg+'deg)';
-			}
-			return this;
-		}
-		this.rotMap=function(hitMap, angle) {
-			var centerP = [this.width/2,this.height/2];
-			var newMap = [hitMap[0],hitMap[1]];
-			var pt1 = rotatePoint([hitMap[2],hitMap[3]],centerP,angle);
-			var pt2 = rotatePoint([hitMap[4],hitMap[5]],centerP,angle);
-			var pt3 = rotatePoint([hitMap[6],hitMap[7]],centerP,angle);
-			newMap.push(pt1[0]);
-			newMap.push(pt1[1]);
-			newMap.push(pt2[0]);
-			newMap.push(pt2[1]);
-			newMap.push(pt3[0]);
-			newMap.push(pt3[1]);
-			return newMap;
-		};
-		this.getTileX=function() {
-			if (tiles) {
-				return Math.floor(this.posY/tileY);
-			} else {
-				return false;
-			};
-		};
-		this.getTileY=function() {
-			if (tiles) {
-				return Math.floor(this.posY/tileY);
-			} else {
-				return false;
-			};
-		};
-		this.clicked = function() {
-			if (me.mouse.down()) {
-				if ((me.mouse.x()>this.posX1())&&(me.mouse.x()<this.posX2())) {
-					if ((me.mouse.y()>this.posY1())&&(me.mouse.y()<this.posY2())) {
-						return true;
-					};
-				};
-			};
-			return false;
-		};
-		this.attach = function(content) {
-			var entDiv=document.getElementById('ent_'+this.name);
-			if (entDiv) {
-				entDiv.appendChild(content);
-			};
-			return this;
-		};
-		this.detach = function() {
-			var ele = document.getElementById('ent_'+this.name);
-			if (ele) {
-				var tot = ele.childNodes.length;
-				for (var x=0;x<tot;x++) {
-					ele.removeChild(ele.childNodes[0]);
-				};
-			};
-			return this;
-		};
 		this. children=[];
-		this.addChild=function(name,g,x,y,z,w,h,ox,oy) {
-			var oX =(ox) ? ox : 0;
-			var oY =(oy) ? oy : 0;
-			this.children.push([name,g,x,y,z,w,h,oX,oY]);
-			var entDiv=document.getElementById('ent_'+this.name);
-			if (entDiv) {
-				blitChildDiv(this,this.children[this.children.length-1])
-			};
-			return this
-		};
 		var getChild=function(meme,child) {
 			if (typeof(child)=='number') {
 				var theChild=meme.children[child];
@@ -531,6 +255,9 @@ var rw = new function(){
 			if (theChild) return theChild;
 			return false
 		};
+		this.getChild=function(meme,child) {
+			return getChild(meme,child);
+		}
 		var blitChildDiv=function(meme,child) {
 			var childDiv=document.getElementById('ent_'+meme.name+'_'+child[0]);
 			if (childDiv) {
@@ -559,60 +286,342 @@ var rw = new function(){
 				}
 			}
 		};
-		this.moveChild=function(child,x,y,z) {
-			var theChild=getChild(this,child);
-			if (theChild) {
-				theChild[2]=x;
-				theChild[3]=y;
-				theChild[4]=z;
-				blitChildDiv(this,theChild)
-			};
-			return this
-		};
-		this.resizeChild=function(child,w,h) {
-			var theChild=getChild(this,child);
-			if (theChild) {
-				theChild[5]=w;
-				theChild[6]=h;
-				blitChildDiv(this,theChild)
-			};
-			return this
-		};
-		this.changeChild=function(child,g,ox,oy) {
-			var theChild=getChild(this,child);
-			if (theChild) {
-				theChild[1] = g;
-				theChild[7] = ((ox)||(ox===0)) ? ox : theChild[7];
-				theChild[8] = ((oy)||(oy===0)) ? oy : theChild[8];
-				blitChildDiv(this,theChild)
-			};
-			return this
-		};
-		this.removeChild=function(child) {
-			if (typeof(child)=='number') {
-				var childId=child
-			} else {
-				for (var x=0;x<this.children.length;x++) {
-					if (this.children[x][0]==child) {
-						var childId=x;
-						break
-					}
-				}
-			};
-			if ((childId)||(childId==0)) {
-				var childDiv=document.getElementById('ent_'+this.name+'_'+this.children[childId][0]);
-				childDiv.parentNode.removeChild(childDiv);
-				this.children.slice(childId,1)
-			};
-			return this
-		};
-		this.back = function() {
-			return this.ent;
-		};
-		this.end = function() {
-			return me
+		this.blitChildDiv=function(meme,child) {
+			blitChildDiv(meme,child);
 		};
 	};
+
+	me.ent.prototype.addChild=function(name,g,x,y,z,w,h,ox,oy) {
+		var oX =(ox) ? ox : 0;
+		var oY =(oy) ? oy : 0;
+		this.children.push([name,g,x,y,z,w,h,oX,oY]);
+		var entDiv=document.getElementById('ent_'+this.name);
+		if (entDiv) {
+			this.blitChildDiv(this,this.children[this.children.length-1])
+		};
+		return this
+	};
+	me.ent.prototype.moveChild=function(child,x,y,z) {
+		var theChild=this.getChild(this,child);
+		if (theChild) {
+			theChild[2]=x;
+			theChild[3]=y;
+			theChild[4]=z;
+			this.blitChildDiv(this,theChild)
+		};
+		return this
+	};
+	me.ent.prototype.resizeChild=function(child,w,h) {
+		var theChild=this.getChild(this,child);
+		if (theChild) {
+			theChild[5]=w;
+			theChild[6]=h;
+			this.blitChildDiv(this,theChild)
+		};
+		return this
+	};
+	me.ent.prototype.changeChild=function(child,g,ox,oy) {
+		var theChild=this.getChild(this,child);
+		if (theChild) {
+			theChild[1] = g;
+			theChild[7] = ((ox)||(ox===0)) ? ox : theChild[7];
+			theChild[8] = ((oy)||(oy===0)) ? oy : theChild[8];
+			this.blitChildDiv(this,theChild)
+		};
+		return this
+	};
+	me.ent.prototype.removeChild=function(child) {
+		if (typeof(child)=='number') {
+			var childId=child
+		} else {
+			for (var x=0;x<this.children.length;x++) {
+				if (this.children[x][0]==child) {
+					var childId=x;
+					break
+				}
+			}
+		};
+		if ((childId)||(childId==0)) {
+			var childDiv=document.getElementById('ent_'+this.name+'_'+this.children[childId][0]);
+			childDiv.parentNode.removeChild(childDiv);
+			this.children.slice(childId,1)
+		};
+		return this
+	};
+	me.ent.prototype.back = function() {
+		return this.ent;
+	};
+	me.ent.prototype.end = function() {
+		return me
+	};
+
+	/**
+	 * @returns ent's leftmost position, in pixels
+	 */
+	me.ent.prototype.posX1 = function() {
+		return this.posX;
+	}
+	/**
+	 * @returns ent's topmost position, in pixels
+	 */
+	me.ent.prototype.posY1 = function() {
+		return this.posY;
+	}
+	/**
+	 * @returns ent's rightmost position, in pixels
+	 */
+	me.ent.prototype.posX2 = function() {
+		return this.posX+this.width;
+	}
+	/**
+	 * @returns ent's bottommost position, in pixels
+	 */
+	me.ent.prototype.posY2 = function() {
+		return this.posY+this.height;
+	}
+	/**
+	 * Displays an ent on the board and sets ent.base.active to true.<br>
+	 * Creates or re-displays a div, with the id 'ent_'+ent.base.name<br>
+	 * Sets ent.base.active to true, causing rosewood to call the ent's update() function one per frame.
+	 * @param spriteIn Sprite to be displayed. <br>
+	 * If set to '', no div will be created, however the ent will still be active. <br>
+	 * Set as ' ' to create a blank div (for ent.base.attach(),etc.)
+	 * @param posXIn Ent's X position on the board
+	 * @param posYIn Ent's Y position on the board
+	 * @param posZIn Optional, Ent's Z position on the board (will default to posYIn if unspecified)
+	 * @returns ent.base
+	 */
+	me.ent.prototype.display = function (spriteIn, posXIn, posYIn, posZIn) {
+		this.baseSprite=spriteIn;
+		this.posX = posXIn;
+		this.posY = posYIn;
+		if (posZIn) {
+			this.posZ = posZIn;
+		} else {
+			this.posZ = posYIn;
+		};
+		this.active = true;
+		if (spriteIn!=='') {
+			this.visible=true;
+			var newEnt = document.createElement('div');
+			newEnt.id = 'ent_'+this.name;
+			newEnt.style.width = this.width+'px'; newEnt.style.height = this.height+'px';
+			if (spriteIn!=' ') {
+				newEnt.style.backgroundImage = "url('"+resPath+this.sprites+"/"+spriteIn+"."+this.spriteExt+"')";
+				newEnt.style.backgroundRepeat = 'no-repeat';
+			};
+			newEnt.style.position = 'absolute';
+			newEnt.style.left = this.posX+'px';
+			newEnt.style.top = this.posY+'px';
+			document.getElementById('board').appendChild(newEnt);
+			if (this.children.length>0) {
+				for (var x=0;x<this.children.length;x++) {
+					blitChildDiv(this,this.children[x])
+				}
+			}
+		} else {
+			this.visible=false;
+		};
+		return this;
+	};
+	/**
+	 * Removes ent from game board.
+	 * Sets ent.active & ent.visible to false.
+	 * @returns ent.base
+	 */
+	me.ent.prototype.hide = function() {
+		if (document.getElementById('ent_'+this.name)) {
+			var dying = document.getElementById('ent_'+this.name);
+			dying.parentNode.removeChild(dying);
+		};
+		this.active=false;
+		this.visible=false;
+		return this;
+	};
+	/**
+	  * Changes the sprite used to display an ent.
+	  * @param sprite File name of new sprite. <br>
+	  * @returns ent.base
+	  */
+	me.ent.prototype.changeSprite = function(sprite) {
+		this.baseSprite=sprite;
+		var entDiv = document.getElementById('ent_'+this.name);
+		if (entDiv) {
+			if (sprite!='') {
+				this.visible=true;
+				entDiv.style.backgroundImage = "url('"+resPath+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
+			} else {
+				entDiv.parentNode.removeChild(entDiv);
+				this.visible=false;
+			};
+		} else {
+			if (sprite!='') {
+				this.display(sprite,this.posX,this.posY,this.posX);
+			} else {
+				this.visible=false;
+			};
+		};
+		return this;
+	};
+	me.ent.prototype.shiftSprite=function(x,y) {
+		var entDiv=document.getElementById('ent_'+this.name);
+		if (entDiv) {
+			entDiv.style.background="url('"+resPath+this.sprites+"/"+this.baseSprite+"."+this.spriteExt+"') "+x+"px "+y+"px no-repeat";
+		};
+	};
+	/**
+	 * Adds a named sprite shift to ent.base.shifts.
+	 * @param name Name of new shift.
+	 * @param x Horizontal position of new shift.
+	 * @param y Vertical position of new shift.
+	 * @returns ent.base
+	 */
+	me.ent.prototype.addShift=function(name,x,y) {
+		this.shifts[name]=[x,y];
+		return this;
+	};
+	/**
+	 * Shifts ent's sprite to named sprite shift.
+	 * @param name Name of sprite shift.
+	 * @returns ent.base
+	 */
+	me.ent.prototype.shiftTo=function(name) {
+		if (name in this.shifts) {
+			this.shiftSprite(this.shifts[name][0],this.shifts[name][1]);
+		};
+		return this;
+	};
+	/**
+	 * Gets ent's current velocity, or sum total of movement within the current frame.
+	 * @returns An array: [x velocity, y velocity, z velocity]
+	 */
+	me.ent.prototype.curMove = function() {
+		return [this.velX, this.velY, this.velZ];
+	}
+	/**
+	 * Resets ent's current velocity to 0 (velocity is the sum total of all calls to ent.base.move() thus far within the current frame).
+	 * @param axis Optional: Can be set to 'x', 'y', or 'z' to wipe only a single axis of movement.
+	 * @returns ent.base
+	 */
+	me.ent.prototype.wipeMove = function(axis) {
+		if (axis) {
+			if (axis=='x') {
+				this.velX = 0;
+			} else if (axis=='y') {
+				this.velY = 0;
+			} else if (axis=='z') {
+				this.velZ = 0;
+			}
+		} else {
+			this.velX = 0;
+			this.velY = 0;
+			this.velZ = 0;
+		}
+		return this;
+	}
+	/**
+	 * Immediately moves ent to specified absolute position on the board. <br>
+	 * <strong>Note:</strong> Unlike ent.base.move() this action occurs instantaneously and does not effect velocity.
+	 * @param x Absolute horizontal position to place ent.
+	 * @param y Absolute vertical position to place ent.
+	 * @param z Absolute z-index, or depth position to place ent.
+	 * @returns ent.base
+	 */
+	me.ent.prototype.moveTo = function(x, y, z) {
+		this.posX = x;
+		this.posY = y;
+		if (z||z==0) {
+			this.posZ = z;
+		} else {
+			this.posZ = y;
+		}
+		return this;
+	}
+	me.ent.prototype.rotate = function(deg) {
+		var entDiv = document.getElementById('ent_'+this.name);
+		if (entDiv) {
+			entDiv.style[me.browser.trans_name] = 'rotate('+deg+'deg)';
+		}
+		return this;
+	}
+	me.ent.prototype.rotMap=function(hitMap, angle) {
+		var centerP = [this.width/2,this.height/2];
+		var newMap = [hitMap[0],hitMap[1]];
+		var pt1 = rotatePoint([hitMap[2],hitMap[3]],centerP,angle);
+		var pt2 = rotatePoint([hitMap[4],hitMap[5]],centerP,angle);
+		var pt3 = rotatePoint([hitMap[6],hitMap[7]],centerP,angle);
+		newMap.push(pt1[0]);
+		newMap.push(pt1[1]);
+		newMap.push(pt2[0]);
+		newMap.push(pt2[1]);
+		newMap.push(pt3[0]);
+		newMap.push(pt3[1]);
+		return newMap;
+	};
+	me.ent.prototype.getTileX=function() {
+		if (tiles) {
+			return Math.floor(this.posY/tileY);
+		} else {
+			return false;
+		};
+	};
+	me.ent.prototype.getTileY=function() {
+		if (tiles) {
+			return Math.floor(this.posY/tileY);
+		} else {
+			return false;
+		};
+	};
+	me.ent.prototype.clicked = function() {
+		if (me.mouse.down()) {
+			if ((me.mouse.x()>this.posX1())&&(me.mouse.x()<this.posX2())) {
+				if ((me.mouse.y()>this.posY1())&&(me.mouse.y()<this.posY2())) {
+					return true;
+				};
+			};
+		};
+		return false;
+	};
+	me.ent.prototype.attach = function(content) {
+		var entDiv=document.getElementById('ent_'+this.name);
+		if (entDiv) {
+			entDiv.appendChild(content);
+		};
+		return this;
+	};
+	me.ent.prototype.detach = function() {
+		var ele = document.getElementById('ent_'+this.name);
+		if (ele) {
+			var tot = ele.childNodes.length;
+			for (var x=0;x<tot;x++) {
+				ele.removeChild(ele.childNodes[0]);
+			};
+		};
+		return this;
+	};
+
+	/**
+	 * Moves ent specified distance. <br>
+	 * <strong>Note:</strong> This function is additive, subsequent calls within a single frame
+	 * will be summed as a single velocity value before being applied at the end of the frame.
+	 * To reset velocity mid-frame, use wipeMove(). 
+	 * @param x Horizontal distance of move.
+	 * @param y Vertical distance of move.
+	 * @param z Optional: Distance of z-index (depth) movement. <br>
+	 * <strong>Note:</strong> Will default to y if unspecified.
+	 * @returns ent.base
+	 */
+	me.ent.prototype.move = function(x,y,z) {
+		this.velX += x;
+		this.velY += y;
+		if (z) {
+			this.velZ += z;
+		} else {
+			this.velZ += y;
+		}
+		return this;
+	}
+
 	/**
 	 * Registers a new ent with the engine.
 	 * @param ent Ent to be added to rw.ents
