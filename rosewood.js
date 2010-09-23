@@ -9,8 +9,9 @@
  * @class rw base class, there should only be one instance
  * @constructor
  */
-var rw = new function(){
-	var me = this;
+(function(){
+	var rw = {};
+	//var me = rw;
 	// RunLoop or stop
 	var runGame = false; 
 	// RunLoop current Timer
@@ -25,7 +26,7 @@ var rw = new function(){
 	 * @param type Opional, if set to 'g', global, not current time will be returned
 	 * @returns current time, in frames elapsed.
 	 */
-	this.getTime = function(type) {
+	rw.getTime = function(type) {
 		return (type=='g') ? curT+globT : curT;
 	}
 	var currentLag = 0;
@@ -36,14 +37,14 @@ var rw = new function(){
 	 * Gets width of game board.
 	 * @returns width of board, in pixels
 	 */
-	this.Xdim = function() {
+	rw.Xdim = function() {
 		return X;
 	}
 	/**
 	 * Gets height of game board.
 	 * @returns height of board, in pixels
 	 */
-	this.Ydim = function() {
+	rw.Ydim = function() {
 		return Y;
 	}
 	// Game speed settings
@@ -53,15 +54,15 @@ var rw = new function(){
 	 * @param fps New game framerate, in Frames Per Second.
 	 * @returns rw
 	 */
-	this.setFPS = function(fps) {
+	rw.setFPS = function(fps) {
 		speed = 1000/parseInt(fps);
-		return me;
+		return rw;
 	}
 	/**
 	 * Gets game speed
 	 * @returns Current game speed, in Frames Per Second
 	 */
-	this.getFPS = function() {
+	rw.getFPS = function() {
 		return 1000/speed;
 	}
 	/**
@@ -69,7 +70,7 @@ var rw = new function(){
 	 * @returns current lag, in miliseconds. <br>
 	 A negative number indicates no lag and represents the number of spare miliseconds per frame.
 	 */
-	this.getLag = function() {
+	rw.getLag = function() {
 		return currentLag;
 	}
 	// Resource Path Settings
@@ -80,15 +81,15 @@ var rw = new function(){
 	 * @param newPath Filepath to base resource file.
 	 * @returns rw
 	 */
-	this.setPath = function(newPath) {
+	rw.setPath = function(newPath) {
 		resPath = newPath;
-		return me;
+		return rw;
 	}
 	/**
 	 * Gets current resource path for images, sounds, etc.
 	 * @returns Current resource path
 	 */
-	this.getPath = function() {
+	rw.getPath = function() {
 		return resPath;
 	}
 	// Tile settings
@@ -101,21 +102,21 @@ var rw = new function(){
 	 * @param yDim Tile height
 	 * @returns rw
 	 */
-	this.tilesOn = function(xDim, yDim) {
+	rw.tilesOn = function(xDim, yDim) {
 		tiles = true;
 		tileX = xDim;
 		tileY = yDim;
-		return me;
+		return rw;
 	}
 	/**
 	 * Turns off support for tiles.
 	 * @returns rw
 	 */
-	this.tilesOff = function() {
+	rw.tilesOff = function() {
 		tiles = false;
 		tileX = 0;
 		tileY = 0;
-		return me
+		return rw
 	};
 	//KeyDown/Up settings
 	var keyChange = false; 
@@ -143,7 +144,7 @@ var rw = new function(){
 	 * @param key Key to check. List of keynames to follow.
 	 * @returns true or false based on key's down/up status
 	 */
-	this.key = function(key) {
+	rw.key = function(key) {
 		var len=keys.length;
 		for (var x=0; x<len;x++) {
 			if (keys[x][0]==key) {
@@ -163,7 +164,7 @@ var rw = new function(){
 	/**
 	 * Mouse position and click status container.
 	 */
-	this.mouse = new function() {
+	rw.mouse = new function() {
 		/**
 		 * Gets the mouse's current X position, in pixels.
 		 * @returns X position of mouse, in pixels.
@@ -216,14 +217,14 @@ var rw = new function(){
 		return newP;
 	}
 	// Game Entities
-	this.ents = []; 
+	rw.ents = []; 
 	/**
 	 * @class 
 	 * Base constructor for game entities (ents). <br>
 	 * Every ent must be an object with a new rw.ent assigned to a property named 'base'. <br>
 	 * In addition, ents must also have a funtion method named 'update' (though it may be an empty function). <br>
 	 */
-	this.ent = function(nameIn, spritesIn, baseSpriteIn, spriteExtIn, widthIn, heightIn) {
+	rw.ent = function(nameIn, spritesIn, baseSpriteIn, spriteExtIn, widthIn, heightIn) {
 		this.ent = '';
 		this.name = nameIn;
 		this.sprites = spritesIn;
@@ -234,289 +235,13 @@ var rw = new function(){
 		this.posX = 0;
 		this.posY = 0;
 		this.posZ = 0;
-		/**
-		 * @returns ent's leftmost position, in pixels
-		 */
-		this.posX1 = function() {
-			return this.posX;
-		}
-		/**
-		 * @returns ent's topmost position, in pixels
-		 */
-		this.posY1 = function() {
-			return this.posY;
-		}
-		/**
-		 * @returns ent's rightmost position, in pixels
-		 */
-		this.posX2 = function() {
-			return this.posX+this.width;
-		}
-		/**
-		 * @returns ent's bottommost position, in pixels
-		 */
-		this.posY2 = function() {
-			return this.posY+this.height;
-		}
 		this.velX = 0;
 		this.velY = 0;
 		this.velZ = 0;
 		this.active = false; //Bool for is piece in play
 		this.visible=false; //Bool for if piece should have a div
-		// Display Entity Function, sets ent.base.active to true
-		/**
-		 * Displays an ent on the board and sets ent.base.active to true.<br>
-		 * Creates or re-displays a div, with the id 'ent_'+ent.base.name<br>
-		 * Sets ent.base.active to true, causing rosewood to call the ent's update() function one per frame.
-		 * @param spriteIn Sprite to be displayed. <br>
-		 * If set to '', no div will be created, however the ent will still be active. <br>
-		 * Set as ' ' to create a blank div (for ent.base.attach(),etc.)
-		 * @param posXIn Ent's X position on the board
-		 * @param posYIn Ent's Y position on the board
-		 * @param posZIn Optional, Ent's Z position on the board (will default to posYIn if unspecified)
-		 * @returns ent.base
-		 */
-		this.display = function (spriteIn, posXIn, posYIn, posZIn) {
-			this.baseSprite=spriteIn;
-			this.posX = posXIn;
-			this.posY = posYIn;
-			if (posZIn) {
-				this.posZ = posZIn;
-			} else {
-				this.posZ = posYIn;
-			};
-			this.active = true;
-			if (spriteIn!=='') {
-				this.visible=true;
-				var newEnt = document.createElement('div');
-				newEnt.id = 'ent_'+this.name;
-				newEnt.style.width = this.width+'px'; newEnt.style.height = this.height+'px';
-				if (spriteIn!=' ') {
-					newEnt.style.backgroundImage = "url('"+resPath+this.sprites+"/"+spriteIn+"."+this.spriteExt+"')";
-					newEnt.style.backgroundRepeat = 'no-repeat';
-				};
-				newEnt.style.position = 'absolute';
-				newEnt.style.left = this.posX+'px';
-				newEnt.style.top = this.posY+'px';
-				document.getElementById('board').appendChild(newEnt);
-				if (this.children.length>0) {
-					for (var x=0;x<this.children.length;x++) {
-						blitChildDiv(this,this.children[x])
-					}
-				}
-			} else {
-				this.visible=false;
-			};
-			return this;
-		};
-		/**
-		 * Removes ent from game board.
-		 * Sets ent.active & ent.visible to false.
-		 * @returns ent.base
-		 */
-		this.hide = function() {
-			if (document.getElementById('ent_'+this.name)) {
-				var dying = document.getElementById('ent_'+this.name);
-				dying.parentNode.removeChild(dying);
-			};
-			this.active=false;
-			this.visible=false;
-			return this;
-		};
-		/**
-		  * Changes the sprite used to display an ent.
-		  * @param sprite File name of new sprite. <br>
-		  * @returns ent.base
-		  */
-		this.changeSprite = function(sprite) {
-			this.baseSprite=sprite;
-			var entDiv = document.getElementById('ent_'+this.name);
-			if (entDiv) {
-				if (sprite!='') {
-					this.visible=true;
-					entDiv.style.backgroundImage = "url('"+resPath+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
-				} else {
-					entDiv.parentNode.removeChild(entDiv);
-					this.visible=false;
-				};
-			} else {
-				if (sprite!='') {
-					this.display(sprite,this.posX,this.posY,this.posX);
-				} else {
-					this.visible=false;
-				};
-			};
-			return this;
-		};
-		this.shiftSprite=function(x,y) {
-			var entDiv=document.getElementById('ent_'+this.name);
-			if (entDiv) {
-				entDiv.style.background="url('"+resPath+this.sprites+"/"+this.baseSprite+"."+this.spriteExt+"') "+x+"px "+y+"px no-repeat";
-			};
-		};
 		this.shifts={};
-		/**
-		 * Adds a named sprite shift to ent.base.shifts.
-		 * @param name Name of new shift.
-		 * @param x Horizontal position of new shift.
-		 * @param y Vertical position of new shift.
-		 * @returns ent.base
-		 */
-		this.addShift=function(name,x,y) {
-			this.shifts[name]=[x,y];
-			return this;
-		};
-		/**
-		 * Shifts ent's sprite to named sprite shift.
-		 * @param name Name of sprite shift.
-		 * @returns ent.base
-		 */
-		this.shiftTo=function(name) {
-			if (name in this.shifts) {
-				this.shiftSprite(this.shifts[name][0],this.shifts[name][1]);
-			};
-			return this;
-		};
-		/**
-		 * Moves ent specified distance. <br>
-		 * <strong>Note:</strong> This function is additive, subsequent calls within a single frame
-		 * will be summed as a single velocity value before being applied at the end of the frame.
-		 * To reset velocity mid-frame, use wipeMove(). 
-		 * @param x Horizontal distance of move.
-		 * @param y Vertical distance of move.
-		 * @param z Optional: Distance of z-index (depth) movement. <br>
-		 * <strong>Note:</strong> Will default to y if unspecified.
-		 * @returns ent.base
-		 */
-		this.move = function(x,y,z) {
-			this.velX += x;
-			this.velY += y;
-			if (z) {
-				this.velZ += z;
-			} else {
-				this.velZ += y;
-			}
-			return this;
-		}
-		/**
-		 * Gets ent's current velocity, or sum total of movement within the current frame.
-		 * @returns An array: [x velocity, y velocity, z velocity]
-		 */
-		this.curMove = function() {
-			return [this.velX, this.velY, this.velZ];
-		}
-		/**
-		 * Resets ent's current velocity to 0 (velocity is the sum total of all calls to ent.base.move() thus far within the current frame).
-		 * @param axis Optional: Can be set to 'x', 'y', or 'z' to wipe only a single axis of movement.
-		 * @returns ent.base
-		 */
-		this.wipeMove = function(axis) {
-			if (axis) {
-				if (axis=='x') {
-					this.velX = 0;
-				} else if (axis=='y') {
-					this.velY = 0;
-				} else if (axis=='z') {
-					this.velZ = 0;
-				}
-			} else {
-				this.velX = 0;
-				this.velY = 0;
-				this.velZ = 0;
-			}
-			return this;
-		}
-		/**
-		 * Immediately moves ent to specified absolute position on the board. <br>
-		 * <strong>Note:</strong> Unlike ent.base.move() this action occurs instantaneously and does not effect velocity.
-		 * @param x Absolute horizontal position to place ent.
-		 * @param y Absolute vertical position to place ent.
-		 * @param z Absolute z-index, or depth position to place ent.
-		 * @returns ent.base
-		 */
-		this.moveTo = function(x, y, z) {
-			this.posX = x;
-			this.posY = y;
-			if (z||z==0) {
-				this.posZ = z;
-			} else {
-				this.posZ = y;
-			}
-			return this;
-		}
-		this.rotate = function(deg) {
-			var entDiv = document.getElementById('ent_'+this.name);
-			if (entDiv) {
-				entDiv.style[me.browser.trans_name] = 'rotate('+deg+'deg)';
-			}
-			return this;
-		}
-		this.rotMap=function(hitMap, angle) {
-			var centerP = [this.width/2,this.height/2];
-			var newMap = [hitMap[0],hitMap[1]];
-			var pt1 = rotatePoint([hitMap[2],hitMap[3]],centerP,angle);
-			var pt2 = rotatePoint([hitMap[4],hitMap[5]],centerP,angle);
-			var pt3 = rotatePoint([hitMap[6],hitMap[7]],centerP,angle);
-			newMap.push(pt1[0]);
-			newMap.push(pt1[1]);
-			newMap.push(pt2[0]);
-			newMap.push(pt2[1]);
-			newMap.push(pt3[0]);
-			newMap.push(pt3[1]);
-			return newMap;
-		};
-		this.getTileX=function() {
-			if (tiles) {
-				return Math.floor(this.posY/tileY);
-			} else {
-				return false;
-			};
-		};
-		this.getTileY=function() {
-			if (tiles) {
-				return Math.floor(this.posY/tileY);
-			} else {
-				return false;
-			};
-		};
-		this.clicked = function() {
-			if (me.mouse.down()) {
-				if ((me.mouse.x()>this.posX1())&&(me.mouse.x()<this.posX2())) {
-					if ((me.mouse.y()>this.posY1())&&(me.mouse.y()<this.posY2())) {
-						return true;
-					};
-				};
-			};
-			return false;
-		};
-		this.attach = function(content) {
-			var entDiv=document.getElementById('ent_'+this.name);
-			if (entDiv) {
-				entDiv.appendChild(content);
-			};
-			return this;
-		};
-		this.detach = function() {
-			var ele = document.getElementById('ent_'+this.name);
-			if (ele) {
-				var tot = ele.childNodes.length;
-				for (var x=0;x<tot;x++) {
-					ele.removeChild(ele.childNodes[0]);
-				};
-			};
-			return this;
-		};
 		this. children=[];
-		this.addChild=function(name,g,x,y,z,w,h,ox,oy) {
-			var oX =(ox) ? ox : 0;
-			var oY =(oy) ? oy : 0;
-			this.children.push([name,g,x,y,z,w,h,oX,oY]);
-			var entDiv=document.getElementById('ent_'+this.name);
-			if (entDiv) {
-				blitChildDiv(this,this.children[this.children.length-1])
-			};
-			return this
-		};
 		var getChild=function(meme,child) {
 			if (typeof(child)=='number') {
 				var theChild=meme.children[child];
@@ -531,6 +256,9 @@ var rw = new function(){
 			if (theChild) return theChild;
 			return false
 		};
+		this.getChild=function(meme,child) {
+			return getChild(meme,child);
+		}
 		var blitChildDiv=function(meme,child) {
 			var childDiv=document.getElementById('ent_'+meme.name+'_'+child[0]);
 			if (childDiv) {
@@ -559,69 +287,350 @@ var rw = new function(){
 				}
 			}
 		};
-		this.moveChild=function(child,x,y,z) {
-			var theChild=getChild(this,child);
-			if (theChild) {
-				theChild[2]=x;
-				theChild[3]=y;
-				theChild[4]=z;
-				blitChildDiv(this,theChild)
-			};
-			return this
-		};
-		this.resizeChild=function(child,w,h) {
-			var theChild=getChild(this,child);
-			if (theChild) {
-				theChild[5]=w;
-				theChild[6]=h;
-				blitChildDiv(this,theChild)
-			};
-			return this
-		};
-		this.changeChild=function(child,g,ox,oy) {
-			var theChild=getChild(this,child);
-			if (theChild) {
-				theChild[1] = g;
-				theChild[7] = ((ox)||(ox===0)) ? ox : theChild[7];
-				theChild[8] = ((oy)||(oy===0)) ? oy : theChild[8];
-				blitChildDiv(this,theChild)
-			};
-			return this
-		};
-		this.removeChild=function(child) {
-			if (typeof(child)=='number') {
-				var childId=child
-			} else {
-				for (var x=0;x<this.children.length;x++) {
-					if (this.children[x][0]==child) {
-						var childId=x;
-						break
-					}
-				}
-			};
-			if ((childId)||(childId==0)) {
-				var childDiv=document.getElementById('ent_'+this.name+'_'+this.children[childId][0]);
-				childDiv.parentNode.removeChild(childDiv);
-				this.children.slice(childId,1)
-			};
-			return this
-		};
-		this.back = function() {
-			return this.ent;
-		};
-		this.end = function() {
-			return me
+		this.blitChildDiv=function(meme,child) {
+			blitChildDiv(meme,child);
 		};
 	};
+
+	rw.ent.prototype.addChild=function(name,g,x,y,z,w,h,ox,oy) {
+		var oX =(ox) ? ox : 0;
+		var oY =(oy) ? oy : 0;
+		this.children.push([name,g,x,y,z,w,h,oX,oY]);
+		var entDiv=document.getElementById('ent_'+this.name);
+		if (entDiv) {
+			this.blitChildDiv(this,this.children[this.children.length-1])
+		};
+		return this
+	};
+	rw.ent.prototype.moveChild=function(child,x,y,z) {
+		var theChild=this.getChild(this,child);
+		if (theChild) {
+			theChild[2]=x;
+			theChild[3]=y;
+			theChild[4]=z;
+			this.blitChildDiv(this,theChild)
+		};
+		return this
+	};
+	rw.ent.prototype.resizeChild=function(child,w,h) {
+		var theChild=this.getChild(this,child);
+		if (theChild) {
+			theChild[5]=w;
+			theChild[6]=h;
+			this.blitChildDiv(this,theChild)
+		};
+		return this
+	};
+	rw.ent.prototype.changeChild=function(child,g,ox,oy) {
+		var theChild=this.getChild(this,child);
+		if (theChild) {
+			theChild[1] = g;
+			theChild[7] = ((ox)||(ox===0)) ? ox : theChild[7];
+			theChild[8] = ((oy)||(oy===0)) ? oy : theChild[8];
+			this.blitChildDiv(this,theChild)
+		};
+		return this
+	};
+	rw.ent.prototype.removeChild=function(child) {
+		if (typeof(child)=='number') {
+			var childId=child
+		} else {
+			for (var x=0;x<this.children.length;x++) {
+				if (this.children[x][0]==child) {
+					var childId=x;
+					break
+				}
+			}
+		};
+		if ((childId)||(childId==0)) {
+			var childDiv=document.getElementById('ent_'+this.name+'_'+this.children[childId][0]);
+			childDiv.parentNode.removeChild(childDiv);
+			this.children.slice(childId,1)
+		};
+		return this
+	};
+	rw.ent.prototype.back = function() {
+		return this.ent;
+	};
+	rw.ent.prototype.end = function() {
+		return rw
+	};
+
+	/**
+	 * @returns ent's leftmost position, in pixels
+	 */
+	rw.ent.prototype.posX1 = function() {
+		return this.posX;
+	}
+	/**
+	 * @returns ent's topmost position, in pixels
+	 */
+	rw.ent.prototype.posY1 = function() {
+		return this.posY;
+	}
+	/**
+	 * @returns ent's rightmost position, in pixels
+	 */
+	rw.ent.prototype.posX2 = function() {
+		return this.posX+this.width;
+	}
+	/**
+	 * @returns ent's bottommost position, in pixels
+	 */
+	rw.ent.prototype.posY2 = function() {
+		return this.posY+this.height;
+	}
+	/**
+	 * Displays an ent on the board and sets ent.base.active to true.<br>
+	 * Creates or re-displays a div, with the id 'ent_'+ent.base.name<br>
+	 * Sets ent.base.active to true, causing rosewood to call the ent's update() function one per frame.
+	 * @param spriteIn Sprite to be displayed. <br>
+	 * If set to '', no div will be created, however the ent will still be active. <br>
+	 * Set as ' ' to create a blank div (for ent.base.attach(),etc.)
+	 * @param posXIn Ent's X position on the board
+	 * @param posYIn Ent's Y position on the board
+	 * @param posZIn Optional, Ent's Z position on the board (will default to posYIn if unspecified)
+	 * @returns ent.base
+	 */
+	rw.ent.prototype.display = function (spriteIn, posXIn, posYIn, posZIn) {
+		this.baseSprite=spriteIn;
+		this.posX = posXIn;
+		this.posY = posYIn;
+		if (posZIn) {
+			this.posZ = posZIn;
+		} else {
+			this.posZ = posYIn;
+		};
+		this.active = true;
+		if (spriteIn!=='') {
+			this.visible=true;
+			var newEnt = document.createElement('div');
+			newEnt.id = 'ent_'+this.name;
+			newEnt.style.width = this.width+'px'; newEnt.style.height = this.height+'px';
+			if (spriteIn!=' ') {
+				newEnt.style.backgroundImage = "url('"+resPath+this.sprites+"/"+spriteIn+"."+this.spriteExt+"')";
+				newEnt.style.backgroundRepeat = 'no-repeat';
+			};
+			newEnt.style.position = 'absolute';
+			newEnt.style.left = this.posX+'px';
+			newEnt.style.top = this.posY+'px';
+			document.getElementById('board').appendChild(newEnt);
+			if (this.children.length>0) {
+				for (var x=0;x<this.children.length;x++) {
+					blitChildDiv(this,this.children[x])
+				}
+			}
+		} else {
+			this.visible=false;
+		};
+		return this;
+	};
+	/**
+	 * Removes ent from game board.
+	 * Sets ent.active & ent.visible to false.
+	 * @returns ent.base
+	 */
+	rw.ent.prototype.hide = function() {
+		if (document.getElementById('ent_'+this.name)) {
+			var dying = document.getElementById('ent_'+this.name);
+			dying.parentNode.removeChild(dying);
+		};
+		this.active=false;
+		this.visible=false;
+		return this;
+	};
+	/**
+	  * Changes the sprite used to display an ent.
+	  * @param sprite File name of new sprite. <br>
+	  * @returns ent.base
+	  */
+	rw.ent.prototype.changeSprite = function(sprite) {
+		this.baseSprite=sprite;
+		var entDiv = document.getElementById('ent_'+this.name);
+		if (entDiv) {
+			if (sprite!='') {
+				this.visible=true;
+				entDiv.style.backgroundImage = "url('"+resPath+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
+			} else {
+				entDiv.parentNode.removeChild(entDiv);
+				this.visible=false;
+			};
+		} else {
+			if (sprite!='') {
+				this.display(sprite,this.posX,this.posY,this.posX);
+			} else {
+				this.visible=false;
+			};
+		};
+		return this;
+	};
+	rw.ent.prototype.shiftSprite=function(x,y) {
+		var entDiv=document.getElementById('ent_'+this.name);
+		if (entDiv) {
+			entDiv.style.background="url('"+resPath+this.sprites+"/"+this.baseSprite+"."+this.spriteExt+"') "+x+"px "+y+"px no-repeat";
+		};
+	};
+	/**
+	 * Adds a named sprite shift to ent.base.shifts.
+	 * @param name Name of new shift.
+	 * @param x Horizontal position of new shift.
+	 * @param y Vertical position of new shift.
+	 * @returns ent.base
+	 */
+	rw.ent.prototype.addShift=function(name,x,y) {
+		this.shifts[name]=[x,y];
+		return this;
+	};
+	/**
+	 * Shifts ent's sprite to named sprite shift.
+	 * @param name Name of sprite shift.
+	 * @returns ent.base
+	 */
+	rw.ent.prototype.shiftTo=function(name) {
+		if (name in this.shifts) {
+			this.shiftSprite(this.shifts[name][0],this.shifts[name][1]);
+		};
+		return this;
+	};
+	/**
+	 * Gets ent's current velocity, or sum total of movement within the current frame.
+	 * @returns An array: [x velocity, y velocity, z velocity]
+	 */
+	rw.ent.prototype.curMove = function() {
+		return [this.velX, this.velY, this.velZ];
+	}
+	/**
+	 * Resets ent's current velocity to 0 (velocity is the sum total of all calls to ent.base.move() thus far within the current frame).
+	 * @param axis Optional: Can be set to 'x', 'y', or 'z' to wipe only a single axis of movement.
+	 * @returns ent.base
+	 */
+	rw.ent.prototype.wipeMove = function(axis) {
+		if (axis) {
+			if (axis=='x') {
+				this.velX = 0;
+			} else if (axis=='y') {
+				this.velY = 0;
+			} else if (axis=='z') {
+				this.velZ = 0;
+			}
+		} else {
+			this.velX = 0;
+			this.velY = 0;
+			this.velZ = 0;
+		}
+		return this;
+	}
+	/**
+	 * Immediately moves ent to specified absolute position on the board. <br>
+	 * <strong>Note:</strong> Unlike ent.base.move() this action occurs instantaneously and does not effect velocity.
+	 * @param x Absolute horizontal position to place ent.
+	 * @param y Absolute vertical position to place ent.
+	 * @param z Absolute z-index, or depth position to place ent.
+	 * @returns ent.base
+	 */
+	rw.ent.prototype.moveTo = function(x, y, z) {
+		this.posX = x;
+		this.posY = y;
+		if (z||z==0) {
+			this.posZ = z;
+		} else {
+			this.posZ = y;
+		}
+		return this;
+	}
+	rw.ent.prototype.rotate = function(deg) {
+		var entDiv = document.getElementById('ent_'+this.name);
+		if (entDiv) {
+			entDiv.style[rw.browser.trans_name] = 'rotate('+deg+'deg)';
+		}
+		return this;
+	}
+	rw.ent.prototype.rotMap=function(hitMap, angle) {
+		var centerP = [this.width/2,this.height/2];
+		var newMap = [hitMap[0],hitMap[1]];
+		var pt1 = rotatePoint([hitMap[2],hitMap[3]],centerP,angle);
+		var pt2 = rotatePoint([hitMap[4],hitMap[5]],centerP,angle);
+		var pt3 = rotatePoint([hitMap[6],hitMap[7]],centerP,angle);
+		newMap.push(pt1[0]);
+		newMap.push(pt1[1]);
+		newMap.push(pt2[0]);
+		newMap.push(pt2[1]);
+		newMap.push(pt3[0]);
+		newMap.push(pt3[1]);
+		return newMap;
+	};
+	rw.ent.prototype.getTileX=function() {
+		if (tiles) {
+			return Math.floor(this.posY/tileY);
+		} else {
+			return false;
+		};
+	};
+	rw.ent.prototype.getTileY=function() {
+		if (tiles) {
+			return Math.floor(this.posY/tileY);
+		} else {
+			return false;
+		};
+	};
+	rw.ent.prototype.clicked = function() {
+		if (rw.mouse.down()) {
+			if ((rw.mouse.x()>this.posX1())&&(rw.mouse.x()<this.posX2())) {
+				if ((rw.mouse.y()>this.posY1())&&(rw.mouse.y()<this.posY2())) {
+					return true;
+				};
+			};
+		};
+		return false;
+	};
+	rw.ent.prototype.attach = function(content) {
+		var entDiv=document.getElementById('ent_'+this.name);
+		if (entDiv) {
+			entDiv.appendChild(content);
+		};
+		return this;
+	};
+	rw.ent.prototype.detach = function() {
+		var ele = document.getElementById('ent_'+this.name);
+		if (ele) {
+			var tot = ele.childNodes.length;
+			for (var x=0;x<tot;x++) {
+				ele.removeChild(ele.childNodes[0]);
+			};
+		};
+		return this;
+	};
+
+	/**
+	 * Moves ent specified distance. <br>
+	 * <strong>Note:</strong> This function is additive, subsequent calls within a single frame
+	 * will be summed as a single velocity value before being applied at the end of the frame.
+	 * To reset velocity mid-frame, use wipeMove(). 
+	 * @param x Horizontal distance of move.
+	 * @param y Vertical distance of move.
+	 * @param z Optional: Distance of z-index (depth) movement. <br>
+	 * <strong>Note:</strong> Will default to y if unspecified.
+	 * @returns ent.base
+	 */
+	rw.ent.prototype.move = function(x,y,z) {
+		this.velX += x;
+		this.velY += y;
+		if (z) {
+			this.velZ += z;
+		} else {
+			this.velZ += y;
+		}
+		return this;
+	}
+
 	/**
 	 * Registers a new ent with the engine.
 	 * @param ent Ent to be added to rw.ents
 	 * @returns ent
 	 */
-	this.newEnt = function(ent) {
+	rw.newEnt = function(ent) {
 		ent.base['ent'] = ent;
-		var curLength = me.ents.length;
-		me.ents[curLength] = ent;
+		rw.ents.push(ent);
 		if (ent.init) ent.init();
 		return ent;
 	};
@@ -632,16 +641,16 @@ var rw = new function(){
 	 * @param entNum Absolute position of ent to be removed in rw.ents array.
 	 * @returns rw
 	 */
-	this.removeEnt = function(entNum) {
-		me.ents.splice(entNum, 1);
-		return me;
+	rw.removeEnt = function(entNum) {
+		rw.ents.splice(entNum, 1);
+		return rw;
 	};
 	// Map Entities
-	this.maps = {}; 
+	rw.maps = {}; 
 	/**
 	 * @class
 	 */
-	this.map = function(name, path, extention, xDim, yDim) {
+	rw.map = function(name, path, extention, xDim, yDim) {
 		this.name = name;
 		this.path = path;
 		this.extention = extention;
@@ -724,46 +733,46 @@ var rw = new function(){
 		 * @returns rw
 		 */
 		this.end = function() {
-			return me;
+			return rw;
 		}
 
 	}
-	this.newMap = function(name, map, ext, dimX, dimY) {
-		me.maps[name] = new me.map(name, map, ext, dimX, dimY);
-		return me.maps[name];
+	rw.newMap = function(name, map, ext, dimX, dimY) {
+		rw.maps[name] = new rw.map(name, map, ext, dimX, dimY);
+		return rw.maps[name];
 	}
-	this.removeMap = function(map) {
-		if (me.maps[map]) delete me.maps[map];
-		return me;
+	rw.removeMap = function(map) {
+		if (rw.maps[map]) delete rw.maps[map];
+		return rw;
 	}
 	// Rule Entities
-	this.rules = {};
-	this.ruleList = [[],[],[],[]];
+	rw.rules = {};
+	rw.ruleList = [[],[],[],[]];
 	/**
 	 * @class
 	 */
-	this.rule = function(active, pos) {
+	rw.rule = function(active, pos) {
 		this.active = active;
 		this.pos = pos;
 	}
-	this.newRule = function(name, rule) {
-		me.rules[name] = rule;
-		me.ruleList[rule.base.pos].push(name);
-		return me;
+	rw.newRule = function(name, rule) {
+		rw.rules[name] = rule;
+		rw.ruleList[rule.base.pos].push(name);
+		return rw;
 	}
-	this.removeRule = function(rule) {
-		if (me.rules[rule]) {
-			var pos = me.rules[rule].base.pos;
-			var list = me.ruleList[pos];
+	rw.removeRule = function(rule) {
+		if (rw.rules[rule]) {
+			var pos = rw.rules[rule].base.pos;
+			var list = rw.ruleList[pos];
 			for (var x=0, len=list.length; x<len; x++) {
 				if (list[x]==rule) {
 					list.splice(x,1);
 					break;
 				};
 			};
-			delete me.rules[rule];
+			delete rw.rules[rule];
 		}
-		return me;
+		return rw;
 	}
 	var states = {};
 	var copy = function(obj,par) {
@@ -790,19 +799,19 @@ var rw = new function(){
 	 * @param name Name of saved state.
 	 * @returns rw
 	 */
-	this.saveState = function(name) {
+	rw.saveState = function(name) {
 		states[name] = {};
-		states[name]['ents']=copy(me.ents,me);
-		states[name]['maps']=copy(me.maps,me);
-		states[name]['rules']=copy(me.rules,me);
-		states[name]['ruleList']=copy(me.ruleList,me);
+		states[name]['ents']=copy(rw.ents,rw);
+		states[name]['maps']=copy(rw.maps,rw);
+		states[name]['rules']=copy(rw.rules,rw);
+		states[name]['ruleList']=copy(rw.ruleList,rw);
 		var len = states[name]['ents'].length;
 		for (var x=0; x<len; x++) {
 			states[name]['ents'][x].base['ent'] = states[name]['ents'][x];
 		}
-		return me;
+		return rw;
 	}
-	this.isState=function(name) {
+	rw.isState=function(name) {
 		if (states[name]) return true;
 		return false;
 	};
@@ -811,53 +820,53 @@ var rw = new function(){
 	 * @param name Name of state to load
 	 * @returns rw
 	 */
-	this.loadState = function(name) {
+	rw.loadState = function(name) {
 		if (states[name]) {
-			me.ents = copy(states[name]['ents'],name);
-			me.maps = copy(states[name]['maps'],name);
-			me.rules = copy(states[name]['rules'],name);
-			me.ruleList = copy(states[name]['ruleList'],name);
-			for (map in me.maps) {
-				if (me.maps[map].active==true) me.maps[map].display();
+			rw.ents = copy(states[name]['ents'],name);
+			rw.maps = copy(states[name]['maps'],name);
+			rw.rules = copy(states[name]['rules'],name);
+			rw.ruleList = copy(states[name]['ruleList'],name);
+			for (map in rw.maps) {
+				if (rw.maps[map].active==true) rw.maps[map].display();
 			}
-			var len = me.ents.length;
+			var len = rw.ents.length;
 			for (var x=0;x<len;x++) {
-				me.ents[x].base.ent = me.ents[x];
-				if (me.ents[x].base.active==true) {
-					me.ents[x].base.display(
-						me.ents[x].base.baseSprite,
-						me.ents[x].base.posX,
-						me.ents[x].base.posY,
-						me.ents[x].base.posZ
+				rw.ents[x].base.ent = rw.ents[x];
+				if (rw.ents[x].base.active==true) {
+					rw.ents[x].base.display(
+						rw.ents[x].base.baseSprite,
+						rw.ents[x].base.posX,
+						rw.ents[x].base.posY,
+						rw.ents[x].base.posZ
 					);
 				}
 			}
 			keyChange = true;
 		}
-		return me;
+		return rw;
 	}
 	/**
 	 * Removes specified state
 	 * @param name Name of state to remove
 	 * @returns rw
 	 */
-	this.rmState = function(name) {
+	rw.rmState = function(name) {
 		if (states[name]) delete states[name];
-		return me;
+		return rw;
 	}
 	// At start and end function assignments
 	var doAtStart=null;
-	this.atStart=function(arg) {
+	rw.atStart=function(arg) {
 		doAtStart=arg;
-		return me;
+		return rw;
 	};
 	var doAtEnd=null;
-	this.atEnd=function(arg) {
+	rw.atEnd=function(arg) {
 		doAtEnd=arg;
-		return me;
+		return rw;
 	};
 	// Ajax function, durr
-	this.ajax = function(targ, func) {
+	rw.ajax = function(targ, func) {
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET",targ,true);
 		xhr.onreadystatechange = function() {
@@ -867,51 +876,51 @@ var rw = new function(){
 			}
 		}
 		xhr.send(null);
-		return me;
+		return rw;
 	}
 	// Inline function call function
-	this.func = function() {
-		return me;
+	rw.func = function() {
+		return rw;
 	}
 
 	//AUDIO!!! NEW!!! Needs work integrating all browsers
-	this.soundBank = {};
-	this.sounds = [];
-	this.playSound = function(sound) {
-		var len = me.sounds.length;
-		me.sounds[len] = document.createElement('audio');
-		me.sounds[len].src = me.soundBank[sound].src;
-		me.sounds[len].play();
-		return me;
+	rw.soundBank = {};
+	rw.sounds = [];
+	rw.playSound = function(sound) {
+		var len = rw.sounds.length;
+		rw.sounds[len] = document.createElement('audio');
+		rw.sounds[len].src = rw.soundBank[sound].src;
+		rw.sounds[len].play();
+		return rw;
 	}
 	/** 
 	 * Adds a new sound to rw.soundBank.
 	 * @param name Name of new sound.
 	 * @param src Filepath to sound file. 
 	 */
-	this.newSound = function(name, src) {
-		me.soundBank[name] = new Audio(src);
-		return me;
+	rw.newSound = function(name, src) {
+		rw.soundBank[name] = new Audio(src);
+		return rw;
 	}
 
 	//Maybe Fixed now?
 	// Image pre-loader
 	var preImg = [];
-	this.using = function(path, ext, imgArray) {
+	rw.using = function(path, ext, imgArray) {
 		var len = imgArray.length;
 		for (var x=0; x<len;x++) {
 			preImg[preImg.length] = new Image();
 			preImg[preImg.length-1].src = resPath+path+'/'+imgArray[x]+'.'+ext;
 		}
-		return me;
+		return rw;
 	}
 	// Changes Cursor
-	this.changeCursor = function(cursor) {
+	rw.changeCursor = function(cursor) {
 		document.getElementById('board').style.cursor="url('"+resPath+cursor+"')";
-		return me;
+		return rw;
 	}
 	// Browser-specific values, runs at init
-	this.browser = {
+	rw.browser = {
 		check: function() {
 			var trans = function() {
 				var body = document.getElementsByTagName('body')[0];
@@ -938,46 +947,46 @@ var rw = new function(){
 	 * Removes all DOM content from the board
 	 * @returns rw
 	 */
-	this.wipeBoard = function() {
+	rw.wipeBoard = function() {
 		var board = document.getElementById('board');
 		var total = board.childNodes.length;
 		for (var x=0; x<total; x++) {
 			board.removeChild(board.childNodes[0]);
 		}
-		return me;
+		return rw;
 	}
 	/**
 	 * Removes all ents
 	 * @returns rw
 	 */
-	this.wipeEnts = function() {
-		me.ents = [];
-		return me;
+	rw.wipeEnts = function() {
+		rw.ents = [];
+		return rw;
 	}
 	/**
 	 * Removes all maps
 	 * @returns rw
 	 */
-	this.wipeMaps = function() {
-		me.maps = {};
-		return me;
+	rw.wipeMaps = function() {
+		rw.maps = {};
+		return rw;
 	}
 	/**
 	 * Removes all rules
 	 * @returns rw
 	 */
-	this.wipeRules = function() {
-		me.rules = {};
-		me.ruleList = [[],[],[],[]];
-		return me;
+	rw.wipeRules = function() {
+		rw.rules = {};
+		rw.ruleList = [[],[],[],[]];
+		return rw;
 	}
 	/**
 	 * Removes all ents, maps and rules. Removes all DOM content from board.
 	 * @returns rw
 	 */
-	this.wipeAll = function() {
-		me.wipeBoard().wipeEnts().wipeMaps().wipeRules();
-		return me;
+	rw.wipeAll = function() {
+		rw.wipeBoard().wipeEnts().wipeMaps().wipeRules();
+		return rw;
 	}
 	/**
 	 * Initializes Rosewood and creates the game board element.
@@ -987,8 +996,8 @@ var rw = new function(){
 	 * If unspecified, the board will be attached to the body.
 	 * @returns rw
 	 */
-	this.init = function(dimX, dimY, target) {
-		me.browser.check();
+	rw.init = function(dimX, dimY, target) {
+		rw.browser.check();
 		var board = document.createElement('div');
 		board.id = 'board';
 		X = dimX;
@@ -1009,32 +1018,29 @@ var rw = new function(){
 			window.document.attachEvent("onkeydown", keyDown);
 			window.document.attachEvent("onkeyup", keyUp);
 		}
-		//document.onmousemove = mousePos;
-		//document.onmousedown = mouseDown;
-		//document.onmouseup = mouseUp;
 		board.onmousemove = mousePos;
 		board.onmousedown = mouseDown;
 		board.onmouseup = mouseUp;
-		return me;
+		return rw;
 	}
 	/**
 	 * Starts the gameloop
 	 * @returns rw
 	 */
-	this.start = function() {
+	rw.start = function() {
 		if (runGame==false) {
 			runGame = true;
 			curT = setTimeout('rw.run()', speed);
 		}
-		return me;
+		return rw;
 	}
 	/**
 	 * Stops the gameloop. Resets current time to 0.
 	 * @returns rw
 	 */
-	this.stop = function() {
+	rw.stop = function() {
 		runGame = false;
-		return me;
+		return rw;
 	}
 	// Point in Triangle Test
 	var pointInTri=function(p,a,b,c) {
@@ -1154,11 +1160,11 @@ var rw = new function(){
 	/**
 	 * Gameloop function, not called directly.
 	 */
-	this.run = function() {
+	rw.run = function() {
 		var startTime = new Date();
-		for (var x=0; x<me.sounds.length; x++) {
-			if (me.sounds[x].ended) {
-				me.sounds.splice(x,1);
+		for (var x=0; x<rw.sounds.length; x++) {
+			if (rw.sounds[x].ended) {
+				rw.sounds.splice(x,1);
 				x--;
 			}
 		}
@@ -1168,17 +1174,17 @@ var rw = new function(){
 			doAtStart=null;
 		}
 		// Rule position 0, pre-update loop
-		for (var x=0, l=me.ruleList[0].length; x<l; x++) {
-			if (me.rules[me.ruleList[0][x]].base.active) {
-				me.rules[me.ruleList[0][x]].rule();
+		for (var x=0, l=rw.ruleList[0].length; x<l; x++) {
+			if (rw.rules[rw.ruleList[0][x]].base.active) {
+				rw.rules[rw.ruleList[0][x]].rule();
 			};
 		};
 		var toBeRemoved = [];
-		var len = me.ents.length;
+		var len = rw.ents.length;
 		// Update Loop
 		if (keyChange==true) {
 			for (var x=0; x<len; x++) {
-				var curEnt = me.ents[x];
+				var curEnt = rw.ents[x];
 				if (curEnt.base.active==true) {
 					if (curEnt.keyChange) {
 						curEnt.keyChange();
@@ -1199,7 +1205,7 @@ var rw = new function(){
 			keyChange = false;
 		} else {
 			for(var x=0; x<len; x++) {
-				var curEnt = me.ents[x];
+				var curEnt = rw.ents[x];
 				if (curEnt.base.active==true) {
 					var currentSprite = curEnt.update(curEnt.base.posX1(), curEnt.base.posX2(), curEnt.base.posY1(), curEnt.base.posY2());
 					if (currentSprite==false) {
@@ -1216,19 +1222,19 @@ var rw = new function(){
 			}
 		}
 		// Rule position 1, pre-collision loop
-		for (var x=0, l=me.ruleList[1].length; x<l; x++) {
-			if (me.rules[me.ruleList[1][x]].base.active) {
-				me.rules[me.ruleList[1][x]].rule();
+		for (var x=0, l=rw.ruleList[1].length; x<l; x++) {
+			if (rw.rules[rw.ruleList[1][x]].base.active) {
+				rw.rules[rw.ruleList[1][x]].rule();
 			};
 		};
 		// Collision Loop
 		var cols = [];
 		// For each ent
 		for (var x=0;x<len;x++) {
-			var eX=me.ents[x];
+			var eX=rw.ents[x];
 			if (eX.base.active&&eX.hitMap) {
 				for (var y=x+1;y<len;y++) {
-					var eY=me.ents[y];
+					var eY=rw.ents[y];
 					if (eY.base.active&&eY.hitMap) {
 						for (var z=0;z<eX.hitMap.length;z++) {
 							var eXm=eX.hitMap[z];
@@ -1399,13 +1405,13 @@ var rw = new function(){
 		}
 		if (cols.length>0) {
 			for (var x=0; x<cols.length; x++) {
-				if (me.ents[cols[x][0][0]].gotHit) {
-					if (me.ents[cols[x][0][0]].gotHit(cols[x][1][1],cols[x][0][1],cols[x][1][0])==false) {
+				if (rw.ents[cols[x][0][0]].gotHit) {
+					if (rw.ents[cols[x][0][0]].gotHit(cols[x][1][1],cols[x][0][1],cols[x][1][0])==false) {
 						toBeRemoved.push(cols[x][0][0])
 					}
 				}
-				if (me.ents[cols[x][1][0]].gotHit) {
-					if (me.ents[cols[x][1][0]].gotHit(cols[x][0][1],cols[x][1][1],cols[x][0][0])==false) {
+				if (rw.ents[cols[x][1][0]].gotHit) {
+					if (rw.ents[cols[x][1][0]].gotHit(cols[x][0][1],cols[x][1][1],cols[x][0][0])==false) {
 						toBeRemoved.push(cols[x][1][0])
 					}
 				}
@@ -1424,32 +1430,32 @@ var rw = new function(){
 				killThese[killThese.length] = toBeRemoved[x];
 			}
 			for (var x=0;x<killThese.length;x++) {
-				me.removeEnt(killThese[x]);
+				rw.removeEnt(killThese[x]);
 			}
 		}
 		// Rule position 2, pre-redraw loop
-		for (var x=0, l=me.ruleList[2].length; x<l; x++) {
-			if (me.rules[me.ruleList[2][x]].base.active) {
-				me.rules[me.ruleList[2][x]].rule();
+		for (var x=0, l=rw.ruleList[2].length; x<l; x++) {
+			if (rw.rules[rw.ruleList[2][x]].base.active) {
+				rw.rules[rw.ruleList[2][x]].rule();
 			};
 		};
 		// Run Through all ents and update position
-		for (var x=0; x<me.ents.length; x++) {
-			me.ents[x].base.posX += me.ents[x].base.velX;
-			me.ents[x].base.posY += me.ents[x].base.velY;
-			me.ents[x].base.posZ += me.ents[x].base.velZ;
-			if (me.ents[x].base.visible) {
-				var entDiv = document.getElementById('ent_'+me.ents[x].base.name);
-				entDiv.style.left = me.ents[x].base.posX+'px';
-				entDiv.style.top = me.ents[x].base.posY+'px';
-				entDiv.style.zIndex = me.ents[x].base.posZ;
+		for (var x=0; x<rw.ents.length; x++) {
+			rw.ents[x].base.posX += rw.ents[x].base.velX;
+			rw.ents[x].base.posY += rw.ents[x].base.velY;
+			rw.ents[x].base.posZ += rw.ents[x].base.velZ;
+			if (rw.ents[x].base.visible) {
+				var entDiv = document.getElementById('ent_'+rw.ents[x].base.name);
+				entDiv.style.left = rw.ents[x].base.posX+'px';
+				entDiv.style.top = rw.ents[x].base.posY+'px';
+				entDiv.style.zIndex = rw.ents[x].base.posZ;
 			}
-			me.ents[x].base.wipeMove();
+			rw.ents[x].base.wipeMove();
 		}
 		// Rule position 3, end of frame
-		for (var x=0, l=me.ruleList[3].length; x<l; x++) {
-			if (me.rules[me.ruleList[3][x]].base.active) {
-				me.rules[me.ruleList[3][x]].rule();
+		for (var x=0, l=rw.ruleList[3].length; x<l; x++) {
+			if (rw.rules[rw.ruleList[3][x]].base.active) {
+				rw.rules[rw.ruleList[3][x]].rule();
 			};
 		};
 		// At end function, if any
@@ -1468,15 +1474,16 @@ var rw = new function(){
 			}
 			currentLag = timeTotal-speed;
 		} else {
-			clearTimeout(me.curT);
+			clearTimeout(rw.curT);
 			globT += curT;
 			curT = 0;
 		}
 	}
-};
-window['rw']=rw;
-window['rw']['run']=rw.run;
-window['rw']['ents']=rw.ents;
-window['rw']['maps']=rw.maps;
-window['rw']['rules']=rw.rules;
-window['rw']['ruleList']=rw.ruleList;
+	window['rw']=rw;
+	window['rw']['run']=rw.run;
+	window['rw']['ents']=rw.ents;
+	window['rw']['maps']=rw.maps;
+	window['rw']['rules']=rw.rules;
+	window['rw']['ruleList']=rw.ruleList;
+})();
+
