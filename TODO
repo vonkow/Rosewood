@@ -1,14 +1,20 @@
-------NOW----------------------------------------------------------------------------------------
+------RIGHT NOW----------------------------------------------------------------------------------
 
-Improve upon newly implemented sprite shift names.
+Re-add ent children
+
+Fix maps for canvas and prototype all methods
+
+Add text support
+
+Add canvas drawing support
+
+------NOW----------------------------------------------------------------------------------------
 
 Better tile support, especially RE collisions.
 
 Add compiling suite with Closure, full auto-build, maybe something to optimize sprites as well
 
 ------UPCOMING CHANGES---------------------------------------------------------------------------
-
-Canvas support someday
 
 Better Server Tools
 
@@ -21,4 +27,3 @@ Add audio mixing support
 ------BUGS----------------------------------------------------------------------------------------
 
 Sound support died after using a bunch of bombs in bman clone, in chrome.
-

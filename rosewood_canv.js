@@ -1,5 +1,5 @@
 /**
- * @fileoverview The Rosewood js gaming engine, because simple is better
+ * @fileoverview The Rosewood js gaming engine, because games should be fun
  * @author Caz vonKow skopsycats@gmail.com
  * @version <1.0
  */
@@ -11,7 +11,30 @@
  */
 (function(){
 	var rw = {};
-	//var me = rw;
+	rw.sprites = {};
+	rw.loadSprites = function(sprites, callback) {
+		function loadNext(arr) {
+			if (arr.length) {
+				var i = arr.pop();
+				var img = new Image();
+				img.onload = function() {
+					rw.sprites[i[0]] = [this, i[2], i[3], i[4], i[5]];
+					loadNext(arr);
+				};
+				img.onerror = function() { loadNext(arr) };
+				img.src = i[1];
+			} else {
+				callback();
+			};
+		};
+		var x,
+			arr = [];
+		for (x in sprites) {
+			var i = sprites[x];
+			arr.push([x, i[0], i[1], i[2], i[3], i[4]]);
+		};
+		loadNext(arr);
+	};
 	// RunLoop or stop
 	var runGame = false; 
 	// RunLoop current Timer
@@ -72,25 +95,6 @@
 	 */
 	rw.getLag = function() {
 		return currentLag;
-	}
-	// Resource Path Settings
-	var resPath = 'sprites/';
-	/**
-	 * Sets resource path for images, sounds, etc. <br>
-	 * 'sprites/' is the default.
-	 * @param newPath Filepath to base resource file.
-	 * @returns rw
-	 */
-	rw.setPath = function(newPath) {
-		resPath = newPath;
-		return rw;
-	}
-	/**
-	 * Gets current resource path for images, sounds, etc.
-	 * @returns Current resource path
-	 */
-	rw.getPath = function() {
-		return resPath;
 	}
 	// Tile settings
 	var tiles = false;
@@ -180,16 +184,6 @@
 		}
 	};
 	var mousePos = function(e) {
-		//if (e) {
-			// Like a normal browser...
-			//mouseX= e.pageX;
-			//mouseY= e.pageY;
-		//} else {
-			// THIS IS WHY WE CAN'T HAVE PRETTY THINGS IE!!!
-			//var e = window.event;
-			//me.mouse.x = e.clientX+(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-			//me.mouse.y = e.clientY+(document.documentElement.scrollRight ? document.documentElement.scrollRight : document.body.scrollRight);
-		//}
 		if (!e) var e=window.event;
 		if (e.offsetX) {
 			mouseX=e.offsetX;
@@ -206,7 +200,6 @@
 	var mouseUp = function(e) {
 		if (!e) var e = window.event;
 		mouseDown= false;
-
 	}
 	var rotatePoint=function(p,o,a) {
 		var ang = a*0.0174532925;
@@ -224,12 +217,10 @@
 	 * Every ent must be an object with a new rw.ent assigned to a property named 'base'. <br>
 	 * In addition, ents must also have a funtion method named 'update' (though it may be an empty function). <br>
 	 */
-	rw.ent = function(nameIn, spritesIn, baseSpriteIn, spriteExtIn, widthIn, heightIn) {
+	rw.ent = function(nameIn, spriteIn, widthIn, heightIn) {
 		this.ent = '';
 		this.name = nameIn;
-		this.sprites = spritesIn;
-		this.baseSprite = baseSpriteIn;
-		this.spriteExt = spriteExtIn;
+		this.sprite = spriteIn;
 		this.width = widthIn;
 		this.height = heightIn;
 		this.posX = 0;
@@ -240,6 +231,8 @@
 		this.velZ = 0;
 		this.active = false; //Bool for is piece in play
 		this.visible=false; //Bool for if piece should have a div
+	};
+		/*
 		this.shifts={};
 		this. children=[];
 		var getChild=function(meme,child) {
@@ -349,6 +342,7 @@
 		};
 		return this
 	};
+	*/
 	rw.ent.prototype.back = function() {
 		return this.ent;
 	};
@@ -393,36 +387,12 @@
 	 * @returns ent.base
 	 */
 	rw.ent.prototype.display = function (spriteIn, posXIn, posYIn, posZIn) {
-		this.baseSprite=spriteIn;
+		this.sprite = spriteIn;
 		this.posX = posXIn;
 		this.posY = posYIn;
-		if (posZIn) {
-			this.posZ = posZIn;
-		} else {
-			this.posZ = posYIn;
-		};
+		(posZIn) ? this.posZ = posZIn : this.posZ = posYIn;
 		this.active = true;
-		if (spriteIn!=='') {
-			this.visible=true;
-			var newEnt = document.createElement('div');
-			newEnt.id = 'ent_'+this.name;
-			newEnt.style.width = this.width+'px'; newEnt.style.height = this.height+'px';
-			if (spriteIn!=' ') {
-				newEnt.style.backgroundImage = "url('"+resPath+this.sprites+"/"+spriteIn+"."+this.spriteExt+"')";
-				newEnt.style.backgroundRepeat = 'no-repeat';
-			};
-			newEnt.style.position = 'absolute';
-			newEnt.style.left = this.posX+'px';
-			newEnt.style.top = this.posY+'px';
-			document.getElementById('board').appendChild(newEnt);
-			if (this.children.length>0) {
-				for (var x=0;x<this.children.length;x++) {
-					blitChildDiv(this,this.children[x])
-				}
-			}
-		} else {
-			this.visible=false;
-		};
+		(spriteIn!=='') ? this.visible=true : this.visible=false;
 		return this;
 	};
 	/**
@@ -431,10 +401,6 @@
 	 * @returns ent.base
 	 */
 	rw.ent.prototype.hide = function() {
-		if (document.getElementById('ent_'+this.name)) {
-			var dying = document.getElementById('ent_'+this.name);
-			dying.parentNode.removeChild(dying);
-		};
 		this.active=false;
 		this.visible=false;
 		return this;
@@ -445,31 +411,16 @@
 	  * @returns ent.base
 	  */
 	rw.ent.prototype.changeSprite = function(sprite) {
-		this.baseSprite=sprite;
-		var entDiv = document.getElementById('ent_'+this.name);
-		if (entDiv) {
-			if (sprite!='') {
-				this.visible=true;
-				entDiv.style.backgroundImage = "url('"+resPath+this.sprites+"/"+sprite+"."+this.spriteExt+"')";
-			} else {
-				entDiv.parentNode.removeChild(entDiv);
-				this.visible=false;
-			};
-		} else {
-			if (sprite!='') {
-				this.display(sprite,this.posX,this.posY,this.posX);
-			} else {
-				this.visible=false;
-			};
-		};
+		this.sprite = sprite;
+		(this.sprite != '') ?  this.visible=true : this.visible=false;
 		return this;
 	};
-	rw.ent.prototype.shiftSprite=function(x,y) {
-		var entDiv=document.getElementById('ent_'+this.name);
-		if (entDiv) {
-			entDiv.style.background="url('"+resPath+this.sprites+"/"+this.baseSprite+"."+this.spriteExt+"') "+x+"px "+y+"px no-repeat";
-		};
-	};
+	//rw.ent.prototype.shiftSprite=function(x,y) {
+		//var entDiv=document.getElementById('ent_'+this.name);
+		//if (entDiv) {
+			//entDiv.style.background="url('"+resPath+this.sprites+"/"+this.baseSprite+"."+this.spriteExt+"') "+x+"px "+y+"px no-repeat";
+		//};
+	//};
 	/**
 	 * Adds a named sprite shift to ent.base.shifts.
 	 * @param name Name of new shift.
@@ -477,21 +428,21 @@
 	 * @param y Vertical position of new shift.
 	 * @returns ent.base
 	 */
-	rw.ent.prototype.addShift=function(name,x,y) {
-		this.shifts[name]=[x,y];
-		return this;
-	};
+	//rw.ent.prototype.addShift=function(name,x,y) {
+		//this.shifts[name]=[x,y];
+		//return this;
+	//};
 	/**
 	 * Shifts ent's sprite to named sprite shift.
 	 * @param name Name of sprite shift.
 	 * @returns ent.base
 	 */
-	rw.ent.prototype.shiftTo=function(name) {
-		if (name in this.shifts) {
-			this.shiftSprite(this.shifts[name][0],this.shifts[name][1]);
-		};
-		return this;
-	};
+	//rw.ent.prototype.shiftTo=function(name) {
+		//if (name in this.shifts) {
+			//this.shiftSprite(this.shifts[name][0],this.shifts[name][1]);
+		//};
+		//return this;
+	//};
 	/**
 	 * Gets ent's current velocity, or sum total of movement within the current frame.
 	 * @returns An array: [x velocity, y velocity, z velocity]
@@ -538,27 +489,27 @@
 		}
 		return this;
 	}
-	rw.ent.prototype.rotate = function(deg) {
-		var entDiv = document.getElementById('ent_'+this.name);
-		if (entDiv) {
-			entDiv.style[rw.browser.trans_name] = 'rotate('+deg+'deg)';
-		}
-		return this;
-	}
-	rw.ent.prototype.rotMap=function(hitMap, angle) {
-		var centerP = [this.width/2,this.height/2];
-		var newMap = [hitMap[0],hitMap[1]];
-		var pt1 = rotatePoint([hitMap[2],hitMap[3]],centerP,angle);
-		var pt2 = rotatePoint([hitMap[4],hitMap[5]],centerP,angle);
-		var pt3 = rotatePoint([hitMap[6],hitMap[7]],centerP,angle);
-		newMap.push(pt1[0]);
-		newMap.push(pt1[1]);
-		newMap.push(pt2[0]);
-		newMap.push(pt2[1]);
-		newMap.push(pt3[0]);
-		newMap.push(pt3[1]);
-		return newMap;
-	};
+	//rw.ent.prototype.rotate = function(deg) {
+		//var entDiv = document.getElementById('ent_'+this.name);
+		//if (entDiv) {
+			//entDiv.style[rw.browser.trans_name] = 'rotate('+deg+'deg)';
+		//}
+		//return this;
+	//}
+	//rw.ent.prototype.rotMap=function(hitMap, angle) {
+		//var centerP = [this.width/2,this.height/2];
+		//var newMap = [hitMap[0],hitMap[1]];
+		//var pt1 = rotatePoint([hitMap[2],hitMap[3]],centerP,angle);
+		//var pt2 = rotatePoint([hitMap[4],hitMap[5]],centerP,angle);
+		//var pt3 = rotatePoint([hitMap[6],hitMap[7]],centerP,angle);
+		//newMap.push(pt1[0]);
+		//newMap.push(pt1[1]);
+		//newMap.push(pt2[0]);
+		//newMap.push(pt2[1]);
+		//newMap.push(pt3[0]);
+		//newMap.push(pt3[1]);
+		//return newMap;
+	//};
 	rw.ent.prototype.getTileX=function() {
 		if (tiles) {
 			return Math.floor(this.posY/tileY);
@@ -583,23 +534,23 @@
 		};
 		return false;
 	};
-	rw.ent.prototype.attach = function(content) {
-		var entDiv=document.getElementById('ent_'+this.name);
-		if (entDiv) {
-			entDiv.appendChild(content);
-		};
-		return this;
-	};
-	rw.ent.prototype.detach = function() {
-		var ele = document.getElementById('ent_'+this.name);
-		if (ele) {
-			var tot = ele.childNodes.length;
-			for (var x=0;x<tot;x++) {
-				ele.removeChild(ele.childNodes[0]);
-			};
-		};
-		return this;
-	};
+	//rw.ent.prototype.attach = function(content) {
+		//var entDiv=document.getElementById('ent_'+this.name);
+		//if (entDiv) {
+			//entDiv.appendChild(content);
+		//};
+		//return this;
+	//};
+	//rw.ent.prototype.detach = function() {
+		//var ele = document.getElementById('ent_'+this.name);
+		//if (ele) {
+			//var tot = ele.childNodes.length;
+			//for (var x=0;x<tot;x++) {
+				//ele.removeChild(ele.childNodes[0]);
+			//};
+		//};
+		//return this;
+	//};
 
 	/**
 	 * Moves ent specified distance. <br>
@@ -625,6 +576,7 @@
 
 	/**
 	 * Registers a new ent with the engine.
+	 * Calls ent's init function, if any.
 	 * @param ent Ent to be added to rw.ents
 	 * @returns ent
 	 */
@@ -854,17 +806,6 @@
 		if (states[name]) delete states[name];
 		return rw;
 	}
-	// At start and end function assignments
-	var doAtStart=null;
-	rw.atStart=function(arg) {
-		doAtStart=arg;
-		return rw;
-	};
-	var doAtEnd=null;
-	rw.atEnd=function(arg) {
-		doAtEnd=arg;
-		return rw;
-	};
 	// Ajax function, durr
 	rw.ajax = function(targ, func) {
 		var xhr = new XMLHttpRequest();
@@ -903,17 +844,6 @@
 		return rw;
 	}
 
-	//Maybe Fixed now?
-	// Image pre-loader
-	var preImg = [];
-	rw.using = function(path, ext, imgArray) {
-		var len = imgArray.length;
-		for (var x=0; x<len;x++) {
-			preImg[preImg.length] = new Image();
-			preImg[preImg.length-1].src = resPath+path+'/'+imgArray[x]+'.'+ext;
-		}
-		return rw;
-	}
 	// Changes Cursor
 	rw.changeCursor = function(cursor) {
 		document.getElementById('board').style.cursor="url('"+resPath+cursor+"')";
@@ -988,6 +918,7 @@
 		rw.wipeBoard().wipeEnts().wipeMaps().wipeRules();
 		return rw;
 	}
+	// good
 	/**
 	 * Initializes Rosewood and creates the game board element.
 	 * @param dimX Width of board, in pixels.
@@ -998,14 +929,16 @@
 	 */
 	rw.init = function(dimX, dimY, target) {
 		rw.browser.check();
-		var board = document.createElement('div');
+		var board = document.createElement('canvas');
 		board.id = 'board';
 		X = dimX;
 		Y = dimY;
+		board.width = dimX;
+		board.height = dimY;
 		board.style.width = dimX+'px';
 		board.style.height = dimY+'px';
-		board.style.overflow = 'hidden';
-		board.style.position = "relative";
+		board.style.overflow = 'hidden'; // Not needed?
+		board.style.position = "relative"; // Not needed?
 		if (target) {
 			document.getElementById(target).appendChild(board);
 		} else {
@@ -1161,17 +1094,13 @@
 	 * Gameloop function, not called directly.
 	 */
 	rw.run = function() {
+		var board = document.getElementById('board').getContext('2d');
 		var startTime = new Date();
 		for (var x=0; x<rw.sounds.length; x++) {
 			if (rw.sounds[x].ended) {
 				rw.sounds.splice(x,1);
 				x--;
 			}
-		}
-		// At start function, if any
-		if (typeof(doAtStart)=='function') {
-			doAtStart();
-			doAtStart=null;
 		}
 		// Rule position 0, pre-update loop
 		for (var x=0, l=rw.ruleList[0].length; x<l; x++) {
@@ -1439,30 +1368,54 @@
 				rw.rules[rw.ruleList[2][x]].rule();
 			};
 		};
-		// Run Through all ents and update position
-		for (var x=0; x<rw.ents.length; x++) {
-			rw.ents[x].base.posX += rw.ents[x].base.velX;
-			rw.ents[x].base.posY += rw.ents[x].base.velY;
-			rw.ents[x].base.posZ += rw.ents[x].base.velZ;
-			if (rw.ents[x].base.visible) {
-				var entDiv = document.getElementById('ent_'+rw.ents[x].base.name);
-				entDiv.style.left = rw.ents[x].base.posX+'px';
-				entDiv.style.top = rw.ents[x].base.posY+'px';
-				entDiv.style.zIndex = rw.ents[x].base.posZ;
+		// New update loop
+		var zOrder = {},
+			zKey = [];
+		for (var x=0, l=rw.ents.length; x<l; x++) {
+			var z = rw.ents[x].base.posZ;
+			if (!zOrder[z]) {
+				zOrder[z]= [];
+				zKey.push(z);
+			};
+			zOrder[z].push(x);
+		};
+		zKey = zKey.sort(function(a,b){return a-b});
+		// Clear old board
+		board.clearRect(0,0,X,Y);
+		// Redraw all ents, starting with the lowest z-Index
+		for (var x=0, xl=zKey.length; x<xl;x++) {
+			var curOrder = zOrder[zKey[x]];
+			for (var y=0, yl=curOrder.length; y<yl; y++) {
+				var curEnt = rw.ents[curOrder[y]].base;
+				// Move ent movement to previous loop, so zIndex is properly calc'd
+				curEnt.posX += curEnt.velX;
+				curEnt.posY += curEnt.velY;
+				curEnt.posZ += curEnt.velZ;
+				if (curEnt.visible) {
+					var sprite = rw.sprites[curEnt.sprite];
+					board.drawImage(
+						sprite[0],
+						sprite[3],
+						sprite[4],
+						sprite[1],
+						sprite[2],
+						curEnt.posX,
+						curEnt.posY,
+						curEnt.width,
+						curEnt.height
+					);
+				}
+				curEnt.wipeMove();
 			}
-			rw.ents[x].base.wipeMove();
 		}
+		zOrder = null;
+		zKey = null;
 		// Rule position 3, end of frame
 		for (var x=0, l=rw.ruleList[3].length; x<l; x++) {
 			if (rw.rules[rw.ruleList[3][x]].base.active) {
 				rw.rules[rw.ruleList[3][x]].rule();
 			};
 		};
-		// At end function, if any
-		if (typeof(doAtEnd)=='function') {
-			doAtEnd();
-			doAtEnd=null;
-		}
 		//If game has not ended or been paused, continue
 		var endTime = new Date();
 		var timeTotal = endTime-startTime;
