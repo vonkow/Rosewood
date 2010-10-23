@@ -1,151 +1,102 @@
-var heroX = 0;
-var heroY = 0;
-var heroXTile = 0;
-var heroYTile = 0;
-var eyeCounter = 0;
-var eyesDead = 0;
-var itemCounter = 0;
-var fatima = false;
-var fatimaCountdown = 0;
-var blind = false;
-var blindEyeCountdown = 0;
-var slow = false;
-var slowCountdown = 0;
-var badLuck = false;
-var badLuckCountdown = 0;
-var endGame = false;
+var heroX = 0, heroY = 0,
+	heroXTile = 0, heroYTile = 0,
+	eyeCounter = 0, eyesDead = 0,
+	itemCounter = 0,
+	fatima = false, fatimaCountdown = 0,
+	blind = false, blindEyeCountdown = 0,
+	slow = false, slowCountdown = 0,
+	badLuck = false, badLuckCountdown = 0,
+	endGame = false;
 
-var hero = function(name) {
-	this.base = new rw.ent(name, 'hero', 'd1', 'gif', 30, 30);
+var hero = function() {
+	this.base = new rw.ent('hero', 'hero_d1', 30, 30);
 	this.heading = 'd';
-	this.update = function() {
-		heroX = this.base.posX1();
-		heroY = this.base.posY1();
+	this.update = function(X1, Y1, X2, Y2) {
+		heroX = X1;
+		heroY = Y1;
 		heroXTile = this.base.getTileX();
 		heroYTile = this.base.getTileY();
-		if (rw.key('la')) {
-			if (this.base.posX1()>4) {
-				this.base.move(-5,0).heading = 'l';
-			}
-		}
-		if (rw.key('ra')) {
-			if (this.base.posX2()<476) {
-				this.base.move(5,0).heading = 'r';
-			}
-		}
-		if (rw.key('ua')) {
-			if (this.base.posY1()>4) {
-				this.base.move(0,-5).heading = 'u';
-			}
-		}
-		if (rw.key('da')) {
-			if (this.base.posY2()<476) {
-				this.base.move(0,5).heading = 'd';
-			}
-		}
+		if (rw.key('la')&&(X1>4)) this.base.move(-5,0);
+		if (rw.key('ra')&&(X2<476)) this.base.move(5,0);
+		if (rw.key('ua')&&(Y1>4)) this.base.move(0,-5);
+		if (rw.key('da')&&(Y2<476)) this.base.move(0,5);
 	}
 	this.keyChange = function() {
-		if (rw.key('la')) {
-			this.heading = 'l';
-		}
-		if (rw.key('ra')) {
-			this.heading = 'r';
-		}
-		if (rw.key('ua')) {
-			this.heading = 'u';
-		}
-		if (rw.key('da')) {
-			this.heading = 'd';
-		}
-		this.base.changeSprite(this.heading+1);
+		if (rw.key('la')) this.heading = 'l';
+		if (rw.key('ra')) this.heading = 'r';
+		if (rw.key('ua')) this.heading = 'u';
+		if (rw.key('da')) this.heading = 'd';
+		this.base.changeSprite('hero_'+this.heading+1);
 	}
-	this.hitMap = [[name,['eye','item'],0,0,30,30]];
+	this.hitMap = [['hero',['eye','item'],0,0,30,30]];
 	this.gotHit = function(by) {
-		if (!fatima) {
-			if (by=='eye') {
-				this.base.hide();
-				endGame = true;
-				return false;
-			}
+		if ((!fatima)&&(by=='eye')) {
+			this.base.hide();
+			endGame = true;
+			return false;
 		}
 	}
 }
 
 var eye = function(name, heading) {
-	this.base = new rw.ent(name, 'eye', heading+1, 'gif', 30, 30);
+	this.base = new rw.ent(name, 'eye_'+heading+1, 30, 30);
 	this.heading = heading;
-	this.update = function() {
-		if ((this.base.posX1()<0)||(this.base.posX2()>480)||(this.base.posY1()<0)||(this.base.posY2()>480)) {
+	this.update = function(X1, Y1, X2, Y2) {
+		if ((X1<0)||(X2>480)||(Y1<0)||(Y2>480)) {
 			eyesDead++;
 			this.base.hide();
 			return false;
 		}
 		switch (this.heading) {
 			case 'd':
-				if ((this.base.posY1()<heroY)||blind) {
-					if (!slow) {
-						this.base.move(0,5);
-					} else {
-						this.base.move(0,2);
-					}
+				if ((Y1<heroY)||blind) {
+					(!slow) ? this.base.move(0,5) : this.base.move(0,2);
 				} else {
-					if (this.base.posX1()>heroX) {
+					if (X1>heroX) {
 						this.heading = 'l';
-						this.base.changeSprite('l1');
+						this.base.changeSprite('eye_l1');
 					} else {
 						this.heading = 'r';
-						this.base.changeSprite('r1');
+						this.base.changeSprite('eye_r1');
 					}
 				}
 				break;
 			case 'l':
-				if ((this.base.posX1()>heroX)||blind) {
-					if (!slow) {
-						this.base.move(-5,0);
-					} else {
-						this.base.move(-2,0);
-					}
+				if ((X1>heroX)||blind) {
+					(!slow) ? this.base.move(-5,0) : this.base.move(-2,0);
 				} else {
-					if (this.base.posY1()>heroY) {
+					if (Y1>heroY) {
 						this.heading = 'u';
-						this.base.changeSprite('u1');
+						this.base.changeSprite('eye_u1');
 					} else {
 						this.heading = 'd';
-						this.base.changeSprite('d1');
+						this.base.changeSprite('eye_d1');
 					}
 				}
 				break;
 			case 'u':
-				if ((this.base.posY1()>heroY)||blind) {
-					if (!slow) {
-						this.base.move(0,-5);
-					} else {
-						this.base.move(0,-2);
-					}
+				if ((Y1>heroY)||blind) {
+					(!slow) ? this.base.move(0,-5) : this.base.move(0,-2);
 				} else {
-					if (this.base.posX1()<heroX) {
+					if (X1<heroX) {
 						this.heading = 'r';
-						this.base.changeSprite('r1');
+						this.base.changeSprite('eye_r1');
 					} else {
 						this.heading = 'l';
-						this.base.changeSprite('l1');
+						this.base.changeSprite('eye_l1');
 					}
 				}
 				break;
 			case 'r':
-				if ((this.base.posX1()<heroX)||blind) {
-					if (!slow) {
-						this.base.move(5,0);
-					} else {
-						this.base.move(2,0);
-					}
+				if ((X1<heroX)||blind) {
+					(!slow) ? this.base.move(5,0) : this.base.move(2,0);
 				} else {
-					if (this.base.posY1()<heroY) {
+					if (Y1<heroY) {
 						this.heading = 'd';
-						this.base.changeSprite('d1');
+						this.base.changeSprite('eye_d1');
 					} else {
 						this.heading = 'u';
-						this.base.changeSprite('u1');
+						this.base.changeSprite('eye_u1');
 					}
 				}
 				break;
@@ -162,7 +113,7 @@ var eye = function(name, heading) {
 }
 
 var item = function() {
-	this.base = new rw.ent('item'+itemCounter++, 'items', 'question', 'gif', 30, 30);
+	this.base = new rw.ent('item'+itemCounter++, 'question', 30, 30);
 	this.switchCounter = 0;
 	this.lifeCounter = 200;
 	this.counter = Math.round(Math.random()*3);
@@ -205,26 +156,26 @@ var item = function() {
 				case 0:
 					fatima = true;
 					fatimaCountdown = 100;
-					rw.newEnt(new fatimaNotification())
-						.base.display('fatima',0,0,0);
+					//rw.newEnt(new fatimaNotification())
+						//.base.display('fatima',0,0,0);
 					break;
 				case 1:
 					blind = true;
 					blindEyeCountdown = 100;
-					rw.newEnt(new blindEyeNotification())
-						.base.display('blindeye',90,0,0);
+					//rw.newEnt(new blindEyeNotification())
+						//.base.display('blindeye',90,0,0);
 					break;
 				case 2:
 					slow = true;
 					slowCountdown = 100;
-					rw.newEnt(new slowNotification())
-						.base.display('slow',180,0,0);
+					//rw.newEnt(new slowNotification())
+						//.base.display('slow',180,0,0);
 					break;
 				case 3:
 					badLuck = true;
 					badLuckCountdown = 50;
-					rw.newEnt(new badLuckNotification())
-						.base.display('badluck',270,0,0);
+					//rw.newEnt(new badLuckNotification())
+						//.base.display('badluck',270,0,0);
 					eyeGenerator();
 					eyeGenerator();
 					eyeGenerator();
@@ -238,100 +189,18 @@ var item = function() {
 	}
 }
 
-var fatimaNotification = function() {
-	this.base = new rw.ent('fatimanotification'+itemCounter, 'notifications', 'fatima', 'gif', 90, 30);
-	this.update = function() {
-		if (!fatima) {
-			this.base.hide();
-			return false;
-		}
-	}
-}
-
-var fatimaTimer = function() {
+var timers = function() {
 	this.base = new rw.rule(true,2);
 	this.rule = function() {
-		if (fatimaCountdown>0) {
-			fatimaCountdown--;
-		} else {
-			fatima = false;
-		}
-	}
-}
-
-var blindEyeNotification = function() {
-	this.base = new rw.ent('blindeyenotification'+itemCounter, 'notifications', 'blindeye', 'gif', 90, 30);
-	this.update = function() {
-		if (!blind) {
-			this.base.hide();
-			return false;
-		}
-	}
-}
-
-var blindEyeTimer = function() {
-	this.base = new rw.rule(true,2);
-	this.rule = function() {
-		if (blindEyeCountdown>0) {
-			blindEyeCountdown--;
-		} else {
-			blind = false;
-		}
-	}
-}
-
-var slowNotification = function() {
-	this.base = new rw.ent('slownotification'+itemCounter, 'notifications', 'slow', 'gif', 90, 30);
-	this.update = function () {
-		if (!slow) {
-			this.base.hide();
-			return false;
-		}
-	}
-}
-
-var slowTimer = function() {
-	this.base = new rw.rule(true,2);
-	this.rule = function() {
-		if (slowCountdown>0) {
-			slowCountdown--;
-		} else {
-			slow = false;
-		}
-	}
-}
-
-var badLuckNotification = function() {
-	this.base = new rw.ent('badlucknotification'+itemCounter, 'notifications', 'badluck', 'gif', 90, 30);
-	this.update = function() {
-		if (!badLuck) {
-			this.base.hide();
-			return false;
-		}
-	}
-}
-
-var badLuckTimer = function() {
-	this.base = new rw.rule(true,2);
-	this.rule = function() {
-		if (badLuckCountdown>0) {
-			badLuckCountdown--;
-		} else {
-			badLuck = false;
-		}
-	}
-}
-
-var deadEyes=function() {
-	this.base= new rw.ent('eyecounter','',' ','',100,50);
-	this.update=function() {
-		this.base.detach();
-		this.base.attach(document.createTextNode('Score: '+eyesDead));
+		(fatimaCountdown>0) ? fatimaCountdown-- : fatima = false;
+		(blindEyeCountdown>0) ? blindEyeCountdown-- : blind = false;
+		(slowCountdown>0) ? slowCountdown-- : slow = false;
+		(badLuckCountdown>0) ? badLuckCountdown-- : badLuck = false;
 	}
 }
 
 var resetGame = function() {
-	this.base = new rw.rule(true,2);
+	this.base = new rw.rule(true,3);
 	this.rule = function() {
 		if (endGame) {
 			endGame = false;
@@ -350,7 +219,7 @@ var resetGame = function() {
 			slowCountdown = 0;
 			badLuck = false;
 			badLuckCountdown = 0;
-			rw.wipeAll().loadState('init');
+			rw.wipeAll().stop(function(){rw.loadState('init').start()});
 		}
 	}
 }
@@ -389,7 +258,7 @@ var eyeGenerator = function() {
 		}
 	}
 	rw.newEnt(new eye(('eye'+eyeCounter++), heading))
-		.base.display(heading+'1', xTile, yTile, yTile);
+		.base.display('eye_'+heading+1, xTile, yTile, yTile);
 }
 
 var makeEyes = function() {
@@ -419,17 +288,47 @@ var dropItem = function() {
 }
 
 var startGame = function() {
-	rw.init(480,480).tilesOn(30,30)
-	.newRule('makeEyes', new makeEyes())
-	.newRule('fatima', new fatimaTimer())
-	.newRule('blindeye', new blindEyeTimer())
-	.newRule('slow', new slowTimer())
-	.newRule('badluck', new badLuckTimer())
-	.newRule('dropItem', new dropItem())
-	.newRule('endGame', new resetGame())
-	.newEnt(new hero('hero'))
-		.base.display('d1',240,240,240).end()
-	.newEnt(new deadEyes())
-		.base.display('',380,0,0).end()
-	.start().saveState('init');
+	rw.loadSprites({
+		hero_d1: ['sprites/hero_d1.gif', 30, 30, 0, 0],
+		hero_l1: ['sprites/hero_l1.gif', 30, 30, 0, 0],
+		hero_r1: ['sprites/hero_r1.gif', 30, 30, 0, 0],
+		hero_u1: ['sprites/hero_u1.gif', 30, 30, 0, 0],
+		eye_d1: ['sprites/eye_d1.gif', 30, 30, 0, 0],
+		eye_l1: ['sprites/eye_l1.gif', 30, 30, 0, 0],
+		eye_r1: ['sprites/eye_r1.gif', 30, 30, 0, 0],
+		eye_u1: ['sprites/eye_u1.gif', 30, 30, 0, 0],
+		badluck: ['sprites/badluck.gif', 30, 30, 0, 0],
+		blindeye: ['sprites/blindeye.gif', 30, 30, 0, 0],
+		fatima: ['sprites/fatima.gif', 30, 30, 0, 0],
+		question: ['sprites/question.gif', 30, 30, 0, 0],
+		slow: ['sprites/slow.gif', 30, 30, 0, 0]
+	}, function() {
+		rw.init(480,480).tilesOn(30,30)
+		.newRule('makeEyes', new makeEyes())
+		.newRule('timers', new timers())
+		.newRule('dropItem', new dropItem())
+		.newRule('endGame', new resetGame())
+		.newEnt(new hero('hero'))
+			.base.display('hero_d1',240,240,240).end()
+		.newEnt({
+			base: new rw.ent('text', 'text', 100, 100),
+			update: function() {
+				var txt = 'Dead Eyes: '+eyesDead+' ';
+				if (fatima) txt += ' Fatima! ';
+				if (blind) txt += ' Blind Eye ';
+				if (slow) txt += ' Slow ';
+				if (badLuck) txt += ' Bad Luck';
+				this.text.text = txt;
+			},
+			text: {
+				text: 'Dead Eyes: ',
+				form: 'fill',
+				style: {
+					font: '16px sans-serif',
+					fill: '#000'
+				}
+			}
+		}).base.display('text',0,16,0).end()
+		.start().saveState('init');
+	});
 }

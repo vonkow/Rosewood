@@ -786,7 +786,7 @@
 				rw.ents[x].base.ent = rw.ents[x];
 				if (rw.ents[x].base.active==true) {
 					rw.ents[x].base.display(
-						rw.ents[x].base.baseSprite,
+						rw.ents[x].base.sprite,
 						rw.ents[x].base.posX,
 						rw.ents[x].base.posY,
 						rw.ents[x].base.posZ
@@ -967,11 +967,13 @@
 		}
 		return rw;
 	}
+	var stopCallback = null;
 	/**
 	 * Stops the gameloop. Resets current time to 0.
 	 * @returns rw
 	 */
-	rw.stop = function() {
+	rw.stop = function(callback) {
+		stopCallback = callback;
 		runGame = false;
 		return rw;
 	}
@@ -1118,7 +1120,7 @@
 					if (curEnt.keyChange) {
 						curEnt.keyChange();
 					}
-					var currentSprite = curEnt.update(curEnt.base.posX1(), curEnt.base.posX2(), curEnt.base.posY1(), curEnt.base.posY2());
+					var currentSprite = curEnt.update(curEnt.base.posX, curEnt.base.posY, curEnt.base.posX+curEnt.base.width, curEnt.base.posY+curEnt.base.height);
 					if (currentSprite==false) {
 						toBeRemoved.push(x)
 					} else {
@@ -1134,9 +1136,10 @@
 			keyChange = false;
 		} else {
 			for(var x=0; x<len; x++) {
+				// Could change curEnt to ent.base and use .ent to access update(), make things cleaner
 				var curEnt = rw.ents[x];
 				if (curEnt.base.active==true) {
-					var currentSprite = curEnt.update(curEnt.base.posX1(), curEnt.base.posX2(), curEnt.base.posY1(), curEnt.base.posY2());
+					var currentSprite = curEnt.update(curEnt.base.posX, curEnt.base.posY, curEnt.base.posX+curEnt.base.width, curEnt.base.posY+curEnt.base.height);
 					if (currentSprite==false) {
 						toBeRemoved.push(x)
 					} else {
@@ -1387,25 +1390,39 @@
 			var curOrder = zOrder[zKey[x]];
 			for (var y=0, yl=curOrder.length; y<yl; y++) {
 				var curEnt = rw.ents[curOrder[y]].base;
-				// Move ent movement to previous loop, so zIndex is properly calc'd
+				// !!! Move ent movement to previous loop, so zIndex is properly calc'd
 				curEnt.posX += curEnt.velX;
 				curEnt.posY += curEnt.velY;
 				curEnt.posZ += curEnt.velZ;
-				if (curEnt.visible) {
-					var sprite = rw.sprites[curEnt.sprite];
-					board.drawImage(
-						sprite[0],
-						sprite[3],
-						sprite[4],
-						sprite[1],
-						sprite[2],
-						curEnt.posX,
-						curEnt.posY,
-						curEnt.width,
-						curEnt.height
-					);
-				}
 				curEnt.wipeMove();
+				if (curEnt.visible) {
+					if (curEnt.sprite=='text') {
+						var txt = curEnt.ent.text;
+						board.font = txt.style.font || board.font || '10px sans-serif';
+						board.textAlign = txt.style.align || board.textAlign || 'start';
+						board.textBaseline = txt.style.baseline || board.textBaseline || 'alphabetic';
+						if (txt.form=='fill') {
+							board.fillStyle = txt.style.color || board.fillStyle || '#000';
+							board.fillText(txt.text, curEnt.posX, curEnt.posY);
+						} else if (txt.form=='stroke') {
+							board.strokeStyle = txt.style.color || board.strokeStyle || '#000';
+							board.strokeText(txt.text, curEnt.posX, curEnt.posY);
+						}
+					} else if (curEnt.sprite!='') {
+						var sprite = rw.sprites[curEnt.sprite];
+						board.drawImage(
+							sprite[0],
+							sprite[3],
+							sprite[4],
+							sprite[1],
+							sprite[2],
+							curEnt.posX,
+							curEnt.posY,
+							curEnt.width,
+							curEnt.height
+						);
+					}
+				}
 			}
 		}
 		zOrder = null;
@@ -1430,6 +1447,8 @@
 			clearTimeout(rw.curT);
 			globT += curT;
 			curT = 0;
+			if (typeof(stopCallback)=='function') stopCallback();
+			stopCallback = null;
 		}
 	}
 	window['rw']=rw;
