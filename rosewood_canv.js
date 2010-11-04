@@ -217,7 +217,7 @@
 	 * Every ent must be an object with a new rw.ent assigned to a property named 'base'. <br>
 	 * In addition, ents must also have a funtion method named 'update' (though it may be an empty function). <br>
 	 */
-	rw.ent = function(nameIn, spriteIn, widthIn, heightIn) {
+	rw.Ent = function(nameIn, spriteIn, widthIn, heightIn) {
 		this.ent = '';
 		this.name = nameIn;
 		this.sprite = spriteIn;
@@ -343,35 +343,35 @@
 		return this
 	};
 	*/
-	rw.ent.prototype.back = function() {
+	rw.Ent.prototype.back = function() {
 		return this.ent;
 	};
-	rw.ent.prototype.end = function() {
+	rw.Ent.prototype.end = function() {
 		return rw
 	};
 
 	/**
 	 * @returns ent's leftmost position, in pixels
 	 */
-	rw.ent.prototype.posX1 = function() {
+	rw.Ent.prototype.posX1 = function() {
 		return this.posX;
 	}
 	/**
 	 * @returns ent's topmost position, in pixels
 	 */
-	rw.ent.prototype.posY1 = function() {
+	rw.Ent.prototype.posY1 = function() {
 		return this.posY;
 	}
 	/**
 	 * @returns ent's rightmost position, in pixels
 	 */
-	rw.ent.prototype.posX2 = function() {
+	rw.Ent.prototype.posX2 = function() {
 		return this.posX+this.width;
 	}
 	/**
 	 * @returns ent's bottommost position, in pixels
 	 */
-	rw.ent.prototype.posY2 = function() {
+	rw.Ent.prototype.posY2 = function() {
 		return this.posY+this.height;
 	}
 	/**
@@ -386,7 +386,7 @@
 	 * @param posZIn Optional, Ent's Z position on the board (will default to posYIn if unspecified)
 	 * @returns ent.base
 	 */
-	rw.ent.prototype.display = function (spriteIn, posXIn, posYIn, posZIn) {
+	rw.Ent.prototype.display = function (spriteIn, posXIn, posYIn, posZIn) {
 		this.sprite = spriteIn;
 		this.posX = posXIn;
 		this.posY = posYIn;
@@ -400,7 +400,7 @@
 	 * Sets ent.active & ent.visible to false.
 	 * @returns ent.base
 	 */
-	rw.ent.prototype.hide = function() {
+	rw.Ent.prototype.hide = function() {
 		this.active=false;
 		this.visible=false;
 		return this;
@@ -410,7 +410,7 @@
 	  * @param sprite File name of new sprite. <br>
 	  * @returns ent.base
 	  */
-	rw.ent.prototype.changeSprite = function(sprite) {
+	rw.Ent.prototype.changeSprite = function(sprite) {
 		this.sprite = sprite;
 		(this.sprite != '') ?  this.visible=true : this.visible=false;
 		return this;
@@ -447,7 +447,7 @@
 	 * Gets ent's current velocity, or sum total of movement within the current frame.
 	 * @returns An array: [x velocity, y velocity, z velocity]
 	 */
-	rw.ent.prototype.curMove = function() {
+	rw.Ent.prototype.curMove = function() {
 		return [this.velX, this.velY, this.velZ];
 	}
 	/**
@@ -455,7 +455,7 @@
 	 * @param axis Optional: Can be set to 'x', 'y', or 'z' to wipe only a single axis of movement.
 	 * @returns ent.base
 	 */
-	rw.ent.prototype.wipeMove = function(axis) {
+	rw.Ent.prototype.wipeMove = function(axis) {
 		if (axis) {
 			if (axis=='x') {
 				this.velX = 0;
@@ -479,7 +479,7 @@
 	 * @param z Absolute z-index, or depth position to place ent.
 	 * @returns ent.base
 	 */
-	rw.ent.prototype.moveTo = function(x, y, z) {
+	rw.Ent.prototype.moveTo = function(x, y, z) {
 		this.posX = x;
 		this.posY = y;
 		if (z||z==0) {
@@ -510,21 +510,21 @@
 		//newMap.push(pt3[1]);
 		//return newMap;
 	//};
-	rw.ent.prototype.getTileX=function() {
+	rw.Ent.prototype.getTileX=function() {
 		if (tiles) {
 			return Math.floor(this.posY/tileY);
 		} else {
 			return false;
 		};
 	};
-	rw.ent.prototype.getTileY=function() {
+	rw.Ent.prototype.getTileY=function() {
 		if (tiles) {
 			return Math.floor(this.posY/tileY);
 		} else {
 			return false;
 		};
 	};
-	rw.ent.prototype.clicked = function() {
+	rw.Ent.prototype.clicked = function() {
 		if (rw.mouse.down()) {
 			if ((rw.mouse.x()>this.posX1())&&(rw.mouse.x()<this.posX2())) {
 				if ((rw.mouse.y()>this.posY1())&&(rw.mouse.y()<this.posY2())) {
@@ -563,7 +563,7 @@
 	 * <strong>Note:</strong> Will default to y if unspecified.
 	 * @returns ent.base
 	 */
-	rw.ent.prototype.move = function(x,y,z) {
+	rw.Ent.prototype.move = function(x,y,z) {
 		this.velX += x;
 		this.velY += y;
 		if (z) {
@@ -703,7 +703,7 @@
 	/**
 	 * @class
 	 */
-	rw.rule = function(active, pos) {
+	rw.Rule = function(active, pos) {
 		this.active = active;
 		this.pos = pos;
 	}

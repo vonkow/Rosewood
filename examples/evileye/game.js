@@ -9,7 +9,7 @@ var heroX = 0, heroY = 0,
 	endGame = false;
 
 var hero = function() {
-	this.base = new rw.ent('hero', 'hero_d1', 30, 30);
+	this.base = new rw.Ent('hero', 'hero_d1', 30, 30);
 	this.heading = 'd';
 	this.update = function(X1, Y1, X2, Y2) {
 		heroX = X1;
@@ -39,7 +39,7 @@ var hero = function() {
 }
 
 var eye = function(name, heading) {
-	this.base = new rw.ent(name, 'eye_'+heading+1, 30, 30);
+	this.base = new rw.Ent(name, 'eye_'+heading+1, 30, 30);
 	this.heading = heading;
 	this.update = function(X1, Y1, X2, Y2) {
 		if ((X1<0)||(X2>480)||(Y1<0)||(Y2>480)) {
@@ -113,7 +113,7 @@ var eye = function(name, heading) {
 }
 
 var item = function() {
-	this.base = new rw.ent('item'+itemCounter++, 'question', 30, 30);
+	this.base = new rw.Ent('item'+itemCounter++, 'question', 30, 30);
 	this.switchCounter = 0;
 	this.lifeCounter = 200;
 	this.counter = Math.round(Math.random()*3);
@@ -190,7 +190,7 @@ var item = function() {
 }
 
 var timers = function() {
-	this.base = new rw.rule(true,2);
+	this.base = new rw.Rule(true,2);
 	this.rule = function() {
 		(fatimaCountdown>0) ? fatimaCountdown-- : fatima = false;
 		(blindEyeCountdown>0) ? blindEyeCountdown-- : blind = false;
@@ -200,7 +200,7 @@ var timers = function() {
 }
 
 var resetGame = function() {
-	this.base = new rw.rule(true,3);
+	this.base = new rw.Rule(true,3);
 	this.rule = function() {
 		if (endGame) {
 			endGame = false;
@@ -262,7 +262,7 @@ var eyeGenerator = function() {
 }
 
 var makeEyes = function() {
-	this.base = new rw.rule(true,0);
+	this.base = new rw.Rule(true,0);
 	this.counter = 20;
 	this.rule = function() {
 		if (this.counter>0) {
@@ -275,7 +275,7 @@ var makeEyes = function() {
 }
 
 var dropItem = function() {
-	this.base = new rw.rule(true,0);
+	this.base = new rw.Rule(true,0);
 	this.rule = function() {
 		if (Math.random()>0.995) {
 			var newTiles = pickTile()
@@ -311,7 +311,7 @@ var startGame = function() {
 		.newEnt(new hero('hero'))
 			.base.display('hero_d1',240,240,240).end()
 		.newEnt({
-			base: new rw.ent('text', 'text', 100, 100),
+			base: new rw.Ent('text', 'text', 100, 100),
 			update: function() {
 				var txt = 'Dead Eyes: '+eyesDead+' ';
 				if (fatima) txt += ' Fatima! ';

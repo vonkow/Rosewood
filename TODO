@@ -2,6 +2,10 @@
 
 Re-add ent children
 
+Modify loadSprites to handle multiple sprites from one image.
+
+Add loadSounds
+
 Fix maps for canvas and prototype all methods
 
 Add text support
