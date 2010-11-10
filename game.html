@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<script src="rosewood_canv.js"></script>
+		<script src="rosewood.js"></script>
 	</head>
 	<body>
 		<script>
@@ -10,7 +10,7 @@
 			rw.init(500,500)
 			.setFPS(60)
 			.newEnt({
-				base: new rw.ent('ball','ball',30,30),
+				base: new rw.Ent('ball','ball',30,30),
 				update: function() {
 					if (rw.key('ua')) this.base.move(0,-1);
 					if (rw.key('da')) this.base.move(0,1);
