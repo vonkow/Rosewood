@@ -597,106 +597,6 @@
 		rw.ents.splice(entNum, 1);
 		return rw;
 	};
-	// Map Entities
-	rw.maps = {}; 
-	/**
-	 * @class
-	 */
-	rw.map = function(name, path, extention, xDim, yDim) {
-		this.name = name;
-		this.path = path;
-		this.extention = extention;
-		this.active = false;
-		this.width = xDim;
-		this.height = yDim;
-		this.x = 0;
-		this.y = 0;
-		this.z = -1;
-		/**
-		 * Moves map the specified number of pixels.
-		 * @param x Number of pixels map is to be moved horizontally.
-		 * @param y Number of pixels map is to be moved vertically.
-		 * @param z Optional: Number of depth levels map is to be moved. <br>
-		 * If unspecified, 0 will be assumed.
-		 */
-		this.move=function(x,y,z) {
-			this.x+=x;
-			this.y+=y;
-			if (z) this.z+=z;
-			if (document.getElementById('map_'+this.name)) {
-				var mapDiv = document.getElementById('map_'+this.name);
-				mapDiv.style.marginLeft = this.x+'px';
-				mapDiv.style.marginTop = this.y+'px';
-				mapDiv.style.zIndex=this.z;
-			};
-			return this;
-		};
-		this.moveTo=function(x,y,z) {
-			this.x=x;
-			this.y=y;
-			if (z) this.z=z;
-			if (document.getElementById('map_'+this.name)) {
-				var mapDiv = document.getElementById('map_'+this.name);
-				mapDiv.style.marginLeft = this.x+'px';
-				mapDiv.style.marginTop = this.y+'px';
-				mapDiv.style.zIndex=this.z;
-			};
-			return this;
-		};
-		this.display = function() {
-			this.active = true;
-			if (document.getElementById('map_'+this.name)) {
-				var mapDiv = document.getElementById('map_'+this.name);
-				mapDiv.style.display = 'block';
-			} else {
-				var mapArea = document.createElement('div');
-				mapArea.id = 'map_'+this.name;
-				mapArea.style.backgroundImage = "url('"+resPath+"maps/"+this.path+"."+this.extention+"')";
-				mapArea.style.width = this.width+'px';
-				mapArea.style.height = this.height+'px';
-				mapArea.style.position = 'absolute';
-				mapArea.style.overflow = 'hidden';
-				mapArea.style.marginLeft = this.x+'px';
-				mapArea.style.marginTop = this.y+'px';
-				mapArea.style.zIndex = this.z;
-				var board = document.getElementById('board');
-				board.appendChild(mapArea);
-			}
-			return this;
-		}
-		this.hide = function() {
-			this.active = false;
-			if (document.getElementById('map_'+this.name)) {
-				var mapDiv = document.getElementById('map_'+this.name);
-				mapDiv.style.display = 'none';
-			}
-			return this;
-		}
-		this.remove = function() {
-			this.active = false;
-			if (document.getElementById('map_'+this.name)) {
-				var mapArea = document.getElementById('map_'+this.name);
-				mapArea.parentNode.removeChild(mapArea);
-			}
-			return this;
-		}
-		/**
-		 * Ends map sub-chain and returns to rw chain.
-		 * @returns rw
-		 */
-		this.end = function() {
-			return rw;
-		}
-
-	}
-	rw.newMap = function(name, map, ext, dimX, dimY) {
-		rw.maps[name] = new rw.map(name, map, ext, dimX, dimY);
-		return rw.maps[name];
-	}
-	rw.removeMap = function(map) {
-		if (rw.maps[map]) delete rw.maps[map];
-		return rw;
-	}
 	// Rule Entities
 	rw.rules = {};
 	rw.ruleList = [[],[],[],[]];
@@ -807,6 +707,7 @@
 		return rw;
 	}
 	// Ajax function, durr
+	// Needs serious re-writing, one of these days
 	rw.ajax = function(targ, func) {
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET",targ,true);
@@ -894,14 +795,6 @@
 		return rw;
 	}
 	/**
-	 * Removes all maps
-	 * @returns rw
-	 */
-	rw.wipeMaps = function() {
-		rw.maps = {};
-		return rw;
-	}
-	/**
 	 * Removes all rules
 	 * @returns rw
 	 */
@@ -915,10 +808,9 @@
 	 * @returns rw
 	 */
 	rw.wipeAll = function() {
-		rw.wipeBoard().wipeEnts().wipeMaps().wipeRules();
+		rw.wipeBoard().wipeEnts().wipeRules();
 		return rw;
 	}
-	// good
 	/**
 	 * Initializes Rosewood and creates the game board element.
 	 * @param dimX Width of board, in pixels.
@@ -1454,7 +1346,6 @@
 	window['rw']=rw;
 	window['rw']['run']=rw.run;
 	window['rw']['ents']=rw.ents;
-	window['rw']['maps']=rw.maps;
 	window['rw']['rules']=rw.rules;
 	window['rw']['ruleList']=rw.ruleList;
 })();
