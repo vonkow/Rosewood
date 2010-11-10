@@ -11,6 +11,8 @@ var heroX = 0, heroY = 0,
 var hero = function() {
 	this.base = new rw.Ent('hero', 'hero_d1', 30, 30);
 	this.heading = 'd';
+	this.ani_count = 0;
+	this.ani = 1;
 	this.update = function(X1, Y1, X2, Y2) {
 		heroX = X1;
 		heroY = Y1;
@@ -20,13 +22,14 @@ var hero = function() {
 		if (rw.key('ra')&&(X2<476)) this.base.move(5,0);
 		if (rw.key('ua')&&(Y1>4)) this.base.move(0,-5);
 		if (rw.key('da')&&(Y2<476)) this.base.move(0,5);
+		(this.ani_count<5) ? this.ani_count++ : (this.ani_count=0,(this.ani==1) ? this.ani=2 : this.ani=1);
+		this.base.changeSprite('hero_'+this.heading+this.ani);
 	}
 	this.keyChange = function() {
 		if (rw.key('la')) this.heading = 'l';
 		if (rw.key('ra')) this.heading = 'r';
 		if (rw.key('ua')) this.heading = 'u';
 		if (rw.key('da')) this.heading = 'd';
-		this.base.changeSprite('hero_'+this.heading+1);
 	}
 	this.hitMap = [['hero',['eye','item'],0,0,30,30]];
 	this.gotHit = function(by) {
@@ -41,6 +44,8 @@ var hero = function() {
 var eye = function(name, heading) {
 	this.base = new rw.Ent(name, 'eye_'+heading+1, 30, 30);
 	this.heading = heading;
+	this.ani = 1;
+	this.ani_count = 0;
 	this.update = function(X1, Y1, X2, Y2) {
 		if ((X1<0)||(X2>480)||(Y1<0)||(Y2>480)) {
 			eyesDead++;
@@ -52,55 +57,33 @@ var eye = function(name, heading) {
 				if ((Y1<heroY)||blind) {
 					(!slow) ? this.base.move(0,5) : this.base.move(0,2);
 				} else {
-					if (X1>heroX) {
-						this.heading = 'l';
-						this.base.changeSprite('eye_l1');
-					} else {
-						this.heading = 'r';
-						this.base.changeSprite('eye_r1');
-					}
+					(X1>heroX) ?  this.heading = 'l' : this.heading = 'r';
 				}
 				break;
 			case 'l':
 				if ((X1>heroX)||blind) {
 					(!slow) ? this.base.move(-5,0) : this.base.move(-2,0);
 				} else {
-					if (Y1>heroY) {
-						this.heading = 'u';
-						this.base.changeSprite('eye_u1');
-					} else {
-						this.heading = 'd';
-						this.base.changeSprite('eye_d1');
-					}
+					(Y1>heroY) ?  this.heading = 'u' : this.heading = 'd';
 				}
 				break;
 			case 'u':
 				if ((Y1>heroY)||blind) {
 					(!slow) ? this.base.move(0,-5) : this.base.move(0,-2);
 				} else {
-					if (X1<heroX) {
-						this.heading = 'r';
-						this.base.changeSprite('eye_r1');
-					} else {
-						this.heading = 'l';
-						this.base.changeSprite('eye_l1');
-					}
+					(X1<heroX) ?  this.heading = 'r': this.heading = 'l';
 				}
 				break;
 			case 'r':
 				if ((X1<heroX)||blind) {
 					(!slow) ? this.base.move(5,0) : this.base.move(2,0);
 				} else {
-					if (Y1<heroY) {
-						this.heading = 'd';
-						this.base.changeSprite('eye_d1');
-					} else {
-						this.heading = 'u';
-						this.base.changeSprite('eye_u1');
-					}
+					(Y1<heroY) ?  this.heading = 'd' : this.heading = 'u';
 				}
 				break;
 		}
+		(this.ani_count<5) ? this.ani_count++ : (this.ani_count=0,(this.ani==1) ? this.ani=2 : this.ani=1);
+		this.base.changeSprite('eye_'+this.heading+this.ani);
 	}
 	this.hitMap = [['eye',['eye','hero'],10,10,20,20]];
 	this.gotHit = function(by) {
@@ -156,26 +139,18 @@ var item = function() {
 				case 0:
 					fatima = true;
 					fatimaCountdown = 100;
-					//rw.newEnt(new fatimaNotification())
-						//.base.display('fatima',0,0,0);
 					break;
 				case 1:
 					blind = true;
 					blindEyeCountdown = 100;
-					//rw.newEnt(new blindEyeNotification())
-						//.base.display('blindeye',90,0,0);
 					break;
 				case 2:
 					slow = true;
 					slowCountdown = 100;
-					//rw.newEnt(new slowNotification())
-						//.base.display('slow',180,0,0);
 					break;
 				case 3:
 					badLuck = true;
 					badLuckCountdown = 50;
-					//rw.newEnt(new badLuckNotification())
-						//.base.display('badluck',270,0,0);
 					eyeGenerator();
 					eyeGenerator();
 					eyeGenerator();
@@ -289,31 +264,44 @@ var dropItem = function() {
 
 var startGame = function() {
 	rw.loadSprites({
+		bg: ['sprites/bg.png', 480, 480, 0, 0],
 		hero_d1: ['sprites/hero_d1.gif', 30, 30, 0, 0],
 		hero_l1: ['sprites/hero_l1.gif', 30, 30, 0, 0],
 		hero_r1: ['sprites/hero_r1.gif', 30, 30, 0, 0],
 		hero_u1: ['sprites/hero_u1.gif', 30, 30, 0, 0],
+		hero_d2: ['sprites/hero_d2.gif', 30, 30, 0, 0],
+		hero_l2: ['sprites/hero_l2.gif', 30, 30, 0, 0],
+		hero_r2: ['sprites/hero_r2.gif', 30, 30, 0, 0],
+		hero_u2: ['sprites/hero_u2.gif', 30, 30, 0, 0],
 		eye_d1: ['sprites/eye_d1.gif', 30, 30, 0, 0],
 		eye_l1: ['sprites/eye_l1.gif', 30, 30, 0, 0],
 		eye_r1: ['sprites/eye_r1.gif', 30, 30, 0, 0],
 		eye_u1: ['sprites/eye_u1.gif', 30, 30, 0, 0],
+		eye_d2: ['sprites/eye_d2.gif', 30, 30, 0, 0],
+		eye_l2: ['sprites/eye_l2.gif', 30, 30, 0, 0],
+		eye_r2: ['sprites/eye_r2.gif', 30, 30, 0, 0],
+		eye_u2: ['sprites/eye_u2.gif', 30, 30, 0, 0],
 		badluck: ['sprites/badluck.gif', 30, 30, 0, 0],
 		blindeye: ['sprites/blindeye.gif', 30, 30, 0, 0],
 		fatima: ['sprites/fatima.gif', 30, 30, 0, 0],
 		question: ['sprites/question.gif', 30, 30, 0, 0],
 		slow: ['sprites/slow.gif', 30, 30, 0, 0]
 	}, function() {
-		rw.init(480,480).tilesOn(30,30)
+		rw.init(480,480, 'playarea').tilesOn(30,30)
 		.newRule('makeEyes', new makeEyes())
 		.newRule('timers', new timers())
 		.newRule('dropItem', new dropItem())
 		.newRule('endGame', new resetGame())
+		.newEnt({
+			base: new rw.Ent('bg','bg',480,480),
+			update: function() {}
+		}).base.display('bg',0,0,-16).end()
 		.newEnt(new hero('hero'))
 			.base.display('hero_d1',240,240,240).end()
 		.newEnt({
 			base: new rw.Ent('text', 'text', 100, 100),
 			update: function() {
-				var txt = 'Dead Eyes: '+eyesDead+' ';
+				var txt = 'Score: '+eyesDead+' ';
 				if (fatima) txt += ' Fatima! ';
 				if (blind) txt += ' Blind Eye ';
 				if (slow) txt += ' Slow ';
@@ -321,7 +309,7 @@ var startGame = function() {
 				this.text.text = txt;
 			},
 			text: {
-				text: 'Dead Eyes: ',
+				text: 'Score: ',
 				form: 'fill',
 				style: {
 					font: '16px sans-serif',
