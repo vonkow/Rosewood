@@ -202,8 +202,8 @@ var resetGame = function() {
 var pickTile = function() {
 	var xTile = Math.round(15*Math.random());
 	var yTile = Math.round(15*Math.random());
-	if ((xTile>heroXTile-2)&&(xTile<heroXTile+2)) {
-		if ((yTile>heroYTile-2)&&(yTile<heroYTile+2)) {
+	if ((xTile>heroXTile-3)&&(xTile<heroXTile+3)) {
+		if ((yTile>heroYTile-3)&&(yTile<heroYTile+3)) {
 			var newTiles = pickTile();
 			return newTiles;
 		}
@@ -233,7 +233,7 @@ var eyeGenerator = function() {
 		}
 	}
 	rw.newEnt(new eye(('eye'+eyeCounter++), heading))
-		.base.display('eye_'+heading+1, xTile, yTile, yTile);
+		.base.display(xTile, yTile, yTile);
 }
 
 var makeEyes = function() {
@@ -257,7 +257,7 @@ var dropItem = function() {
 			var xPos = 30*newTiles[0];
 			var yPos = 30*newTiles[1];
 			rw.newEnt(new item())
-				.base.display('question', xPos, yPos, yPos);
+				.base.display(xPos, yPos, yPos);
 		}
 	}
 }
@@ -295,9 +295,9 @@ var startGame = function() {
 		.newEnt({
 			base: new rw.Ent('bg','bg',480,480),
 			update: function() {}
-		}).base.display('bg',0,0,-16).end()
+		}).base.display(0,0,-16).end()
 		.newEnt(new hero('hero'))
-			.base.display('hero_d1',240,240,240).end()
+			.base.display(240,240,240).end()
 		.newEnt({
 			base: new rw.Ent('text', 'text', 100, 100),
 			update: function() {
@@ -316,7 +316,7 @@ var startGame = function() {
 					fill: '#000'
 				}
 			}
-		}).base.display('text',0,16,0).end()
+		}).base.display(0,16,0).end()
 		.start().saveState('init');
 	});
 }

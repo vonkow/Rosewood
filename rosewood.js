@@ -386,13 +386,12 @@
 	 * @param posZIn Optional, Ent's Z position on the board (will default to posYIn if unspecified)
 	 * @returns ent.base
 	 */
-	rw.Ent.prototype.display = function (spriteIn, posXIn, posYIn, posZIn) {
-		this.sprite = spriteIn;
+	rw.Ent.prototype.display = function (posXIn, posYIn, posZIn) {
 		this.posX = posXIn;
 		this.posY = posYIn;
 		(posZIn) ? this.posZ = posZIn : this.posZ = posYIn;
 		this.active = true;
-		(spriteIn!=='') ? this.visible=true : this.visible=false;
+		this.visible = (this.sprite!==' ') ? true : false;
 		return this;
 	};
 	/**
@@ -583,6 +582,7 @@
 	rw.newEnt = function(ent) {
 		ent.base['ent'] = ent;
 		rw.ents.push(ent);
+		if (ent.base.sprite!=='') ent.base.visible = true;
 		if (ent.init) ent.init();
 		return ent;
 	};
@@ -675,18 +675,13 @@
 	rw.loadState = function(name) {
 		if (states[name]) {
 			rw.ents = copy(states[name]['ents'],name);
-			rw.maps = copy(states[name]['maps'],name);
 			rw.rules = copy(states[name]['rules'],name);
 			rw.ruleList = copy(states[name]['ruleList'],name);
-			for (map in rw.maps) {
-				if (rw.maps[map].active==true) rw.maps[map].display();
-			}
 			var len = rw.ents.length;
 			for (var x=0;x<len;x++) {
 				rw.ents[x].base.ent = rw.ents[x];
 				if (rw.ents[x].base.active==true) {
 					rw.ents[x].base.display(
-						rw.ents[x].base.sprite,
 						rw.ents[x].base.posX,
 						rw.ents[x].base.posY,
 						rw.ents[x].base.posZ
