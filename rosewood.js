@@ -35,6 +35,41 @@
 		};
 		loadNext(arr);
 	};
+
+	//AUDIO!!! NEW!!! Needs work integrating all browsers
+	rw.soundBank = {};
+	rw.sounds = [];
+	rw.playSound = function(sound) {
+		var len = rw.sounds.length;
+		rw.sounds[len] = document.createElement('audio');
+		rw.sounds[len].src = rw.soundBank[sound].src;
+		rw.sounds[len].play();
+		return rw;
+	}
+	/** 
+	 * Adds a new sound to rw.soundBank.
+	 * @param name Name of new sound.
+	 * @param src Filepath to sound file. 
+	 */
+	rw.loadSounds = function(sounds, callback) {
+		function loadNext(arr) {
+			if (arr.length) {
+				var s = arr.pop();
+				var snd = new Audio();
+				rw.soundBank[s[0]] = snd;
+				function nxt() {
+					loadNext(arr);
+				}
+				snd.addEventListener("canplay", nxt, false);
+				snd.src = s[1];
+			} else {
+				callback();
+			}
+		}
+		loadNext(sounds);
+	}
+
+
 	// RunLoop or stop
 	var runGame = false; 
 	// RunLoop current Timer
@@ -719,30 +754,9 @@
 	rw.func = function() {
 		return rw;
 	}
-
-	//AUDIO!!! NEW!!! Needs work integrating all browsers
-	rw.soundBank = {};
-	rw.sounds = [];
-	rw.playSound = function(sound) {
-		var len = rw.sounds.length;
-		rw.sounds[len] = document.createElement('audio');
-		rw.sounds[len].src = rw.soundBank[sound].src;
-		rw.sounds[len].play();
-		return rw;
-	}
-	/** 
-	 * Adds a new sound to rw.soundBank.
-	 * @param name Name of new sound.
-	 * @param src Filepath to sound file. 
-	 */
-	rw.newSound = function(name, src) {
-		rw.soundBank[name] = new Audio(src);
-		return rw;
-	}
-
 	// Changes Cursor
 	rw.changeCursor = function(cursor) {
-		document.getElementById('board').style.cursor="url('"+resPath+cursor+"')";
+		document.getElementById('board').style.cursor="url('"+cursor+"')";
 		return rw;
 	}
 	// Browser-specific values, runs at init
