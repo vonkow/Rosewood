@@ -35,8 +35,6 @@
 		};
 		loadNext(arr);
 	};
-
-	//AUDIO!!! NEW!!! Needs work integrating all browsers
 	rw.soundBank = {};
 	rw.sounds = [];
 	rw.playSound = function(sound) {
@@ -267,124 +265,12 @@
 		this.active = false; //Bool for is piece in play
 		this.visible=false; //Bool for if piece should have a div
 	};
-		/*
-		this.shifts={};
-		this. children=[];
-		var getChild=function(meme,child) {
-			if (typeof(child)=='number') {
-				var theChild=meme.children[child];
-			} else {
-				for (var x=0;x<meme.children.length;x++) {
-					if (meme.children[x][0]==child) {
-						var theChild=meme.children[x];
-						break
-					}
-				}
-			};
-			if (theChild) return theChild;
-			return false
-		};
-		this.getChild=function(meme,child) {
-			return getChild(meme,child);
-		}
-		var blitChildDiv=function(meme,child) {
-			var childDiv=document.getElementById('ent_'+meme.name+'_'+child[0]);
-			if (childDiv) {
-				childDiv.style.left=child[2]+'px';
-				childDiv.style.top=child[3]+'px';
-				childDiv.style.zIndex=child[4];
-				childDiv.style.width=child[5]+'px';
-				childDiv.style.height=child[6]+'px';
-				childDiv.style.background='url("'+resPath+meme.sprites+'/'+child[1]+'.'+meme.spriteExt+'") no-repeat '+child[7]+'px '+child[8]+'px'
-			} else {
-				var entDiv=document.getElementById('ent_'+meme.name);
-				if (entDiv) {
-					var childDiv=document.createElement('div');
-					childDiv.id='ent_'+meme.name+'_'+child[0];
-					childDiv.style.position='absolute';
-					childDiv.style.left=child[2]+'px';
-					childDiv.style.top=child[3]+'px';
-					childDiv.style.zIndex=child[4];
-					childDiv.style.width=child[5]+'px';
-					childDiv.style.height=child[6]+'px';
-					childDiv.style.overflow='hidden';
-					if (child[1]!=' ') {
-						childDiv.style.background='url("'+resPath+meme.sprites+'/'+child[1]+'.'+meme.spriteExt+'") no-repeat '+child[7]+'px '+child[8]+'px'
-					};
-					entDiv.appendChild(childDiv)
-				}
-			}
-		};
-		this.blitChildDiv=function(meme,child) {
-			blitChildDiv(meme,child);
-		};
-	};
-
-	rw.ent.prototype.addChild=function(name,g,x,y,z,w,h,ox,oy) {
-		var oX =(ox) ? ox : 0;
-		var oY =(oy) ? oy : 0;
-		this.children.push([name,g,x,y,z,w,h,oX,oY]);
-		var entDiv=document.getElementById('ent_'+this.name);
-		if (entDiv) {
-			this.blitChildDiv(this,this.children[this.children.length-1])
-		};
-		return this
-	};
-	rw.ent.prototype.moveChild=function(child,x,y,z) {
-		var theChild=this.getChild(this,child);
-		if (theChild) {
-			theChild[2]=x;
-			theChild[3]=y;
-			theChild[4]=z;
-			this.blitChildDiv(this,theChild)
-		};
-		return this
-	};
-	rw.ent.prototype.resizeChild=function(child,w,h) {
-		var theChild=this.getChild(this,child);
-		if (theChild) {
-			theChild[5]=w;
-			theChild[6]=h;
-			this.blitChildDiv(this,theChild)
-		};
-		return this
-	};
-	rw.ent.prototype.changeChild=function(child,g,ox,oy) {
-		var theChild=this.getChild(this,child);
-		if (theChild) {
-			theChild[1] = g;
-			theChild[7] = ((ox)||(ox===0)) ? ox : theChild[7];
-			theChild[8] = ((oy)||(oy===0)) ? oy : theChild[8];
-			this.blitChildDiv(this,theChild)
-		};
-		return this
-	};
-	rw.ent.prototype.removeChild=function(child) {
-		if (typeof(child)=='number') {
-			var childId=child
-		} else {
-			for (var x=0;x<this.children.length;x++) {
-				if (this.children[x][0]==child) {
-					var childId=x;
-					break
-				}
-			}
-		};
-		if ((childId)||(childId==0)) {
-			var childDiv=document.getElementById('ent_'+this.name+'_'+this.children[childId][0]);
-			childDiv.parentNode.removeChild(childDiv);
-			this.children.slice(childId,1)
-		};
-		return this
-	};
-	*/
 	rw.Ent.prototype.back = function() {
 		return this.ent;
 	};
 	rw.Ent.prototype.end = function() {
 		return rw
 	};
-
 	/**
 	 * @returns ent's leftmost position, in pixels
 	 */
@@ -449,34 +335,6 @@
 		(this.sprite != '') ?  this.visible=true : this.visible=false;
 		return this;
 	};
-	//rw.ent.prototype.shiftSprite=function(x,y) {
-		//var entDiv=document.getElementById('ent_'+this.name);
-		//if (entDiv) {
-			//entDiv.style.background="url('"+resPath+this.sprites+"/"+this.baseSprite+"."+this.spriteExt+"') "+x+"px "+y+"px no-repeat";
-		//};
-	//};
-	/**
-	 * Adds a named sprite shift to ent.base.shifts.
-	 * @param name Name of new shift.
-	 * @param x Horizontal position of new shift.
-	 * @param y Vertical position of new shift.
-	 * @returns ent.base
-	 */
-	//rw.ent.prototype.addShift=function(name,x,y) {
-		//this.shifts[name]=[x,y];
-		//return this;
-	//};
-	/**
-	 * Shifts ent's sprite to named sprite shift.
-	 * @param name Name of sprite shift.
-	 * @returns ent.base
-	 */
-	//rw.ent.prototype.shiftTo=function(name) {
-		//if (name in this.shifts) {
-			//this.shiftSprite(this.shifts[name][0],this.shifts[name][1]);
-		//};
-		//return this;
-	//};
 	/**
 	 * Gets ent's current velocity, or sum total of movement within the current frame.
 	 * @returns An array: [x velocity, y velocity, z velocity]
@@ -523,27 +381,6 @@
 		}
 		return this;
 	}
-	//rw.ent.prototype.rotate = function(deg) {
-		//var entDiv = document.getElementById('ent_'+this.name);
-		//if (entDiv) {
-			//entDiv.style[rw.browser.trans_name] = 'rotate('+deg+'deg)';
-		//}
-		//return this;
-	//}
-	//rw.ent.prototype.rotMap=function(hitMap, angle) {
-		//var centerP = [this.width/2,this.height/2];
-		//var newMap = [hitMap[0],hitMap[1]];
-		//var pt1 = rotatePoint([hitMap[2],hitMap[3]],centerP,angle);
-		//var pt2 = rotatePoint([hitMap[4],hitMap[5]],centerP,angle);
-		//var pt3 = rotatePoint([hitMap[6],hitMap[7]],centerP,angle);
-		//newMap.push(pt1[0]);
-		//newMap.push(pt1[1]);
-		//newMap.push(pt2[0]);
-		//newMap.push(pt2[1]);
-		//newMap.push(pt3[0]);
-		//newMap.push(pt3[1]);
-		//return newMap;
-	//};
 	rw.Ent.prototype.getTileX=function() {
 		if (tiles) {
 			return Math.floor(this.posY/tileY);
@@ -568,24 +405,6 @@
 		};
 		return false;
 	};
-	//rw.ent.prototype.attach = function(content) {
-		//var entDiv=document.getElementById('ent_'+this.name);
-		//if (entDiv) {
-			//entDiv.appendChild(content);
-		//};
-		//return this;
-	//};
-	//rw.ent.prototype.detach = function() {
-		//var ele = document.getElementById('ent_'+this.name);
-		//if (ele) {
-			//var tot = ele.childNodes.length;
-			//for (var x=0;x<tot;x++) {
-				//ele.removeChild(ele.childNodes[0]);
-			//};
-		//};
-		//return this;
-	//};
-
 	/**
 	 * Moves ent specified distance. <br>
 	 * <strong>Note:</strong> This function is additive, subsequent calls within a single frame
@@ -1358,4 +1177,3 @@
 	window['rw']['rules']=rw.rules;
 	window['rw']['ruleList']=rw.ruleList;
 })();
-
