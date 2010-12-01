@@ -301,7 +301,8 @@ var startGame = function() {
 		.newEnt({
 			base: new rw.Ent('text', 'text', 100, 100),
 			update: function() {
-				var txt = 'Score: '+eyesDead+' ';
+				var txt = ' Lag: '+Math.round(rw.getLag())+'  ';
+				txt += 'Score: '+eyesDead+' ';
 				if (fatima) txt += ' Fatima! ';
 				if (blind) txt += ' Blind Eye ';
 				if (slow) txt += ' Slow ';
