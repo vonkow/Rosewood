@@ -202,8 +202,8 @@ var resetGame = function() {
 var pickTile = function() {
 	var xTile = Math.round(15*Math.random());
 	var yTile = Math.round(15*Math.random());
-	if ((xTile>heroXTile-3)&&(xTile<heroXTile+3)) {
-		if ((yTile>heroYTile-3)&&(yTile<heroYTile+3)) {
+	if ((xTile>heroXTile-5)&&(xTile<heroXTile+5)) {
+		if ((yTile>heroYTile-5)&&(yTile<heroYTile+5)) {
 			var newTiles = pickTile();
 			return newTiles;
 		}
@@ -287,7 +287,9 @@ var startGame = function() {
 		question: ['sprites/question.gif', 30, 30, 0, 0],
 		slow: ['sprites/slow.gif', 30, 30, 0, 0]
 	}, function() {
-		rw.init(480,480, 'playarea').tilesOn(30,30)
+		rw.init(480,480, 'playarea')
+		.tilesOn(30,30)
+		.setFPS(30)
 		.newRule('makeEyes', new makeEyes())
 		.newRule('timers', new timers())
 		.newRule('dropItem', new dropItem())
