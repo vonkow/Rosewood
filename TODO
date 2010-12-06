@@ -1,12 +1,8 @@
 ------RIGHT NOW----------------------------------------------------------------------------------
 
-Re-add ent children
+Re-add ent children/Add canvas drawing support
 
 Modify loadSprites to handle multiple sprites from one image.
-
-Add loadSounds
-
-Add canvas drawing support
 
 ------NOW----------------------------------------------------------------------------------------
 

@@ -18,10 +18,12 @@
 				var i = arr.pop();
 				var img = new Image();
 				img.onload = function() {
-					rw.sprites[i[0]] = [this, i[2], i[3], i[4], i[5]];
+					// Add logic for multi-sprite images, check for object vs array
+					rw.sprites[i[0]] = [this, i[2], i[3], i[4]||0, i[5]||0];
 					loadNext(arr);
 				};
 				img.onerror = function() { loadNext(arr) };
+				// This may also need checking for multi-sprite images
 				img.src = i[1];
 			} else {
 				callback();
