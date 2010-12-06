@@ -19,12 +19,25 @@
 				var img = new Image();
 				img.onload = function() {
 					// Add logic for multi-sprite images, check for object vs array
-					rw.sprites[i[0]] = [this, i[2], i[3], i[4]||0, i[5]||0];
+					if (i.length==2) {
+						rw.sprites[i[0]] = {};
+						for (var x in i[1]) {
+							if (x!='src') {
+								rw.sprites[i[0]][x] = [this, i[1][x][0], i[1][x][1], i[1][x][2]||0, i[1][x][3]||0];
+							}
+						}
+					} else {
+						rw.sprites[i[0]] = [this, i[2], i[3], i[4]||0, i[5]||0];
+					}
 					loadNext(arr);
 				};
 				img.onerror = function() { loadNext(arr) };
-				// This may also need checking for multi-sprite images
-				img.src = i[1];
+				//Add check here too
+				if (i.length==2) {
+					img.src = i[1].src;
+				} else {
+					img.src = i[1];
+				}
 			} else {
 				callback();
 			};
@@ -32,8 +45,13 @@
 		var x,
 			arr = [];
 		for (x in sprites) {
+			// This may also need checking for multi-sprite images
 			var i = sprites[x];
-			arr.push([x, i[0], i[1], i[2], i[3], i[4]]);
+			if (i.length) {
+				arr.push([x, i[0], i[1], i[2], i[3], i[4]]);
+			} else {
+				arr.push([x, i]);
+			}
 		};
 		loadNext(arr);
 	};
@@ -1131,7 +1149,12 @@
 							board.strokeText(txt.text, curEnt.posX, curEnt.posY);
 						}
 					} else if (curEnt.sprite!='') {
-						var sprite = rw.sprites[curEnt.sprite];
+						if (curEnt.sprite.indexOf('.')!=-1) {
+							var str = curEnt.sprite.split('.');
+							var sprite = rw.sprites[str[0]][str[1]];
+						} else {
+							var sprite = rw.sprites[curEnt.sprite];
+						}
 						board.drawImage(
 							sprite[0],
 							sprite[3],

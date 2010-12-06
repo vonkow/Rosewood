@@ -264,7 +264,11 @@ var dropItem = function() {
 
 var startGame = function() {
 	rw.loadSprites({
-		bg: ['sprites/bg.png', 480, 480],
+		bg: {
+			src:'sprites/bg.png',
+			bg: [480,480]
+		},
+		//bg: ['sprites/bg.png', 480, 480],
 		hero_d1: ['sprites/hero_d1.gif', 30, 30],
 		hero_l1: ['sprites/hero_l1.gif', 30, 30],
 		hero_r1: ['sprites/hero_r1.gif', 30, 30],
@@ -293,7 +297,7 @@ var startGame = function() {
 		.newRule('dropItem', new dropItem())
 		.newRule('endGame', new resetGame())
 		.newEnt({
-			base: new rw.Ent('bg','bg',480,480),
+			base: new rw.Ent('bg','bg.bg',480,480),
 			update: function() {}
 		}).base.display(0,0,-16).end()
 		.newEnt(new hero('hero'))
