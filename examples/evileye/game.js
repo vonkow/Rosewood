@@ -9,7 +9,7 @@ var heroX = 0, heroY = 0,
 	endGame = false;
 
 var hero = function() {
-	this.base = new rw.Ent('hero', 'hero_d1', 30, 30);
+	this.base = new rw.Ent('hero', 'hero.d1', 30, 30);
 	this.heading = 'd';
 	this.ani_count = 0;
 	this.ani = 1;
@@ -23,7 +23,7 @@ var hero = function() {
 		if (rw.key('ua')&&(Y1>4)) this.base.move(0,-5);
 		if (rw.key('da')&&(Y2<476)) this.base.move(0,5);
 		(this.ani_count<5) ? this.ani_count++ : (this.ani_count=0,(this.ani==1) ? this.ani=2 : this.ani=1);
-		this.base.changeSprite('hero_'+this.heading+this.ani);
+		this.base.changeSprite('hero.'+this.heading+this.ani);
 	}
 	this.keyChange = function() {
 		if (rw.key('la')) this.heading = 'l';
@@ -264,19 +264,18 @@ var dropItem = function() {
 
 var startGame = function() {
 	rw.loadSprites({
-		bg: {
-			src:'sprites/bg.png',
-			bg: [480,480]
+		bg: ['sprites/bg.png', 480, 480],
+		hero: {
+			src: 'sprites/hero.png',
+			d1: [30, 30, 0, 0],
+			d2: [30, 30, 0, 30],
+			u1: [30, 30, 30, 0],
+			u2: [30, 30, 30, 30],
+			l1: [30, 30, 60, 0],
+			l2: [30, 30, 60, 30],
+			r1: [30, 30, 90, 0],
+			r2: [30, 30, 90, 30]
 		},
-		//bg: ['sprites/bg.png', 480, 480],
-		hero_d1: ['sprites/hero_d1.gif', 30, 30],
-		hero_l1: ['sprites/hero_l1.gif', 30, 30],
-		hero_r1: ['sprites/hero_r1.gif', 30, 30],
-		hero_u1: ['sprites/hero_u1.gif', 30, 30],
-		hero_d2: ['sprites/hero_d2.gif', 30, 30],
-		hero_l2: ['sprites/hero_l2.gif', 30, 30],
-		hero_r2: ['sprites/hero_r2.gif', 30, 30],
-		hero_u2: ['sprites/hero_u2.gif', 30, 30],
 		eye_d1: ['sprites/eye_d1.gif', 30, 30],
 		eye_l1: ['sprites/eye_l1.gif', 30, 30],
 		eye_r1: ['sprites/eye_r1.gif', 30, 30],
@@ -297,7 +296,7 @@ var startGame = function() {
 		.newRule('dropItem', new dropItem())
 		.newRule('endGame', new resetGame())
 		.newEnt({
-			base: new rw.Ent('bg','bg.bg',480,480),
+			base: new rw.Ent('bg','bg',480,480),
 			update: function() {}
 		}).base.display(0,0,-16).end()
 		.newEnt(new hero('hero'))
