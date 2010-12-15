@@ -18,11 +18,26 @@
 				var i = arr.pop();
 				var img = new Image();
 				img.onload = function() {
-					rw.sprites[i[0]] = [this, i[2], i[3], i[4], i[5]];
+					// Add logic for multi-sprite images, check for object vs array
+					if (i.length==2) {
+						rw.sprites[i[0]] = {};
+						for (var x in i[1]) {
+							if (x!='src') {
+								rw.sprites[i[0]][x] = [this, i[1][x][0], i[1][x][1], i[1][x][2]||0, i[1][x][3]||0];
+							}
+						}
+					} else {
+						rw.sprites[i[0]] = [this, i[2], i[3], i[4]||0, i[5]||0];
+					}
 					loadNext(arr);
 				};
 				img.onerror = function() { loadNext(arr) };
-				img.src = i[1];
+				//Add check here too
+				if (i.length==2) {
+					img.src = i[1].src;
+				} else {
+					img.src = i[1];
+				}
 			} else {
 				callback();
 			};
@@ -30,8 +45,13 @@
 		var x,
 			arr = [];
 		for (x in sprites) {
+			// This may also need checking for multi-sprite images
 			var i = sprites[x];
-			arr.push([x, i[0], i[1], i[2], i[3], i[4]]);
+			if (i.length) {
+				arr.push([x, i[0], i[1], i[2], i[3], i[4]]);
+			} else {
+				arr.push([x, i]);
+			}
 		};
 		loadNext(arr);
 	};
@@ -451,6 +471,11 @@
 		rw.ents.splice(entNum, 1);
 		return rw;
 	};
+	rw.moveAll = function(x,y,z) {
+		moveAllX = x;
+		moveAllY = y;
+		moveAllZ = z || 0;
+	};
 	// Rule Entities
 	rw.rules = {};
 	rw.ruleList = [[],[],[],[]];
@@ -812,12 +837,18 @@
 		}
 		return hit;
 	}
+	var moveAllX = 0,
+		moveAllY = 0,
+		moveAllZ = 0;
 	/**
 	 * Gameloop function, not called directly.
 	 */
 	rw.run = function() {
-		var board = document.getElementById('board').getContext('2d');
 		var startTime = new Date();
+		var board = document.getElementById('board').getContext('2d');
+		moveAllX = 0;
+		moveAllY = 0;
+		moveAllZ = 0;
 		for (var x=0; x<rw.sounds.length; x++) {
 			if (rw.sounds[x].ended) {
 				rw.sounds.splice(x,1);
@@ -1111,9 +1142,9 @@
 			for (var y=0, yl=curOrder.length; y<yl; y++) {
 				var curEnt = rw.ents[curOrder[y]].base;
 				// !!! Move ent movement to previous loop, so zIndex is properly calc'd
-				curEnt.posX += curEnt.velX;
-				curEnt.posY += curEnt.velY;
-				curEnt.posZ += curEnt.velZ;
+				curEnt.posX += curEnt.velX+moveAllX;
+				curEnt.posY += curEnt.velY+moveAllY;
+				curEnt.posZ += curEnt.velZ+moveAllZ;
 				curEnt.wipeMove();
 				if (curEnt.visible) {
 					if (curEnt.sprite=='text') {
@@ -1129,7 +1160,12 @@
 							board.strokeText(txt.text, curEnt.posX, curEnt.posY);
 						}
 					} else if (curEnt.sprite!='') {
-						var sprite = rw.sprites[curEnt.sprite];
+						if (curEnt.sprite.indexOf('.')!=-1) {
+							var str = curEnt.sprite.split('.');
+							var sprite = rw.sprites[str[0]][str[1]];
+						} else {
+							var sprite = rw.sprites[curEnt.sprite];
+						}
 						board.drawImage(
 							sprite[0],
 							sprite[3],

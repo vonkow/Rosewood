@@ -1,18 +1,10 @@
 ------RIGHT NOW----------------------------------------------------------------------------------
 
-Re-add ent children
-
-Modify loadSprites to handle multiple sprites from one image.
-
-Add loadSounds
-
-Add canvas drawing support
+Re-add ent children/Add canvas drawing support
 
 ------NOW----------------------------------------------------------------------------------------
 
 Better tile support, especially RE collisions.
-
-Add compiling suite with Closure, full auto-build, maybe something to optimize sprites as well
 
 ------UPCOMING CHANGES---------------------------------------------------------------------------
 
@@ -20,10 +12,7 @@ Better Server Tools
 
 ------POSSIBLE CHANGES---------------------------------------------------------------------------
 
-Node.js server support someday soon
-
 Add audio mixing support
 
 ------BUGS----------------------------------------------------------------------------------------
 
-Sound support died after using a bunch of bombs in bman clone, in chrome.
