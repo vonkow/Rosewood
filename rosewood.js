@@ -471,6 +471,11 @@
 		rw.ents.splice(entNum, 1);
 		return rw;
 	};
+	rw.moveAll = function(x,y,z) {
+		moveAllX = x;
+		moveAllY = y;
+		moveAllZ = z || 0;
+	};
 	// Rule Entities
 	rw.rules = {};
 	rw.ruleList = [[],[],[],[]];
@@ -832,12 +837,18 @@
 		}
 		return hit;
 	}
+	var moveAllX = 0,
+		moveAllY = 0,
+		moveAllZ = 0;
 	/**
 	 * Gameloop function, not called directly.
 	 */
 	rw.run = function() {
-		var board = document.getElementById('board').getContext('2d');
 		var startTime = new Date();
+		var board = document.getElementById('board').getContext('2d');
+		moveAllX = 0;
+		moveAllY = 0;
+		moveAllZ = 0;
 		for (var x=0; x<rw.sounds.length; x++) {
 			if (rw.sounds[x].ended) {
 				rw.sounds.splice(x,1);
@@ -1131,9 +1142,9 @@
 			for (var y=0, yl=curOrder.length; y<yl; y++) {
 				var curEnt = rw.ents[curOrder[y]].base;
 				// !!! Move ent movement to previous loop, so zIndex is properly calc'd
-				curEnt.posX += curEnt.velX;
-				curEnt.posY += curEnt.velY;
-				curEnt.posZ += curEnt.velZ;
+				curEnt.posX += curEnt.velX+moveAllX;
+				curEnt.posY += curEnt.velY+moveAllY;
+				curEnt.posZ += curEnt.velZ+moveAllZ;
 				curEnt.wipeMove();
 				if (curEnt.visible) {
 					if (curEnt.sprite=='text') {
