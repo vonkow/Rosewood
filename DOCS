@@ -1,5 +1,10 @@
 Basics
 
+	1. Initialize the engine
+		rw.init(xDimension, yDimension [Optional: targetElementID]
+			
+Basics
+
 	Before you start creating games with Rosewood, it's a good idea to understand the basics of how the engine works.
 	Once the engine has been started, Rosewood will enter it's main run loop. This loop runs through all the objects and rules within our game, updating their conditions and loactions onscreen. The engine then waits a specified amount of time before calling the main run loop again. Each run through the loop is called a frame, and the amount of time between frames is refered to as the frame rate (measured in frames per second). With the basics out of the way, let's move on to objects within Rosewood.
 
