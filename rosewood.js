@@ -394,26 +394,14 @@
 	rw.Ent.prototype.moveTo = function(x, y, z) {
 		this.posX = x;
 		this.posY = y;
-		if (z||z==0) {
-			this.posZ = z;
-		} else {
-			this.posZ = y;
-		}
+		(z||z===0) ? this.posZ = z : this.posZ = y;
 		return this;
 	}
 	rw.Ent.prototype.getTileX=function() {
-		if (tiles) {
-			return Math.floor(this.posY/tileY);
-		} else {
-			return false;
-		};
+		return (tiles) ? Math.floor(this.posY/tileY) : false;
 	};
 	rw.Ent.prototype.getTileY=function() {
-		if (tiles) {
-			return Math.floor(this.posY/tileY);
-		} else {
-			return false;
-		};
+		return (tiles) ? Math.floor(this.posY/tileY) : false;
 	};
 	rw.Ent.prototype.clicked = function() {
 		if (rw.mouse.down()) {
@@ -439,11 +427,7 @@
 	rw.Ent.prototype.move = function(x,y,z) {
 		this.velX += x;
 		this.velY += y;
-		if (z) {
-			this.velZ += z;
-		} else {
-			this.velZ += y;
-		}
+		(z||z===0) ? this.velZ += z : this.velZ += y;
 		return this;
 	}
 
