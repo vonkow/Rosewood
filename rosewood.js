@@ -173,7 +173,7 @@
 		tiles = false;
 		tileX = 0;
 		tileY = 0;
-		return rw
+		return rw;
 	};
 	//KeyDown/Up settings
 	var keyChange = false; 
@@ -1062,12 +1062,12 @@
 										// Maybe change this to call a collision resolution function for each ent?
 										cols[cols.length]=[[x,eXm[0]],[y,eYm[0]]];
 									}
-								};
+								}
 							}
 						}
 					}
 				}
-			}
+			};
 			if (eX.postCol) eX.postCol();
 		}
 		if (cols.length>0) {
