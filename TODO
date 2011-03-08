@@ -2,6 +2,11 @@
 
 Re-add ent children/Add canvas drawing support
 
+Re-do collision detection:
+	Every ent gets an array of what it can hit, generated at creation
+		and appended on creation/destruction of other ents
+	B-Tree after array positive on collision detec.
+
 ------NOW----------------------------------------------------------------------------------------
 
 Better tile support, especially RE collisions.
