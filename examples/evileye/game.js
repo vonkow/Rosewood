@@ -204,8 +204,7 @@ var pickTile = function() {
 	var yTile = Math.round(15*Math.random());
 	if ((xTile>heroXTile-5)&&(xTile<heroXTile+5)) {
 		if ((yTile>heroYTile-5)&&(yTile<heroYTile+5)) {
-			var newTiles = pickTile();
-			return newTiles;
+			return pickTile();
 		}
 		else {
 			return [xTile, yTile];
