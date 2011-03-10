@@ -289,7 +289,7 @@ var startGame = function() {
 		question: ['sprites/question.gif', 30, 30],
 		slow: ['sprites/slow.gif', 30, 30]
 	}, function() {
-		rw.init(480,480, 'playarea')
+		rw.init('playarea', {x:480, y:480})
 		.tilesOn(30,30)
 		.setFPS(30)
 		.newRule('makeEyes', new makeEyes())

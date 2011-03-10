@@ -462,7 +462,7 @@
 	};
 	// Rule Entities
 	rw.rules = {};
-	rw.ruleList = [[],[],[],[]];
+	rw.ruleList = [];
 	/**
 	 * @class
 	 */
@@ -656,35 +656,113 @@
 	 * If unspecified, the board will be attached to the body.
 	 * @returns rw
 	 */
-	rw.init = function(dimX, dimY, target) {
+	rw.init = function(target, uSet, callback) {
+		var settings = {
+			x: uSet.x||0,
+			y: uSet.y||0,
+			keys: uSet.keys || true,
+			mouse: uSet.mouse || true,
+			sound: uSet.sound || true,
+			canvas: true,
+			sequence: uSet.sequence || [
+				'rule',
+				'ents',
+				'rule',
+				'cols',
+				'kill',
+				'rule',
+				'blit',
+				'rule'
+			]
+		};
+		// need to add some ifs to check for true/false/array on keys
 		rw.browser.check();
-		var board = document.createElement('canvas');
-		board.id = 'board';
-		X = dimX;
-		Y = dimY;
-		board.width = dimX;
-		board.height = dimY;
-		board.style.width = dimX+'px';
-		board.style.height = dimY+'px';
-		board.style.overflow = 'hidden'; // Not needed?
-		board.style.position = "relative"; // Not needed?
-		if (target) {
+		X = settings.x
+		Y = settings.y
+		if (settings.canvas) {
+			var board = document.createElement('canvas');
+			board.id = 'board';
+			board.width = settings.x
+			board.height = settings.y
+			board.style.width = settings.x
+			board.style.height = settings.y
+			//board.style.overflow = 'hidden'; // Not needed?
+			//board.style.position = "relative"; // Not needed?
 			document.getElementById(target).appendChild(board);
-		} else {
-			document.getElementsByTagName('body')[0].appendChild(board);
 		}
-		if (window.document.addEventListener) {
-			window.document.addEventListener("keydown", keyDown, false);
-			window.document.addEventListener("keyup", keyUp, false);
-		} else {
-			window.document.attachEvent("onkeydown", keyDown);
-			window.document.attachEvent("onkeyup", keyUp);
+		if (settings.keys) {
+			if (window.document.addEventListener) {
+				window.document.addEventListener("keydown", keyDown, false);
+				window.document.addEventListener("keyup", keyUp, false);
+			} else {
+				window.document.attachEvent("onkeydown", keyDown);
+				window.document.attachEvent("onkeyup", keyUp);
+			}
 		}
-		board.onmousemove = mousePos;
-		board.onmousedown = mouseDown;
-		board.onmouseup = mouseUp;
+		if (settings.mouse) {
+			board.onmousemove = mousePos;
+			board.onmousedown = mouseDown;
+			board.onmouseup = mouseUp;
+		}
+
+		var runFunc = composeLoop(settings.sequence, 0, 0, function(){return [];});
+
+		rw.run = function() {
+			var startTime = new Date(),
+				toBeRemoved = [];
+			moveAllX = 0;
+			moveAllY = 0;
+			moveAllZ = 0;
+			killFinishedSounds();
+			runFunc([]);
+			var endTime = new Date();
+			var timeTotal = endTime-startTime;
+			if (runGame==true) {
+				if (timeTotal<speed) {
+					curT = setTimeout('rw.run()', speed-timeTotal);
+				} else {
+					curT = setTimeout('rw.run()', 1);
+				}
+				currentLag = timeTotal-speed;
+			} else {
+				clearTimeout(rw.curT);
+				globT += curT;
+				curT = 0;
+				if (typeof(stopCallback)=='function') stopCallback();
+				stopCallback = null;
+			}
+		}
+
+
 		return rw;
 	}
+
+	function composeLoop(seq, count, ruleCount, func) {
+		var f = function(tbk) {func(tbk)};
+		if (count<seq.length) {
+			var cur = seq[seq.length-count-1];
+			if (cur=='rule') {
+				var rl = ruleLoop(ruleCount);
+				f = function(tbk) {func(rl(tbk))};
+				rw.ruleList.push([]);
+				ruleCount++;
+			}else if (cur=='ents') {
+				f = function(tbk) {func(updateEnts(tbk))};
+			} else if (cur=='cols') {
+				f = function(tbk) {func(collisionLoop(tbk))};
+			} else if (cur=='kill') {
+				f = function(tbk) {func(killLoop(tbk))};
+			} else if (cur=='blit') {
+				f = function(tbk) {func(redrawLoop(tbk))};
+			}
+
+			return composeLoop(seq, count+1, ruleCount, f);
+		} else {
+			return function(tbk) {func(tbk)};
+		}
+	}
+
+
 	/**
 	 * Starts the gameloop
 	 * @returns rw
@@ -832,11 +910,15 @@
 		}
 	}
 
+
 	function ruleLoop(listId) {
-		for (var x=0, l=rw.ruleList[listId].length; x<l; x++) {
-			if (rw.rules[rw.ruleList[listId][x]].base.active) {
-				rw.rules[rw.ruleList[listId][x]].rule();
+		return function(tbk) {
+			for (var x=0, l=rw.ruleList[listId].length; x<l; x++) {
+				if (rw.rules[rw.ruleList[listId][x]].base.active) {
+					rw.rules[rw.ruleList[listId][x]].rule();
+				}
 			}
+			return tbk;
 		}
 	}
 
@@ -1098,10 +1180,10 @@
 				rw.removeEnt(killThese[x]);
 			}
 		}
-
+		return [];
 	}
 
-	function redrawLoop() {
+	function redrawLoop(toBeRemoved) {
 		var zOrder = {},
 			zKey = [],
 			board = document.getElementById('board').getContext('2d');
@@ -1163,7 +1245,7 @@
 		}
 		zOrder = null;
 		zKey = null;
-
+		return toBeRemoved;
 	}
 
 	var moveAllX = 0,
@@ -1172,46 +1254,7 @@
 	/**
 	 * Gameloop function, not called directly.
 	 */
-	rw.run = function() {
-		var startTime = new Date(),
-			toBeRemoved = [];
-		moveAllX = 0;
-		moveAllY = 0;
-		moveAllZ = 0;
-		killFinishedSounds();
-		// Rule position 0, pre-update loop
-		ruleLoop(0);
-		toBeRemoved = updateEnts(toBeRemoved);
-		// Rule position 1, pre-collision loop
-		ruleLoop(1);
-		// Collision Loop
-		toBeRemoved = collisionLoop(toBeRemoved);
-		// Kill Loop
-		killLoop(toBeRemoved);
-		// Rule position 2, pre-redraw loop
-		ruleLoop(2);
-		// New update loop
-		redrawLoop();
-		// Rule position 3, end of frame
-		ruleLoop(3);
-		//If game has not ended or been paused, continue
-		var endTime = new Date();
-		var timeTotal = endTime-startTime;
-		if (runGame==true) {
-			if (timeTotal<speed) {
-				curT = setTimeout('rw.run()', speed-timeTotal);
-			} else {
-				curT = setTimeout('rw.run()', 1);
-			}
-			currentLag = timeTotal-speed;
-		} else {
-			clearTimeout(rw.curT);
-			globT += curT;
-			curT = 0;
-			if (typeof(stopCallback)=='function') stopCallback();
-			stopCallback = null;
-		}
-	}
+
 	window['rw']=rw;
 	window['rw']['run']=rw.run;
 	window['rw']['ents']=rw.ents;

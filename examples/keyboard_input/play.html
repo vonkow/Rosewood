@@ -3,11 +3,12 @@
 		<script src="../../rosewood.js"></script>
 	</head>
 	<body>
+		<div id="playarea"></div>
 		<script>
 		rw.loadSprites({
 			'ball': ['ball.png', 30, 30, 0, 0]
 		}, function() {
-			rw.init(500,500)
+			rw.init('playarea', {x:500,y:500,sequence:['ents','blit']})
 			.setFPS(60)
 			.newEnt({
 				base: new rw.Ent('ball','ball',30,30),
@@ -16,9 +17,8 @@
 					if (rw.key('da')) this.base.move(0,1);
 					if (rw.key('la')) this.base.move(-1,0);
 					if (rw.key('ra')) this.base.move(1,0);
-				},
-				init: function() { this.base.display(0,0);}
-			}).base.end().start();
+				}
+			}).base.display(0,0).end().start();
 		})
 		</script>
 	</body>

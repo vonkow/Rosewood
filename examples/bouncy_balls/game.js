@@ -71,7 +71,7 @@ function startGame() {
 	rw.loadSprites({
 		ball: ['sprites/ball.png', 40, 40, 0, 0]
 	}, function() {
-		rw.init(600, 600, 'playarea')
+		rw.init('playarea', {x:600,y:600,sequence:['ents','cols','blit']})
 		.setFPS(60)
 		.newEnt(new lagTimer()).base.display(0,16,0).end()
 		.newEnt(new wall('tWall',600,10))
@@ -106,7 +106,6 @@ function startGame() {
 			.base.display(250, 245, 50).end()
 		.newEnt(new ball('ball_8', 'l', 'u'))
 			.base.display(453, 399, 50).end()
-		.func(alert('Bouncy Ball Test'))
 		.start();
 	})
 }
