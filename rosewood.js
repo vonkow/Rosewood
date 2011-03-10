@@ -4,14 +4,35 @@
  * @version <1.0
  */
 
-/**
- * The Rosewood object, holds everything else
- * @class rw base class, there should only be one instance
- * @constructor
- */
 (function(){
-	var rw = {};
+	var rw = {},
+		runGame = false,
+		curT = 0, 
+		globT = 0,
+		speed = 0,
+		currentLag = 0,
+		X = 0,
+		Y = 0,
+		tiles = false,
+		tileX = 0,
+		tileY = 0,
+		keyChange = false,
+		keys = [['bsp',8],['tab',9],['ent',13],['shf',16],['ctr',17],['alt',18],['pau',19],['cap',20],['esc',27],['sp',32],['pgu',33],['pgd',34],['end',35],['hom',36],['la',37],['ua',38],['ra',39],['da',40],['ins',45],['del',46],['d0',48],['d1',49],['d2',50],['d3',51],['d4',52],['d5',53],['d6',54],['d7',55],['d8',56],['d9',57],['sem',59],['eql',61],['a',65],['b',66],['c',67],['d',68],['e',69],['f',70],['g',71],['h',72],['i',73],['j',74],['k',75],['l',76],['m',77],['n',78],['o',79],['p',80],['q',81],['r',82],['s',83],['t',84],['u',85],['v',86],['w',67],['x',88],['y',89],['z',90],['lwn',91],['rwn',92],['sel',93],['n0',96],['n1',97],['n2',98],['n3',99],['n4',100],['n5',101],['n6',102],['n7',103],['n8',104],['n9',105],['mul',106],['add',107],['sub',109],['dec',110],['div',111],['f1',112],['f2',113],['f3',114],['f4',115],['f5',116],['f6',117],['f7',118],['f8',119],['f9',120],['f10',121],['f11',122],['f12',123],['num',144],['scr',145],['com',188],['per',190],['fsl',191],['acc',192],['obr',219],['bsl',220],['cbr',221],['qot',222]],
+		mouseX = 0,
+		mouseY = 0,
+		mouseDown = false,
+		moveAllX = 0,
+		moveAllY = 0,
+		moveAllZ = 0,
+		states = {},
+		stopCallback = null;
 	rw.sprites = {};
+	rw.soundBank = {};
+	rw.sounds = [];
+	rw.ents = []; 
+	rw.rules = {};
+	rw.ruleList = [];
+
 	rw.loadSprites = function(sprites, callback) {
 		function loadNext(arr) {
 			if (arr.length) {
@@ -55,8 +76,6 @@
 		};
 		loadNext(arr);
 	};
-	rw.soundBank = {};
-	rw.sounds = [];
 	rw.playSound = function(sound) {
 		var len = rw.sounds.length;
 		rw.sounds[len] = document.createElement('audio');
@@ -64,11 +83,6 @@
 		rw.sounds[len].play();
 		return rw;
 	}
-	/** 
-	 * Adds a new sound to rw.soundBank.
-	 * @param name Name of new sound.
-	 * @param src Filepath to sound file. 
-	 */
 	rw.loadSounds = function(sounds, callback) {
 		function loadNext(arr) {
 			if (arr.length) {
@@ -86,98 +100,37 @@
 		}
 		loadNext(sounds);
 	}
-
-
-	// RunLoop or stop
-	var runGame = false; 
-	// RunLoop current Timer
-	var curT = 0; 
-	// RunLoop global Timer
-	var globT = 0; 
-	/**
-	 * Gets the current or global time, in frames.<br>
-	 * Current time is the number of frames that have elapsed since the last call to rw.start()
-	 * and is reset to 0 when rw.stop() is called.<br>
-	 * Global time is the total number of frames that have elapsed since rw.inti() was called.<br>
-	 * @param type Opional, if set to 'g', global, not current time will be returned
-	 * @returns current time, in frames elapsed.
-	 */
 	rw.getTime = function(type) {
 		return (type=='g') ? curT+globT : curT;
 	}
-	var currentLag = 0;
-	// Golbal gameboard dimensions
-	var X = 0;
-	var Y = 0;
-	/**
-	 * Gets width of game board.
-	 * @returns width of board, in pixels
-	 */
 	rw.Xdim = function() {
 		return X;
 	}
-	/**
-	 * Gets height of game board.
-	 * @returns height of board, in pixels
-	 */
 	rw.Ydim = function() {
 		return Y;
 	}
-	// Game speed settings
-	var speed = 0;
-	/**
-	 * Sets speed of game, or framerate.
-	 * @param fps New game framerate, in Frames Per Second.
-	 * @returns rw
-	 */
 	rw.setFPS = function(fps) {
 		speed = 1000/parseInt(fps);
 		return rw;
 	}
-	/**
-	 * Gets game speed
-	 * @returns Current game speed, in Frames Per Second
-	 */
 	rw.getFPS = function() {
 		return 1000/speed;
 	}
-	/**
-	 * Gets current lag.
-	 * @returns current lag, in miliseconds. <br>
-	 A negative number indicates no lag and represents the number of spare miliseconds per frame.
-	 */
 	rw.getLag = function() {
 		return currentLag;
 	}
-	// Tile settings
-	var tiles = false;
-	var tileX = 0;
-	var tileY = 0;
-	/**
-	 * Turns on support for tiles and sets tile X & Y dimensions.
-	 * @param xDim Tile width
-	 * @param yDim Tile height
-	 * @returns rw
-	 */
 	rw.tilesOn = function(xDim, yDim) {
 		tiles = true;
 		tileX = xDim;
 		tileY = yDim;
 		return rw;
 	}
-	/**
-	 * Turns off support for tiles.
-	 * @returns rw
-	 */
 	rw.tilesOff = function() {
 		tiles = false;
 		tileX = 0;
 		tileY = 0;
 		return rw;
 	};
-	//KeyDown/Up settings
-	var keyChange = false; 
-	var keys = [['bsp',8],['tab',9],['ent',13],['shf',16],['ctr',17],['alt',18],['pau',19],['cap',20],['esc',27],['sp',32],['pgu',33],['pgd',34],['end',35],['hom',36],['la',37],['ua',38],['ra',39],['da',40],['ins',45],['del',46],['d0',48],['d1',49],['d2',50],['d3',51],['d4',52],['d5',53],['d6',54],['d7',55],['d8',56],['d9',57],['sem',59],['eql',61],['a',65],['b',66],['c',67],['d',68],['e',69],['f',70],['g',71],['h',72],['i',73],['j',74],['k',75],['l',76],['m',77],['n',78],['o',79],['p',80],['q',81],['r',82],['s',83],['t',84],['u',85],['v',86],['w',67],['x',88],['y',89],['z',90],['lwn',91],['rwn',92],['sel',93],['n0',96],['n1',97],['n2',98],['n3',99],['n4',100],['n5',101],['n6',102],['n7',103],['n8',104],['n9',105],['mul',106],['add',107],['sub',109],['dec',110],['div',111],['f1',112],['f2',113],['f3',114],['f4',115],['f5',116],['f6',117],['f7',118],['f8',119],['f9',120],['f10',121],['f11',122],['f12',123],['num',144],['scr',145],['com',188],['per',190],['fsl',191],['acc',192],['obr',219],['bsl',220],['cbr',221],['qot',222]];
 	var keySwitch = function(code, bit) {
 		var len = keys.length;
 		for (var x=0;x<len;x++) {
@@ -196,11 +149,6 @@
 		keySwitch(ev.keyCode, false);
 		keyChange = true;
 	}
-	/**
-	 * Checks to see if the specified key is currently being pressed.
-	 * @param key Key to check. List of keynames to follow.
-	 * @returns true or false based on key's down/up status
-	 */
 	rw.key = function(key) {
 		var len=keys.length;
 		for (var x=0; x<len;x++) {
@@ -213,19 +161,8 @@
 			}
 		}
 	}
-	// Mouse Position settings
 	// These are currently not working correctly, as they will return absolute position of mouse, not relative pos.
-	var mouseX = 0;
-	var mouseY = 0;
-	var mouseDown = false;
-	/**
-	 * Mouse position and click status container.
-	 */
 	rw.mouse = new function() {
-		/**
-		 * Gets the mouse's current X position, in pixels.
-		 * @returns X position of mouse, in pixels.
-		 */
 		this.x = function() {
 			return mouseX;
 		},
@@ -262,14 +199,6 @@
 		newP[1]+=o[1];
 		return newP;
 	}
-	// Game Entities
-	rw.ents = []; 
-	/**
-	 * @class 
-	 * Base constructor for game entities (ents). <br>
-	 * Every ent must be an object with a new rw.ent assigned to a property named 'base'. <br>
-	 * In addition, ents must also have a funtion method named 'update' (though it may be an empty function). <br>
-	 */
 	rw.Ent = function(nameIn, spriteIn, widthIn, heightIn) {
 		this.ent = '';
 		this.name = nameIn;
@@ -282,8 +211,8 @@
 		this.velX = 0;
 		this.velY = 0;
 		this.velZ = 0;
-		this.active = false; //Bool for is piece in play
-		this.visible=false; //Bool for if piece should have a div
+		this.active = false;
+		this.visible=false;
 	};
 	rw.Ent.prototype.back = function() {
 		return this.ent;
@@ -291,42 +220,18 @@
 	rw.Ent.prototype.end = function() {
 		return rw
 	};
-	/**
-	 * @returns ent's leftmost position, in pixels
-	 */
 	rw.Ent.prototype.posX1 = function() {
 		return this.posX;
 	}
-	/**
-	 * @returns ent's topmost position, in pixels
-	 */
 	rw.Ent.prototype.posY1 = function() {
 		return this.posY;
 	}
-	/**
-	 * @returns ent's rightmost position, in pixels
-	 */
 	rw.Ent.prototype.posX2 = function() {
 		return this.posX+this.width;
 	}
-	/**
-	 * @returns ent's bottommost position, in pixels
-	 */
 	rw.Ent.prototype.posY2 = function() {
 		return this.posY+this.height;
 	}
-	/**
-	 * Displays an ent on the board and sets ent.base.active to true.<br>
-	 * Creates or re-displays a div, with the id 'ent_'+ent.base.name<br>
-	 * Sets ent.base.active to true, causing rosewood to call the ent's update() function one per frame.
-	 * @param spriteIn Sprite to be displayed. <br>
-	 * If set to '', no div will be created, however the ent will still be active. <br>
-	 * Set as ' ' to create a blank div (for ent.base.attach(),etc.)
-	 * @param posXIn Ent's X position on the board
-	 * @param posYIn Ent's Y position on the board
-	 * @param posZIn Optional, Ent's Z position on the board (will default to posYIn if unspecified)
-	 * @returns ent.base
-	 */
 	rw.Ent.prototype.display = function (posXIn, posYIn, posZIn) {
 		this.posX = posXIn;
 		this.posY = posYIn;
@@ -335,47 +240,24 @@
 		this.visible = (this.sprite!==' ') ? true : false;
 		return this;
 	};
-	/**
-	 * Removes ent from game board.
-	 * Sets ent.active & ent.visible to false.
-	 * @returns ent.base
-	 */
 	rw.Ent.prototype.hide = function() {
 		this.active=false;
 		this.visible=false;
 		return this;
 	};
-	/**
-	  * Changes the sprite used to display an ent.
-	  * @param sprite File name of new sprite. <br>
-	  * @returns ent.base
-	  */
 	rw.Ent.prototype.changeSprite = function(sprite) {
 		this.sprite = sprite;
 		(this.sprite != '') ?  this.visible=true : this.visible=false;
 		return this;
 	};
-	/**
-	 * Gets ent's current velocity, or sum total of movement within the current frame.
-	 * @returns An array: [x velocity, y velocity, z velocity]
-	 */
 	rw.Ent.prototype.curMove = function() {
 		return [this.velX, this.velY, this.velZ];
 	}
-	/**
-	 * Resets ent's current velocity to 0 (velocity is the sum total of all calls to ent.base.move() thus far within the current frame).
-	 * @param axis Optional: Can be set to 'x', 'y', or 'z' to wipe only a single axis of movement.
-	 * @returns ent.base
-	 */
 	rw.Ent.prototype.wipeMove = function(axis) {
 		if (axis) {
-			if (axis=='x') {
-				this.velX = 0;
-			} else if (axis=='y') {
-				this.velY = 0;
-			} else if (axis=='z') {
-				this.velZ = 0;
-			}
+			(axis=='x') ? this.velX = 0 :
+			(axis=='y') ? this.velY = 0 :
+			(axis=='z') ? this.velZ = 0 : true;
 		} else {
 			this.velX = 0;
 			this.velY = 0;
@@ -383,14 +265,6 @@
 		}
 		return this;
 	}
-	/**
-	 * Immediately moves ent to specified absolute position on the board. <br>
-	 * <strong>Note:</strong> Unlike ent.base.move() this action occurs instantaneously and does not effect velocity.
-	 * @param x Absolute horizontal position to place ent.
-	 * @param y Absolute vertical position to place ent.
-	 * @param z Absolute z-index, or depth position to place ent.
-	 * @returns ent.base
-	 */
 	rw.Ent.prototype.moveTo = function(x, y, z) {
 		this.posX = x;
 		this.posY = y;
@@ -413,17 +287,6 @@
 		};
 		return false;
 	};
-	/**
-	 * Moves ent specified distance. <br>
-	 * <strong>Note:</strong> This function is additive, subsequent calls within a single frame
-	 * will be summed as a single velocity value before being applied at the end of the frame.
-	 * To reset velocity mid-frame, use wipeMove(). 
-	 * @param x Horizontal distance of move.
-	 * @param y Vertical distance of move.
-	 * @param z Optional: Distance of z-index (depth) movement. <br>
-	 * <strong>Note:</strong> Will default to y if unspecified.
-	 * @returns ent.base
-	 */
 	rw.Ent.prototype.move = function(x,y,z) {
 		this.velX += x;
 		this.velY += y;
@@ -431,12 +294,6 @@
 		return this;
 	}
 
-	/**
-	 * Registers a new ent with the engine.
-	 * Calls ent's init function, if any.
-	 * @param ent Ent to be added to rw.ents
-	 * @returns ent
-	 */
 	rw.newEnt = function(ent) {
 		ent.base['ent'] = ent;
 		rw.ents.push(ent);
@@ -444,13 +301,6 @@
 		if (ent.init) ent.init();
 		return ent;
 	};
-	/**
-	 * Removes an ent from rw.ents. <br>
-	 * <strong>CAUTION:</strong> Don't use unless you know what you're doing, can cause lots of havoc if impropery called. <br>
-	 * To remove an ent without creating conflicts, have ent.update(), ent.inactive() or ent.gotHit() return false.
-	 * @param entNum Absolute position of ent to be removed in rw.ents array.
-	 * @returns rw
-	 */
 	rw.removeEnt = function(entNum) {
 		rw.ents.splice(entNum, 1);
 		return rw;
@@ -460,12 +310,6 @@
 		moveAllY = y;
 		moveAllZ = z || 0;
 	};
-	// Rule Entities
-	rw.rules = {};
-	rw.ruleList = [];
-	/**
-	 * @class
-	 */
 	rw.Rule = function(active, pos) {
 		this.active = active;
 		this.pos = pos;
@@ -489,7 +333,6 @@
 		}
 		return rw;
 	}
-	var states = {};
 	var copy = function(obj,par) {
 		var newCopy = (obj instanceof Array) ? [] : {};
 		for (prop in obj) {
@@ -508,12 +351,6 @@
 		return newCopy;
 	}
 
-	/**
-	 * Saves current gamestate. <br>
-	 * <strong>CAUTION:</strong> Will blindly overwrite a state of the same name.
-	 * @param name Name of saved state.
-	 * @returns rw
-	 */
 	rw.saveState = function(name) {
 		states[name] = {};
 		states[name]['ents']=copy(rw.ents,rw);
@@ -530,11 +367,6 @@
 		if (states[name]) return true;
 		return false;
 	};
-	/**
-	 * Loads specified state.
-	 * @param name Name of state to load
-	 * @returns rw
-	 */
 	rw.loadState = function(name) {
 		if (states[name]) {
 			rw.ents = copy(states[name]['ents'],name);
@@ -555,16 +387,10 @@
 		}
 		return rw;
 	}
-	/**
-	 * Removes specified state
-	 * @param name Name of state to remove
-	 * @returns rw
-	 */
 	rw.rmState = function(name) {
 		if (states[name]) delete states[name];
 		return rw;
 	}
-	// Ajax function, durr
 	// Needs serious re-writing, one of these days
 	rw.ajax = function(targ, func) {
 		var xhr = new XMLHttpRequest();
@@ -578,16 +404,13 @@
 		xhr.send(null);
 		return rw;
 	}
-	// Inline function call function
 	rw.func = function() {
 		return rw;
 	}
-	// Changes Cursor
 	rw.changeCursor = function(cursor) {
 		document.getElementById('board').style.cursor="url('"+cursor+"')";
 		return rw;
 	}
-	// Browser-specific values, runs at init
 	rw.browser = {
 		check: function() {
 			var trans = function() {
@@ -609,12 +432,6 @@
 		},
 		trans_name: 'none'
 	}
-	// Wipe Functions
-	// Removes all children of the board
-	/**
-	 * Removes all DOM content from the board
-	 * @returns rw
-	 */
 	rw.wipeBoard = function() {
 		var board = document.getElementById('board');
 		var total = board.childNodes.length;
@@ -623,39 +440,19 @@
 		}
 		return rw;
 	}
-	/**
-	 * Removes all ents
-	 * @returns rw
-	 */
 	rw.wipeEnts = function() {
 		rw.ents = [];
 		return rw;
 	}
-	/**
-	 * Removes all rules
-	 * @returns rw
-	 */
 	rw.wipeRules = function() {
 		rw.rules = {};
 		rw.ruleList = [[],[],[],[]];
 		return rw;
 	}
-	/**
-	 * Removes all ents, maps and rules. Removes all DOM content from board.
-	 * @returns rw
-	 */
 	rw.wipeAll = function() {
 		rw.wipeBoard().wipeEnts().wipeRules();
 		return rw;
 	}
-	/**
-	 * Initializes Rosewood and creates the game board element.
-	 * @param target id of element to attach board to. <br>
-	 * @param dimX Width of board, in pixels.
-	 * @param dimY Height of board, in pixels.
-	 * If unspecified, the board will be attached to the body.
-	 * @returns rw
-	 */
 	rw.init = function(target, uSet, callback) {
 		var settings = {
 			x: uSet.x||0,
@@ -677,7 +474,6 @@
 				'rule'
 			]
 		};
-		// need to add some ifs to check for true/false/array on keys
 		rw.browser.check();
 		rw.setFPS(settings.FPS);
 		X = settings.x
@@ -701,7 +497,6 @@
 						if (keys[x][0]==settings.keys[y]) needed = true;
 					}
 					if (!needed) keys.splice(x--, 1);
-					
 				}
 			}
 			if (window.document.addEventListener) {
@@ -717,9 +512,7 @@
 			board.onmousedown = mouseDown;
 			board.onmouseup = mouseUp;
 		}
-
 		var runFunc = composeLoop(settings.sequence, 0, 0, function(){return [];});
-
 		rw.run = function() {
 			var startTime = new Date(),
 				toBeRemoved = [];
@@ -745,11 +538,9 @@
 				stopCallback = null;
 			}
 		}
-
-
 		return rw;
 	}
-
+	// Here lies witchcraft and hints of erlang...
 	function composeLoop(seq, count, ruleCount, func) {
 		var f = function(tbk) {func(tbk)};
 		if (count<seq.length) {
@@ -774,12 +565,6 @@
 			return function(tbk) {func(tbk)};
 		}
 	}
-
-
-	/**
-	 * Starts the gameloop
-	 * @returns rw
-	 */
 	rw.start = function() {
 		if (runGame==false) {
 			runGame = true;
@@ -787,11 +572,6 @@
 		}
 		return rw;
 	}
-	var stopCallback = null;
-	/**
-	 * Stops the gameloop. Resets current time to 0.
-	 * @returns rw
-	 */
 	rw.stop = function(callback) {
 		stopCallback = callback;
 		runGame = false;
@@ -1157,6 +937,7 @@
 					}
 				}
 			};
+			// does this still work?
 			if (eX.postCol) eX.postCol();
 		}
 		if (cols.length>0) {
@@ -1260,14 +1041,7 @@
 		zKey = null;
 		return toBeRemoved;
 	}
-
-	var moveAllX = 0,
-		moveAllY = 0,
-		moveAllZ = 0;
-	/**
-	 * Gameloop function, not called directly.
-	 */
-
+	// for closure compiler
 	window['rw']=rw;
 	window['rw']['run']=rw.run;
 	window['rw']['ents']=rw.ents;

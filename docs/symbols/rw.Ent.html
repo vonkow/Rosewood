@@ -1,0 +1,1091 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - rw.Ent</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+	width: 800px;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+	width: 600px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px; 
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center"><a href="../index.html">Class Index</a>
+| <a href="../files.html">File Index</a></div>
+<hr />
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/rw.Ent.html">rw.Ent</a></li>
+	
+	<li><a href="../symbols/rw.ent.html">rw.ent</a></li>
+	
+	<li><a href="../symbols/rw.map.html">rw.map</a></li>
+	
+	<li><a href="../symbols/rw.Rule.html">rw.Rule</a></li>
+	
+	<li><a href="../symbols/rw.rule.html">rw.rule</a></li>
+	
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+		
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				
+				Class rw.Ent
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				
+				
+			
+				Base constructor for game entities (ents). <br>
+Every ent must be an object with a new rw.ent assigned to a property named 'base'. <br>
+In addition, ents must also have a funtion method named 'update' (though it may be an empty function). <br>
+				
+				
+					<br /><i>Defined in: </i> <a href="../symbols/src/rosewood.js.html">rosewood.js</a>.
+				
+			</p>
+
+<!-- ============================== constructor summary ==================== -->			
+			
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class rw.Ent.">
+				<caption>Class Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/rw.Ent.html#constructor">rw.Ent</a></b>(nameIn, spriteIn, widthIn, heightIn)
+							</div>
+							<div class="description"></div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+
+<!-- ============================== properties summary ===================== -->
+			
+
+<!-- ============================== methods summary ======================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class rw.Ent.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#back">back</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#changeSprite">changeSprite</a></b>(sprite)
+								</div>
+								<div class="description">Changes the sprite used to display an ent.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#clicked">clicked</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#curMove">curMove</a></b>()
+								</div>
+								<div class="description">Gets ent's current velocity, or sum total of movement within the current frame.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#display">display</a></b>(spriteIn, posXIn, posYIn, posZIn)
+								</div>
+								<div class="description">Displays an ent on the board and sets ent.base.active to true.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#end">end</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#getTileX">getTileX</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#getTileY">getTileY</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#hide">hide</a></b>()
+								</div>
+								<div class="description">Removes ent from game board.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#move">move</a></b>(x, y, z)
+								</div>
+								<div class="description">Moves ent specified distance.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#moveTo">moveTo</a></b>(x, y, z)
+								</div>
+								<div class="description">Immediately moves ent to specified absolute position on the board.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#posX1">posX1</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#posX2">posX2</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#posY1">posY1</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#posY2">posY2</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/rw.Ent.html#wipeMove">wipeMove</a></b>(axis)
+								</div>
+								<div class="description">Resets ent's current velocity to 0 (velocity is the sum total of all calls to ent.base.move() thus far within the current frame).</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+			
+<!-- ============================== events summary ======================== -->
+			
+
+<!-- ============================== constructor details ==================== -->		
+			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Class Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>rw.Ent</b>(nameIn, spriteIn, widthIn, heightIn)
+				</div>
+				
+				<div class="description">
+					
+					
+				</div>
+				
+				
+				
+				
+					
+						<dl class="detailList">
+						<dt class="heading">Parameters:</dt>
+						
+							<dt>
+								 <b>nameIn</b>
+								
+							</dt>
+								<dd></dd>
+						
+							<dt>
+								 <b>spriteIn</b>
+								
+							</dt>
+								<dd></dd>
+						
+							<dt>
+								 <b>widthIn</b>
+								
+							</dt>
+								<dd></dd>
+						
+							<dt>
+								 <b>heightIn</b>
+								
+							</dt>
+								<dd></dd>
+						
+						</dl>
+					
+					
+					
+					
+					
+					
+					
+
+			</div>
+			
+
+<!-- ============================== field details ========================== -->		
+			
+
+<!-- ============================== method details ========================= -->		
+			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name="back"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>back</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="changeSprite"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>changeSprite</b>(sprite)
+					
+					</div>
+					<div class="description">
+						Changes the sprite used to display an ent.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>sprite</b>
+									
+								</dt>
+								<dd>File name of new sprite. <br></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>ent.base</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="clicked"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>clicked</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="curMove"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>curMove</b>()
+					
+					</div>
+					<div class="description">
+						Gets ent's current velocity, or sum total of movement within the current frame.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>An array: [x velocity, y velocity, z velocity]</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="display"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>display</b>(spriteIn, posXIn, posYIn, posZIn)
+					
+					</div>
+					<div class="description">
+						Displays an ent on the board and sets ent.base.active to true.<br>
+Creates or re-displays a div, with the id 'ent_'+ent.base.name<br>
+Sets ent.base.active to true, causing rosewood to call the ent's update() function one per frame.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>spriteIn</b>
+									
+								</dt>
+								<dd>Sprite to be displayed. <br>
+If set to '', no div will be created, however the ent will still be active. <br>
+Set as ' ' to create a blank div (for ent.base.attach(),etc.)</dd>
+							
+								<dt>
+									<b>posXIn</b>
+									
+								</dt>
+								<dd>Ent's X position on the board</dd>
+							
+								<dt>
+									<b>posYIn</b>
+									
+								</dt>
+								<dd>Ent's Y position on the board</dd>
+							
+								<dt>
+									<b>posZIn</b>
+									
+								</dt>
+								<dd>Optional, Ent's Z position on the board (will default to posYIn if unspecified)</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>ent.base</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="end"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>end</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getTileX"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getTileX</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getTileY"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getTileY</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="hide"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>hide</b>()
+					
+					</div>
+					<div class="description">
+						Removes ent from game board.
+Sets ent.active & ent.visible to false.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>ent.base</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="move"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>move</b>(x, y, z)
+					
+					</div>
+					<div class="description">
+						Moves ent specified distance. <br>
+<strong>Note:</strong> This function is additive, subsequent calls within a single frame
+will be summed as a single velocity value before being applied at the end of the frame.
+To reset velocity mid-frame, use wipeMove().
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>x</b>
+									
+								</dt>
+								<dd>Horizontal distance of move.</dd>
+							
+								<dt>
+									<b>y</b>
+									
+								</dt>
+								<dd>Vertical distance of move.</dd>
+							
+								<dt>
+									<b>z</b>
+									
+								</dt>
+								<dd>Optional: Distance of z-index (depth) movement. <br>
+<strong>Note:</strong> Will default to y if unspecified.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>ent.base</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="moveTo"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>moveTo</b>(x, y, z)
+					
+					</div>
+					<div class="description">
+						Immediately moves ent to specified absolute position on the board. <br>
+<strong>Note:</strong> Unlike ent.base.move() this action occurs instantaneously and does not effect velocity.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>x</b>
+									
+								</dt>
+								<dd>Absolute horizontal position to place ent.</dd>
+							
+								<dt>
+									<b>y</b>
+									
+								</dt>
+								<dd>Absolute vertical position to place ent.</dd>
+							
+								<dt>
+									<b>z</b>
+									
+								</dt>
+								<dd>Absolute z-index, or depth position to place ent.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>ent.base</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="posX1"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>posX1</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>ent's leftmost position, in pixels</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="posX2"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>posX2</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>ent's rightmost position, in pixels</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="posY1"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>posY1</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>ent's topmost position, in pixels</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="posY2"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>posY2</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>ent's bottommost position, in pixels</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="wipeMove"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>wipeMove</b>(axis)
+					
+					</div>
+					<div class="description">
+						Resets ent's current velocity to 0 (velocity is the sum total of all calls to ent.base.move() thus far within the current frame).
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>axis</b>
+									
+								</dt>
+								<dd>Optional: Can be set to 'x', 'y', or 'z' to wipe only a single axis of movement.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>ent.base</dd>
+							
+							</dl>
+						
+						
+						
+
+					
+				
+			
+			
+<!-- ============================== event details ========================= -->		
+			
+			
+			<hr />
+		</div>
+
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+			
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Mar 10 2011 16:37:10 GMT-0500 (EST)
+		</div>
+	</body>
+</html>
