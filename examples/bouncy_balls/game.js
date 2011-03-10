@@ -71,8 +71,14 @@ function startGame() {
 	rw.loadSprites({
 		ball: ['sprites/ball.png', 40, 40, 0, 0]
 	}, function() {
-		rw.init('playarea', {x:600,y:600,sequence:['ents','cols','blit']})
-		.setFPS(60)
+		rw.init('playarea', {
+			x:600,
+			y:600,
+			FPS:60,
+			sequence:['ents','cols','blit'],
+			keys:false,
+			mouse:false
+		})
 		.newEnt(new lagTimer()).base.display(0,16,0).end()
 		.newEnt(new wall('tWall',600,10))
 			.base.display(0, -10, 0).end()

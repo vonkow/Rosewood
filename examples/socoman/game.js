@@ -273,8 +273,12 @@
 
 	var curLvl = 0;
 	function start() {
-		rw.init('playarea', {x:320, y:240, sequence:['rule','ents','blit']}).setFPS(30);
-		rw.start();
+		rw.init('playarea', {
+			x:320, 
+			y:240, 
+			sequence:['rule','ents','blit'],
+			keys:['ua','da','ra','la','n','b','r']
+		}).setFPS(30).start();
 		makeGame(curLvl);
 	};
 	rw.loadSprites({

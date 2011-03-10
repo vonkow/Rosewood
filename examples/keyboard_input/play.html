@@ -8,8 +8,13 @@
 		rw.loadSprites({
 			'ball': ['ball.png', 30, 30, 0, 0]
 		}, function() {
-			rw.init('playarea', {x:500,y:500,sequence:['ents','blit']})
-			.setFPS(60)
+			rw.init('playarea', {
+				x:500,
+				y:500,
+				FPS:60,
+				sequence:['ents','blit'],
+				keys:['ua','da','la','ra']
+			})
 			.newEnt({
 				base: new rw.Ent('ball','ball',30,30),
 				update: function() {

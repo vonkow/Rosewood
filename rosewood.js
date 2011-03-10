@@ -124,7 +124,7 @@
 		return Y;
 	}
 	// Game speed settings
-	var speed = 50;
+	var speed = 0;
 	/**
 	 * Sets speed of game, or framerate.
 	 * @param fps New game framerate, in Frames Per Second.
@@ -650,9 +650,9 @@
 	}
 	/**
 	 * Initializes Rosewood and creates the game board element.
+	 * @param target id of element to attach board to. <br>
 	 * @param dimX Width of board, in pixels.
 	 * @param dimY Height of board, in pixels.
-	 * @param Optional, target id of element to attach board to. <br>
 	 * If unspecified, the board will be attached to the body.
 	 * @returns rw
 	 */
@@ -660,10 +660,12 @@
 		var settings = {
 			x: uSet.x||0,
 			y: uSet.y||0,
-			keys: uSet.keys || true,
-			mouse: uSet.mouse || true,
-			sound: uSet.sound || true,
-			canvas: true,
+			FPS: uSet.FPS||30,
+			keys: (((uSet.keys)||(uSet.keys===false)) ? uSet.keys : true),
+			mouse: (((uSet.mouse)||(uSet.mouse===false)) ? uSet.mouse : true),
+			sound: (((uSet.sound)||(uSet.sound===false)) ? uSet.sound : true),
+			// if you set canvas=false, there's no dom fallback, so you're basically screwed, for now.
+			canvas: (((uSet.canvas)||(uSet.canvas===false)) ? uSet.canvas : true),
 			sequence: uSet.sequence || [
 				'rule',
 				'ents',
@@ -677,6 +679,7 @@
 		};
 		// need to add some ifs to check for true/false/array on keys
 		rw.browser.check();
+		rw.setFPS(settings.FPS);
 		X = settings.x
 		Y = settings.y
 		if (settings.canvas) {
@@ -691,6 +694,16 @@
 			document.getElementById(target).appendChild(board);
 		}
 		if (settings.keys) {
+			if (settings.keys instanceof Array) {
+				for (var x = 0; x<keys.length; x++) {
+					var needed = false;
+					for (var y = 0; y<settings.keys.length; y++) {
+						if (keys[x][0]==settings.keys[y]) needed = true;
+					}
+					if (!needed) keys.splice(x--, 1);
+					
+				}
+			}
 			if (window.document.addEventListener) {
 				window.document.addEventListener("keydown", keyDown, false);
 				window.document.addEventListener("keyup", keyUp, false);

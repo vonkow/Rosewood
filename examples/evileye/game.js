@@ -165,7 +165,7 @@ var item = function() {
 }
 
 var timers = function() {
-	this.base = new rw.Rule(true,2);
+	this.base = new rw.Rule(true,1);
 	this.rule = function() {
 		(fatimaCountdown>0) ? fatimaCountdown-- : fatima = false;
 		(blindEyeCountdown>0) ? blindEyeCountdown-- : blind = false;
@@ -175,7 +175,7 @@ var timers = function() {
 }
 
 var resetGame = function() {
-	this.base = new rw.Rule(true,3);
+	this.base = new rw.Rule(true,2);
 	this.rule = function() {
 		if (endGame) {
 			endGame = false;
@@ -289,7 +289,14 @@ var startGame = function() {
 		question: ['sprites/question.gif', 30, 30],
 		slow: ['sprites/slow.gif', 30, 30]
 	}, function() {
-		rw.init('playarea', {x:480, y:480})
+		rw.init('playarea', {
+			x:480, 
+			y:480,
+			FPS:30,
+			mouse:false,
+			keys:['ua','da','la','ra'],
+			sequence:['rule','ents','cols','kill','rule','blit','rule']
+		})
 		.tilesOn(30,30)
 		.setFPS(30)
 		.newRule('makeEyes', new makeEyes())
