@@ -1,6 +1,6 @@
 Path to a NEW Rosewood:
-	rw.run composting on init
-	modular run componants
+	X rw.run composting on init
+	X modular run components
 	? re-add div based rendering
 	? add mobile input
 	fix mouse
