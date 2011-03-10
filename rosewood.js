@@ -821,31 +821,27 @@
 		}
 		return hit;
 	}
-	var moveAllX = 0,
-		moveAllY = 0,
-		moveAllZ = 0;
-	/**
-	 * Gameloop function, not called directly.
-	 */
-	rw.run = function() {
-		var startTime = new Date();
-		var board = document.getElementById('board').getContext('2d');
-		moveAllX = 0;
-		moveAllY = 0;
-		moveAllZ = 0;
+
+
+	function killFinishedSounds() {
 		for (var x=0; x<rw.sounds.length; x++) {
 			if (rw.sounds[x].ended) {
 				rw.sounds.splice(x,1);
 				x--;
 			}
 		}
-		// Rule position 0, pre-update loop
-		for (var x=0, l=rw.ruleList[0].length; x<l; x++) {
-			if (rw.rules[rw.ruleList[0][x]].base.active) {
-				rw.rules[rw.ruleList[0][x]].rule();
-			};
-		};
-		var toBeRemoved = [];
+	}
+
+	function ruleLoop(listId) {
+		for (var x=0, l=rw.ruleList[listId].length; x<l; x++) {
+			if (rw.rules[rw.ruleList[listId][x]].base.active) {
+				rw.rules[rw.ruleList[listId][x]].rule();
+			}
+		}
+	}
+
+	function updateEnts(toBeRemoved) {
+		// Start Update Loop
 		var len = rw.ents.length;
 		// Update Loop
 		if (keyChange==true) {
@@ -888,13 +884,11 @@
 				}
 			}
 		}
-		// Rule position 1, pre-collision loop
-		for (var x=0, l=rw.ruleList[1].length; x<l; x++) {
-			if (rw.rules[rw.ruleList[1][x]].base.active) {
-				rw.rules[rw.ruleList[1][x]].rule();
-			};
-		};
-		// Collision Loop
+		return toBeRemoved;
+	}
+
+	function collisionLoop(toBeRemoved) {
+		var len = rw.ents.length;
 		var cols = [];
 		// For each ent
 		for (var x=0;x<len;x++) {
@@ -1084,6 +1078,10 @@
 				}
 			}
 		}
+		return toBeRemoved;
+	}
+
+	function killLoop(toBeRemoved) {
 		if (toBeRemoved.length>0) {
 			toBeRemoved.sort(function(a,b){return a - b});
 			toBeRemoved.reverse();
@@ -1100,15 +1098,13 @@
 				rw.removeEnt(killThese[x]);
 			}
 		}
-		// Rule position 2, pre-redraw loop
-		for (var x=0, l=rw.ruleList[2].length; x<l; x++) {
-			if (rw.rules[rw.ruleList[2][x]].base.active) {
-				rw.rules[rw.ruleList[2][x]].rule();
-			};
-		};
-		// New update loop
+
+	}
+
+	function redrawLoop() {
 		var zOrder = {},
-			zKey = [];
+			zKey = [],
+			board = document.getElementById('board').getContext('2d');
 		for (var x=0, l=rw.ents.length; x<l; x++) {
 			var z = rw.ents[x].base.posZ;
 			if (!zOrder[z]) {
@@ -1167,12 +1163,37 @@
 		}
 		zOrder = null;
 		zKey = null;
+
+	}
+
+	var moveAllX = 0,
+		moveAllY = 0,
+		moveAllZ = 0;
+	/**
+	 * Gameloop function, not called directly.
+	 */
+	rw.run = function() {
+		var startTime = new Date(),
+			toBeRemoved = [];
+		moveAllX = 0;
+		moveAllY = 0;
+		moveAllZ = 0;
+		killFinishedSounds();
+		// Rule position 0, pre-update loop
+		ruleLoop(0);
+		toBeRemoved = updateEnts(toBeRemoved);
+		// Rule position 1, pre-collision loop
+		ruleLoop(1);
+		// Collision Loop
+		toBeRemoved = collisionLoop(toBeRemoved);
+		// Kill Loop
+		killLoop(toBeRemoved);
+		// Rule position 2, pre-redraw loop
+		ruleLoop(2);
+		// New update loop
+		redrawLoop();
 		// Rule position 3, end of frame
-		for (var x=0, l=rw.ruleList[3].length; x<l; x++) {
-			if (rw.rules[rw.ruleList[3][x]].base.active) {
-				rw.rules[rw.ruleList[3][x]].rule();
-			};
-		};
+		ruleLoop(3);
 		//If game has not ended or been paused, continue
 		var endTime = new Date();
 		var timeTotal = endTime-startTime;
