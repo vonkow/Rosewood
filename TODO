@@ -1,16 +1,16 @@
 Path to a NEW Rosewood:
 	X rw.run composting on init
 	X modular run components
-	? re-add div based rendering
-	? add mobile input
 	fix mouse
-	ajax (general, ent & rule) and ajax pahes of runloop
+	ajax (general, ent & rule) and ajax slot of runloop
 	new collisions precalced tree + b tree
 	sound mixing and whatnot support
 	ent children &/| ent's as canvas
 	raw canvas drawing
 	multiline support for ent text
-	possibly redo hitmaps, add/rem with fuunctions, store in base
+	possibly redo hitmaps, add/rem with functions, store in base
+	? add mobile input
+	? re-add div based rendering
 	? give tiles some love
 
 
@@ -19,5 +19,5 @@ How to redo collision detection:
 		and appended on creation/destruction of other ents
 	B-Tree after array positive on collision detec.
 
-------BUGS----------------------------------------------------------------------------------------
+------BUGS---------------------------------------------------------------------------------------
 
