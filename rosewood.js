@@ -5,6 +5,7 @@
  */
 
 (function(){
+	/****** "Golbal" vars ******/
 	var rw = {},
 		runGame = false,
 		curT = 0, 
@@ -26,6 +27,7 @@
 		moveAllZ = 0,
 		states = {},
 		stopCallback = null;
+	/****** Storage ******/
 	rw.sprites = {};
 	rw.soundBank = {};
 	rw.sounds = [];
@@ -33,6 +35,7 @@
 	rw.rules = {};
 	rw.ruleList = [];
 
+	/****** Loaders ******/
 	rw.loadSprites = function(sprites, callback) {
 		function loadNext(arr) {
 			if (arr.length) {
@@ -76,13 +79,6 @@
 		};
 		loadNext(arr);
 	};
-	rw.playSound = function(sound) {
-		var len = rw.sounds.length;
-		rw.sounds[len] = document.createElement('audio');
-		rw.sounds[len].src = rw.soundBank[sound].src;
-		rw.sounds[len].play();
-		return rw;
-	}
 	rw.loadSounds = function(sounds, callback) {
 		function loadNext(arr) {
 			if (arr.length) {
@@ -99,6 +95,14 @@
 			}
 		}
 		loadNext(sounds);
+	}
+	/****** Main Methods ******/
+	rw.playSound = function(sound) {
+		var len = rw.sounds.length;
+		rw.sounds[len] = document.createElement('audio');
+		rw.sounds[len].src = rw.soundBank[sound].src;
+		rw.sounds[len].play();
+		return rw;
 	}
 	rw.getTime = function(type) {
 		return (type=='g') ? curT+globT : curT;
@@ -131,6 +135,58 @@
 		tileY = 0;
 		return rw;
 	};
+	// Needs serious re-writing, one of these days
+	rw.ajax = function(targ, func) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET",targ,true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState==4) {
+				var resp = xhr.responseText;
+				eval(func+'(resp)');
+			}
+		}
+		xhr.send(null);
+		return rw;
+	}
+	rw.func = function() {
+		return rw;
+	}
+	rw.wipeBoard = function() {
+		var board = document.getElementById('board');
+		var total = board.childNodes.length;
+		for (var x=0; x<total; x++) {
+			board.removeChild(board.childNodes[0]);
+		}
+		return rw;
+	}
+	rw.wipeEnts = function() {
+		rw.ents = [];
+		return rw;
+	}
+	rw.wipeRules = function() {
+		rw.rules = {};
+		rw.ruleList = [[],[],[],[]];
+		return rw;
+	}
+	rw.wipeAll = function() {
+		rw.wipeBoard().wipeEnts().wipeRules();
+		return rw;
+	}
+
+	rw.start = function() {
+		if (runGame==false) {
+			runGame = true;
+			curT = setTimeout('rw.run()', speed);
+		}
+		return rw;
+	}
+	rw.stop = function(callback) {
+		stopCallback = callback;
+		runGame = false;
+		return rw;
+	}
+
+	/****** Keyboard Input ******/
 	var keySwitch = function(code, bit) {
 		var len = keys.length;
 		for (var x=0;x<len;x++) {
@@ -161,18 +217,8 @@
 			}
 		}
 	}
+	/****** Mouse Input ******/
 	// These are currently not working correctly, as they will return absolute position of mouse, not relative pos.
-	rw.mouse = new function() {
-		this.x = function() {
-			return mouseX;
-		},
-		this.y = function() {
-			return mouseY;
-		},
-		this.down = function() {
-			return mouseDown;
-		}
-	};
 	var mousePos = function(e) {
 		if (!e) var e=window.event;
 		if (e.offsetX) {
@@ -191,14 +237,22 @@
 		if (!e) var e = window.event;
 		mouseDown= false;
 	}
-	var rotatePoint=function(p,o,a) {
-		var ang = a*0.0174532925;
-		var trans=[p[0]-o[0],p[1]-o[1]];
-		var newP=[(trans[0]*Math.cos(ang))-(trans[1]*Math.sin(ang)),(trans[0]*Math.sin(ang))+(trans[1]*Math.cos(ang))];
-		newP[0]+=o[0];
-		newP[1]+=o[1];
-		return newP;
+	rw.mouse = new function() {
+		this.x = function() {
+			return mouseX;
+		},
+		this.y = function() {
+			return mouseY;
+		},
+		this.down = function() {
+			return mouseDown;
+		}
+	};
+	rw.changeCursor = function(cursor) {
+		document.getElementById('board').style.cursor="url('"+cursor+"')";
+		return rw;
 	}
+	/****** Ents ******/
 	rw.Ent = function(nameIn, spriteIn, widthIn, heightIn) {
 		this.ent = '';
 		this.name = nameIn;
@@ -310,6 +364,7 @@
 		moveAllY = y;
 		moveAllZ = z || 0;
 	};
+	/****** Rules ******/
 	rw.Rule = function(pos) {
 		this.pos = pos;
 	}
@@ -332,6 +387,7 @@
 		}
 		return rw;
 	}
+	/****** States ******/
 	var copy = function(obj,par) {
 		var newCopy = (obj instanceof Array) ? [] : {};
 		for (prop in obj) {
@@ -390,26 +446,7 @@
 		if (states[name]) delete states[name];
 		return rw;
 	}
-	// Needs serious re-writing, one of these days
-	rw.ajax = function(targ, func) {
-		var xhr = new XMLHttpRequest();
-		xhr.open("GET",targ,true);
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState==4) {
-				var resp = xhr.responseText;
-				eval(func+'(resp)');
-			}
-		}
-		xhr.send(null);
-		return rw;
-	}
-	rw.func = function() {
-		return rw;
-	}
-	rw.changeCursor = function(cursor) {
-		document.getElementById('board').style.cursor="url('"+cursor+"')";
-		return rw;
-	}
+	/****** Init and Run ******/
 	rw.browser = {
 		check: function() {
 			var trans = function() {
@@ -430,27 +467,6 @@
 			}
 		},
 		trans_name: 'none'
-	}
-	rw.wipeBoard = function() {
-		var board = document.getElementById('board');
-		var total = board.childNodes.length;
-		for (var x=0; x<total; x++) {
-			board.removeChild(board.childNodes[0]);
-		}
-		return rw;
-	}
-	rw.wipeEnts = function() {
-		rw.ents = [];
-		return rw;
-	}
-	rw.wipeRules = function() {
-		rw.rules = {};
-		rw.ruleList = [[],[],[],[]];
-		return rw;
-	}
-	rw.wipeAll = function() {
-		rw.wipeBoard().wipeEnts().wipeRules();
-		return rw;
 	}
 	rw.init = function(target, uSet, callback) {
 		var settings = {
@@ -511,15 +527,15 @@
 			board.onmousedown = mouseDown;
 			board.onmouseup = mouseUp;
 		}
-		var runFunc = composeLoop(settings.sequence, 0, 0, function(){return [];});
-		rw.run = function() {
+		var runFunc = composeLoop(settings.sequence, 0, 0, function(tbk){return tbk});
+		rw.run = function(tbk) {
 			var startTime = new Date(),
-				toBeRemoved = [];
+				toBeRemoved = tbk||[];
 			moveAllX = 0;
 			moveAllY = 0;
 			moveAllZ = 0;
 			killFinishedSounds();
-			runFunc([]);
+			toBeRemoved = runFunc(toBeRemoved);
 			var endTime = new Date();
 			var timeTotal = endTime-startTime;
 			if (runGame==true) {
@@ -564,17 +580,80 @@
 			return f;
 		}
 	}
-	rw.start = function() {
-		if (runGame==false) {
-			runGame = true;
-			curT = setTimeout('rw.run()', speed);
+
+	function killFinishedSounds() {
+		for (var x=0; x<rw.sounds.length; x++) {
+			if (rw.sounds[x].ended) {
+				rw.sounds.splice(x,1);
+				x--;
+			}
 		}
-		return rw;
 	}
-	rw.stop = function(callback) {
-		stopCallback = callback;
-		runGame = false;
-		return rw;
+
+
+	function ruleLoop(listId) {
+		return function(tbk) {
+			for (var x=0, l=rw.ruleList[listId].length; x<l; x++) {
+				rw.rules[rw.ruleList[listId][x]].rule();
+			}
+			return tbk;
+		}
+	}
+
+	function updateEnts(toBeRemoved) {
+		// Start Update Loop
+		var len = rw.ents.length;
+		// Update Loop
+		if (keyChange==true) {
+			for (var x=0; x<len; x++) {
+				var curEnt = rw.ents[x];
+				if (curEnt.base.active==true) {
+					if (curEnt.keyChange) {
+						curEnt.keyChange();
+					}
+					var currentSprite = curEnt.update(curEnt.base.posX, curEnt.base.posY, curEnt.base.posX+curEnt.base.width, curEnt.base.posY+curEnt.base.height);
+					if (currentSprite==false) {
+						toBeRemoved.push(x)
+					} else {
+						//Nothing for now
+					}
+				} else if (curEnt.inactive) {
+					var currentSprite = curEnt.inactive();
+					if (currentSprite==false) {
+						toBeRemoved.push(x)
+					}
+				}
+			}
+			keyChange = false;
+		} else {
+			for(var x=0; x<len; x++) {
+				// Could change curEnt to ent.base and use .ent to access update(), make things cleaner
+				var curEnt = rw.ents[x];
+				if (curEnt.base.active==true) {
+					var currentSprite = curEnt.update(curEnt.base.posX, curEnt.base.posY, curEnt.base.posX+curEnt.base.width, curEnt.base.posY+curEnt.base.height);
+					if (currentSprite==false) {
+						toBeRemoved.push(x)
+					} else {
+						//Nothing for now
+					}
+				} else if (curEnt.inactive) {
+					var currentSprite = curEnt.inactive();
+					if (currentSprite==false) {
+						toBeRemoved.push(x)
+					}
+				}
+			}
+		}
+		return toBeRemoved;
+	}
+
+	var rotatePoint=function(p,o,a) {
+		var ang = a*0.0174532925;
+		var trans=[p[0]-o[0],p[1]-o[1]];
+		var newP=[(trans[0]*Math.cos(ang))-(trans[1]*Math.sin(ang)),(trans[0]*Math.sin(ang))+(trans[1]*Math.cos(ang))];
+		newP[0]+=o[0];
+		newP[1]+=o[1];
+		return newP;
 	}
 	// Point in Triangle Test
 	var pointInTri=function(p,a,b,c) {
@@ -690,73 +769,6 @@
 			}
 		}
 		return hit;
-	}
-
-
-	function killFinishedSounds() {
-		for (var x=0; x<rw.sounds.length; x++) {
-			if (rw.sounds[x].ended) {
-				rw.sounds.splice(x,1);
-				x--;
-			}
-		}
-	}
-
-
-	function ruleLoop(listId) {
-		return function(tbk) {
-			for (var x=0, l=rw.ruleList[listId].length; x<l; x++) {
-				rw.rules[rw.ruleList[listId][x]].rule();
-			}
-			return tbk;
-		}
-	}
-
-	function updateEnts(toBeRemoved) {
-		// Start Update Loop
-		var len = rw.ents.length;
-		// Update Loop
-		if (keyChange==true) {
-			for (var x=0; x<len; x++) {
-				var curEnt = rw.ents[x];
-				if (curEnt.base.active==true) {
-					if (curEnt.keyChange) {
-						curEnt.keyChange();
-					}
-					var currentSprite = curEnt.update(curEnt.base.posX, curEnt.base.posY, curEnt.base.posX+curEnt.base.width, curEnt.base.posY+curEnt.base.height);
-					if (currentSprite==false) {
-						toBeRemoved.push(x)
-					} else {
-						//Nothing for now
-					}
-				} else if (curEnt.inactive) {
-					var currentSprite = curEnt.inactive();
-					if (currentSprite==false) {
-						toBeRemoved.push(x)
-					}
-				}
-			}
-			keyChange = false;
-		} else {
-			for(var x=0; x<len; x++) {
-				// Could change curEnt to ent.base and use .ent to access update(), make things cleaner
-				var curEnt = rw.ents[x];
-				if (curEnt.base.active==true) {
-					var currentSprite = curEnt.update(curEnt.base.posX, curEnt.base.posY, curEnt.base.posX+curEnt.base.width, curEnt.base.posY+curEnt.base.height);
-					if (currentSprite==false) {
-						toBeRemoved.push(x)
-					} else {
-						//Nothing for now
-					}
-				} else if (curEnt.inactive) {
-					var currentSprite = curEnt.inactive();
-					if (currentSprite==false) {
-						toBeRemoved.push(x)
-					}
-				}
-			}
-		}
-		return toBeRemoved;
 	}
 
 	function collisionLoop(toBeRemoved) {
@@ -1038,7 +1050,7 @@
 		zKey = null;
 		return toBeRemoved;
 	}
-	// for closure compiler
+	/****** Closure Compiler ******/
 	window['rw']=rw;
 	window['rw']['run']=rw.run;
 	window['rw']['ents']=rw.ents;
