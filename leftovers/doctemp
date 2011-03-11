@@ -1,0 +1,221 @@
+rw.loadSounds
+	/** 
+	 * Adds a new sound to rw.soundBank.
+	 * @param name Name of new sound.
+	 * @param src Filepath to sound file. 
+	 */
+rw.getTime
+	/**
+	 * Gets the current or global time, in frames.<br>
+	 * Current time is the number of frames that have elapsed since the last call to rw.start()
+	 * and is reset to 0 when rw.stop() is called.<br>
+	 * Global time is the total number of frames that have elapsed since rw.inti() was called.<br>
+	 * @param type Opional, if set to 'g', global, not current time will be returned
+	 * @returns current time, in frames elapsed.
+	 */
+rw.xDim
+	/**
+	 * Gets width of game board.
+	 * @returns width of board, in pixels
+	 */
+rw.yDim
+	/**
+	 * Gets height of game board.
+	 * @returns height of board, in pixels
+	 */
+rw.setFPS
+	/**
+	 * Sets speed of game, or framerate.
+	 * @param fps New game framerate, in Frames Per Second.
+	 * @returns rw
+	 */
+rw.getFPS
+	/**
+	 * Gets game speed
+	 * @returns Current game speed, in Frames Per Second
+	 */
+rw.getLag
+	/**
+	 * Gets current lag.
+	 * @returns current lag, in miliseconds. <br>
+	 A negative number indicates no lag and represents the number of spare miliseconds per frame.
+	 */
+rw.tilesOn
+	/**
+	 * Turns on support for tiles and sets tile X & Y dimensions.
+	 * @param xDim Tile width
+	 * @param yDim Tile height
+	 * @returns rw
+	 */
+rw.tilesOff
+	/**
+	 * Turns off support for tiles.
+	 * @returns rw
+	 */
+rw.key
+	/**
+	 * Checks to see if the specified key is currently being pressed.
+	 * @param key Key to check. List of keynames to follow.
+	 * @returns true or false based on key's down/up status
+	 */
+rw.mouse
+	/**
+	 * Mouse position and click status container.
+	 */
+		/**
+		 * Gets the mouse's current X position, in pixels.
+		 * @returns X position of mouse, in pixels.
+		 */
+rw.ent
+	/**
+	 * @class 
+	 * Base constructor for game entities (ents). <br>
+	 * Every ent must be an object with a new rw.ent assigned to a property named 'base'. <br>
+	 * In addition, ents must also have a funtion method named 'update' (though it may be an empty function). <br>
+	 */
+	 posX1
+	/**
+	 * @returns ent's leftmost position, in pixels
+	 */
+	 posY1
+	/**
+	 * @returns ent's topmost position, in pixels
+	 */
+	 posX2
+	/**
+	 * @returns ent's rightmost position, in pixels
+	 */
+	 posY2
+	/**
+	 * @returns ent's bottommost position, in pixels
+	 */
+	 display
+	/**
+	 * Displays an ent on the board and sets ent.base.active to true.<br>
+	 * Creates or re-displays a div, with the id 'ent_'+ent.base.name<br>
+	 * Sets ent.base.active to true, causing rosewood to call the ent's update() function one per frame.
+	 * @param spriteIn Sprite to be displayed. <br>
+	 * If set to '', no div will be created, however the ent will still be active. <br>
+	 * Set as ' ' to create a blank div (for ent.base.attach(),etc.)
+	 * @param posXIn Ent's X position on the board
+	 * @param posYIn Ent's Y position on the board
+	 * @param posZIn Optional, Ent's Z position on the board (will default to posYIn if unspecified)
+	 * @returns ent.base
+	 */
+	 hide
+	/**
+	 * Removes ent from game board.
+	 * Sets ent.active & ent.visible to false.
+	 * @returns ent.base
+	 */
+	 changeSprite
+	/**
+	  * Changes the sprite used to display an ent.
+	  * @param sprite File name of new sprite. <br>
+	  * @returns ent.base
+	  */
+	 curMove
+	/**
+	 * Gets ent's current velocity, or sum total of movement within the current frame.
+	 * @returns An array: [x velocity, y velocity, z velocity]
+	 */
+	 wipeMove
+	/**
+	 * Resets ent's current velocity to 0 (velocity is the sum total of all calls to ent.base.move() thus far within the current frame).
+	 * @param axis Optional: Can be set to 'x', 'y', or 'z' to wipe only a single axis of movement.
+	 * @returns ent.base
+	 */
+	 moveTo
+	/**
+	 * Immediately moves ent to specified absolute position on the board. <br>
+	 * <strong>Note:</strong> Unlike ent.base.move() this action occurs instantaneously and does not effect velocity.
+	 * @param x Absolute horizontal position to place ent.
+	 * @param y Absolute vertical position to place ent.
+	 * @param z Absolute z-index, or depth position to place ent.
+	 * @returns ent.base
+	 */
+	 move
+	/**
+	 * Moves ent specified distance. <br>
+	 * <strong>Note:</strong> This function is additive, subsequent calls within a single frame
+	 * will be summed as a single velocity value before being applied at the end of the frame.
+	 * To reset velocity mid-frame, use wipeMove(). 
+	 * @param x Horizontal distance of move.
+	 * @param y Vertical distance of move.
+	 * @param z Optional: Distance of z-index (depth) movement. <br>
+	 * <strong>Note:</strong> Will default to y if unspecified.
+	 * @returns ent.base
+	 */
+rw.newEnt
+	/**
+	 * Registers a new ent with the engine.
+	 * Calls ent's init function, if any.
+	 * @param ent Ent to be added to rw.ents
+	 * @returns ent
+	 */
+rw.removeEnt
+	/**
+	 * Removes an ent from rw.ents. <br>
+	 * <strong>CAUTION:</strong> Don't use unless you know what you're doing, can cause lots of havoc if impropery called. <br>
+	 * To remove an ent without creating conflicts, have ent.update(), ent.inactive() or ent.gotHit() return false.
+	 * @param entNum Absolute position of ent to be removed in rw.ents array.
+	 * @returns rw
+	 */
+rw.saveState
+	/**
+	 * Saves current gamestate. <br>
+	 * <strong>CAUTION:</strong> Will blindly overwrite a state of the same name.
+	 * @param name Name of saved state.
+	 * @returns rw
+	 */
+rw.loadState
+	/**
+	 * Loads specified state.
+	 * @param name Name of state to load
+	 * @returns rw
+	 */
+rw.rmState
+	/**
+	 * Removes specified state
+	 * @param name Name of state to remove
+	 * @returns rw
+	 */
+rw.wipeBoard
+	/**
+	 * Removes all DOM content from the board
+	 * @returns rw
+	 */
+rw.wipeEnts
+	/**
+	 * Removes all ents
+	 * @returns rw
+	 */
+rw.wipeRules
+	/**
+	 * Removes all rules
+	 * @returns rw
+	 */
+rw.wipeAll
+	/**
+	 * Removes all ents, maps and rules. Removes all DOM content from board.
+	 * @returns rw
+	 */
+rw.init
+	/**
+	 * Initializes Rosewood and creates the game board element.
+	 * @param target id of element to attach board to. <br>
+	 * @param dimX Width of board, in pixels.
+	 * @param dimY Height of board, in pixels.
+	 * If unspecified, the board will be attached to the body.
+	 * @returns rw
+	 */
+rw.start
+	/**
+	 * Starts the gameloop
+	 * @returns rw
+	 */
+rw.stop
+	/**
+	 * Stops the gameloop. Resets current time to 0.
+	 * @returns rw
+	 */
