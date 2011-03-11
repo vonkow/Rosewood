@@ -1,7 +1,7 @@
 /**
  * @fileoverview The Rosewood js gaming engine, because games should be fun
  * @author Caz vonKow skopsycats@gmail.com
- * @version <1.0
+ * @version 0.75.1
  */
 
 (function(){
