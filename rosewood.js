@@ -1,11 +1,11 @@
 /**
  * @fileoverview The Rosewood js gaming engine, because games should be fun
- * @author Caz vonKow skopsycats@gmail.com
- * @version 0.75.2
+ * @author Caz vonKow caz@vonkow.com
+ * @version 0.75.3
  */
 
 (function(){
-	/****** "Golbal" vars ******/
+	/****** "Global" vars ******/
 	var rw = {},
 		Run,
 		runGame = false,
@@ -1051,9 +1051,27 @@
 		zKey = null;
 		return toBeRemoved;
 	}
+	/****** Politics ******/
+	rw.manifest = function(o) {
+		if (o===0) {
+			alert(
+				'rw.manifest(0)\n\n'+
+				'Simple > Easy\n\n'+
+				'All books could be titled "People and Problems"...\n'+
+				'or at least "Entities and Issues".\n\n'+
+				'There are Ents.\n\n'+
+				'There are also Rules.\n\n'+
+				'Keys, Mouse, Sprites, Sounds and States, for good measure.\n\n'+
+				'Rosewood is a scalpel,\n'+
+				'it will not prevent you from cutting yourself.\n\n'+
+				'Write how you like, but remember the basics.\n'+
+				'Seqence is your friend.'
+			)
+		}
+		return rw
+	}
 	/****** Closure Compiler ******/
 	window['rw']=rw;
-	window['rw']['run']=rw.run;
 	window['rw']['ents']=rw.ents;
 	window['rw']['rules']=rw.rules;
 	window['rw']['ruleList']=rw.ruleList;
