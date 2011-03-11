@@ -1,12 +1,13 @@
 /**
  * @fileoverview The Rosewood js gaming engine, because games should be fun
  * @author Caz vonKow skopsycats@gmail.com
- * @version 0.75.1
+ * @version 0.75.2
  */
 
 (function(){
 	/****** "Golbal" vars ******/
 	var rw = {},
+		Run,
 		runGame = false,
 		curT = 0, 
 		globT = 0,
@@ -176,7 +177,7 @@
 	rw.start = function() {
 		if (runGame==false) {
 			runGame = true;
-			curT = setTimeout('rw.run()', speed);
+			curT = setTimeout(function() { Run([]) }, speed);
 		}
 		return rw;
 	}
@@ -528,21 +529,21 @@
 			board.onmouseup = mouseUp;
 		}
 		var runFunc = composeLoop(settings.sequence, 0, 0, function(tbk){return tbk});
-		rw.run = function(tbk) {
+		Run = function(tbk) {
 			var startTime = new Date(),
-				toBeRemoved = tbk||[];
+				tbk = tbk||[];
 			moveAllX = 0;
 			moveAllY = 0;
 			moveAllZ = 0;
 			killFinishedSounds();
-			toBeRemoved = runFunc(toBeRemoved);
+			tbk = runFunc(tbk);
 			var endTime = new Date();
 			var timeTotal = endTime-startTime;
 			if (runGame==true) {
 				if (timeTotal<speed) {
-					curT = setTimeout('rw.run()', speed-timeTotal);
+					curT = setTimeout(function() { Run(tbk) }, speed-timeTotal);
 				} else {
-					curT = setTimeout('rw.run()', 1);
+					curT = setTimeout(function() { Run(tbk) }, 1);
 				}
 				currentLag = timeTotal-speed;
 			} else {
