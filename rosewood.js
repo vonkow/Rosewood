@@ -310,8 +310,7 @@
 		moveAllY = y;
 		moveAllZ = z || 0;
 	};
-	rw.Rule = function(active, pos) {
-		this.active = active;
+	rw.Rule = function(pos) {
 		this.pos = pos;
 	}
 	rw.newRule = function(name, rule) {
@@ -707,9 +706,7 @@
 	function ruleLoop(listId) {
 		return function(tbk) {
 			for (var x=0, l=rw.ruleList[listId].length; x<l; x++) {
-				if (rw.rules[rw.ruleList[listId][x]].base.active) {
-					rw.rules[rw.ruleList[listId][x]].rule();
-				}
+				rw.rules[rw.ruleList[listId][x]].rule();
 			}
 			return tbk;
 		}

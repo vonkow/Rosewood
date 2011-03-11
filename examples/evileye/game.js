@@ -165,7 +165,7 @@ var item = function() {
 }
 
 var timers = function() {
-	this.base = new rw.Rule(true,1);
+	this.base = new rw.Rule(1);
 	this.rule = function() {
 		(fatimaCountdown>0) ? fatimaCountdown-- : fatima = false;
 		(blindEyeCountdown>0) ? blindEyeCountdown-- : blind = false;
@@ -175,7 +175,7 @@ var timers = function() {
 }
 
 var resetGame = function() {
-	this.base = new rw.Rule(true,2);
+	this.base = new rw.Rule(2);
 	this.rule = function() {
 		if (endGame) {
 			endGame = false;
@@ -237,7 +237,7 @@ var eyeGenerator = function() {
 }
 
 var makeEyes = function() {
-	this.base = new rw.Rule(true,0);
+	this.base = new rw.Rule(0);
 	this.counter = 20;
 	this.rule = function() {
 		if (this.counter>0) {
@@ -250,7 +250,7 @@ var makeEyes = function() {
 }
 
 var dropItem = function() {
-	this.base = new rw.Rule(true,0);
+	this.base = new rw.Rule(0);
 	this.rule = function() {
 		if (Math.random()>0.995) {
 			var newTiles = pickTile()

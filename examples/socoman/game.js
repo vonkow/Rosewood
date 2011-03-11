@@ -192,7 +192,7 @@
 				}
 			}
 		}
-		this.base = new rw.Rule(true,0);
+		this.base = new rw.Rule(0);
 		this.rule = function() {
 			var victory = true;
 			for (var y=0, ylen=this.lvl.length; y<ylen; y++) {
