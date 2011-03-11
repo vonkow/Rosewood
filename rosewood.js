@@ -562,7 +562,7 @@
 
 			return composeLoop(seq, count+1, ruleCount, f);
 		} else {
-			return function(tbk) {func(tbk)};
+			return f;
 		}
 	}
 	rw.start = function() {
