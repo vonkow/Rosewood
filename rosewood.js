@@ -1058,10 +1058,10 @@
 				'rw.manifest(0)\n\n'+
 				'Simple > Easy\n\n'+
 				'All books could be titled "People and Problems"...\n'+
-				'or at least "Entities and Issues".\n\n'+
-				'There are Ents.\n\n'+
-				'There are also Rules.\n\n'+
-				'Keys, Mouse, Sprites, Sounds and States, for good measure.\n\n'+
+				'or at least "Entities and Issues".Therefore:\n\n'+
+				'\tThere are Ents.\n\n'+
+				'\tThere are also Rules.\n\n'+
+				'\tKeys, Mouse, Sprites, Sounds and States,\n\tfor good measure.\n\n'+
 				'Rosewood is a scalpel,\n'+
 				'it will not prevent you from cutting yourself.\n\n'+
 				'Write how you like, but remember the basics.\n'+
