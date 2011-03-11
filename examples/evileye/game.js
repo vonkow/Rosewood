@@ -200,10 +200,11 @@ var resetGame = function() {
 }
 
 var pickTile = function() {
-	var xTile = Math.round(15*Math.random());
-	var yTile = Math.round(15*Math.random());
-	if ((xTile>heroXTile-5)&&(xTile<heroXTile+5)) {
-		if ((yTile>heroYTile-5)&&(yTile<heroYTile+5)) {
+	var xTile = Math.floor(16*Math.random());
+	var yTile = Math.floor(16*Math.random());
+	if ((xTile>heroXTile-6)&&(xTile<heroXTile+6)) {
+		if ((yTile>heroYTile-6)&&(yTile<heroYTile+6)) {
+			//alert(yTile+' '+heroYTile+' '+xTile+' '+heroXTile);
 			return pickTile();
 		}
 		else {
