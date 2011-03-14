@@ -1,6 +1,7 @@
 var heroX = 0, heroY = 0,
 	heroXTile = 0, heroYTile = 0,
 	eyeCounter = 0, eyesDead = 0,
+	highScore = 0,
 	itemCounter = 0,
 	fatima = false, fatimaCountdown = 0,
 	blind = false, blindEyeCountdown = 0,
@@ -183,6 +184,7 @@ var resetGame = function() {
 			heroY = 0;
 			heroXTile = 0;
 			heroYTile = 0;
+			if (eyesDead>highScore) highScore=eyesDead;
 			eyeCounter = 0;
 			eyesDead = 0;
 			itemCounter = 0;
@@ -315,6 +317,7 @@ var startGame = function() {
 			update: function() {
 				var txt = ' Lag: '+Math.round(rw.getLag())+'  ';
 				txt += 'Score: '+eyesDead+' ';
+				txt += 'High Score: '+highScore+' ';
 				if (fatima) txt += ' Fatima! ';
 				if (blind) txt += ' Blind Eye ';
 				if (slow) txt += ' Slow ';
