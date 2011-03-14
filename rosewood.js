@@ -27,7 +27,8 @@
 		moveAllY = 0,
 		moveAllZ = 0,
 		states = {},
-		stopCallback = null;
+		stopCallback = null,
+		AJResps = [];
 	/****** Storage ******/
 	rw.sprites = {};
 	rw.soundBank = {};
@@ -143,7 +144,8 @@
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState==4) {
 				var resp = xhr.responseText;
-				eval(func+'(resp)');
+				//eval(func+'(resp)');
+				AJResps.push([func,resp]);
 			}
 		}
 		xhr.send(null);
@@ -480,6 +482,7 @@
 			// if you set canvas=false, there's no dom fallback, so you're basically screwed, for now.
 			canvas: (((uSet.canvas)||(uSet.canvas===false)) ? uSet.canvas : true),
 			sequence: uSet.sequence || [
+				'ajax',
 				'rule',
 				'ents',
 				'rule',
@@ -570,6 +573,8 @@
 				f = function(tbk) {func(updateEnts(tbk))};
 			} else if (cur=='cols') {
 				f = function(tbk) {func(collisionLoop(tbk))};
+			} else if (cur=='ajax') {
+				f = function(tbk) {func(ajLoop(tbk))};
 			} else if (cur=='kill') {
 				f = function(tbk) {func(killLoop(tbk))};
 			} else if (cur=='blit') {
@@ -589,6 +594,14 @@
 				x--;
 			}
 		}
+	}
+
+	function ajLoop(tbk) {
+		while (AJResps.length) {
+			AJResps[0][0](AJResps[0][1]);
+			AJResps.splice(0,1);
+		}
+		return tbk
 	}
 
 

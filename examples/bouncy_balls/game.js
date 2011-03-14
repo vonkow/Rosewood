@@ -75,7 +75,7 @@ function startGame() {
 			x:600,
 			y:600,
 			FPS:60,
-			sequence:['ents','cols','blit'],
+			sequence:['ajax','ents','cols','blit'],
 			keys:false,
 			mouse:false
 		})
