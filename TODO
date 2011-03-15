@@ -2,7 +2,9 @@ Path to a NEW Rosewood:
 	X rw.run composting on init
 	X modular run components
 	fix mouse
-	ajax (general, ent & rule) and ajax slot of runloop
+	X ajax slot of runloop
+	ajax POST, and whatnot
+	websockets, integrate with the ajax slot of runloop
 	new collisions precalced tree + b tree
 	sound mixing and whatnot support
 	ent children &/| ent's as canvas
