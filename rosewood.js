@@ -673,116 +673,63 @@
 	var pointInTri=function(p,a,b,c) {
 		var cp = ((b[0]-a[0])*(p[1]-a[1]))-((b[1]-a[1])*(p[0]-a[0]));
 		var cp_ref = ((b[0]-a[0])*(c[1]-a[1]))-((b[1]-a[1])*(c[0]-a[0]));
-		if (cp_ref>=0) {
-			if (cp>=0) {
-				return true;
-			} else {
-				return false;
-			}
-		} else if (cp<=0) {
-			return true;
-		} else {
-			return false;
-		}
+		return (cp_ref>=0) ? cp>=0 : cp<=0;
 	}
 	// Check Point in tri
 	var checkTriCol=function(p,a,b,c) {
-		if (pointInTri(p,a,b,c)) {
-			if (pointInTri(p,b,c,a)) {
-				if (pointInTri(p,c,a,b)) {
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
+		return (pointInTri(p,a,b,c) && pointInTri(p,b,c,a) && pointInTri(p,c,a,b))
 	}
 	// Check Point in rec
 	var checkRecCol=function(p,a,b) {
-		if (p[0]<a[0]) {
-			return false;
-		}
-		if (p[0]>b[0]) {
-			return false;
-		}
-		if (p[1]<a[1]) {
-			return false;
-		}
-		if (p[1]>b[1]) {
-			return false;
-		}
-		return true;
+		return !((p[0]<a[0]) || (p[0]>b[0]) || (p[1]<a[1]) || (p[1]>b[1]))
 	}
 	// Check Point in circle
 	var checkPtCirc=function(px,py,cx,cy,cr) {
 		var hit = true;
 		var dist = ((cx-px)*(cx-px))+((cy-py)*(cy-py));
-		(dist<(cr*cr)) ? hit=true : hit=false;
-		return hit;
+		return dist<(cr*cr)
 	}
 	// Check Circle in circle
 	var checkCircCirc=function(c1x,c1y,c1r,c2x,c2y,c2r) {
 		var hit = true;
 		var dist = ((c1x-c2x)*(c1x-c2x))+((c1y-c2y)*(c1y-c2y));
-		(dist<((c1r+c2r)*(c1r+c2r))) ? hit=true : hit=false;
-		return hit;
+		return dist<((c1r+c2r)*(c1r+c2r));
 	}
 	// Check circle cross line
 	var checkCircLine=function(a,b,c) {
-		if ((c[0]-c[2]>a[0])&&(c[0]-c[2]>b[0])) {
-			return false;
-		} else if ((c[0]+c[2]<a[0])&&(c[0]+c[2]<b[0])) {
-			return false;
-		} else if ((c[1]-c[2]>a[1])&&(c[1]-c[2]>b[1])) {
-			return false;
-		} else if ((c[1]+c[2]<a[1])&&(c[1]+c[2]<b[1])) {
+		if (((c[0]-c[2]>a[0])&&(c[0]-c[2]>b[0])) ||
+		((c[0]+c[2]<a[0])&&(c[0]+c[2]<b[0])) ||
+		((c[1]-c[2]>a[1])&&(c[1]-c[2]>b[1])) ||
+		((c[1]+c[2]<a[1])&&(c[1]+c[2]<b[1]))) {
 			return false;
 		} else {
 			var doubleArea=(a[0]*b[1])+(b[0]*c[1])+(c[0]*a[1])-(b[0]*a[1])-(c[0]*b[1])-(a[0]*c[1]);
 			if (doubleArea<0) doubleArea=-doubleArea;
 			var base=Math.sqrt(((b[0]-a[0])*(b[0]-a[0]))+((b[1]-a[1])*(b[1]-a[1])));
 			var dist=doubleArea/base;
-			if (c[2]>dist) {
-				return true;
-			} else {
-				return false;
-			}
+			return c[2]>dist;
 		}
 	}
 	// Check Circle in rec
 	var checkCircRec=function(cx,cy,cr,rx1,ry1,rx2,ry2) {
-		var hit = true;
 		var rW = (rx2-rx1)/2;
 		var circDistX = cx-(rx1+rW);
 		if (circDistX<0) circDistX=-circDistX;
-		if (circDistX>rW+cr) {
-			hit=false;
-		} else {
+		if (!(circDistX>rW+cr)) {
 			var rH = (ry2-ry1)/2;
 			var circDistY = cy-(ry1+rH);
 			if (circDistY<0) circDistY=-circDistY;
-			if (circDistY>rH+cr) {
-				hit = false;
-			} else {
-				if (circDistX<=rW) {
-					hit=true;
-				} else if (circDistY<=rH) {
-					hit=true;
+			if (!(circDistY>rH+cr)) {
+				if ((circDistX<=rW) ||
+				(circDistY<=rH)) {
+					return true;
 				} else {
 					var cornerDistSq = ((circDistX+rW)*(circDistX+rW))+((circDistY+rH)*(circDistY+rH));
-					if (cornerDistSq<=cr*cr) {
-						hit=true;
-					} else {
-						hit=false;
-					}
+					return cornerDistSq<=cr*cr;
 				}
 			}
 		}
-		return hit;
+		return false;
 	}
 
 	function collisionLoop(toBeRemoved) {
