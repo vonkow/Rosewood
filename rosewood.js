@@ -599,6 +599,7 @@
 		// Start Update Loop
 		var len = rw.ents.length;
 		// Update Loop
+		/*
 		if (keyChange==true) {
 			for (var x=0; x<len; x++) {
 				var curEnt = rw.ents[x];
@@ -621,24 +622,18 @@
 			}
 			keyChange = false;
 		} else {
+		*/
 			for(var x=0; x<len; x++) {
 				// Could change curEnt to ent.base and use .ent to access update(), make things cleaner
 				var curEnt = rw.ents[x];
 				if (curEnt.base.active==true) {
 					var currentSprite = curEnt.update(curEnt.base.posX, curEnt.base.posY, curEnt.base.posX+curEnt.base.width, curEnt.base.posY+curEnt.base.height);
-					if (currentSprite==false) {
-						toBeRemoved.push(x)
-					} else {
-						//Nothing for now
-					}
+					if (currentSprite==false) toBeRemoved.push(x);
 				} else if (curEnt.inactive) {
-					var currentSprite = curEnt.inactive();
-					if (currentSprite==false) {
-						toBeRemoved.push(x)
-					}
+					if (curEnt.inactive()==false) toBeRemoved.push(x);
 				}
 			}
-		}
+		//}
 		return toBeRemoved;
 	}
 
@@ -666,13 +661,11 @@
 	}
 	// Check Point in circle
 	var checkPtCirc=function(px,py,cx,cy,cr) {
-		var hit = true;
 		var dist = ((cx-px)*(cx-px))+((cy-py)*(cy-py));
 		return dist<(cr*cr)
 	}
 	// Check Circle in circle
 	var checkCircCirc=function(c1x,c1y,c1r,c2x,c2y,c2r) {
-		var hit = true;
 		var dist = ((c1x-c2x)*(c1x-c2x))+((c1y-c2y)*(c1y-c2y));
 		return dist<((c1r+c2r)*(c1r+c2r));
 	}

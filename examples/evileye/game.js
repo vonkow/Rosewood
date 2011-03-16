@@ -19,18 +19,18 @@ var hero = function() {
 		heroY = Y1;
 		heroXTile = this.base.getTileX();
 		heroYTile = this.base.getTileY();
-		if (rw.key('la')&&(X1>4)) this.base.move(-5,0);
-		if (rw.key('ra')&&(X2<476)) this.base.move(5,0);
-		if (rw.key('ua')&&(Y1>4)) this.base.move(0,-5);
-		if (rw.key('da')&&(Y2<476)) this.base.move(0,5);
+		if (rw.key('la')&&(X1>4)) this.base.move(-5,0),this.heading = 'l';
+		if (rw.key('ra')&&(X2<476)) this.base.move(5,0),this.heading = 'r';
+		if (rw.key('ua')&&(Y1>4)) this.base.move(0,-5),this.heading = 'u';
+		if (rw.key('da')&&(Y2<476)) this.base.move(0,5),this.heading = 'd';
 		(this.ani_count<5) ? this.ani_count++ : (this.ani_count=0,(this.ani==1) ? this.ani=2 : this.ani=1);
 		this.base.changeSprite('hero.'+this.heading+this.ani);
 	}
 	this.keyChange = function() {
-		if (rw.key('la')) this.heading = 'l';
-		if (rw.key('ra')) this.heading = 'r';
-		if (rw.key('ua')) this.heading = 'u';
-		if (rw.key('da')) this.heading = 'd';
+		if (rw.key('la')) ;
+		if (rw.key('ra')) ;
+		if (rw.key('ua')) ;
+		if (rw.key('da')) ;
 	}
 	this.hitMap = [['hero',['eye','item'],0,0,30,30]];
 	this.gotHit = function(by) {
