@@ -30,8 +30,8 @@ var triWall = function(dir) {
 	if (dir=='tr') this.hitMap=[['tri',['ball'],0,0,100,0,100,100]];
 }
 
-var ball = function(name, dirX, dirY) {
-	this.base = new rw.Ent(name, 'ball', 40, 40);
+var ball = function(name, ty, dirX, dirY) {
+	this.base = new rw.Ent(name, ty, 40, 40);
 	this.dirX = dirX;
 	this.dirY = dirY;
 	this.hit = false;
@@ -40,7 +40,13 @@ var ball = function(name, dirX, dirY) {
 		(this.dirX=='r') ? this.base.move(1,0) : this.base.move(-1,0);
 		(this.dirY=='d') ? this.base.move(0,1) : this.base.move(0,-1);
 	}
-	this.hitMap=[['ball',['rWall','lWall','tWall','bWall','tri','ball'],20,20,20]];
+	if (ty=='ball') {
+		this.hitMap=[['ball',['rWall','lWall','tWall','bWall','tri','ball'],20,20,20]];
+	} else if (ty=='tri') {
+		this.hitMap=[['ball',['rWall','lWall','tWall','bWall','tri','ball'],0,40,40,40,20,0.1]];
+	} else if (ty=='box') {
+		this.hitMap=[['ball',['rWall','lWall','tWall','bWall','tri','ball'],0,0,40,40]];
+	}
 	this.gotHit = function(by) {
 		if (this.hit==false) {
 			switch (by) {
@@ -69,7 +75,9 @@ var ball = function(name, dirX, dirY) {
 }
 function startGame() {
 	rw.loadSprites({
-		ball: ['sprites/ball.png', 40, 40, 0, 0]
+		ball: ['sprites/ball.png', 40, 40, 0, 0],
+		box: ['sprites/box.png', 40, 40, 0, 0],
+		tri: ['sprites/tri.png', 40, 40, 0, 0]
 	}, function() {
 		rw.init('playarea', {
 			x:600,
@@ -96,22 +104,24 @@ function startGame() {
 			.base.display(0,0,0).end()
 		.newEnt(new triWall('tr'))
 			.base.display(500,0,0).end()
-		.newEnt(new ball('ball_1', 'r', 'd'))
+		.newEnt(new ball('ball_1', 'ball', 'r', 'd'))
 			.base.display(362, 426, 50).end()
-		.newEnt(new ball('ball_2', 'l', 'd'))
+		.newEnt(new ball('ball_2', 'ball', 'l', 'd'))
 			.base.display(347, 32, 50).end()
-		.newEnt(new ball('ball_3', 'r', 'u'))
+		.newEnt(new ball('ball_3', 'ball', 'r', 'u'))
 			.base.display(209, 433, 50).end()
-		.newEnt(new ball('ball_4', 'l', 'u'))
+		.newEnt(new ball('ball_4', 'box', 'l', 'u'))
 			.base.display(65, 145, 50).end()
-		.newEnt(new ball('ball_5', 'r', 'd'))
+		.newEnt(new ball('ball_5', 'box', 'r', 'd'))
 			.base.display(413, 221, 50).end()
-		.newEnt(new ball('ball_6', 'l', 'd'))
+		.newEnt(new ball('ball_6', 'box', 'l', 'd'))
 			.base.display(165, 370, 50).end()
-		.newEnt(new ball('ball_7', 'r', 'u'))
+		.newEnt(new ball('ball_7', 'tri', 'r', 'u'))
 			.base.display(250, 245, 50).end()
-		.newEnt(new ball('ball_8', 'l', 'u'))
+		.newEnt(new ball('ball_8', 'tri', 'l', 'u'))
 			.base.display(453, 399, 50).end()
+		.newEnt(new ball('ball_9', 'tri', 'l', 'u'))
+			.base.display(102, 45, 50).end()
 		.start();
 	})
 }

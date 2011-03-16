@@ -23,3 +23,5 @@ How to redo collision detection:
 
 ------BUGS---------------------------------------------------------------------------------------
 
+triangular collision detec fucks up when you have 0 as a value in the hitMap,
+	solution == redo hitmaps to be internal and pre-calc'd
