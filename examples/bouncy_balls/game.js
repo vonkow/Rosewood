@@ -21,14 +21,15 @@ var wall=function(type,x,y) {
 };
 
 var ball = function(name, ty, dirX, dirY) {
+	this.spdMod = 0.5+Math.random();
 	this.base = new rw.Ent(name, ty, 40, 40);
 	this.dirX = dirX;
 	this.dirY = dirY;
 	this.hit = false;
 	this.update = function() {
 		this.hit = false;
-		(this.dirX=='r') ? this.base.move(1,0) : this.base.move(-1,0);
-		(this.dirY=='d') ? this.base.move(0,1) : this.base.move(0,-1);
+		(this.dirX=='r') ? this.base.move(this.spdMod,0) : this.base.move(-this.spdMod,0);
+		(this.dirY=='d') ? this.base.move(0,this.spdMod) : this.base.move(0,-this.spdMod);
 	}
 	if (ty=='ball') {
 		this.hitMap=[['ball',['rWall','lWall','tWall','bWall','tri','ball'],20,20,20]];
@@ -56,6 +57,7 @@ var ball = function(name, ty, dirX, dirY) {
 					(this.dirX=='r') ? this.dirX='l' : this.dirX='r';
 					(this.dirY=='u') ? this.dirY='d' : this.dirY='u';
 					this.base.wipeMove();
+					this.spdMod = 0.5+Math.random();
 					break;
 			}
 			this.hit=true;
