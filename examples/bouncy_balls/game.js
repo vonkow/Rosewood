@@ -20,16 +20,6 @@ var wall=function(type,x,y) {
 	this.hitMap=[[type,['ball'],0,0,x,y]];
 };
 
-var triWallCount=0;
-var triWall = function(dir) {
-	this.base = new rw.Ent('tri_'+triWallCount++,' ',100,100);
-	this.update=function() {};
-	if (dir=='bl') this.hitMap=[['tri',['ball'],0,0,0,100,100,100]];
-	if (dir=='tl') this.hitMap=[['tri',['ball'],0,0,100,0,0,100]];
-	if (dir=='br') this.hitMap=[['tri',['ball'],100,0,100,100,0,100]];
-	if (dir=='tr') this.hitMap=[['tri',['ball'],0,0,100,0,100,100]];
-}
-
 var ball = function(name, ty, dirX, dirY) {
 	this.base = new rw.Ent(name, ty, 40, 40);
 	this.dirX = dirX;
@@ -63,7 +53,6 @@ var ball = function(name, ty, dirX, dirY) {
 					this.dirY = 'u';
 					break;
 				case 'ball':
-				case 'tri':
 					(this.dirX=='r') ? this.dirX='l' : this.dirX='r';
 					(this.dirY=='u') ? this.dirY='d' : this.dirY='u';
 					this.base.wipeMove();
@@ -96,14 +85,6 @@ function startGame() {
 			.base.display(-10, 0, 0).end()
 		.newEnt(new wall('bWall',600,10))
 			.base.display(0, 600, 0).end()
-		.newEnt(new triWall('bl'))
-			.base.display(0,500,500).end()
-		.newEnt(new triWall('br'))
-			.base.display(500,500,500).end()
-		.newEnt(new triWall('tl'))
-			.base.display(0,0,0).end()
-		.newEnt(new triWall('tr'))
-			.base.display(500,0,0).end()
 		.newEnt(new ball('ball_1', 'ball', 'r', 'd'))
 			.base.display(362, 426, 50).end()
 		.newEnt(new ball('ball_2', 'ball', 'l', 'd'))
