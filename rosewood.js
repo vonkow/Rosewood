@@ -59,11 +59,7 @@
 				};
 				img.onerror = function() { loadNext(arr) };
 				//Add check here too
-				if (i.length==2) {
-					img.src = i[1].src;
-				} else {
-					img.src = i[1];
-				}
+				(i.length==2) ? img.src = i[1].src : img.src = i[1];
 			} else {
 				callback();
 			};
@@ -73,11 +69,7 @@
 		for (x in sprites) {
 			// This may also need checking for multi-sprite images
 			var i = sprites[x];
-			if (i.length) {
-				arr.push([x, i[0], i[1], i[2], i[3], i[4]]);
-			} else {
-				arr.push([x, i]);
-			}
+			(i.length) ? arr.push([x, i[0], i[1], i[2], i[3], i[4]]) : arr.push([x, i]);
 		};
 		loadNext(arr);
 	};
@@ -212,11 +204,7 @@
 		var len=keys.length;
 		for (var x=0; x<len;x++) {
 			if (keys[x][0]==key) {
-				if (keys[x][2]) {
-					return true;
-				} else {
-					return false;
-				}
+				return keys[x][2];
 			}
 		}
 	}
@@ -422,8 +410,7 @@
 		return rw;
 	}
 	rw.isState=function(name) {
-		if (states[name]) return true;
-		return false;
+		return (states[name]) ? true : false;
 	};
 	rw.loadState = function(name) {
 		if (states[name]) {
@@ -457,17 +444,11 @@
 				var properties = ['transform', 'WebkitTransform', 'MozTransform'];
 				var p;
 				while (p = properties.shift()){
-					if (typeof body.style[p]!='undefined') {
-						return p;
-					}
+					if (typeof body.style[p]!='undefined') return p;
 				}
 				return false;
 			}
-			if (trans()) {
-				this.trans_name = trans();
-			} else {
-				this.trans_name = 'none';
-			}
+			this.trans_name = (trans()||'none');
 		},
 		trans_name: 'none'
 	}
@@ -751,9 +732,7 @@
 								if (canHitMap) {
 									var hitLen=canHitMap.length;
 									for (var v=0;v<hitLen;v++) {
-										if (canHitMap[v]==eYm[0]) {
-											canHit=true;
-										};
+										if (canHitMap[v]==eYm[0]) canHit=true;
 									};
 								};
 								if (canHit) {
@@ -897,10 +876,8 @@
 										// Ent 1 is point
 									}
 									// If collision, add to list.
-									if (hit==true) {
-										// Maybe change this to call a collision resolution function for each ent?
-										cols[cols.length]=[[x,eXm[0]],[y,eYm[0]]];
-									}
+									// Maybe change this to call a collision resolution function for each ent?
+									if (hit==true) cols[cols.length]=[[x,eXm[0]],[y,eYm[0]]];
 								}
 							}
 						}
