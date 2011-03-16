@@ -950,6 +950,7 @@
 				curEnt.posZ += curEnt.velZ+moveAllZ;
 				curEnt.wipeMove();
 				if (curEnt.visible) {
+					// THIS SHOULD BE CHANGED TO SOME FLAGS INSTED OF STRING COMPARISON
 					if (curEnt.sprite=='text') {
 						var txt = curEnt.ent.text;
 						board.font = txt.style.font || board.font || '10px sans-serif';
@@ -963,6 +964,7 @@
 							board.strokeText(txt.text, curEnt.posX, curEnt.posY);
 						}
 					} else if (curEnt.sprite!='') {
+						// GET THIS OUT OF THE LOOP!!!!!!!!! PRECALC THAT SHIT!!!
 						if (curEnt.sprite.indexOf('.')!=-1) {
 							var str = curEnt.sprite.split('.');
 							var sprite = rw.sprites[str[0]][str[1]];
