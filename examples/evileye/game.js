@@ -204,8 +204,8 @@ var resetGame = function() {
 var pickTile = function() {
 	var xTile = Math.floor(16*Math.random());
 	var yTile = Math.floor(16*Math.random());
-	if ((xTile>heroXTile-6)&&(xTile<heroXTile+6)) {
-		if ((yTile>heroYTile-6)&&(yTile<heroYTile+6)) {
+	if ((xTile>heroXTile-8)&&(xTile<heroXTile+8)) {
+		if ((yTile>heroYTile-8)&&(yTile<heroYTile+8)) {
 			//alert(yTile+' '+heroYTile+' '+xTile+' '+heroXTile);
 			return pickTile();
 		}
