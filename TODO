@@ -3,7 +3,8 @@ Path to a NEW Rosewood:
 	X modular run components
 	fix mouse
 	X ajax slot of runloop
-	remove ent.keyChange from ents loop, give own loop?
+	!!!remove ent.keyChange from ents loop, give own loop?
+	!!!redo all collision and gotHit stuff, ent sends info to what it hits
 	ajax POST, and whatnot
 	websockets, integrate with the ajax slot of runloop
 	new collisions precalced tree + b tree

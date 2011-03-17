@@ -6,8 +6,7 @@
 
 (function(){
 	/****** "Global" vars ******/
-	var rw = {},
-		Run,
+	var Run,
 		runGame = false,
 		curT = 0, 
 		globT = 0,
@@ -28,14 +27,15 @@
 		moveAllZ = 0,
 		states = {},
 		stopCallback = null,
-		AJResps = [];
-	/****** Storage ******/
-	rw.sprites = {};
-	rw.soundBank = {};
-	rw.sounds = [];
-	rw.ents = []; 
-	rw.rules = {};
-	rw.ruleList = [];
+		AJResps = [],
+		rw = {
+			sprites: {},
+			soundBank: {},
+			sounds: [],
+			ents: [],
+			rules: {},
+			ruleList: []
+		};
 
 	/****** Loaders ******/
 	rw.loadSprites = function(sprites, callback) {
@@ -218,30 +218,30 @@
 		} else {
 			mouseX=e.layerX;
 			mouseY=e.layerY;
-		};
+		}
 	}
 	var mouseDown = function(e) {
 		if (!e) var e = window.event;
-		mouseDown= true;
+		mouseDown = true;
 	}
 	var mouseUp = function(e) {
 		if (!e) var e = window.event;
-		mouseDown= false;
+		mouseDown = false;
 	}
 	rw.mouse = new function() {
 		this.x = function() {
-			return mouseX;
+			return mouseX
 		},
 		this.y = function() {
-			return mouseY;
+			return mouseY
 		},
 		this.down = function() {
-			return mouseDown;
+			return mouseDown
 		}
 	};
 	rw.changeCursor = function(cursor) {
 		document.getElementById('board').style.cursor="url('"+cursor+"')";
-		return rw;
+		return rw
 	}
 	/****** Ents ******/
 	rw.Ent = function(nameIn, spriteIn, widthIn, heightIn) {
@@ -258,24 +258,24 @@
 		this.velZ = 0;
 		this.active = false;
 		this.visible=false;
-	};
+	}
 	rw.Ent.prototype.back = function() {
-		return this.ent;
-	};
+		return this.ent
+	}
 	rw.Ent.prototype.end = function() {
 		return rw
-	};
+	}
 	rw.Ent.prototype.posX1 = function() {
-		return this.posX;
+		return this.posX
 	}
 	rw.Ent.prototype.posY1 = function() {
-		return this.posY;
+		return this.posY
 	}
 	rw.Ent.prototype.posX2 = function() {
-		return this.posX+this.width;
+		return this.posX+this.width
 	}
 	rw.Ent.prototype.posY2 = function() {
-		return this.posY+this.height;
+		return this.posY+this.height
 	}
 	rw.Ent.prototype.display = function (posXIn, posYIn, posZIn) {
 		this.posX = posXIn;
@@ -283,18 +283,18 @@
 		(posZIn) ? this.posZ = posZIn : this.posZ = posYIn;
 		this.active = true;
 		this.visible = (this.sprite!==' ') ? true : false;
-		return this;
-	};
+		return this
+	}
 	rw.Ent.prototype.hide = function() {
 		this.active=false;
 		this.visible=false;
-		return this;
-	};
+		return this
+	}
 	rw.Ent.prototype.changeSprite = function(sprite) {
 		this.sprite = sprite;
 		(this.sprite != '') ?  this.visible=true : this.visible=false;
-		return this;
-	};
+		return this
+	}
 	rw.Ent.prototype.curMove = function() {
 		return [this.velX, this.velY, this.velZ];
 	}
@@ -308,35 +308,36 @@
 			this.velY = 0;
 			this.velZ = 0;
 		}
-		return this;
+		return this
 	}
 	rw.Ent.prototype.moveTo = function(x, y, z) {
 		this.posX = x;
 		this.posY = y;
 		(z||z===0) ? this.posZ = z : this.posZ = y;
-		return this;
+		return this
 	}
 	rw.Ent.prototype.getTileX=function() {
-		return (tiles) ? Math.floor(this.posY/tileY) : false;
-	};
+		return (tiles) ? Math.floor(this.posY/tileY) : false
+	}
 	rw.Ent.prototype.getTileY=function() {
-		return (tiles) ? Math.floor(this.posY/tileY) : false;
-	};
+		return (tiles) ? Math.floor(this.posY/tileY) : false
+	}
+	// Depreciated
 	rw.Ent.prototype.clicked = function() {
 		if (rw.mouse.down()) {
 			if ((rw.mouse.x()>this.posX1())&&(rw.mouse.x()<this.posX2())) {
 				if ((rw.mouse.y()>this.posY1())&&(rw.mouse.y()<this.posY2())) {
-					return true;
-				};
-			};
-		};
-		return false;
-	};
+					return true
+				}
+			}
+		}
+		return false
+	}
 	rw.Ent.prototype.move = function(x,y,z) {
 		this.velX += x;
 		this.velY += y;
 		(z||z===0) ? this.velZ += z : this.velZ += y;
-		return this;
+		return this
 	}
 
 	rw.newEnt = function(ent) {
@@ -344,17 +345,17 @@
 		rw.ents.push(ent);
 		if (ent.base.sprite!=='') ent.base.visible = true;
 		if (ent.init) ent.init();
-		return ent;
-	};
+		return ent
+	}
 	rw.removeEnt = function(entNum) {
 		rw.ents.splice(entNum, 1);
-		return rw;
-	};
+		return rw
+	}
 	rw.moveAll = function(x,y,z) {
 		moveAllX = x;
 		moveAllY = y;
 		moveAllZ = z || 0;
-	};
+	}
 	/****** Rules ******/
 	rw.Rule = function(pos) {
 		this.pos = pos;
@@ -362,7 +363,7 @@
 	rw.newRule = function(name, rule) {
 		rw.rules[name] = rule;
 		rw.ruleList[rule.base.pos].push(name);
-		return rw;
+		return rw
 	}
 	rw.removeRule = function(rule) {
 		if (rw.rules[rule]) {
@@ -371,12 +372,12 @@
 			for (var x=0, len=list.length; x<len; x++) {
 				if (list[x]==rule) {
 					list.splice(x,1);
-					break;
-				};
-			};
+					break
+				}
+			}
 			delete rw.rules[rule];
 		}
-		return rw;
+		return rw
 	}
 	/****** States ******/
 	var copy = function(obj,par) {
@@ -394,7 +395,7 @@
 				}
 			}
 		}
-		return newCopy;
+		return newCopy
 	}
 
 	rw.saveState = function(name) {
@@ -407,11 +408,11 @@
 		for (var x=0; x<len; x++) {
 			states[name]['ents'][x].base['ent'] = states[name]['ents'][x];
 		}
-		return rw;
+		return rw
 	}
 	rw.isState=function(name) {
-		return (states[name]) ? true : false;
-	};
+		return (states[name]) ? true : false
+	}
 	rw.loadState = function(name) {
 		if (states[name]) {
 			rw.ents = copy(states[name]['ents'],name);
@@ -430,11 +431,11 @@
 			}
 			keyChange = true;
 		}
-		return rw;
+		return rw
 	}
 	rw.rmState = function(name) {
 		if (states[name]) delete states[name];
-		return rw;
+		return rw
 	}
 	/****** Init and Run ******/
 	rw.browser = {
@@ -446,7 +447,7 @@
 				while (p = properties.shift()){
 					if (typeof body.style[p]!='undefined') return p;
 				}
-				return false;
+				return false
 			}
 			this.trans_name = (trans()||'none');
 		},
@@ -473,7 +474,7 @@
 				'blit',
 				'rule'
 			]
-		};
+		}
 		rw.browser.check();
 		rw.setFPS(settings.FPS);
 		X = settings.x
@@ -538,7 +539,7 @@
 				stopCallback = null;
 			}
 		}
-		return rw;
+		return rw
 	}
 	// Here lies witchcraft and hints of erlang...
 	function composeLoop(seq, count, ruleCount, func) {
@@ -550,7 +551,7 @@
 				f = function(tbk) {func(rl(tbk))};
 				rw.ruleList.push([]);
 				ruleCount++;
-			}else if (cur=='ents') {
+			} else if (cur=='ents') {
 				f = function(tbk) {func(updateEnts(tbk))};
 			} else if (cur=='cols') {
 				f = function(tbk) {func(collisionLoop(tbk))};
@@ -561,10 +562,9 @@
 			} else if (cur=='blit') {
 				f = function(tbk) {func(redrawLoop(tbk))};
 			}
-
-			return composeLoop(seq, count+1, ruleCount, f);
+			return composeLoop(seq, count+1, ruleCount, f)
 		} else {
-			return f;
+			return f
 		}
 	}
 
@@ -591,7 +591,7 @@
 			for (var x=0, l=rw.ruleList[listId].length; x<l; x++) {
 				rw.rules[rw.ruleList[listId][x]].rule();
 			}
-			return tbk;
+			return tbk
 		}
 	}
 
@@ -634,7 +634,7 @@
 				}
 			}
 		//}
-		return toBeRemoved;
+		return toBeRemoved
 	}
 
 	var rotatePoint=function(p,o,a) {
@@ -643,13 +643,13 @@
 		var newP=[(trans[0]*Math.cos(ang))-(trans[1]*Math.sin(ang)),(trans[0]*Math.sin(ang))+(trans[1]*Math.cos(ang))];
 		newP[0]+=o[0];
 		newP[1]+=o[1];
-		return newP;
+		return newP
 	}
 	// Point in Triangle Test
 	var pointInTri=function(p,a,b,c) {
 		var cp = ((b[0]-a[0])*(p[1]-a[1]))-((b[1]-a[1])*(p[0]-a[0]));
 		var cp_ref = ((b[0]-a[0])*(c[1]-a[1]))-((b[1]-a[1])*(c[0]-a[0]));
-		return (cp_ref>=0) ? cp>=0 : cp<=0;
+		return (cp_ref>=0) ? cp>=0 : cp<=0
 	}
 	// Check Point in tri
 	var checkTriCol=function(p,a,b,c) {
@@ -667,7 +667,7 @@
 	// Check Circle in circle
 	var checkCircCirc=function(c1x,c1y,c1r,c2x,c2y,c2r) {
 		var dist = ((c1x-c2x)*(c1x-c2x))+((c1y-c2y)*(c1y-c2y));
-		return dist<((c1r+c2r)*(c1r+c2r));
+		return dist<((c1r+c2r)*(c1r+c2r))
 	}
 	// Check circle cross line
 	var checkCircLine=function(a,b,c) {
@@ -675,13 +675,13 @@
 		((c[0]+c[2]<a[0])&&(c[0]+c[2]<b[0])) ||
 		((c[1]-c[2]>a[1])&&(c[1]-c[2]>b[1])) ||
 		((c[1]+c[2]<a[1])&&(c[1]+c[2]<b[1]))) {
-			return false;
+			return false
 		} else {
 			var doubleArea=(a[0]*b[1])+(b[0]*c[1])+(c[0]*a[1])-(b[0]*a[1])-(c[0]*b[1])-(a[0]*c[1]);
 			if (doubleArea<0) doubleArea=-doubleArea;
 			var base=Math.sqrt(((b[0]-a[0])*(b[0]-a[0]))+((b[1]-a[1])*(b[1]-a[1])));
 			var dist=doubleArea/base;
-			return c[2]>dist;
+			return c[2]>dist
 		}
 	}
 	// Check Circle in rec
@@ -696,14 +696,14 @@
 			if (!(circDistY>rH+cr)) {
 				if ((circDistX<=rW) ||
 				(circDistY<=rH)) {
-					return true;
+					return true
 				} else {
 					var cornerDistSq = ((circDistX+rW)*(circDistX+rW))+((circDistY+rH)*(circDistY+rH));
-					return cornerDistSq<=cr*cr;
+					return cornerDistSq<=cr*cr
 				}
 			}
 		}
-		return false;
+		return false
 	}
 
 	function collisionLoop(toBeRemoved) {
@@ -726,8 +726,8 @@
 									var hitLen=canHitMap.length;
 									for (var v=0;v<hitLen;v++) {
 										if (canHitMap[v]==eYm[0]) canHit=true;
-									};
-								};
+									}
+								}
 								if (canHit) {
 									var eXx=eX.base.posX+eX.base.velX;
 									var eXy=eX.base.posY+eX.base.velY;
@@ -876,7 +876,7 @@
 						}
 					}
 				}
-			};
+			}
 			// does this still work?
 			if (eX.postCol) eX.postCol();
 		}
@@ -894,7 +894,7 @@
 				}
 			}
 		}
-		return toBeRemoved;
+		return toBeRemoved
 	}
 
 	function killLoop(toBeRemoved) {
@@ -914,7 +914,7 @@
 				rw.removeEnt(killThese[x]);
 			}
 		}
-		return [];
+		return []
 	}
 
 	function redrawLoop(toBeRemoved) {
@@ -926,9 +926,9 @@
 			if (!zOrder[z]) {
 				zOrder[z]= [];
 				zKey.push(z);
-			};
+			}
 			zOrder[z].push(x);
-		};
+		}
 		zKey = zKey.sort(function(a,b){return a-b});
 		// Clear old board
 		board.clearRect(0,0,X,Y);
