@@ -129,8 +129,9 @@
 		tileY = 0;
 		return rw;
 	};
-	// Needs serious re-writing, one of these days
-	rw.ajax = function(targ, func) {
+
+	// AJAX Functions, not quite finished
+	rw.get(targ, func) {
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET",targ,true);
 		xhr.onreadystatechange = function() {
@@ -143,6 +144,24 @@
 		xhr.send(null);
 		return rw;
 	}
+
+	rw.post(targ, params, func) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST",targ,true);
+		xhr.setRequestHeader("Content-type" "application/json");
+		xhr.setRequestHeader("Content-length" params.length);
+		xhr.setRequestHeader("Connection" "close");
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState==4) {
+				var resp = xhr.responseText;
+				AJResps.push([func,resp]);
+			}
+		}
+		xhr.send(params);
+		return rw;
+	}
+
+
 	rw.func = function() {
 		return rw;
 	}

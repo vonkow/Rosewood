@@ -1,21 +1,21 @@
 Path to a NEW Rosewood:
-	X rw.run composting on init
-	X modular run components
-	fix mouse
-	X ajax slot of runloop
 	!!!remove ent.keyChange from ents loop, give own loop?
-	!!!redo all collision and gotHit stuff, ent sends info to what it hits
-	ajax POST, and whatnot
-	websockets, integrate with the ajax slot of runloop
-	new collisions precalced tree + b tree
-	sound mixing and whatnot support
 	ent children &/| ent's as canvas
 	raw canvas drawing
 	multiline support for ent text
+	!!!redo all collision and gotHit stuff, ent sends info to what it hits
+	new collisions precalced tree + b tree
 	possibly redo hitmaps, add/rem with functions, store in base
+	fix mouse
+	websockets, integrate with the ajax slot of runloop
+	sound mixing and whatnot support
 	? add mobile input
 	? re-add div based rendering
 	? give tiles some love
+	X rw.run composting on init
+	X modular run components
+	X ajax slot of runloop
+	X(kinda) ajax POST, and whatnot
 
 
 How to redo collision detection:
