@@ -153,7 +153,7 @@
         xhr.setRequestHeader("Connection", "close");
         xhr.onreadystatechange = function() {
             if (xhr.readyState==4) {
-                var resp = xhr.responseText;
+                var resp = xhr.responseText||'error';
                 AJResps.push([func,resp]);
             }
         }
