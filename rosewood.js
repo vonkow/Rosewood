@@ -21,7 +21,7 @@
         keys = [['bsp',8],['tab',9],['ent',13],['shf',16],['ctr',17],['alt',18],['pau',19],['cap',20],['esc',27],['sp',32],['pgu',33],['pgd',34],['end',35],['hom',36],['la',37],['ua',38],['ra',39],['da',40],['ins',45],['del',46],['d0',48],['d1',49],['d2',50],['d3',51],['d4',52],['d5',53],['d6',54],['d7',55],['d8',56],['d9',57],['sem',59],['eql',61],['a',65],['b',66],['c',67],['d',68],['e',69],['f',70],['g',71],['h',72],['i',73],['j',74],['k',75],['l',76],['m',77],['n',78],['o',79],['p',80],['q',81],['r',82],['s',83],['t',84],['u',85],['v',86],['w',67],['x',88],['y',89],['z',90],['lwn',91],['rwn',92],['sel',93],['n0',96],['n1',97],['n2',98],['n3',99],['n4',100],['n5',101],['n6',102],['n7',103],['n8',104],['n9',105],['mul',106],['add',107],['sub',109],['dec',110],['div',111],['f1',112],['f2',113],['f3',114],['f4',115],['f5',116],['f6',117],['f7',118],['f8',119],['f9',120],['f10',121],['f11',122],['f12',123],['num',144],['scr',145],['com',188],['per',190],['fsl',191],['acc',192],['obr',219],['bsl',220],['cbr',221],['qot',222]],
         mouseX = 0,
         mouseY = 0,
-        mouseDown = false,
+        mouseD = false,
         moveAllX = 0,
         moveAllY = 0,
         moveAllZ = 0,
@@ -241,21 +241,21 @@
     }
     var mouseDown = function(e) {
         if (!e) var e = window.event;
-        mouseDown = true;
+        mouseD = true;
     }
     var mouseUp = function(e) {
         if (!e) var e = window.event;
-        mouseDown = false;
+        mouseD = false;
     }
-    rw.mouse = new function() {
-        this.x = function() {
+    rw.mouse = {
+        x : function() {
             return mouseX
         },
-        this.y = function() {
+        y : function() {
             return mouseY
         },
-        this.down = function() {
-            return mouseDown
+        down : function() {
+            return mouseD
         }
     };
     rw.changeCursor = function(cursor) {
