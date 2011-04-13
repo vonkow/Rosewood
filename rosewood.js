@@ -59,7 +59,6 @@
 				}
 				img.onerror = function() { loadNext(arr) }
 				//Add check here too
-				// what does this do?
 				img.src = (i.length==2) ? i[1].src : i[1]
 			} else {
 				callback()
@@ -227,7 +226,6 @@
 		}
 	}
 	/****** Mouse Input ******/
-	// These are currently not working correctly, as they will return absolute position of mouse, not relative pos.
 	var mousePos = function(e) {
 		if (!e) var e=window.event
 		if (e.offsetX) {
