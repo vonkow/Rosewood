@@ -547,7 +547,7 @@
 					curT = setTimeout(function() { Run(tbk) }, speed-timeTotal)
 				} else {
 					// Gotta set a timeout here so we don't grow the call stack
-					curT = setTimeout(function() { Run(tbk) }, 1)
+					curT = setTimeout(function() { Run(tbk) }, 0)
 				}
 				currentLag = timeTotal-speed
 			} else {
