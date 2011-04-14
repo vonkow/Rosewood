@@ -975,6 +975,15 @@
 							board.strokeStyle = txt.style.color || board.strokeStyle || '#000'
 							board.strokeText(txt.text, curEnt.posX, curEnt.posY)
 						}
+					} else if (curEnt.sprite=='draw') {
+						// Add drawing stuff
+						board.beginPath()
+						board.rect(curEnt.posX, curEnt.posY, curEnt.width, curEnt.height)
+						board.clip()
+						curEnt.ent.draw(board)
+						board.beginPath()
+						board.rect(0,0,X,Y)
+						board.clip()
 					} else if (curEnt.sprite!='') {
 						// GET THIS OUT OF THE LOOP!!!!!!!!! PRECALC THAT SHIT!!!
 						if (curEnt.sprite.indexOf('.')!=-1) {
