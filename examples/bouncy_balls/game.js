@@ -1,7 +1,7 @@
 var lagTimer = function() {
 	var worst = -25,
-		timer = 1800;
-	this.base = new rw.Ent('lag','text',150,20);
+		timer = 1800
+	this.base = new rw.Ent('lag','text',150,20)
 	this.text = {
 		text: 'Lag: ',
 		form: 'fill',
@@ -13,64 +13,64 @@ var lagTimer = function() {
 	this.update = function() {
 		var lag = rw.getLag();
 		if (timer>0) {
-			if ((lag!=0)&&(lag>worst)) worst = lag;
-			timer--;
+			if ((lag!=0)&&(lag>worst)) worst = lag
+			timer--
 		} else {
-			worst = -25;
-			timer = 1800;
+			worst = -25
+			timer = 1800
 		}
-		this.text.text = 'Lag: '+rw.getLag()+'(ms) Worst: '+worst;
+		this.text.text = 'Lag: '+rw.getLag()+'(ms) Worst: '+worst
 	}
 }
 
-var wallCount=0;
+var wallCount=0
 var wall=function(type,x,y) {
-	this.base = new rw.Ent('wall_'+wallCount++,' ',x,y);
-	this.update=function() {};
-	this.hitMap=[[type,['ball'],0,0,x,y]];
-};
+	this.base = new rw.Ent('wall_'+wallCount++,' ',x,y)
+	this.update=function() {}
+	this.hitMap=[[type,['ball'],0,0,x,y]]
+}
 
 var ball = function(name, ty, dirX, dirY) {
-	this.spdMod = 10*Math.random();
-	this.base = new rw.Ent(name, ty, 40, 40);
-	this.dirX = dirX;
-	this.dirY = dirY;
-	this.hit = false;
+	this.spdMod = 10*Math.random()
+	this.base = new rw.Ent(name, ty, 40, 40)
+	this.dirX = dirX
+	this.dirY = dirY
+	this.hit = false
 	this.update = function() {
-		this.hit = false;
-		(this.dirX=='r') ? this.base.move(this.spdMod,0) : this.base.move(-this.spdMod,0);
-		(this.dirY=='d') ? this.base.move(0,this.spdMod) : this.base.move(0,-this.spdMod);
+		this.hit = false
+		;(this.dirX=='r') ? this.base.move(this.spdMod,0) : this.base.move(-this.spdMod,0)
+		;(this.dirY=='d') ? this.base.move(0,this.spdMod) : this.base.move(0,-this.spdMod)
 	}
 	if (ty=='ball') {
-		this.hitMap=[['ball',['rWall','lWall','tWall','bWall','tri','ball'],20,20,20]];
+		this.hitMap=[['ball',['rWall','lWall','tWall','bWall','tri','ball'],20,20,20]]
 	} else if (ty=='tri') {
-		this.hitMap=[['ball',['rWall','lWall','tWall','bWall','tri','ball'],0.001,40,40,40,20,0.001]];
+		this.hitMap=[['ball',['rWall','lWall','tWall','bWall','tri','ball'],0.001,40,40,40,20,0.001]]
 	} else if (ty=='box') {
-		this.hitMap=[['ball',['rWall','lWall','tWall','bWall','tri','ball'],0,0,40,40]];
+		this.hitMap=[['ball',['rWall','lWall','tWall','bWall','tri','ball'],0,0,40,40]]
 	}
 	this.gotHit = function(by) {
 		if (this.hit==false) {
 			switch (by) {
 				case 'rWall':
-					this.dirX = 'l';
-					break;
+					this.dirX = 'l'
+					break
 				case 'lWall':
 					this.dirX = 'r';
-					break;
+					break
 				case 'tWall':
-					this.dirY = 'd';
-					break;
+					this.dirY = 'd'
+					break
 				case 'bWall':
-					this.dirY = 'u';
-					break;
+					this.dirY = 'u'
+					break
 				case 'ball':
-					(this.dirX=='r') ? this.dirX='l' : this.dirX='r';
-					(this.dirY=='u') ? this.dirY='d' : this.dirY='u';
-					this.base.wipeMove();
-					this.spdMod = 10*Math.random();
-					break;
+					(this.dirX=='r') ? this.dirX='l' : this.dirX='r'
+					;(this.dirY=='u') ? this.dirY='d' : this.dirY='u'
+					this.base.wipeMove()
+					this.spdMod = 10*Math.random()
+					break
 			}
-			this.hit=true;
+			this.hit=true
 		}
 	}
 }
@@ -127,6 +127,6 @@ function startGame() {
 			.base.display(314, 122, 50).end()
 		.newEnt(new ball('ball_15', 'tri', 'r', 'u'))
 			.base.display(112, 392, 50).end()
-		.start();
+		.start()
 	})
 }

@@ -107,106 +107,106 @@
 			[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6]
 			*/
 		]
-	];
+	]
 	function game(lData) {
 		var that = this,
 			tX = 1,
 			tY = 1,
-			keyDelay = 0;
-		this.lvl = [];
+			keyDelay = 0
+		this.lvl = []
 		for (var y=0; y<lData.length; y++) {
-			this.lvl.push([]);
+			this.lvl.push([])
 			for (var x=0; x<lData[0].length; x++) {
-				this.lvl[y].push(lData[y][x]);
+				this.lvl[y].push(lData[y][x])
 				if ((lData[y][x]==4)||(lData[y][x]==7)) {
-					tX = x;
-					tY = y;
+					tX = x
+					tY = y
 				}
 			}
 		}
 		function checkMove(d) {
 			if (d=='u') {
-				var t = that.lvl[tY-1][tX];
+				var t = that.lvl[tY-1][tX]
 				if ((t==0)||(t==3)) {
-					that.lvl[tY][tX]-=4;
-					that.lvl[tY-1][tX]+=4;
-					tY-=1;
+					that.lvl[tY][tX]-=4
+					that.lvl[tY-1][tX]+=4
+					tY-=1
 				} else if ((t==2)||(t==5)) {
-					var t1 = that.lvl[tY-2][tX];
+					var t1 = that.lvl[tY-2][tX]
 					if ((t1==0)||(t1==3)) {
-						that.lvl[tY][tX]-=4;
-						that.lvl[tY-1][tX]+=2;
-						that.lvl[tY-2][tX]+=2;
-						tY-=1;
+						that.lvl[tY][tX]-=4
+						that.lvl[tY-1][tX]+=2
+						that.lvl[tY-2][tX]+=2
+						tY-=1
 					}
 				}
 			} else if (d=='d') {
-				var t = that.lvl[tY+1][tX];
+				var t = that.lvl[tY+1][tX]
 				if ((t==0)||(t==3)) {
-					that.lvl[tY][tX]-=4;
-					that.lvl[tY+1][tX]+=4;
-					tY+=1;
+					that.lvl[tY][tX]-=4
+					that.lvl[tY+1][tX]+=4
+					tY+=1
 				} else if ((t==2)||(t==5)) {
-					var t1 = that.lvl[tY+2][tX];
+					var t1 = that.lvl[tY+2][tX]
 					if ((t1==0)||(t1==3)) {
-						that.lvl[tY][tX]-=4;
-						that.lvl[tY+1][tX]+=2;
-						that.lvl[tY+2][tX]+=2;
-						tY+=1;
+						that.lvl[tY][tX]-=4
+						that.lvl[tY+1][tX]+=2
+						that.lvl[tY+2][tX]+=2
+						tY+=1
 					}
 				}
 			} else if (d=='l') {
-				var t = that.lvl[tY][tX-1];
+				var t = that.lvl[tY][tX-1]
 				if ((t==0)||(t==3)) {
-					that.lvl[tY][tX]-=4;
-					that.lvl[tY][tX-1]+=4;
-					tX-=1;
+					that.lvl[tY][tX]-=4
+					that.lvl[tY][tX-1]+=4
+					tX-=1
 				} else if ((t==2)||(t==5)) {
-					var t1 = that.lvl[tY][tX-2];
+					var t1 = that.lvl[tY][tX-2]
 					if ((t1==0)||(t1==3)) {
-						that.lvl[tY][tX]-=4;
-						that.lvl[tY][tX-1]+=2;
-						that.lvl[tY][tX-2]+=2;
-						tX-=1;
+						that.lvl[tY][tX]-=4
+						that.lvl[tY][tX-1]+=2
+						that.lvl[tY][tX-2]+=2
+						tX-=1
 					}
 				}
 			} else if (d=='r') {
 				// square and square above
-				var t = that.lvl[tY][tX+1];
+				var t = that.lvl[tY][tX+1]
 				// if targ empty or goal
 				if ((t==0)||(t==3)) {
-					that.lvl[tY][tX]-=4;
-					that.lvl[tY][tX+1]+=4;
-					tX+=1;
+					that.lvl[tY][tX]-=4
+					that.lvl[tY][tX+1]+=4
+					tX+=1
 				// elif box or boxgoal
 				} else if ((t==2)||(t==5)) {
 					// square past square above
-					var t1 = that.lvl[tY][tX+2];
+					var t1 = that.lvl[tY][tX+2]
 					// if empty or goal
 					if ((t1==0)||(t1==3)) {
-						that.lvl[tY][tX]-=4;
-						that.lvl[tY][tX+1]+=2;
-						that.lvl[tY][tX+2]+=2;
-						tX+=1;
+						that.lvl[tY][tX]-=4
+						that.lvl[tY][tX+1]+=2
+						that.lvl[tY][tX+2]+=2
+						tX+=1
 					}
 				}
 			}
 		}
-		this.base = new rw.Rule(0);
+		this.base = new rw.Rule(0)
 		this.rule = function() {
-			var victory = true;
+			var victory = true
 			for (var y=0, ylen=this.lvl.length; y<ylen; y++) {
 				for (var x=0, xlen=this.lvl.length; x<xlen; x++) {
-					if (this.lvl[y][x]==2) victory = false;
+					if (this.lvl[y][x]==2) victory = false
 				}
 			}
 			if (victory) {
 				if (curLvl<lvls.length-1){
-					makeGame(++curLvl);
+					makeGame(++curLvl)
 				} else {
 					rw.stop(function() {
-						alert('victory is yours!');
-					});
+						alert('victory is yours!')
+					})
 				}
 			}
 			if (keyDelay==0) {
@@ -216,71 +216,71 @@
 				(rw.key('la')) ? (checkMove('l'), keyDelay=5) : 
 				(rw.key('r')) ? makeGame(curLvl) :
 				(rw.key('n')) ? checkMake(curLvl+1) :
-				(rw.key('b')) ? checkMake(curLvl-1) : true;
+				(rw.key('b')) ? checkMake(curLvl-1) : true
 			} else {
-				keyDelay--;
+				keyDelay--
 			}
 		}
 	}
 
 	function square(tY,tX) {
-		this.base = new rw.Ent(tY+'_'+tX, 'wall', 16, 16);
+		this.base = new rw.Ent(tY+'_'+tX, 'wall', 16, 16)
 		this.update = function() {
 			var stat = rw.rules['game'].lvl[tY][tX],
-				img = 'none';
+				img = 'none'
 			if (stat==1) {
-				img = 'wall';
+				img = 'wall'
 			} else if (stat==2) {
-				img = 'box';
+				img = 'box'
 			} else if (stat==3) {
-				img = 'area';
+				img = 'area'
 			} else if (stat==4) {
-				img = 'man';
+				img = 'man'
 			} else if (stat==5) {
-				img = 'boxdone';
+				img = 'boxdone'
 			} else if (stat==7) {
-				img = 'manarea';
+				img = 'manarea'
 			}
-			this.base.changeSprite(img);
+			this.base.changeSprite(img)
 		}
 	};
 
 	function checkMake(lv) {
 		if (lv>=0) {
 			if (lv<lvls.length) {
-				curLvl = lv;
-				makeGame(curLvl);
+				curLvl = lv
+				makeGame(curLvl)
 			} else {
-				makeGame(curLvl);
+				makeGame(curLvl)
 			}
 		} else {
-			makeGame(curLvl);
+			makeGame(curLvl)
 		}
 	}
 
 	function makeGame(lv) {
 		rw.stop(function() {
-			rw.wipeAll();
-			rw.newRule('game', new game(lvls[lv]));
+			rw.wipeAll()
+			rw.newRule('game', new game(lvls[lv]))
 			for (var y=0, ylen=lvls[lv].length; y<ylen; y++) {
 				for (var x=0, xlen=lvls[lv][y].length; x<xlen; x++) {
-					rw.newEnt(new square(y, x)).base.display(16*x,16*y);
+					rw.newEnt(new square(y, x)).base.display(16*x,16*y)
 				}
 			}
-			rw.start();
-		});
+			rw.start()
+		})
 	}
 
-	var curLvl = 0;
+	var curLvl = 0
 	function start() {
 		rw.init('playarea', {
 			x:320, 
 			y:240, 
 			sequence:['rule','ents','blit'],
 			keys:['ua','da','ra','la','n','b','r']
-		}).setFPS(30).start();
-		makeGame(curLvl);
-	};
+		}).setFPS(30).start()
+		makeGame(curLvl)
+	}
 	rw.loadSprites({
 		'man': ['sprites/man.png',16,16,0,0],
 		'manarea': ['sprites/manarea.png',16,16,0,0],
@@ -290,6 +290,6 @@
 		'boxdone': ['sprites/boxdone.png',16,16,0,0],
 		'wall': ['sprites/wall.png',16,16,0,0],
 	}, function() {
-		start();
-	});
-})();
+		start()
+	})
+})()
