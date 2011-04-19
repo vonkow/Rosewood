@@ -1,17 +1,18 @@
 Path to a NEW Rosewood:
 	!!!remove ent.keyChange from ents loop, give own loop?
 	ent children &/| ent's as canvas
-	raw canvas drawing
 	multiline support for ent text
 	!!!redo all collision and gotHit stuff, ent sends info to what it hits
 	new collisions precalced tree + b tree
 	possibly redo hitmaps, add/rem with functions, store in base
-	fix mouse
 	websockets, integrate with the ajax slot of runloop
 	sound mixing and whatnot support
+	Mouse as a hitmap?
 	? add mobile input
 	? re-add div based rendering
 	? give tiles some love
+	X fix mouse
+	X raw canvas drawing
 	X rw.run composting on init
 	X modular run components
 	X ajax slot of runloop

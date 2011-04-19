@@ -503,6 +503,7 @@
 			board.height = settings.y
 			board.style.width = settings.x
 			board.style.height = settings.y
+			// Keep for when/if we re-add dom support?
 			//board.style.overflow = 'hidden' // Not needed?
 			//board.style.position = "relative" // Not needed?
 			document.getElementById(target).appendChild(board)
