@@ -358,6 +358,7 @@
 
 	rw.newEnt = function(ent) {
 		ent.base['ent'] = ent
+		ent.update = ent.update || function() {}
 		rw.ents.push(ent)
 		if (ent.base.sprite!=='') ent.base.visible = true
 		if (ent.init) ent.init()
