@@ -1019,21 +1019,22 @@
 	}
 	/****** Politics ******/
 	rw.manifest = function(o) {
-		if (o===0) {
-			alert(
-				'rw.manifest(0)\n\n'+
-				'Simple > Easy\n\n'+
-				'All books could be titled "People and Problems"...\n'+
-				'or at least "Entities and Issues".Therefore:\n\n'+
-				'\tThere are Ents.\n\n'+
-				'\tThere are also Rules.\n\n'+
-				'\tKeys, Mouse, Sprites, Sounds and States,\n\tfor good measure.\n\n'+
-				'Rosewood is a scalpel,\n'+
-				'it will not prevent you from cutting yourself.\n\n'+
-				'Write how you like, but remember the basics.\n'+
-				'Seqence is your friend.'
-			)
-		}
+		o===0 ? alert(
+			'rw.manifest(0)\n\n'+
+			'Simple > Easy\n\n'+
+			'All books could be titled "People and Problems"...\n'+
+			'or at least "Entities and Issues".Therefore:\n\n'+
+			'\tThere are Ents.\n\n'+
+			'\tThere are also Rules.\n\n'+
+			'\tKeys, Mouse, Sprites, Sounds and States,\n\tfor good measure.\n\n'+
+			'Rosewood is a scalpel,\n'+
+			'it will not prevent you from cutting yourself.\n\n'+
+			'Write how you like, but remember the basics.\n'+
+			'Seqence is your friend.'
+		) : o===1 ? alert(
+			''+
+			''
+		) : alert('\u00A9 \u2265 2009 Caz vonKow, do what Thou Wilt')
 		return rw
 	}
 	/****** Closure Compiler ******/
