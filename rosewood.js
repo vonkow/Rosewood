@@ -272,8 +272,9 @@
 		this.velX = 0
 		this.velY = 0
 		this.velZ = 0
+		this.r = 0
 		this.active = false
-		this.visible=false
+		this.visible = false
 	}
 	rw.Ent.prototype.back = function() {
 		return this.ent
@@ -310,6 +311,13 @@
 		this.sprite = sprite
 		this.visible = (this.sprite!='')
 		return this
+	}
+	rw.Ent.prototype.rot = function(deg) {
+		this.r = deg * 0.0174532925
+		return this
+	}
+	rw.Ent.prototype.curRot = function() {
+		return this.r * 57.2957795
 	}
 	rw.Ent.prototype.curMove = function() {
 		return [this.velX, this.velY, this.velZ]
@@ -706,15 +714,17 @@
 		}
 	}
 	// Check Circle in rec
+	// Currently Fucked
 	var checkCircRec=function(cx,cy,cr,rx1,ry1,rx2,ry2) {
+		console.log(cx+' '+cy+' '+cr+' '+rx1+' '+ry1+' '+rx2+' '+ry2)
 		var rW = (rx2-rx1)/2,
 			circDistX = cx-(rx1+rW)
 		if (circDistX<0) circDistX=-circDistX
-		if (!(circDistX>rW+cr)) {
+		if (circDistX<rW+cr) {
 			var rH = (ry2-ry1)/2,
 				circDistY = cy-(ry1+rH)
 			if (circDistY<0) circDistY=-circDistY
-			if (!(circDistY>rH+cr)) {
+			if (circDistY<rH+cr) {
 				if ((circDistX<=rW) ||
 				(circDistY<=rH)) {
 					return true
@@ -756,9 +766,9 @@
 										eYy=eY.base.posY+eY.base.velY,
 										hit = true
 									// If ent 1 hitMap is triangle
-									if (eXm[7]) {
+									if (eXm.length==8) {
 										// If ent 2 hitMap is triangle
-										if (eYm[7]) {
+										if (eYm.length==8) {
 											// Test tri tri
 											var eXp1 = [eXm[2]+eXx,eXm[3]+eXy],
 												eXp2 = [eXm[4]+eXx,eXm[5]+eXy],
@@ -772,7 +782,7 @@
 											checkTriCol(eYp1,eXp1,eXp2,eXp3) ? hit=true :
 											checkTriCol(eYp2,eXp1,eXp2,eXp3) ? hit=true :
 											checkTriCol(eYp3,eXp1,eXp2,eXp3) ? hit=true : hit=false
-										} else if (eYm[5]) {
+										} else if (eYm.length==6) {
 											// Test tri rec
 											var eXp1 = [eXm[2]+eXx,eXm[3]+eXy],
 												eXp2 = [eXm[4]+eXx,eXm[5]+eXy],
@@ -788,7 +798,7 @@
 											checkTriCol(eYp2,eXp1,eXp2,eXp3) ? hit=true :
 											checkTriCol(eYp3,eXp1,eXp2,eXp3) ? hit=true :
 											checkTriCol(eYp4,eXp1,eXp2,eXp3) ? hit=true : hit=false
-										} else if (eYm[4]) {
+										} else if (eYm.length==5) {
 											// Test tri circ
 											var c = [eYm[2]+eYx,eYm[3]+eYy,eYm[4]],
 												tp1 = [eXm[2]+eXx,eXm[3]+eXy],
@@ -806,9 +816,9 @@
 												eYp1 = [eYm[2]+eYx,eYm[3]+eYy]
 											hit = checkTriCol(eYp1,eXp1,eXp2,eXp3)
 										}
-									} else if (eXm[5]) {
+									} else if (eXm.length==6) {
 										// Ent 1 is rec
-										if (eYm[7]) {
+										if (eYm.length==8) {
 											// Test rec tri
 											var eXp1 = [eXm[2]+eXx,eXm[3]+eXy],
 												eXp2 = [eXm[2]+eXx,eXm[5]+eXy],
@@ -824,7 +834,7 @@
 											checkTriCol(eXp2,eYp1,eYp2,eYp3) ? hit=true :
 											checkTriCol(eXp3,eYp1,eYp2,eYp3) ? hit=true :
 											checkTriCol(eXp4,eYp1,eYp2,eYp3) ? hit=true : hit=false
-										} else if (eYm[5]) {
+										} else if (eYm.length==6) {
 											// Test rec rec
 											if (eXx+eXm[4]<=eYx+eYm[2]) {
 												hit = false
@@ -835,7 +845,7 @@
 											} else if (eXy+eXm[3]>=eYy+eYm[5]) {
 												hit = false
 											}
-										} else if (eYm[4]) {
+										} else if (eYm.length==5) {
 											// Test rec circ
 											var cx=eYm[2]+eYx,
 												cy=eYm[3]+eYy,
@@ -852,9 +862,9 @@
 												p = [eYm[2]+eYx,eYm[5]+eYy]
 											hit = checkRecCol(p,rp1,rp2)
 										}
-									} else if (eXm[4]) {
+									} else if (eXm.length==5) {
 										// Ent 1 is circ
-										if (eYm[7]) {
+										if (eYm.length==8) {
 											// Test circ tri
 											var c = [eXm[2]+eXx,eXm[3]+eXy,eXm[4]],
 												tp1 = [eYm[2]+eYx,eYm[3]+eYy],
@@ -864,7 +874,7 @@
 											checkCircLine(tp1,tp2,c) ? hit=true :
 											checkCircLine(tp2,tp3,c) ? hit=true :
 											checkCircLine(tp1,tp3,c) ? hit=true : hit=false
-										} else if (eYm[5]) {
+										} else if (eYm.length==6) {
 											// Test circ rec
 											var cx=eXm[2]+eXx,
 												cy=eXm[3]+eXy,
@@ -874,7 +884,7 @@
 												ry1 = eYm[3]+eYy,
 												ry2 = eYm[5]+eYy
 											hit = checkCircRec(cx,cy,cr,rx1,ry1,rx2,ry2)
-										} else if (eYm[4]) {
+										} else if (eYm.length==5) {
 											// Test circ circ
 											var c1x = eXm[2]+eXx,
 												c1y = eXm[3]+eXy,
@@ -1013,6 +1023,7 @@
 				}
 			}
 		}
+		//board.rotate(0)
 		zOrder = null
 		zKey = null
 		return toBeRemoved
