@@ -776,12 +776,12 @@
 												eYp1 = [eYm[2]+eYx,eYm[3]+eYy],
 												eYp2 = [eYm[4]+eYx,eYm[5]+eYy],
 												eYp3 = [eYm[6]+eYx,eYm[7]+eYy]
-											checkTriCol(eXp1,eYp1,eYp2,eYp3) ? hit=true :
-											checkTriCol(eXp2,eYp1,eYp2,eYp3) ? hit=true :
-											checkTriCol(eXp3,eYp1,eYp2,eYp3) ? hit=true :
-											checkTriCol(eYp1,eXp1,eXp2,eXp3) ? hit=true :
-											checkTriCol(eYp2,eXp1,eXp2,eXp3) ? hit=true :
-											checkTriCol(eYp3,eXp1,eXp2,eXp3) ? hit=true : hit=false
+											hit = (checkTriCol(eXp1,eYp1,eYp2,eYp3) ? true :
+											checkTriCol(eXp2,eYp1,eYp2,eYp3) ? true :
+											checkTriCol(eXp3,eYp1,eYp2,eYp3) ? true :
+											checkTriCol(eYp1,eXp1,eXp2,eXp3) ? true :
+											checkTriCol(eYp2,eXp1,eXp2,eXp3) ? true :
+											checkTriCol(eYp3,eXp1,eXp2,eXp3) ? true : false)
 										} else if (eYm.length==6) {
 											// Test tri rec
 											var eXp1 = [eXm[2]+eXx,eXm[3]+eXy],
@@ -791,23 +791,23 @@
 												eYp2 = [eYm[2]+eYx,eYm[5]+eYy],
 												eYp3 = [eYm[4]+eYx,eYm[5]+eYy],
 												eYp4 = [eYm[4]+eYx,eYm[3]+eYy]
-											checkRecCol(eXp1,eYp1,eYp3) ? hit=true :
-											checkRecCol(eXp2,eYp1,eYp3) ? hit=true :
-											checkRecCol(eXp3,eYp1,eYp3) ? hit=true :
-											checkTriCol(eYp1,eXp1,eXp2,eXp3) ? hit=true :
-											checkTriCol(eYp2,eXp1,eXp2,eXp3) ? hit=true :
-											checkTriCol(eYp3,eXp1,eXp2,eXp3) ? hit=true :
-											checkTriCol(eYp4,eXp1,eXp2,eXp3) ? hit=true : hit=false
+											hit = (checkRecCol(eXp1,eYp1,eYp3) ? true :
+											checkRecCol(eXp2,eYp1,eYp3) ? true :
+											checkRecCol(eXp3,eYp1,eYp3) ? true :
+											checkTriCol(eYp1,eXp1,eXp2,eXp3) ? true :
+											checkTriCol(eYp2,eXp1,eXp2,eXp3) ? true :
+											checkTriCol(eYp3,eXp1,eXp2,eXp3) ? true :
+											checkTriCol(eYp4,eXp1,eXp2,eXp3) ? true : false)
 										} else if (eYm.length==5) {
 											// Test tri circ
 											var c = [eYm[2]+eYx,eYm[3]+eYy,eYm[4]],
 												tp1 = [eXm[2]+eXx,eXm[3]+eXy],
 												tp2 = [eXm[4]+eXx,eXm[5]+eXy],
 												tp3 = [eXm[6]+eXx,eXm[7]+eXy]
-											checkTriCol([c[0],c[1]],tp1,tp2,tp3) ? hit=true :
-											checkCircLine(tp1,tp2,c) ? hit=true :
-											checkCircLine(tp2,tp3,c) ? hit=true :
-											checkCircLine(tp1,tp3,c) ? hit=true : hit=false
+											hit = (checkTriCol([c[0],c[1]],tp1,tp2,tp3) ? true :
+											checkCircLine(tp1,tp2,c) ? true :
+											checkCircLine(tp2,tp3,c) ? true :
+											checkCircLine(tp1,tp3,c) ? true : false)
 										} else {
 											// Test tri point
 											var eXp1 = [eXm[2]+eXx,eXm[3]+eXy],
@@ -827,13 +827,13 @@
 												eYp1 = [eYm[2]+eYx,eYm[3]+eYy],
 												eYp2 = [eYm[4]+eYx,eYm[5]+eYy],
 												eYp3 = [eYm[6]+eYx,eYm[7]+eYy]
-											checkRecCol(eYp1,eXp1,eXp3) ? hit=true :
-											checkRecCol(eYp2,eXp1,eXp3) ? hit=true :
-											checkRecCol(eYp3,eXp1,eXp3) ? hit=true :
-											checkTriCol(eXp1,eYp1,eYp2,eYp3) ? hit=true :
-											checkTriCol(eXp2,eYp1,eYp2,eYp3) ? hit=true :
-											checkTriCol(eXp3,eYp1,eYp2,eYp3) ? hit=true :
-											checkTriCol(eXp4,eYp1,eYp2,eYp3) ? hit=true : hit=false
+											hit = (checkRecCol(eYp1,eXp1,eXp3) ? true :
+											checkRecCol(eYp2,eXp1,eXp3) ? true :
+											checkRecCol(eYp3,eXp1,eXp3) ? true :
+											checkTriCol(eXp1,eYp1,eYp2,eYp3) ? true :
+											checkTriCol(eXp2,eYp1,eYp2,eYp3) ? true :
+											checkTriCol(eXp3,eYp1,eYp2,eYp3) ? true :
+											checkTriCol(eXp4,eYp1,eYp2,eYp3) ? true : false)
 										} else if (eYm.length==6) {
 											// Test rec rec
 											if (eXx+eXm[4]<=eYx+eYm[2]) {
@@ -870,10 +870,10 @@
 												tp1 = [eYm[2]+eYx,eYm[3]+eYy],
 												tp2 = [eYm[4]+eYx,eYm[5]+eYy],
 												tp3 = [eYm[6]+eYx,eYm[7]+eYy]
-											checkTriCol([c[0],c[1]],tp1,tp2,tp3) ? hit=true :
-											checkCircLine(tp1,tp2,c) ? hit=true :
-											checkCircLine(tp2,tp3,c) ? hit=true :
-											checkCircLine(tp1,tp3,c) ? hit=true : hit=false
+											hit = (checkTriCol([c[0],c[1]],tp1,tp2,tp3) ? true :
+											checkCircLine(tp1,tp2,c) ? true :
+											checkCircLine(tp2,tp3,c) ? true :
+											checkCircLine(tp1,tp3,c) ? true : false)
 										} else if (eYm.length==6) {
 											// Test circ rec
 											var cx=eXm[2]+eXx,
@@ -911,20 +911,18 @@
 			// does this still work?
 			if (eX.postCol) eX.postCol()
 		}
-		if (cols.length>0) {
-			for (var x=0; x<cols.length; x++) {
-				if (rw.ents[cols[x][0][0]].gotHit) {
-					if (rw.ents[cols[x][0][0]].gotHit(cols[x][1][1],cols[x][0][1],cols[x][1][0])==false) {
-						toBeRemoved.push(cols[x][0][0])
-					}
-				}
-				if (rw.ents[cols[x][1][0]].gotHit) {
-					if (rw.ents[cols[x][1][0]].gotHit(cols[x][0][1],cols[x][1][1],cols[x][0][0])==false) {
-						toBeRemoved.push(cols[x][1][0])
-					}
-				}
-			}
-		}
+        for (var x=0; x<cols.length; x++) {
+            if (rw.ents[cols[x][0][0]].gotHit) {
+                if (rw.ents[cols[x][0][0]].gotHit(cols[x][1][1],cols[x][0][1],cols[x][1][0])==false) {
+                    toBeRemoved.push(cols[x][0][0])
+                }
+            }
+            if (rw.ents[cols[x][1][0]].gotHit) {
+                if (rw.ents[cols[x][1][0]].gotHit(cols[x][0][1],cols[x][1][1],cols[x][0][0])==false) {
+                    toBeRemoved.push(cols[x][1][0])
+                }
+            }
+        }
 		return toBeRemoved
 	}
 
